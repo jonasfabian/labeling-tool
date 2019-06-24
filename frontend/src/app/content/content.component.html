@@ -1,5 +1,11 @@
+<mat-card>
+  <div style="width: 100%;">
+    <div id="waveform"></div>
+    <div id="wave-timeline"></div>
+  </div>
+</mat-card>
 <div>
-  <input type="file" accept=".txt" (change)="fileChanged($event)">
+  <input type="file" (change)="fileChanged($event)">
 </div>
 <div>
   <span>{{text}}</span>
