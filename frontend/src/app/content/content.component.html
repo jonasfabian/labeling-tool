@@ -1,12 +1,13 @@
-<mat-card>
-  <div style="width: 100%;">
-    <div id="waveform"></div>
-    <div id="wave-timeline"></div>
+<mat-card class="top-card">
+  <app-audio-player></app-audio-player>
+</mat-card>
+<mat-card class="card">
+  <div>
+    <input type="file" (change)="fileChanged($event)">
   </div>
 </mat-card>
-<div>
-  <input type="file" (change)="fileChanged($event)">
-</div>
-<div>
-  <span>{{text}}</span>
-</div>
+<mat-card class="card" *ngIf="text != ''">
+  <div>
+    <span>{{text}}</span>
+  </div>
+</mat-card>

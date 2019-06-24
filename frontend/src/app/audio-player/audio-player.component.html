@@ -1,0 +1,25 @@
+<div>
+  <div style="width: 100%">
+    <div id="waveform"></div>
+    <div id="wave-timeline"></div>
+  </div>
+</div>
+<div style="margin-top: 15px;">
+  <mat-button-toggle-group>
+    <mat-button-toggle (click)="replay()" title="Replay last 5 seconds">
+      <mat-icon>replay_5</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle (click)="play()" *ngIf="!paused" title="Play">
+      <mat-icon>play_arrow</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle (click)="pause()" *ngIf="paused" title="Pause">
+      <mat-icon>pause</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle (click)="reset()" title="Reset">
+      <mat-icon>stop</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle (click)="skip()" title="Skip 5 Seconds">
+      <mat-icon>forward_5</mat-icon>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+</div>

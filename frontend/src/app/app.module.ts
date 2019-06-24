@@ -7,12 +7,14 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NavigationMenuComponent} from './navigation-menu/navigation-menu.component';
 import {ContentComponent} from './content/content.component';
 import {MaterialModule} from './models/material.module';
+import { AudioPlayerComponent } from './audio-player/audio-player.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationMenuComponent,
-    ContentComponent
+    ContentComponent,
+    AudioPlayerComponent
   ],
   imports: [
     BrowserModule,
