@@ -7,7 +7,6 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NavigationMenuComponent} from './navigation-menu/navigation-menu.component';
 import {ContentComponent} from './content/content.component';
 import {MaterialModule} from './models/material.module';
-import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -20,7 +19,6 @@ import {HttpClientModule} from '@angular/common/http';
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
-    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
