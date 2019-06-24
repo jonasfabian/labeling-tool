@@ -2,12 +2,17 @@
   <app-audio-player></app-audio-player>
 </mat-card>
 <mat-card class="card">
+  <input type="file" accept=".txt" (change)="fileChanged($event)">
+</mat-card>
+<mat-card class="card" *ngIf="highlightedText != ''">
+  <h2>Selected Text</h2>
   <div>
-    <input type="file" (change)="fileChanged($event)">
+    <span>{{highlightedText}}</span>
   </div>
 </mat-card>
 <mat-card class="card" *ngIf="text != ''">
-  <div>
+  <h2>Imported Text</h2>
+  <div (mouseup)="displayHighlightedText()">
     <span>{{text}}</span>
   </div>
 </mat-card>
