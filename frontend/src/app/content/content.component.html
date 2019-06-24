@@ -1,6 +1,13 @@
 <div>
   <input type="file" accept=".txt" (change)="fileChanged($event)">
 </div>
-<div>
-  <span>{{text}}</span>
-</div>
+<mat-card *ngIf="highlightedText != ''">
+  <div>
+    <span>{{highlightedText}}</span>
+  </div>
+</mat-card>
+<mat-card *ngIf="text != ''">
+  <div (mouseup)="displayHighlightedText()">
+    <span>{{text}}</span>
+  </div>
+</mat-card>

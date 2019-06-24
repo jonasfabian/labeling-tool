@@ -11,7 +11,8 @@ export class ContentComponent implements OnInit {
   }
 
   file: any;
-  text: string | ArrayBuffer;
+  text: string | ArrayBuffer = '';
+  highlightedText = '';
 
   ngOnInit() {
   }
@@ -23,5 +24,13 @@ export class ContentComponent implements OnInit {
       this.text = reader.result;
     };
     reader.readAsText(this.file);
+  }
+
+  displayHighlightedText() {
+    let text = '';
+    if (window.getSelection) {
+      text = window.getSelection().toString();
+    }
+    this.highlightedText = text;
   }
 }
