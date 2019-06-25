@@ -87,6 +87,7 @@ export class AudioPlayerComponent implements OnInit {
   }
 
   loopRegion(): void {
+    this.paused = true;
     this.reg.playLoop();
   }
 }
