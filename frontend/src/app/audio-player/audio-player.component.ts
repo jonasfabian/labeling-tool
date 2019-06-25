@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
 import CursorPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js';
@@ -10,7 +10,7 @@ import {Snippet} from '../models/snippet';
   templateUrl: './audio-player.component.html',
   styleUrls: ['./audio-player.component.scss']
 })
-export class AudioPlayerComponent implements OnInit {
+export class AudioPlayerComponent implements OnInit, OnChanges {
 
   constructor() {
   }
@@ -19,11 +19,18 @@ export class AudioPlayerComponent implements OnInit {
   paused = false;
 
   @Output() snippet = new EventEmitter<Snippet>();
+  @Input() audioFile: string;
 
   reg: any;
 
   ngOnInit() {
     this.onPreviewPressed();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.audioFile !== undefined) {
+      this.waveSurfer.load(this.audioFile);
+    }
   }
 
   generateWaveform(): void {
@@ -81,7 +88,13 @@ export class AudioPlayerComponent implements OnInit {
 
   enableDrag(): void {
     this.waveSurfer.clearRegions();
-    const region = this.reg = this.waveSurfer.addRegion({start: 10, end: 20, resize: true, drag: true, color: 'hsla(200, 50%, 70%, 0.4)'});
+    const region = this.reg = this.waveSurfer.addRegion({
+      start: 10,
+      end: 20,
+      resize: true,
+      drag: true,
+      color: 'hsla(200, 50%, 70%, 0.4)'
+    });
     region.on('update-end', () => this.snippet.emit(new Snippet(region.start, region.end)));
   }
 

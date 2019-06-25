@@ -12,6 +12,7 @@ export class ContentComponent implements OnInit {
   }
 
   file: any;
+  audio: string;
   text: string | ArrayBuffer = '';
   highlightedText = '';
   snip = new Snippet(-1, -1);
@@ -38,5 +39,9 @@ export class ContentComponent implements OnInit {
 
   retrieveSnippet(snippet: Snippet) {
     this.snip = snippet;
+  }
+
+  onFileChanged(file: File) {
+    this.audio = URL.createObjectURL(file);
   }
 }

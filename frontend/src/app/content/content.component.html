@@ -1,5 +1,5 @@
 <mat-card class="top-card">
-  <app-audio-player (snippet)="retrieveSnippet($event)"></app-audio-player>
+  <app-audio-player [audioFile]="audio" (snippet)="retrieveSnippet($event)"></app-audio-player>
 </mat-card>
 <mat-card class="card" *ngIf="(snip.startTime !== -1) && (snip.endTime !== -1)">
   <div>
@@ -10,7 +10,20 @@
   </div>
 </mat-card>
 <mat-card class="card">
-  <input type="file" accept=".txt" (change)="fileChanged($event)">
+  <div>
+    <label>Upload Text</label>
+  </div>
+  <div>
+    <input name="uploadText" type="file" accept=".txt" (change)="fileChanged($event)">
+  </div>
+</mat-card>
+<mat-card class="card">
+  <div>
+    <label>Upload Audio</label>
+  </div>
+  <div>
+    <input #AudioInput name="uploadAudio" type="file" accept=".mp3" (change)="onFileChanged(AudioInput.files[0])">
+  </div>
 </mat-card>
 <mat-card class="card" *ngIf="highlightedText != ''">
   <h2>Selected Text</h2>
