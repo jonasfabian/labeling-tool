@@ -82,6 +82,10 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
     this.waveSurfer.skip(5);
   }
 
+  playBackSpeed(speed: number): void {
+    this.waveSurfer.setPlaybackRate(speed);
+  }
+
   replay(): void {
     this.waveSurfer.skip(-5);
   }

@@ -22,6 +22,12 @@
       <mat-icon>forward_5</mat-icon>
     </mat-button-toggle>
   </mat-button-toggle-group>
+  <mat-button-toggle-group style="margin-left: 15px;">
+    <mat-button-toggle (click)="playBackSpeed(0.5)">0.5x</mat-button-toggle>
+    <mat-button-toggle (click)="playBackSpeed(1)">1x</mat-button-toggle>
+    <mat-button-toggle (click)="playBackSpeed(1.5)">1.5x</mat-button-toggle>
+    <mat-button-toggle (click)="playBackSpeed(2)">2x</mat-button-toggle>
+  </mat-button-toggle-group>
   <mat-button-toggle-group style="margin-left: 5px;">
     <mat-button-toggle (click)="enableDrag()">Add Region</mat-button-toggle>
   </mat-button-toggle-group>
