@@ -17,7 +17,6 @@ export class AudioPlayerComponent implements OnInit {
 
   waveSurfer: WaveSurfer = null;
   paused = false;
-  snip = new Snippet(-1, -1);
 
   @Output() snippet = new EventEmitter<Snippet>();
 
@@ -80,8 +79,7 @@ export class AudioPlayerComponent implements OnInit {
 
   enableDrag() {
     this.waveSurfer.clearRegions();
-    this.waveSurfer.addRegion({start: 10, end: 20, resize: true, drag: true, color: 'hsla(200, 50%, 70%, 0.4)'}).on('update-end', '', () => {
-      console.log(this.waveSurfer.regions.list);
-    });
+    const region = this.waveSurfer.addRegion({start: 10, end: 20, resize: true, drag: true, color: 'hsla(200, 50%, 70%, 0.4)'});
+    region.on('update-end', () => this.snippet.emit(new Snippet(region.start, region.end)));
   }
 }
