@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
 import CursorPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
+import {Snippet} from '../models/snippet';
 
 @Component({
   selector: 'app-audio-player',
@@ -15,6 +16,8 @@ export class AudioPlayerComponent implements OnInit {
 
   waveSurfer: WaveSurfer = null;
   paused = false;
+
+  snippet = new Snippet(-1, -1);
 
   ngOnInit() {
     this.onPreviewPressed();
@@ -79,4 +82,14 @@ export class AudioPlayerComponent implements OnInit {
     this.waveSurfer.skip(-5);
   }
 
+  selectStartTime(): void {
+    this.snippet = new Snippet(-1, -1);
+    this.snippet.startTime = this.waveSurfer.getCurrentTime();
+  }
+
+  selectEndTime(): void {
+    if (this.snippet.startTime !== -1) {
+      this.snippet.endTime = this.waveSurfer.getCurrentTime();
+    }
+  }
 }
