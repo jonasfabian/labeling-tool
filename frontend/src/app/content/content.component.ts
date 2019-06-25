@@ -38,6 +38,5 @@ export class ContentComponent implements OnInit {
 
   retrieveSnippet(snippet: Snippet) {
     this.snip = snippet;
-    console.log(snippet);
   }
 }

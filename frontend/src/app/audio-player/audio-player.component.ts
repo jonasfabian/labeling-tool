@@ -12,7 +12,8 @@ import {Snippet} from '../models/snippet';
 })
 export class AudioPlayerComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+  }
 
   waveSurfer: WaveSurfer = null;
   paused = false;
@@ -41,13 +42,7 @@ export class AudioPlayerComponent implements OnInit {
             opacity: 1
           }),
           RegionsPlugin.create({
-            regions: [
-              {
-                start: 1,
-                end: 3,
-                color: 'hsla(200, 50%, 70%, 0.4)'
-              }
-            ]
+            regions: []
           })
         ]
       });
@@ -93,5 +88,11 @@ export class AudioPlayerComponent implements OnInit {
       this.snip.endTime = this.waveSurfer.getCurrentTime();
       this.snippet.emit(this.snip);
     }
+  }
+
+  enableDrag() {
+    this.waveSurfer.addRegion({start: 10, end: 20, resize: true, drag: true, color: 'hsla(200, 50%, 70%, 0.4)'}).on('update-end', () => {
+      console.log(this.waveSurfer.regions.list);
+    });
   }
 }
