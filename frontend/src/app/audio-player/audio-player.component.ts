@@ -20,6 +20,8 @@ export class AudioPlayerComponent implements OnInit {
 
   @Output() snippet = new EventEmitter<Snippet>();
 
+  reg: any;
+
   ngOnInit() {
     this.onPreviewPressed();
   }
@@ -77,9 +79,14 @@ export class AudioPlayerComponent implements OnInit {
     this.waveSurfer.skip(-5);
   }
 
-  enableDrag() {
+  enableDrag(): void {
     this.waveSurfer.clearRegions();
-    const region = this.waveSurfer.addRegion({start: 10, end: 20, resize: true, drag: true, color: 'hsla(200, 50%, 70%, 0.4)'});
+    const region = this.reg = this.waveSurfer.addRegion({start: 10, end: 20, resize: true, drag: true, color: 'hsla(200, 50%, 70%, 0.4)'});
     region.on('update-end', () => this.snippet.emit(new Snippet(region.start, region.end)));
+    console.log(this.reg);
+  }
+
+  loopRegion(): void {
+    this.reg.playLoop();
   }
 }
