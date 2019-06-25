@@ -22,8 +22,8 @@
       <mat-icon>forward_5</mat-icon>
     </mat-button-toggle>
   </mat-button-toggle-group>
-</div>
-<div>
-  <button (click)="selectStartTime()">Start</button>
-  <button (click)="selectEndTime()">End</button>
+  <mat-button-toggle-group style="margin-left: 5px;">
+    <mat-button-toggle (click)="selectStartTime()">Start</mat-button-toggle>
+    <mat-button-toggle (click)="selectEndTime()">End</mat-button-toggle>
+  </mat-button-toggle-group>
 </div>

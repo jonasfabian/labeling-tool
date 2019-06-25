@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {Snippet} from '../models/snippet';
 
 @Component({
   selector: 'app-content',
@@ -13,6 +14,7 @@ export class ContentComponent implements OnInit {
   file: any;
   text: string | ArrayBuffer = '';
   highlightedText = '';
+  snip = new Snippet(-1, -1);
 
   ngOnInit() {
   }
@@ -32,5 +34,10 @@ export class ContentComponent implements OnInit {
       text = window.getSelection().toString();
     }
     this.highlightedText = text;
+  }
+
+  retrieveSnippet(snippet: Snippet) {
+    this.snip = snippet;
+    console.log(snippet);
   }
 }

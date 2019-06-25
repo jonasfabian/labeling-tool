@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
 import CursorPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js';
@@ -16,8 +16,9 @@ export class AudioPlayerComponent implements OnInit {
 
   waveSurfer: WaveSurfer = null;
   paused = false;
+  snip = new Snippet(-1, -1);
 
-  snippet = new Snippet(-1, -1);
+  @Output() snippet = new EventEmitter<Snippet>();
 
   ngOnInit() {
     this.onPreviewPressed();
@@ -83,13 +84,14 @@ export class AudioPlayerComponent implements OnInit {
   }
 
   selectStartTime(): void {
-    this.snippet = new Snippet(-1, -1);
-    this.snippet.startTime = this.waveSurfer.getCurrentTime();
+    this.snip = new Snippet(-1, -1);
+    this.snip.startTime = this.waveSurfer.getCurrentTime();
   }
 
   selectEndTime(): void {
-    if (this.snippet.startTime !== -1) {
-      this.snippet.endTime = this.waveSurfer.getCurrentTime();
+    if (this.snip.startTime !== -1) {
+      this.snip.endTime = this.waveSurfer.getCurrentTime();
+      this.snippet.emit(this.snip);
     }
   }
 }

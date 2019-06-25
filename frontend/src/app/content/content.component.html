@@ -1,5 +1,13 @@
 <mat-card class="top-card">
-  <app-audio-player></app-audio-player>
+  <app-audio-player (snippet)="retrieveSnippet($event)"></app-audio-player>
+</mat-card>
+<mat-card class="card" *ngIf="(snip.startTime !== -1) && (snip.endTime !== -1)">
+  <div>
+    <span>Start: {{snip.startTime}}</span>
+  </div>
+  <div>
+    <span>End: {{snip.endTime}}</span>
+  </div>
 </mat-card>
 <mat-card class="card">
   <input type="file" accept=".txt" (change)="fileChanged($event)">
