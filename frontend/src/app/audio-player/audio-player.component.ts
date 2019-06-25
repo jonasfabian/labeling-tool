@@ -40,7 +40,7 @@ export class AudioPlayerComponent implements OnInit {
           CursorPlugin.create({
             container: '#wave-cursor',
             showTime: true,
-            opacity: 1
+            opacity: 1,
           }),
           RegionsPlugin.create({
             regions: []
@@ -83,11 +83,14 @@ export class AudioPlayerComponent implements OnInit {
     this.waveSurfer.clearRegions();
     const region = this.reg = this.waveSurfer.addRegion({start: 10, end: 20, resize: true, drag: true, color: 'hsla(200, 50%, 70%, 0.4)'});
     region.on('update-end', () => this.snippet.emit(new Snippet(region.start, region.end)));
-    console.log(this.reg);
   }
 
   loopRegion(): void {
     this.paused = true;
     this.reg.playLoop();
+  }
+
+  setVolume(volume: any): void {
+    this.waveSurfer.setVolume(volume.value / 100);
   }
 }
