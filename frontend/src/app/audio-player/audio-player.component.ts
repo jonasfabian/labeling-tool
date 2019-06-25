@@ -78,20 +78,9 @@ export class AudioPlayerComponent implements OnInit {
     this.waveSurfer.skip(-5);
   }
 
-  selectStartTime(): void {
-    this.snip = new Snippet(-1, -1);
-    this.snip.startTime = this.waveSurfer.getCurrentTime();
-  }
-
-  selectEndTime(): void {
-    if (this.snip.startTime !== -1) {
-      this.snip.endTime = this.waveSurfer.getCurrentTime();
-      this.snippet.emit(this.snip);
-    }
-  }
-
   enableDrag() {
-    this.waveSurfer.addRegion({start: 10, end: 20, resize: true, drag: true, color: 'hsla(200, 50%, 70%, 0.4)'}).on('update-end', () => {
+    this.waveSurfer.clearRegions();
+    this.waveSurfer.addRegion({start: 10, end: 20, resize: true, drag: true, color: 'hsla(200, 50%, 70%, 0.4)'}).on('update-end', '', () => {
       console.log(this.waveSurfer.regions.list);
     });
   }
