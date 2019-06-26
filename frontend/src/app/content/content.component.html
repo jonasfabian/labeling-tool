@@ -1,5 +1,5 @@
 <mat-card class="top-card">
-  <app-audio-player [audioFile]="audio" (snippet)="retrieveSnippet($event)"></app-audio-player>
+  <app-audio-player (uploadSuccess)="openSnackBar($event)" [audioFile]="audio" (snippet)="retrieveSnippet($event)"></app-audio-player>
 </mat-card>
 <mat-card class="card" *ngIf="(snip.startTime !== -1) && (snip.endTime !== -1)">
   <strong>Marked Region</strong>

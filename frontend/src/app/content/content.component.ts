@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AudioSnippet} from '../models/audioSnippet';
 import {TextAudioMatch} from '../models/textAudioMatch';
 import {TextSnippet} from '../models/textSnippet';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-content',
@@ -10,7 +11,9 @@ import {TextSnippet} from '../models/textSnippet';
 })
 export class ContentComponent implements OnInit {
 
-  constructor() {
+  constructor(
+    private snackBar: MatSnackBar
+  ) {
   }
 
   file: any;
@@ -55,4 +58,19 @@ export class ContentComponent implements OnInit {
   submitText(): void {
     this.textAudioMatch.audioSnippet = this.snip;
   }
+
+  openSnackBar(uploadSuccess: boolean): void {
+    if (uploadSuccess) {
+      this.snackBar.openFromComponent(SnackBarComponent, {
+        duration: 5000
+      });
+    }
+  }
 }
+
+
+@Component({
+  selector: 'app-content-snack-bar-component',
+  templateUrl: 'app-content-snack-bar-component.html'
+})
+export class SnackBarComponent {}

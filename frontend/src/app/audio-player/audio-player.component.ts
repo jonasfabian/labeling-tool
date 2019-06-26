@@ -19,6 +19,7 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   paused = false;
 
   @Output() snippet = new EventEmitter<AudioSnippet>();
+  @Output() uploadSuccess = new EventEmitter<boolean>();
   @Input() audioFile: string;
 
   reg: any;
@@ -30,6 +31,7 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (this.audioFile !== undefined) {
       this.waveSurfer.load(this.audioFile);
+      this.uploadSuccess.emit(true);
     }
   }
 
