@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AudioSnippet} from '../models/audioSnippet';
+import {TextAudioMatch} from '../models/textAudioMatch';
+import {TextSnippet} from '../models/textSnippet';
 
 @Component({
   selector: 'app-content',
@@ -13,9 +15,13 @@ export class ContentComponent implements OnInit {
 
   file: any;
   audio: string;
+  snip = new AudioSnippet(0, -1, -1);
   text: string | ArrayBuffer = '';
   highlightedText = '';
-  snip = new AudioSnippet(0, -1, -1);
+  highlightedTextChars: Array<string> = [];
+  highlightedTextStartPos = 0;
+  highlightedTextEndPos = 0;
+  textAudioMatch = new TextAudioMatch(new AudioSnippet(0, 0, 0), new TextSnippet(0, 0, 0, 0));
 
   ngOnInit() {
   }
@@ -35,6 +41,7 @@ export class ContentComponent implements OnInit {
       text = window.getSelection().toString();
     }
     this.highlightedText = text;
+    this.highlightedTextChars = Array.from(this.highlightedText);
   }
 
   retrieveSnippet(snippet: AudioSnippet) {
@@ -43,5 +50,9 @@ export class ContentComponent implements OnInit {
 
   onFileChanged(file: File) {
     this.audio = URL.createObjectURL(file);
+  }
+
+  submitText(): void {
+    this.textAudioMatch.audioSnippet = this.snip;
   }
 }
