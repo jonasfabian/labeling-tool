@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Snippet} from '../models/snippet';
+import {AudioSnippet} from '../models/audioSnippet';
 
 @Component({
   selector: 'app-content',
@@ -15,7 +15,7 @@ export class ContentComponent implements OnInit {
   audio: string;
   text: string | ArrayBuffer = '';
   highlightedText = '';
-  snip = new Snippet(-1, -1);
+  snip = new AudioSnippet(0, -1, -1);
 
   ngOnInit() {
   }
@@ -37,7 +37,7 @@ export class ContentComponent implements OnInit {
     this.highlightedText = text;
   }
 
-  retrieveSnippet(snippet: Snippet) {
+  retrieveSnippet(snippet: AudioSnippet) {
     this.snip = snippet;
   }
 

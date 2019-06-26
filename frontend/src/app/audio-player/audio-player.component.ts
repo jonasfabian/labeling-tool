@@ -3,7 +3,7 @@ import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
 import CursorPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
-import {Snippet} from '../models/snippet';
+import {AudioSnippet} from '../models/audioSnippet';
 
 @Component({
   selector: 'app-audio-player',
@@ -18,7 +18,7 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   waveSurfer: WaveSurfer = null;
   paused = false;
 
-  @Output() snippet = new EventEmitter<Snippet>();
+  @Output() snippet = new EventEmitter<AudioSnippet>();
   @Input() audioFile: string;
 
   reg: any;
@@ -99,7 +99,7 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
       drag: true,
       color: 'hsla(200, 50%, 70%, 0.4)'
     });
-    region.on('update-end', () => this.snippet.emit(new Snippet(region.start, region.end)));
+    region.on('update-end', () => this.snippet.emit(new AudioSnippet(region.id, region.start, region.end)));
   }
 
   loopRegion(): void {
