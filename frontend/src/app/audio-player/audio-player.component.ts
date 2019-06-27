@@ -59,7 +59,6 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
             container: '#wave-timeline'
           }),
           CursorPlugin.create({
-            container: '#wave-cursor',
             showTime: true,
             opacity: 1
           }),
