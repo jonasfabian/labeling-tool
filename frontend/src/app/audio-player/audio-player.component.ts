@@ -32,9 +32,6 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
     if (this.audioFile !== undefined) {
       this.waveSurfer.load(this.audioFile);
       this.uploadSuccess.emit(true);
-      this.waveSurfer.on('zoom', zoom => {
-        console.log(zoom);
-      });
     }
   }
 
@@ -118,5 +115,10 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
 
   zoomLevel(zoomLevel: any): void {
     this.waveSurfer.zoom(zoomLevel.value);
+  }
+
+  seekInAudio(seconds: any) {
+    const totalTime = this.waveSurfer.getDuration();
+    this.waveSurfer.seekTo(seconds / totalTime);
   }
 }
