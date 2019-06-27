@@ -20,8 +20,11 @@ export class ContentComponent implements OnInit {
   audio: string;
   snip = new AudioSnippet(0, -1, -1);
   text: string | ArrayBuffer = '';
-  highlightedText = '';
+
+  fileTextWords: Array<string> = [];
   highlightedTextChars: Array<string> = [];
+
+  highlightedText = '';
   highlightedTextStartPos = 0;
   highlightedTextEndPos = 0;
   textAudioMatch = new TextAudioMatch(new AudioSnippet(0, 0, 0), new TextSnippet(0, 0, 0, 0));
@@ -34,17 +37,23 @@ export class ContentComponent implements OnInit {
     this.file = e.target.files[0];
     reader.onload = () => {
       this.text = reader.result;
+      this.fileTextWords = this.text.toString().split(' ');
     };
     reader.readAsText(this.file);
   }
 
   displayHighlightedText() {
-    let text = '';
+    let highlightedTextLength = 0;
     if (window.getSelection) {
-      text = window.getSelection().toString();
+      this.highlightedText = window.getSelection().toString();
+      highlightedTextLength = this.highlightedText.length;
     }
-    this.highlightedText = text;
-    this.highlightedTextChars = Array.from(this.highlightedText);
+    const tempStartPos = this.text.toString().indexOf(this.highlightedText.toString());
+    const tempEndPos = tempStartPos + highlightedTextLength;
+    if (tempStartPos !== -1) {
+      this.highlightedTextStartPos = tempStartPos;
+      this.highlightedTextEndPos = tempEndPos;
+    }
   }
 
   retrieveSnippet(snippet: AudioSnippet) {
@@ -57,6 +66,8 @@ export class ContentComponent implements OnInit {
 
   submitText(): void {
     this.textAudioMatch.audioSnippet = this.snip;
+    this.textAudioMatch.textSnippet = new TextSnippet(0, this.highlightedTextChars.length, this.highlightedTextStartPos, this.highlightedTextEndPos);
+    // TODO sent post request to future API
   }
 
   openSnackBar(uploadSuccess: boolean): void {
@@ -73,4 +84,5 @@ export class ContentComponent implements OnInit {
   selector: 'app-content-snack-bar-component',
   templateUrl: 'app-content-snack-bar-component.html'
 })
-export class SnackBarComponent {}
+export class SnackBarComponent {
+}

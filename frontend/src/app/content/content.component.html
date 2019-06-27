@@ -1,5 +1,6 @@
 <mat-card class="top-card">
-  <app-audio-player (uploadSuccess)="openSnackBar($event)" [audioFile]="audio" (snippet)="retrieveSnippet($event)"></app-audio-player>
+  <app-audio-player (uploadSuccess)="openSnackBar($event)" [audioFile]="audio"
+                    (snippet)="retrieveSnippet($event)"></app-audio-player>
 </mat-card>
 <mat-card class="card" *ngIf="(snip.startTime !== -1) && (snip.endTime !== -1)">
   <strong>Marked Region</strong>
@@ -26,15 +27,26 @@
     <input #AudioInput name="uploadAudio" type="file" accept=".mp3" (change)="onFileChanged(AudioInput.files[0])">
   </div>
 </mat-card>
-<mat-card class="card" *ngIf="highlightedText != ''">
-  <h2>Selected Text</h2>
+<mat-card class="card">
   <div>
-    <span>{{highlightedText}}</span>
+    <span>Starting position: {{this.highlightedTextStartPos}}</span>
+  </div>
+  <div>
+    <span>Ending position: {{this.highlightedTextEndPos}}</span>
+  </div>
+</mat-card>
+<mat-card class="card" *ngIf="highlightedText != ''">
+  <div>
+    <h2>Selected Text</h2>
+    <mat-button-toggle (click)="submitText()">Submit</mat-button-toggle>
+  </div>
+  <div>
+    <span style="white-space: pre-wrap;">{{highlightedText}}</span>
   </div>
 </mat-card>
 <mat-card class="card" *ngIf="text != ''">
   <h2>Imported Text</h2>
   <div (mouseup)="displayHighlightedText()">
-    <span>{{text}}</span>
+    <span style="white-space: pre-wrap;">{{text}}</span>
   </div>
 </mat-card>
