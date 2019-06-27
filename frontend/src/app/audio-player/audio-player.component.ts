@@ -32,6 +32,9 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
     if (this.audioFile !== undefined) {
       this.waveSurfer.load(this.audioFile);
       this.uploadSuccess.emit(true);
+      this.waveSurfer.on('zoom', zoom => {
+        console.log(zoom);
+      });
     }
   }
 
@@ -101,7 +104,7 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
       drag: true,
       color: 'hsla(200, 50%, 70%, 0.4)'
     });
-    region.on('update-end', () => this.snippet.emit(new AudioSnippet(region.id, region.start, region.end)));
+    region.on('update-end', () => this.snippet.emit(new AudioSnippet(region.start, region.end)));
   }
 
   loopRegion(): void {
@@ -111,5 +114,9 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
 
   setVolume(volume: any): void {
     this.waveSurfer.setVolume(volume.value / 100);
+  }
+
+  zoomLevel(zoomLevel: any): void {
+    this.waveSurfer.zoom(zoomLevel.value);
   }
 }

@@ -1,10 +1,8 @@
 export class AudioSnippet {
-  id: number;
   startTime: number;
   endTime: number;
 
-  constructor(id: number, startTime: number, endTime: number) {
-    this.id = id;
+  constructor(startTime: number, endTime: number) {
     this.startTime = startTime;
     this.endTime = endTime;
   }

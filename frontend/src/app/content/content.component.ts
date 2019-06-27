@@ -18,16 +18,15 @@ export class ContentComponent implements OnInit {
 
   file: any;
   audio: string;
-  snip = new AudioSnippet(0, -1, -1);
+  snip = new AudioSnippet(-1, -1);
   text: string | ArrayBuffer = '';
 
   fileTextWords: Array<string> = [];
-  highlightedTextChars: Array<string> = [];
 
   highlightedText = '';
   highlightedTextStartPos = 0;
   highlightedTextEndPos = 0;
-  textAudioMatch = new TextAudioMatch(new AudioSnippet(0, 0, 0), new TextSnippet(0, 0, 0, 0));
+  textAudioMatch = new TextAudioMatch(new AudioSnippet(0, 0), new TextSnippet(0, 0));
 
   ngOnInit() {
   }
@@ -66,7 +65,7 @@ export class ContentComponent implements OnInit {
 
   submitText(): void {
     this.textAudioMatch.audioSnippet = this.snip;
-    this.textAudioMatch.textSnippet = new TextSnippet(0, this.highlightedTextChars.length, this.highlightedTextStartPos, this.highlightedTextEndPos);
+    this.textAudioMatch.textSnippet = new TextSnippet(this.highlightedTextStartPos, this.highlightedTextEndPos);
     // TODO sent post request to future API
   }
 
