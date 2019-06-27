@@ -1,4 +1,14 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
 import CursorPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js';
@@ -18,6 +28,7 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   waveSurfer: WaveSurfer = null;
   paused = false;
   zoomLvl = 0;
+  toggleVolume = false;
 
   @Output() snippet = new EventEmitter<AudioSnippet>();
   @Output() uploadSuccess = new EventEmitter<boolean>();
@@ -114,8 +125,11 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
     this.waveSurfer.setVolume(volume.value / 100);
   }
 
-  zoomLevel(zoomLevel: any): void {
-    this.waveSurfer.zoom(zoomLevel.value);
+  zoomLevel(zoomLevel: number): void {
+    if (zoomLevel <= 200 && zoomLevel >= 1) {
+      this.waveSurfer.zoom(zoomLevel);
+      this.zoomLvl = zoomLevel;
+    }
   }
 
   seekInAudio(seconds: any) {
