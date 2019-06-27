@@ -17,6 +17,7 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
 
   waveSurfer: WaveSurfer = null;
   paused = false;
+  zoomLvl = 0;
 
   @Output() snippet = new EventEmitter<AudioSnippet>();
   @Output() uploadSuccess = new EventEmitter<boolean>();
@@ -49,7 +50,7 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
           CursorPlugin.create({
             container: '#wave-cursor',
             showTime: true,
-            opacity: 1,
+            opacity: 1
           }),
           RegionsPlugin.create({
             regions: []
@@ -92,11 +93,11 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
     this.waveSurfer.skip(-5);
   }
 
-  enableDrag(): void {
+  addRegion(): void {
     this.waveSurfer.clearRegions();
     const region = this.reg = this.waveSurfer.addRegion({
-      start: 10,
-      end: 20,
+      start: this.waveSurfer.getCurrentTime(),
+      end: this.waveSurfer.getCurrentTime() + 10,
       resize: true,
       drag: true,
       color: 'hsla(200, 50%, 70%, 0.4)'

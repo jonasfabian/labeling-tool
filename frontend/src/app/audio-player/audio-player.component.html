@@ -1,10 +1,10 @@
-<div>
+<div id="wave">
   <div style="width: 100%">
     <div id="waveform"></div>
     <div id="wave-timeline"></div>
   </div>
 </div>
-<div style="margin-top: 15px;">
+<div id="wave-navigation" style="margin-top: 15px;">
   <mat-button-toggle-group>
     <mat-button-toggle (click)="replay()" title="Replay last 5 seconds">
       <mat-icon>replay_5</mat-icon>
@@ -29,19 +29,28 @@
     <mat-button-toggle (click)="playBackSpeed(2)">2x</mat-button-toggle>
   </mat-button-toggle-group>
   <mat-button-toggle-group style="margin-left: 5px;">
-    <mat-button-toggle (click)="enableDrag()">Add Region</mat-button-toggle>
+    <mat-button-toggle (click)="addRegion()">Add Region</mat-button-toggle>
   </mat-button-toggle-group>
   <mat-button-toggle-group style="margin-left: 5px;">
     <mat-button-toggle title="Loop" (click)="loopRegion()">
       <mat-icon>loop</mat-icon>
     </mat-button-toggle>
   </mat-button-toggle-group>
-  <mat-slider min="0" max="100" step="1" value="25" vertical thumbLabel tickInterval="1"
-              (input)="setVolume($event)"></mat-slider>
-    <span>{{zoomLevelInput.value}}</span>
-    <mat-slider #zoomLevelInput min="1" max="200" (input)="zoomLevel($event)"></mat-slider>
-  <mat-form-field>
+  <mat-form-field style="margin-left: 15px; margin-bottom: -15px;">
     <input #seekInput matInput placeholder="Seek">
-    <mat-button-toggle (click)="seekInAudio(seekInput.value)">Seek</mat-button-toggle>
   </mat-form-field>
+  <mat-button-toggle style="margin-left: 15px;" (click)="seekInAudio(seekInput.value)">
+    <mat-icon>search</mat-icon>
+  </mat-button-toggle>
+  <!--<mat-slider min="0" max="100" step="1" value="25" vertical (input)="setVolume($event)"></mat-slider>-->
+  <div style="float: right;">
+    <mat-button-toggle>
+      <mat-icon>zoom_out</mat-icon>
+    </mat-button-toggle>
+    <span style="position: absolute; right: 125px;">{{zoomLevelInput.value}}</span>
+    <mat-slider #zoomLevelInput min="1" max="200" (input)="zoomLevel($event)"></mat-slider>
+    <mat-button-toggle>
+      <mat-icon>zoom_in</mat-icon>
+    </mat-button-toggle>
+  </div>
 </div>
