@@ -36,8 +36,10 @@
       <mat-icon>loop</mat-icon>
     </mat-button-toggle>
   </mat-button-toggle-group>
-  <mat-slider min="0" max="100" step="1" value="25" vertical thumbLabel tickInterval="1" (input)="setVolume($event)"></mat-slider>
-  <mat-slider min="1" max="200" (input)="zoomLevel($event)"></mat-slider>
+  <mat-slider min="0" max="100" step="1" value="25" vertical thumbLabel tickInterval="1"
+              (input)="setVolume($event)"></mat-slider>
+    <span>{{zoomLevelInput.value}}</span>
+    <mat-slider #zoomLevelInput min="1" max="200" (input)="zoomLevel($event)"></mat-slider>
   <mat-form-field>
     <input #seekInput matInput placeholder="Seek">
     <mat-button-toggle (click)="seekInAudio(seekInput.value)">Seek</mat-button-toggle>
