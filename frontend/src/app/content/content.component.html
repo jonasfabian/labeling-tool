@@ -11,42 +11,56 @@
     <span>End: {{snip.endTime}}</span>
   </div>
 </mat-card>
-<mat-card class="card">
-  <div>
-    <label>Upload Text</label>
-  </div>
-  <div>
-    <input name="uploadText" type="file" accept=".txt" (change)="fileChanged($event)">
-  </div>
-</mat-card>
-<mat-card class="card">
-  <div>
-    <label>Upload Audio</label>
-  </div>
-  <div>
-    <input #AudioInput name="uploadAudio" type="file" accept=".mp3" (change)="onFileChanged(AudioInput.files[0])">
-  </div>
-</mat-card>
+<div>
+  <mat-card class="card" *ngIf="highlightedText != ''">
+    <div>
+      <h2>Selected Text</h2>
+      <mat-button-toggle (click)="submitText()">Submit</mat-button-toggle>
+    </div>
+    <div>
+      <span style="white-space: pre-wrap;">{{highlightedText}}</span>
+    </div>
+  </mat-card>
+  <mat-card class="card" *ngIf="text != ''">
+    <h2>Imported Text</h2>
+    <div (mouseup)="displayHighlightedText()">
+      <span style="white-space: pre-wrap;">{{text}}</span>
+    </div>
+  </mat-card>
+</div>
+<mat-grid-list cols="4" rowHeight="100px">
+  <mat-grid-tile>
+    <mat-card class="card" style="width: 100%;">
+      <div>
+        <label>Upload Audio</label>
+      </div>
+      <div>
+        <input #AudioInput name="uploadAudio" type="file" accept=".mp3" (change)="onFileChanged(AudioInput.files[0])">
+      </div>
+    </mat-card>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <mat-card class="card" style="width: 100%;">
+      <div>
+        <label>Upload Text</label>
+      </div>
+      <div>
+        <input name="uploadText" type="file" accept=".txt" (change)="fileChanged($event)">
+      </div>
+    </mat-card>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <mat-card class="card" style="width: 100%;"></mat-card>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <mat-card class="card" style="width: 100%;"></mat-card>
+  </mat-grid-tile>
+</mat-grid-list>
 <mat-card class="card">
   <div>
     <span>Starting position: {{this.highlightedTextStartPos}}</span>
   </div>
   <div>
     <span>Ending position: {{this.highlightedTextEndPos}}</span>
-  </div>
-</mat-card>
-<mat-card class="card" *ngIf="highlightedText != ''">
-  <div>
-    <h2>Selected Text</h2>
-    <mat-button-toggle (click)="submitText()">Submit</mat-button-toggle>
-  </div>
-  <div>
-    <span style="white-space: pre-wrap;">{{highlightedText}}</span>
-  </div>
-</mat-card>
-<mat-card class="card" *ngIf="text != ''">
-  <h2>Imported Text</h2>
-  <div (mouseup)="displayHighlightedText()">
-    <span style="white-space: pre-wrap;">{{text}}</span>
   </div>
 </mat-card>
