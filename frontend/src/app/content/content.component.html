@@ -11,23 +11,27 @@
     <span>End: {{snip.endTime}}</span>
   </div>
 </mat-card>
-<div>
-  <mat-card class="card" *ngIf="highlightedText != ''">
-    <div>
-      <h2>Selected Text</h2>
-      <mat-button-toggle (click)="submitText()">Submit</mat-button-toggle>
-    </div>
-    <div>
-      <span style="white-space: pre-wrap;">{{highlightedText}}</span>
-    </div>
-  </mat-card>
-  <mat-card class="card" *ngIf="text != ''">
-    <h2>Imported Text</h2>
-    <div (mouseup)="displayHighlightedText()">
-      <span style="white-space: pre-wrap;">{{text}}</span>
-    </div>
-  </mat-card>
-</div>
+<mat-grid-list cols="2" rowHeight="100px">
+  <mat-grid-tile>
+    <mat-card style="width: 100%;" class="card">
+      <h2>Imported Text</h2>
+      <div *ngIf="text != ''" (mouseup)="displayHighlightedText()">
+        <span style="white-space: pre-wrap;">{{text}}</span>
+      </div>
+    </mat-card>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <mat-card style="width: 100%;" class="card">
+      <div>
+        <h2>Selected Text</h2>
+        <mat-button-toggle *ngIf="highlightedText != ''" (click)="submitText()">Submit</mat-button-toggle>
+      </div>
+      <div *ngIf="highlightedText != ''">
+        <span style="white-space: pre-wrap;">{{highlightedText}}</span>
+      </div>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>
 <mat-grid-list cols="4" rowHeight="100px">
   <mat-grid-tile>
     <mat-card class="card" style="width: 100%;">
