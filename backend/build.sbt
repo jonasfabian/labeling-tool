@@ -2,7 +2,7 @@ name := "backend"
 
 version := "0.1"
 
-scalaVersion := "2.13.0"
+scalaVersion := "2.12.0"
 
 libraryDependencies ++= Seq (
   "com.typesafe.akka" % "akka-actor_2.12" % "2.5.18",
