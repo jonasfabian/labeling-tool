@@ -13,9 +13,30 @@
 </mat-card>
 <mat-grid-list cols="2" rowHeight="100px">
   <mat-grid-tile>
-    <mat-card style="width: 100%;" class="card">
+    <mat-card class="card" style="width: 100%;">
+      <span>Upload Audio</span>
+      <input hidden #AudioInput id="uploadAudio" type="file" accept=".mp3"
+             (change)="onFileChanged(AudioInput.files[0])">
+      <label style="float: right;" for="uploadAudio">
+        <mat-icon>cloud_upload</mat-icon>
+      </label>
+    </mat-card>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <mat-card class="card" style="width: 100%;">
+      <span>Upload Text</span>
+      <input hidden id="uploadText" type="file" accept=".txt" (change)="fileChanged($event)">
+      <label style="float: right;" for="uploadText">
+        <mat-icon>cloud_upload</mat-icon>
+      </label>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>
+<mat-grid-list *ngIf="text != ''" cols="2">
+  <mat-grid-tile>
+    <mat-card style="width: 100%; height: calc(100% - 50px); overflow-y: scroll;" class="card">
       <h2>Imported Text</h2>
-      <div *ngIf="text != ''" (mouseup)="displayHighlightedText()">
+      <div (mouseup)="displayHighlightedText()">
         <span style="white-space: pre-wrap;">{{text}}</span>
       </div>
     </mat-card>
@@ -30,34 +51,6 @@
         <span style="white-space: pre-wrap;">{{highlightedText}}</span>
       </div>
     </mat-card>
-  </mat-grid-tile>
-</mat-grid-list>
-<mat-grid-list cols="4" rowHeight="100px">
-  <mat-grid-tile>
-    <mat-card class="card" style="width: 100%;">
-      <div>
-        <label>Upload Audio</label>
-      </div>
-      <div>
-        <input #AudioInput name="uploadAudio" type="file" accept=".mp3" (change)="onFileChanged(AudioInput.files[0])">
-      </div>
-    </mat-card>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <mat-card class="card" style="width: 100%;">
-      <div>
-        <label>Upload Text</label>
-      </div>
-      <div>
-        <input name="uploadText" type="file" accept=".txt" (change)="fileChanged($event)">
-      </div>
-    </mat-card>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <mat-card class="card" style="width: 100%;"></mat-card>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <mat-card class="card" style="width: 100%;"></mat-card>
   </mat-grid-tile>
 </mat-grid-list>
 <mat-card class="card">
