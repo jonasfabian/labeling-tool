@@ -1,10 +1,11 @@
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives
 import akka.stream.ActorMaterializer
 import com.typesafe.config.{ConfigFactory, ConfigValueFactory}
 import de.heikoseeberger.akkahttpcirce.ErrorAccumulatingCirceSupport
+import io.swagger.annotations.{ApiOperation, ApiResponse, ApiResponses}
+import javax.ws.rs.Path
 
 import scala.io.StdIn
 
@@ -32,10 +33,18 @@ object WebServer extends App with CorsSupport {
 }
 
 class LabelingToolRestApi(service: LabelingToolService) extends Directives with ErrorAccumulatingCirceSupport {
-  val route =
-    path("hello") {
-      get {
-        complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
+  val route = pathPrefix("api") {
+      pathPrefix("match") {
+        getMatch
       }
     }
+
+  @ApiOperation(value = "getMatch", httpMethod = "GET", notes = "returns a match")
+  @ApiResponses(Array(new ApiResponse(code = 200, response = classOf[Match], message = "OK")))
+  @Path("match")
+  def getMatch = path("getMatch") {
+    get {
+      complete()
+    }
+  }
 }
