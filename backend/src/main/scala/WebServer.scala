@@ -44,7 +44,7 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
   @Path("match")
   def getMatch = path("getMatch") {
     get {
-      complete()
+      complete(service.matches)
     }
   }
 }
