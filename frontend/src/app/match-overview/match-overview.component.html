@@ -1,0 +1,18 @@
+<div *ngIf="textAudioMatch != undefined">
+  <table>
+    <tbody>
+    <tr>
+      <th>Audio Starting Position</th>
+      <th>Audio Starting Position</th>
+      <th>Text Starting Position</th>
+      <th>Text Starting Position</th>
+    </tr>
+    <tr>
+      <td>{{textAudioMatch.audioSnippet.startTime}}</td>
+      <td>{{textAudioMatch.audioSnippet.endTime}}</td>
+      <td>{{textAudioMatch.textSnippet.startPos}}</td>
+      <td>{{textAudioMatch.textSnippet.endPos}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>

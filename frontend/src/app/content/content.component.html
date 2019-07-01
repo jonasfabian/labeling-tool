@@ -1,63 +1,76 @@
-<mat-card class="top-card">
-  <app-audio-player (uploadSuccess)="openSnackBar($event)" [audioFile]="audio"
-                    (snippet)="retrieveSnippet($event)"></app-audio-player>
-</mat-card>
-<mat-card class="card" *ngIf="(snip.startTime !== -1) && (snip.endTime !== -1)">
-  <strong>Marked Region</strong>
-  <div>
-    <span>Start: {{snip.startTime}}</span>
-  </div>
-  <div>
-    <span>End: {{snip.endTime}}</span>
-  </div>
-</mat-card>
-<mat-grid-list cols="2" rowHeight="100px">
-  <mat-grid-tile>
-    <mat-card class="card" style="width: 100%;">
-      <span>Upload Audio</span>
-      <input hidden #AudioInput id="uploadAudio" type="file" accept=".mp3"
-             (change)="onFileChanged(AudioInput.files[0])">
-      <label style="float: right;" for="uploadAudio">
-        <mat-icon>cloud_upload</mat-icon>
-      </label>
+<mat-tab-group [selectedIndex]="selectTabIndex" mat-stretch-tabs style="margin: 0 15px 0 15px">
+  <mat-tab (click)="selectTabIndex = 0;" label="Select Text">
+    <mat-card class="top-card">
+      <app-audio-player (uploadSuccess)="openSnackBar($event)" [audioFile]="audio"
+                        (snippet)="retrieveSnippet($event)"></app-audio-player>
     </mat-card>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <mat-card class="card" style="width: 100%;">
-      <span>Upload Text</span>
-      <input hidden id="uploadText" type="file" accept=".txt" (change)="fileChanged($event)">
-      <label style="float: right;" for="uploadText">
-        <mat-icon>cloud_upload</mat-icon>
-      </label>
-    </mat-card>
-  </mat-grid-tile>
-</mat-grid-list>
-<mat-grid-list *ngIf="text != ''" cols="2">
-  <mat-grid-tile>
-    <mat-card style="width: 100%; height: calc(100% - 50px); overflow-y: scroll;" class="card">
-      <h2>Imported Text</h2>
-      <div (mouseup)="displayHighlightedText()">
-        <span style="white-space: pre-wrap;">{{text}}</span>
-      </div>
-    </mat-card>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <mat-card style="width: 100%;" class="card">
-      <div>
-        <h2>Selected Text</h2>
-        <mat-button-toggle *ngIf="highlightedText != ''" (click)="submitText()">Submit</mat-button-toggle>
-      </div>
-      <div *ngIf="highlightedText != ''">
-        <span style="white-space: pre-wrap;">{{highlightedText}}</span>
-      </div>
-    </mat-card>
-  </mat-grid-tile>
-</mat-grid-list>
-<mat-card class="card">
-  <div>
-    <span>Starting position: {{this.highlightedTextStartPos}}</span>
-  </div>
-  <div>
-    <span>Ending position: {{this.highlightedTextEndPos}}</span>
-  </div>
-</mat-card>
+    <div style="margin-top: 15px;">
+      <mat-card class="card" *ngIf="(snip.startTime !== -1) && (snip.endTime !== -1)">
+        <strong>Marked Region</strong>
+        <div>
+          <span>Start: {{snip.startTime}}</span>
+        </div>
+        <div>
+          <span>End: {{snip.endTime}}</span>
+        </div>
+      </mat-card>
+      <mat-grid-list cols="2" rowHeight="100px">
+        <mat-grid-tile>
+          <mat-card class="card" style="width: 100%;">
+            <span>Upload Audio</span>
+            <input hidden #AudioInput id="uploadAudio" type="file" accept=".mp3"
+                   (change)="onFileChanged(AudioInput.files[0])">
+            <label style="float: right; cursor: pointer;" for="uploadAudio" title="Upload Audio">
+              <mat-icon>cloud_upload</mat-icon>
+            </label>
+          </mat-card>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-card class="card" style="width: 100%;">
+            <span>Upload Text</span>
+            <input hidden id="uploadText" type="file" accept=".txt" (change)="fileChanged($event)">
+            <label style="float: right; cursor: pointer;" for="uploadText" title="Upload Text">
+              <mat-icon>cloud_upload</mat-icon>
+            </label>
+          </mat-card>
+        </mat-grid-tile>
+      </mat-grid-list>
+      <mat-grid-list *ngIf="text != ''" cols="2">
+        <mat-grid-tile>
+          <mat-card style="width: 100%; height: calc(100% - 50px); overflow-y: scroll;" class="card">
+            <h2>Imported Text</h2>
+            <div (mouseup)="displayHighlightedText()">
+              <span style="white-space: pre-wrap;">{{text}}</span>
+            </div>
+          </mat-card>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-card style="width: 100%;" class="card">
+            <div>
+              <h2>Selected Text</h2>
+              <mat-button-toggle *ngIf="highlightedText != ''" (click)="submitText()"
+                                 style="position: absolute; right: 15px; top: 15px;">Submit
+              </mat-button-toggle>
+            </div>
+            <div *ngIf="highlightedText != ''">
+              <span style="white-space: pre-wrap;">{{highlightedText}}</span>
+            </div>
+          </mat-card>
+        </mat-grid-tile>
+      </mat-grid-list>
+      <mat-card class="card">
+        <div>
+          <span>Starting position: {{this.highlightedTextStartPos}}</span>
+        </div>
+        <div>
+          <span>Ending position: {{this.highlightedTextEndPos}}</span>
+        </div>
+      </mat-card>
+    </div>
+  </mat-tab>
+  <mat-tab (click)="selectTabIndex = 1" label="Match Overview">
+    <div style="margin-top: 15px;">
+      <app-match-overview [textAudioMatch]="textAudioMatch"></app-match-overview>
+    </div>
+  </mat-tab>
+</mat-tab-group>

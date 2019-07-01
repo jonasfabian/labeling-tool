@@ -8,6 +8,7 @@ import {NavigationMenuComponent} from './navigation-menu/navigation-menu.compone
 import {ContentComponent, SnackBarComponent} from './content/content.component';
 import {MaterialModule} from './models/material.module';
 import { AudioPlayerComponent } from './audio-player/audio-player.component';
+import { MatchOverviewComponent } from './match-overview/match-overview.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { AudioPlayerComponent } from './audio-player/audio-player.component';
     NavigationMenuComponent,
     ContentComponent,
     AudioPlayerComponent,
-    SnackBarComponent
+    SnackBarComponent,
+    MatchOverviewComponent
   ],
   imports: [
     BrowserModule,

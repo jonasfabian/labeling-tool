@@ -28,6 +28,8 @@ export class ContentComponent implements OnInit {
   highlightedTextEndPos = 0;
   textAudioMatch = new TextAudioMatch(new AudioSnippet(0, 0), new TextSnippet(0, 0));
 
+  selectTabIndex = 0;
+
   ngOnInit() {
   }
 
@@ -66,6 +68,7 @@ export class ContentComponent implements OnInit {
   submitText(): void {
     this.textAudioMatch.audioSnippet = this.snip;
     this.textAudioMatch.textSnippet = new TextSnippet(this.highlightedTextStartPos, this.highlightedTextEndPos);
+    this.selectTabIndex = 1;
     // TODO sent post request to future API
   }
 
