@@ -2,6 +2,7 @@ import com.typesafe.config.Config
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
 import jooq.db.Tables.MATCH
+import jooq.db.tables.records.MatchRecord
 
 class LabelingToolService(config: Config) {
 
@@ -25,4 +26,19 @@ class LabelingToolService(config: Config) {
   def matches: Array[Match] = withDslContext(dslContext => {
     dslContext.selectFrom(MATCH).fetchArray().map(m => Match(m.getMatchid, m.getAudiostart, m.getAudioend, m.getTextstart, m.getTextend))
   })
+
+  def newMatch(m: Match): Unit = withDslContext(dslContext => {
+    val rec = matchToRecord(m)
+    dslContext.executeInsert(rec)
+    ()
+  })
+
+  def matchToRecord(m: Match): MatchRecord = {
+    val rec = new MatchRecord()
+    rec.setAudiostart(m.audioStart)
+    rec.setAudioend(m.audioEnd)
+    rec.setTextstart(m.textStart)
+    rec.setTextend(m.textEnd)
+    rec
+  }
 }

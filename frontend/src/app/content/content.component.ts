@@ -3,6 +3,8 @@ import {AudioSnippet} from '../models/audioSnippet';
 import {TextAudioMatch} from '../models/textAudioMatch';
 import {TextSnippet} from '../models/textSnippet';
 import {MatSnackBar} from '@angular/material';
+import {ApiService} from "../services/api.service";
+import {Match} from "../models/match";
 
 @Component({
   selector: 'app-content',
@@ -12,7 +14,8 @@ import {MatSnackBar} from '@angular/material';
 export class ContentComponent implements OnInit {
 
   constructor(
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private apiService: ApiService
   ) {
   }
 
@@ -69,6 +72,9 @@ export class ContentComponent implements OnInit {
     this.textAudioMatch.audioSnippet = this.snip;
     this.textAudioMatch.textSnippet = new TextSnippet(this.highlightedTextStartPos, this.highlightedTextEndPos);
     this.selectTabIndex = 1;
+    this.apiService.createMatch(new Match(0, this.snip.startTime, this.snip.endTime, this.highlightedTextStartPos, this.highlightedTextEndPos)).subscribe(_ => {
+      this.apiService.getMatches();
+    });
     // TODO sent post request to future API
   }
 

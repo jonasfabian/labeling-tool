@@ -20,4 +20,8 @@ export class ApiService {
     return this.http.get<Array<Match>>(this.url + 'getMatch');
   }
 
+  createMatch(match: Match): Observable<any> {
+    return this.http.post(this.url + 'createMatch', match);
+  }
+
 }
