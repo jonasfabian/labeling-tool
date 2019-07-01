@@ -7,11 +7,11 @@
       <th>Text Starting Position</th>
       <th>Text Starting Position</th>
     </tr>
-    <tr>
-      <td>{{textAudioMatch.audioSnippet.startTime}}</td>
-      <td>{{textAudioMatch.audioSnippet.endTime}}</td>
-      <td>{{textAudioMatch.textSnippet.startPos}}</td>
-      <td>{{textAudioMatch.textSnippet.endPos}}</td>
+    <tr *ngFor="let match of matchesArray">
+      <td>{{match.audioStart}}</td>
+      <td>{{match.audioEnd}}</td>
+      <td>{{match.textStart}}</td>
+      <td>{{match.textEnd}}</td>
     </tr>
     </tbody>
   </table>

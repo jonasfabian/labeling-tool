@@ -9,6 +9,7 @@ import {ContentComponent, SnackBarComponent} from './content/content.component';
 import {MaterialModule} from './models/material.module';
 import { AudioPlayerComponent } from './audio-player/audio-player.component';
 import { MatchOverviewComponent } from './match-overview/match-overview.component';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -24,8 +25,9 @@ import { MatchOverviewComponent } from './match-overview/match-overview.componen
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [HttpClient],
   bootstrap: [AppComponent],
   entryComponents: [SnackBarComponent]
 })
