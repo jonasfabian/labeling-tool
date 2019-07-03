@@ -35,14 +35,23 @@ object WebServer extends App with CorsSupport {
 class LabelingToolRestApi(service: LabelingToolService) extends Directives with ErrorAccumulatingCirceSupport {
   val route = pathPrefix("api") {
     pathPrefix("match") {
-      getMatch ~ createMatch ~ getXML
+      getMatch ~ createMatch ~  getTextAudioIndex ~ setXMLData
     }
   }
 
-  @ApiOperation(value = "getXML", httpMethod = "GET", notes = "returns a xml")
-  @ApiResponses(Array(new ApiResponse(code = 200, response = classOf[Match], message = "OK")))
+  @ApiOperation(value = "getTextAudioIndex", httpMethod = "GET", notes = "returns an Array of TextAudioIndex")
+  @ApiResponses(Array(new ApiResponse(code = 200, response = classOf[TextAudioIndex], message = "OK")))
+  @Path("textAudioIndex")
+  def getTextAudioIndex = path("getTextAudioIndex") {
+    get {
+      complete(service.textAudioIndex)
+    }
+  }
+
+  @ApiOperation(value = "setXMLData", httpMethod = "GET", notes = "")
+  @ApiResponses(Array(new ApiResponse(code = 200, response = classOf[TextAudioIndex], message = "OK")))
   @Path("xml")
-  def getXML = path("getXML") {
+  def setXMLData = path("setXMLData") {
     get {
       complete(service.extractFromXml())
     }
