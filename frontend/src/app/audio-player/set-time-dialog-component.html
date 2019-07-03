@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Select the start and end time of the region</h1>
+<div mat-dialog-content>
+  <p>Start time</p>
+  <mat-form-field>
+    <input matInput #startTimeInput (input)="readStartTime($event)">
+  </mat-form-field>
+  <p>End time</p>
+  <mat-form-field>
+    <input matInput #endTimeInput (input)="readEndTime($event)">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onClick()" cdkFocusInitial>Submit</button>
+</div>

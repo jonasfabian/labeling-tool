@@ -1,7 +1,7 @@
 import {
   Component,
   ElementRef,
-  EventEmitter,
+  EventEmitter, Inject,
   Input,
   OnChanges,
   OnInit,
@@ -14,6 +14,7 @@ import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js
 import CursorPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 import {AudioSnippet} from '../models/audioSnippet';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 
 @Component({
   selector: 'app-audio-player',
@@ -22,7 +23,9 @@ import {AudioSnippet} from '../models/audioSnippet';
 })
 export class AudioPlayerComponent implements OnInit, OnChanges {
 
-  constructor() {
+  constructor(
+    public dialog: MatDialog
+  ) {
   }
 
   waveSurfer: WaveSurfer = null;
@@ -134,5 +137,42 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   seekInAudio(seconds: any) {
     const totalTime = this.waveSurfer.getDuration();
     this.waveSurfer.seekTo(seconds / totalTime);
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(SetTimeDialogComponent, {
+      width: '500px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+}
+
+@Component({
+  selector: 'app-audio-player-set-time-dialog-component',
+  templateUrl: 'set-time-dialog-component.html',
+})
+export class SetTimeDialogComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<SetTimeDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: AudioSnippet) {
+  }
+
+  @ViewChild('startTimeInput', {static: false}) startTimeInput: ElementRef;
+  @ViewChild('endTimeInput', {static: false}) endTimeInput: ElementRef;
+
+  readStartTime(input: any): void {
+    console.log(this.startTimeInput.nativeElement.value);
+  }
+
+  readEndTime(input: any): void {
+    console.log(this.endTimeInput.nativeElement.value);
+  }
+
+  onClick(): void {
+    this.dialogRef.close();
   }
 }
