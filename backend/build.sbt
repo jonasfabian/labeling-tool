@@ -26,5 +26,6 @@ libraryDependencies ++= Seq (
   "org.jooq" % "jooq-codegen" % "3.11.7",
   "org.jooq" % "jooq-scala_2.12" % "3.11.7",
 
-  "org.mariadb.jdbc" % "mariadb-java-client" % "2.3.0"
+  "org.mariadb.jdbc" % "mariadb-java-client" % "2.3.0",
+  "org.scala-lang.modules" %% "scala-xml" % "1.2.0"
 )

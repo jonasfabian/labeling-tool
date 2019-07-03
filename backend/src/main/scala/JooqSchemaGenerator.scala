@@ -1,11 +1,26 @@
 import org.flywaydb.core.Flyway
 import org.jooq.codegen.GenerationTool
 import org.jooq.meta.jaxb._
+import scala.xml.XML
 
 /**
   * JooqSchemaGenerator util
   */
+
+case class TextAudioIndex(textStartPos: String, textEndPos: String, audioStartPos: String, audioEndPos: String, speakerKey: String) {
+}
+
 object JooqSchemaGenerator extends App {
+
+  extractFromXml()
+
+  def extractFromXml(): Unit = {
+    val file = XML.loadFile("/home/jonas/Documents/DeutschAndreaErzaehlt/36/transcript_indexes.xml")
+    (file \ "TextAudioIndex").foreach(m => {
+      val textAudioIndex = new TextAudioIndex((m \ "TextStartPos").text, (m \ "TextEndPos").text, (m \ "AudioStartPos").text, (m \ "AudioEndPos").text, (m \ "SpeakerKey").text)
+      println(textAudioIndex)
+    })
+  }
 
   generate()
 
