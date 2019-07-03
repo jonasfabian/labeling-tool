@@ -1,24 +1,35 @@
-<div *ngIf="textAudioMatch != undefined">
-  <table>
-    <tbody>
-    <tr>
-      <th>ID</th>
-      <th>Sampling Rate</th>
-      <th>Audio Starting Position</th>
-      <th>Audio Starting Position</th>
-      <th>Text Starting Position</th>
-      <th>Text Starting Position</th>
-      <th>Speaker Key</th>
-    </tr>
-    <tr *ngFor="let t of textAudioIndexArray">
-      <td>{{t.id}}</td>
-      <td>{{t.samplingRate}}</td>
-      <td>{{t.textStartPos}}</td>
-      <td>{{t.textEndPos}}</td>
-      <td>{{t.audioStartPos}}</td>
-      <td>{{t.audioEndPos}}</td>
-      <td>{{t.speakerKey}}</td>
-    </tr>
-    </tbody>
+<div>
+  <table mat-table [dataSource]="dataSource" style="width: 100%;">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let element">{{element.id}}</td>
+    </ng-container>
+    <ng-container matColumnDef="samplingRate">
+      <th mat-header-cell *matHeaderCellDef>Sampling Rate</th>
+      <td mat-cell *matCellDef="let element">{{element.samplingRate}}</td>
+    </ng-container>
+    <ng-container matColumnDef="textStartPos">
+      <th mat-header-cell *matHeaderCellDef>Text Starting Position</th>
+      <td mat-cell *matCellDef="let element">{{element.textStartPos}}</td>
+    </ng-container>
+    <ng-container matColumnDef="textEndPos">
+      <th mat-header-cell *matHeaderCellDef>Text Ending Position</th>
+      <td mat-cell *matCellDef="let element">{{element.textEndPos}}</td>
+    </ng-container>
+    <ng-container matColumnDef="audioStartPos">
+      <th mat-header-cell *matHeaderCellDef>Audio Starting Position</th>
+      <td mat-cell *matCellDef="let element">{{element.audioStartPos}}</td>
+    </ng-container>
+    <ng-container matColumnDef="audioEndPos">
+      <th mat-header-cell *matHeaderCellDef>Audio Ending Position</th>
+      <td mat-cell *matCellDef="let element">{{element.audioEndPos}}</td>
+    </ng-container>
+    <ng-container matColumnDef="speakerKey">
+      <th mat-header-cell *matHeaderCellDef>Speaker Key</th>
+      <td mat-cell *matCellDef="let element">{{element.speakerKey}}</td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+  <mat-paginator #paginator [pageSizeOptions]="[5, 10, 100]" showFirstLastButtons></mat-paginator>
 </div>

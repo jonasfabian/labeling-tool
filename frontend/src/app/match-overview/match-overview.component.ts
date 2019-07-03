@@ -1,7 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {TextAudioMatch} from '../models/textAudioMatch';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ApiService} from '../services/api.service';
 import {TextAudioIndex} from '../models/textAudioIndex';
+import {MatPaginator, MatTableDataSource} from '@angular/material';
 
 @Component({
   selector: 'app-match-overview',
@@ -15,12 +15,17 @@ export class MatchOverviewComponent implements OnInit {
   ) {
   }
 
-  @Input() textAudioMatch: TextAudioMatch;
   textAudioIndexArray: Array<TextAudioIndex> = [];
+  displayedColumns = ['id', 'samplingRate', 'textStartPos', 'textEndPos', 'audioStartPos', 'audioEndPos', 'speakerKey'];
+  dataSource = new MatTableDataSource<TextAudioIndex>();
+
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
   ngOnInit() {
     this.apiService.getTextAudioIndex().subscribe(i => {
       this.textAudioIndexArray = i;
+      this.dataSource = new MatTableDataSource<TextAudioIndex>(i);
+      this.dataSource.paginator = this.paginator;
     });
   }
 
