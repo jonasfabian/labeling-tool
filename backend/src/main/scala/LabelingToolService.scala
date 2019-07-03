@@ -2,7 +2,9 @@ import com.typesafe.config.Config
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
 import jooq.db.Tables.MATCH
-import jooq.db.tables.records.MatchRecord
+import jooq.db.tables.records.{MatchRecord, TextaudioindexRecord}
+
+import scala.xml.XML
 
 class LabelingToolService(config: Config) {
 
@@ -23,6 +25,20 @@ class LabelingToolService(config: Config) {
     finally ctx.close()
   }
 
+  def extractFromXml(): Unit = {
+    val file = XML.loadFile("/home/jonas/Documents/DeutschAndreaErzaehlt/36/transcript_indexes.xml")
+    (file \ "TextAudioIndex").foreach(m => {
+      val textAudioIndex = new TextAudioIndex((m \ "TextStartPos").text.toInt, (m \ "TextEndPos").text.toInt, (m \ "AudioStartPos").text.toInt, (m \ "AudioEndPos").text.toInt, (m \ "SpeakerKey").text.toInt)
+      newTextAudioIndex(textAudioIndex)
+    })
+  }
+
+  def newTextAudioIndex(t: TextAudioIndex): Unit = withDslContext(dslContext => {
+    val rec = textAudioIndexToRecord(t)
+    dslContext.executeInsert(rec)
+    ()
+  })
+
   def matches: Array[Match] = withDslContext(dslContext => {
     dslContext.selectFrom(MATCH).fetchArray().map(m => Match(m.getMatchid, m.getAudiostart, m.getAudioend, m.getTextstart, m.getTextend))
   })
@@ -39,6 +55,16 @@ class LabelingToolService(config: Config) {
     rec.setAudioend(m.audioEnd)
     rec.setTextstart(m.textStart)
     rec.setTextend(m.textEnd)
+    rec
+  }
+
+  def textAudioIndexToRecord(m: TextAudioIndex): TextaudioindexRecord = {
+    val rec = new TextaudioindexRecord()
+    rec.setTextstartpos(m.textStartPos)
+    rec.setTextendpos(m.textEndPos)
+    rec.setAudiostartpos(m.audioStartPos)
+    rec.setAudioendpos(m.audioEndPos)
+    rec.setSpeakerkey(m.speakerKey)
     rec
   }
 }

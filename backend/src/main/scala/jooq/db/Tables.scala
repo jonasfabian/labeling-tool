@@ -10,4 +10,6 @@ object Tables {
   val FLYWAY_SCHEMA_HISTORY = jooq.db.tables.FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY
 
   val MATCH = jooq.db.tables.Match.MATCH
+
+  val TEXTAUDIOINDEX = jooq.db.tables.Textaudioindex.TEXTAUDIOINDEX
 }

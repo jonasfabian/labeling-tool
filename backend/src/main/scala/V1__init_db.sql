@@ -11,3 +11,13 @@ CREATE TABLE IF NOT EXISTS `match`
   `textEnd` Double NOT NULL,
   PRIMARY KEY (`matchId`)
 ) ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `textAudioIndex` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `textStartPos` INT,
+    `textEndPos` INT,
+    `audioStartPos` INT,
+    `audioEndPos` INT,
+    `speakerKey` INT,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB;

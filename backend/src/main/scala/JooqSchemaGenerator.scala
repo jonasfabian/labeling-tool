@@ -7,20 +7,10 @@ import scala.xml.XML
   * JooqSchemaGenerator util
   */
 
-case class TextAudioIndex(textStartPos: String, textEndPos: String, audioStartPos: String, audioEndPos: String, speakerKey: String) {
+case class TextAudioIndex(textStartPos: Int, textEndPos: Int, audioStartPos: Int, audioEndPos: Int, speakerKey: Int) {
 }
 
 object JooqSchemaGenerator extends App {
-
-  extractFromXml()
-
-  def extractFromXml(): Unit = {
-    val file = XML.loadFile("/home/jonas/Documents/DeutschAndreaErzaehlt/36/transcript_indexes.xml")
-    (file \ "TextAudioIndex").foreach(m => {
-      val textAudioIndex = new TextAudioIndex((m \ "TextStartPos").text, (m \ "TextEndPos").text, (m \ "AudioStartPos").text, (m \ "AudioEndPos").text, (m \ "SpeakerKey").text)
-      println(textAudioIndex)
-    })
-  }
 
   generate()
 

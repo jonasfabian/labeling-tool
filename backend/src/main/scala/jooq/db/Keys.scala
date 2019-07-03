@@ -8,8 +8,10 @@ import java.lang.Integer
 
 import jooq.db.tables.FlywaySchemaHistory
 import jooq.db.tables.Match
+import jooq.db.tables.Textaudioindex
 import jooq.db.tables.records.FlywaySchemaHistoryRecord
 import jooq.db.tables.records.MatchRecord
+import jooq.db.tables.records.TextaudioindexRecord
 
 import org.jooq.Identity
 import org.jooq.UniqueKey
@@ -23,6 +25,7 @@ object Keys {
   // -------------------------------------------------------------------------
 
   val IDENTITY_MATCH = Identities0.IDENTITY_MATCH
+  val IDENTITY_TEXTAUDIOINDEX = Identities0.IDENTITY_TEXTAUDIOINDEX
 
   // -------------------------------------------------------------------------
   // UNIQUE and PRIMARY KEY definitions
@@ -30,6 +33,7 @@ object Keys {
 
   val KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY = UniqueKeys0.KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY
   val KEY_MATCH_PRIMARY = UniqueKeys0.KEY_MATCH_PRIMARY
+  val KEY_TEXTAUDIOINDEX_PRIMARY = UniqueKeys0.KEY_TEXTAUDIOINDEX_PRIMARY
 
   // -------------------------------------------------------------------------
   // FOREIGN KEY definitions
@@ -42,10 +46,12 @@ object Keys {
 
   private object Identities0 {
     val IDENTITY_MATCH : Identity[MatchRecord, Integer] = Internal.createIdentity(Match.MATCH, Match.MATCH.MATCHID)
+    val IDENTITY_TEXTAUDIOINDEX : Identity[TextaudioindexRecord, Integer] = Internal.createIdentity(Textaudioindex.TEXTAUDIOINDEX, Textaudioindex.TEXTAUDIOINDEX.ID)
   }
 
   private object UniqueKeys0 {
     val KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY : UniqueKey[FlywaySchemaHistoryRecord] = Internal.createUniqueKey(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, "KEY_flyway_schema_history_PRIMARY", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK)
     val KEY_MATCH_PRIMARY : UniqueKey[MatchRecord] = Internal.createUniqueKey(Match.MATCH, "KEY_match_PRIMARY", Match.MATCH.MATCHID)
+    val KEY_TEXTAUDIOINDEX_PRIMARY : UniqueKey[TextaudioindexRecord] = Internal.createUniqueKey(Textaudioindex.TEXTAUDIOINDEX, "KEY_textAudioIndex_PRIMARY", Textaudioindex.TEXTAUDIOINDEX.ID)
   }
 }
