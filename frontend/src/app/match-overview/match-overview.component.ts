@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {TextAudioMatch} from '../models/textAudioMatch';
 import {ApiService} from '../services/api.service';
-import {Match} from '../models/match';
+import {TextAudioIndex} from '../models/textAudioIndex';
 
 @Component({
   selector: 'app-match-overview',
@@ -12,14 +12,15 @@ export class MatchOverviewComponent implements OnInit {
 
   constructor(
     private apiService: ApiService
-  ) { }
+  ) {
+  }
 
   @Input() textAudioMatch: TextAudioMatch;
-  matchesArray: Array<Match> = [];
+  textAudioIndexArray: Array<TextAudioIndex> = [];
 
   ngOnInit() {
-    this.apiService.getMatches().subscribe(m => {
-      this.matchesArray = m;
+    this.apiService.getTextAudioIndex().subscribe(i => {
+      this.textAudioIndexArray = i;
     });
   }
 

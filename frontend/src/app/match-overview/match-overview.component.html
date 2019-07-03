@@ -2,16 +2,22 @@
   <table>
     <tbody>
     <tr>
+      <th>ID</th>
+      <th>Sampling Rate</th>
       <th>Audio Starting Position</th>
       <th>Audio Starting Position</th>
       <th>Text Starting Position</th>
       <th>Text Starting Position</th>
+      <th>Speaker Key</th>
     </tr>
-    <tr *ngFor="let match of matchesArray">
-      <td>{{match.audioStart}}</td>
-      <td>{{match.audioEnd}}</td>
-      <td>{{match.textStart}}</td>
-      <td>{{match.textEnd}}</td>
+    <tr *ngFor="let t of textAudioIndexArray">
+      <td>{{t.id}}</td>
+      <td>{{t.samplingRate}}</td>
+      <td>{{t.textStartPos}}</td>
+      <td>{{t.textEndPos}}</td>
+      <td>{{t.audioStartPos}}</td>
+      <td>{{t.audioEndPos}}</td>
+      <td>{{t.speakerKey}}</td>
     </tr>
     </tbody>
   </table>
