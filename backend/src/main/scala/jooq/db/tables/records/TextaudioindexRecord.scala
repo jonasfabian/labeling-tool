@@ -10,12 +10,12 @@ import jooq.db.tables.Textaudioindex
 
 import org.jooq.Field
 import org.jooq.Record1
-import org.jooq.Record6
-import org.jooq.Row6
+import org.jooq.Record7
+import org.jooq.Row7
 import org.jooq.impl.UpdatableRecordImpl
 
 
-class TextaudioindexRecord extends UpdatableRecordImpl[TextaudioindexRecord](Textaudioindex.TEXTAUDIOINDEX) with Record6[Integer, Integer, Integer, Integer, Integer, Integer] {
+class TextaudioindexRecord extends UpdatableRecordImpl[TextaudioindexRecord](Textaudioindex.TEXTAUDIOINDEX) with Record7[Integer, Integer, Integer, Integer, Integer, Integer, Integer] {
 
   def setId(value : Integer) : Unit = {
     set(0, value)
@@ -26,48 +26,57 @@ class TextaudioindexRecord extends UpdatableRecordImpl[TextaudioindexRecord](Tex
     if (r == null) null else r.asInstanceOf[Integer]
   }
 
-  def setTextstartpos(value : Integer) : Unit = {
+  def setSamplingrate(value : Integer) : Unit = {
     set(1, value)
   }
 
-  def getTextstartpos : Integer = {
+  def getSamplingrate : Integer = {
     val r = get(1)
     if (r == null) null else r.asInstanceOf[Integer]
   }
 
-  def setTextendpos(value : Integer) : Unit = {
+  def setTextstartpos(value : Integer) : Unit = {
     set(2, value)
   }
 
-  def getTextendpos : Integer = {
+  def getTextstartpos : Integer = {
     val r = get(2)
     if (r == null) null else r.asInstanceOf[Integer]
   }
 
-  def setAudiostartpos(value : Integer) : Unit = {
+  def setTextendpos(value : Integer) : Unit = {
     set(3, value)
   }
 
-  def getAudiostartpos : Integer = {
+  def getTextendpos : Integer = {
     val r = get(3)
     if (r == null) null else r.asInstanceOf[Integer]
   }
 
-  def setAudioendpos(value : Integer) : Unit = {
+  def setAudiostartpos(value : Integer) : Unit = {
     set(4, value)
   }
 
-  def getAudioendpos : Integer = {
+  def getAudiostartpos : Integer = {
     val r = get(4)
     if (r == null) null else r.asInstanceOf[Integer]
   }
 
-  def setSpeakerkey(value : Integer) : Unit = {
+  def setAudioendpos(value : Integer) : Unit = {
     set(5, value)
   }
 
-  def getSpeakerkey : Integer = {
+  def getAudioendpos : Integer = {
     val r = get(5)
+    if (r == null) null else r.asInstanceOf[Integer]
+  }
+
+  def setSpeakerkey(value : Integer) : Unit = {
+    set(6, value)
+  }
+
+  def getSpeakerkey : Integer = {
+    val r = get(6)
     if (r == null) null else r.asInstanceOf[Integer]
   }
 
@@ -79,34 +88,37 @@ class TextaudioindexRecord extends UpdatableRecordImpl[TextaudioindexRecord](Tex
   }
 
   // -------------------------------------------------------------------------
-  // Record6 type implementation
+  // Record7 type implementation
   // -------------------------------------------------------------------------
 
-  override def fieldsRow : Row6[Integer, Integer, Integer, Integer, Integer, Integer] = {
-    super.fieldsRow.asInstanceOf[ Row6[Integer, Integer, Integer, Integer, Integer, Integer] ]
+  override def fieldsRow : Row7[Integer, Integer, Integer, Integer, Integer, Integer, Integer] = {
+    super.fieldsRow.asInstanceOf[ Row7[Integer, Integer, Integer, Integer, Integer, Integer, Integer] ]
   }
 
-  override def valuesRow : Row6[Integer, Integer, Integer, Integer, Integer, Integer] = {
-    super.valuesRow.asInstanceOf[ Row6[Integer, Integer, Integer, Integer, Integer, Integer] ]
+  override def valuesRow : Row7[Integer, Integer, Integer, Integer, Integer, Integer, Integer] = {
+    super.valuesRow.asInstanceOf[ Row7[Integer, Integer, Integer, Integer, Integer, Integer, Integer] ]
   }
   override def field1 : Field[Integer] = Textaudioindex.TEXTAUDIOINDEX.ID
-  override def field2 : Field[Integer] = Textaudioindex.TEXTAUDIOINDEX.TEXTSTARTPOS
-  override def field3 : Field[Integer] = Textaudioindex.TEXTAUDIOINDEX.TEXTENDPOS
-  override def field4 : Field[Integer] = Textaudioindex.TEXTAUDIOINDEX.AUDIOSTARTPOS
-  override def field5 : Field[Integer] = Textaudioindex.TEXTAUDIOINDEX.AUDIOENDPOS
-  override def field6 : Field[Integer] = Textaudioindex.TEXTAUDIOINDEX.SPEAKERKEY
+  override def field2 : Field[Integer] = Textaudioindex.TEXTAUDIOINDEX.SAMPLINGRATE
+  override def field3 : Field[Integer] = Textaudioindex.TEXTAUDIOINDEX.TEXTSTARTPOS
+  override def field4 : Field[Integer] = Textaudioindex.TEXTAUDIOINDEX.TEXTENDPOS
+  override def field5 : Field[Integer] = Textaudioindex.TEXTAUDIOINDEX.AUDIOSTARTPOS
+  override def field6 : Field[Integer] = Textaudioindex.TEXTAUDIOINDEX.AUDIOENDPOS
+  override def field7 : Field[Integer] = Textaudioindex.TEXTAUDIOINDEX.SPEAKERKEY
   override def component1 : Integer = getId
-  override def component2 : Integer = getTextstartpos
-  override def component3 : Integer = getTextendpos
-  override def component4 : Integer = getAudiostartpos
-  override def component5 : Integer = getAudioendpos
-  override def component6 : Integer = getSpeakerkey
+  override def component2 : Integer = getSamplingrate
+  override def component3 : Integer = getTextstartpos
+  override def component4 : Integer = getTextendpos
+  override def component5 : Integer = getAudiostartpos
+  override def component6 : Integer = getAudioendpos
+  override def component7 : Integer = getSpeakerkey
   override def value1 : Integer = getId
-  override def value2 : Integer = getTextstartpos
-  override def value3 : Integer = getTextendpos
-  override def value4 : Integer = getAudiostartpos
-  override def value5 : Integer = getAudioendpos
-  override def value6 : Integer = getSpeakerkey
+  override def value2 : Integer = getSamplingrate
+  override def value3 : Integer = getTextstartpos
+  override def value4 : Integer = getTextendpos
+  override def value5 : Integer = getAudiostartpos
+  override def value6 : Integer = getAudioendpos
+  override def value7 : Integer = getSpeakerkey
 
   override def value1(value : Integer) : TextaudioindexRecord = {
     setId(value)
@@ -114,48 +126,55 @@ class TextaudioindexRecord extends UpdatableRecordImpl[TextaudioindexRecord](Tex
   }
 
   override def value2(value : Integer) : TextaudioindexRecord = {
-    setTextstartpos(value)
+    setSamplingrate(value)
     this
   }
 
   override def value3(value : Integer) : TextaudioindexRecord = {
-    setTextendpos(value)
+    setTextstartpos(value)
     this
   }
 
   override def value4(value : Integer) : TextaudioindexRecord = {
-    setAudiostartpos(value)
+    setTextendpos(value)
     this
   }
 
   override def value5(value : Integer) : TextaudioindexRecord = {
-    setAudioendpos(value)
+    setAudiostartpos(value)
     this
   }
 
   override def value6(value : Integer) : TextaudioindexRecord = {
+    setAudioendpos(value)
+    this
+  }
+
+  override def value7(value : Integer) : TextaudioindexRecord = {
     setSpeakerkey(value)
     this
   }
 
-  override def values(value1 : Integer, value2 : Integer, value3 : Integer, value4 : Integer, value5 : Integer, value6 : Integer) : TextaudioindexRecord = {
+  override def values(value1 : Integer, value2 : Integer, value3 : Integer, value4 : Integer, value5 : Integer, value6 : Integer, value7 : Integer) : TextaudioindexRecord = {
     this.value1(value1)
     this.value2(value2)
     this.value3(value3)
     this.value4(value4)
     this.value5(value5)
     this.value6(value6)
+    this.value7(value7)
     this
   }
 
-  def this(id : Integer, textstartpos : Integer, textendpos : Integer, audiostartpos : Integer, audioendpos : Integer, speakerkey : Integer) = {
+  def this(id : Integer, samplingrate : Integer, textstartpos : Integer, textendpos : Integer, audiostartpos : Integer, audioendpos : Integer, speakerkey : Integer) = {
     this()
 
     set(0, id)
-    set(1, textstartpos)
-    set(2, textendpos)
-    set(3, audiostartpos)
-    set(4, audioendpos)
-    set(5, speakerkey)
+    set(1, samplingrate)
+    set(2, textstartpos)
+    set(3, textendpos)
+    set(4, audiostartpos)
+    set(5, audioendpos)
+    set(6, speakerkey)
   }
 }

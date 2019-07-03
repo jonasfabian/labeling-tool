@@ -32,6 +32,10 @@ class TextaudioindexDao(configuration : Configuration) extends DAOImpl[Textaudio
     fetchOne(Textaudioindex.TEXTAUDIOINDEX.ID, value)
   }
 
+  def fetchBySamplingrate(values : Integer*) : List[jooq.db.tables.pojos.Textaudioindex] = {
+    fetch(Textaudioindex.TEXTAUDIOINDEX.SAMPLINGRATE, values:_*)
+  }
+
   def fetchByTextstartpos(values : Integer*) : List[jooq.db.tables.pojos.Textaudioindex] = {
     fetch(Textaudioindex.TEXTAUDIOINDEX.TEXTSTARTPOS, values:_*)
   }

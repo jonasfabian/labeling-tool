@@ -11,6 +11,7 @@ import java.lang.StringBuilder
 
 case class Textaudioindex(
     id : Integer
+  , samplingrate : Integer
   , textstartpos : Integer
   , textendpos : Integer
   , audiostartpos : Integer
@@ -21,6 +22,7 @@ case class Textaudioindex(
   def this (value : Textaudioindex) = {
     this(
         value.id
+      , value.samplingrate
       , value.textstartpos
       , value.textendpos
       , value.audiostartpos
@@ -31,6 +33,10 @@ case class Textaudioindex(
 
   def getId : Integer = {
     this.id
+  }
+
+  def getSamplingrate : Integer = {
+    this.samplingrate
   }
 
   def getTextstartpos : Integer = {
@@ -57,6 +63,7 @@ case class Textaudioindex(
     val sb = new StringBuilder("Textaudioindex (")
 
     sb.append(id)
+    sb.append(", ").append(samplingrate)
     sb.append(", ").append(textstartpos)
     sb.append(", ").append(textendpos)
     sb.append(", ").append(audiostartpos)

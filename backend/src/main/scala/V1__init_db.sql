@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS `match`
 
 CREATE TABLE IF NOT EXISTS `textAudioIndex` (
     `id` INT NOT NULL AUTO_INCREMENT,
+    `samplingRate` INT,
     `textStartPos` INT,
     `textEndPos` INT,
     `audioStartPos` INT,

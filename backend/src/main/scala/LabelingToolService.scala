@@ -27,8 +27,9 @@ class LabelingToolService(config: Config) {
 
   def extractFromXml(): Unit = {
     val file = XML.loadFile("/home/jonas/Documents/DeutschAndreaErzaehlt/36/transcript_indexes.xml")
+    val samplingRate = (file \ "SamplingRate").text
     (file \ "TextAudioIndex").foreach(m => {
-      val textAudioIndex = new TextAudioIndex((m \ "TextStartPos").text.toInt, (m \ "TextEndPos").text.toInt, (m \ "AudioStartPos").text.toInt, (m \ "AudioEndPos").text.toInt, (m \ "SpeakerKey").text.toInt)
+      val textAudioIndex = new TextAudioIndex(samplingRate.toInt, (m \ "TextStartPos").text.toInt, (m \ "TextEndPos").text.toInt, (m \ "AudioStartPos").text.toInt, (m \ "AudioEndPos").text.toInt, (m \ "SpeakerKey").text.toInt)
       newTextAudioIndex(textAudioIndex)
     })
   }
@@ -60,6 +61,7 @@ class LabelingToolService(config: Config) {
 
   def textAudioIndexToRecord(m: TextAudioIndex): TextaudioindexRecord = {
     val rec = new TextaudioindexRecord()
+    rec.setSamplingrate(m.samplingRate)
     rec.setTextstartpos(m.textStartPos)
     rec.setTextendpos(m.textEndPos)
     rec.setAudiostartpos(m.audioStartPos)

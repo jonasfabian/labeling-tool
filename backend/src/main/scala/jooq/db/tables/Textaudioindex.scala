@@ -61,6 +61,8 @@ extends TableImpl[TextaudioindexRecord](
 
   val ID : TableField[TextaudioindexRecord, Integer] = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), "")
 
+  val SAMPLINGRATE : TableField[TextaudioindexRecord, Integer] = createField("samplingRate", org.jooq.impl.SQLDataType.INTEGER, "")
+
   val TEXTSTARTPOS : TableField[TextaudioindexRecord, Integer] = createField("textStartPos", org.jooq.impl.SQLDataType.INTEGER, "")
 
   val TEXTENDPOS : TableField[TextaudioindexRecord, Integer] = createField("textEndPos", org.jooq.impl.SQLDataType.INTEGER, "")

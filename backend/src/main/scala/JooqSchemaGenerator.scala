@@ -1,14 +1,10 @@
 import org.flywaydb.core.Flyway
 import org.jooq.codegen.GenerationTool
 import org.jooq.meta.jaxb._
-import scala.xml.XML
 
 /**
   * JooqSchemaGenerator util
   */
-
-case class TextAudioIndex(textStartPos: Int, textEndPos: Int, audioStartPos: Int, audioEndPos: Int, speakerKey: Int) {
-}
 
 object JooqSchemaGenerator extends App {
 
