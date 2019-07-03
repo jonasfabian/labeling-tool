@@ -145,7 +145,14 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      this.waveSurfer.clearRegions();
+      this.waveSurfer.addRegion({
+        start: dialogRef.componentInstance.startTimeInput.nativeElement.value,
+        end: dialogRef.componentInstance.endTimeInput.nativeElement.value,
+        resize: true,
+        drag: true,
+        color: 'hsla(200, 50%, 70%, 0.4)'
+      });
     });
   }
 }
@@ -163,14 +170,6 @@ export class SetTimeDialogComponent {
 
   @ViewChild('startTimeInput', {static: false}) startTimeInput: ElementRef;
   @ViewChild('endTimeInput', {static: false}) endTimeInput: ElementRef;
-
-  readStartTime(input: any): void {
-    console.log(this.startTimeInput.nativeElement.value);
-  }
-
-  readEndTime(input: any): void {
-    console.log(this.endTimeInput.nativeElement.value);
-  }
 
   onClick(): void {
     this.dialogRef.close();

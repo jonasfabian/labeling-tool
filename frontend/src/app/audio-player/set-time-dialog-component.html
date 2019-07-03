@@ -2,13 +2,13 @@
 <div mat-dialog-content>
   <p>Start time</p>
   <mat-form-field>
-    <input matInput #startTimeInput (input)="readStartTime($event)">
+    <input matInput #startTimeInput>
   </mat-form-field>
   <p>End time</p>
   <mat-form-field>
-    <input matInput #endTimeInput (input)="readEndTime($event)">
+    <input matInput #endTimeInput>
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onClick()" cdkFocusInitial>Submit</button>
+  <mat-button-toggle (click)="onClick()">Submit</mat-button-toggle>
 </div>
