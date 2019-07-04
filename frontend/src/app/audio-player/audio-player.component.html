@@ -22,18 +22,23 @@
       <mat-icon>forward_5</mat-icon>
     </mat-button-toggle>
   </mat-button-toggle-group>
-  <mat-button-toggle style="margin-left: 5px;" (click)="toggleVolume = !toggleVolume">
+  <mat-button-toggle title="Volume" style="margin-left: 5px;" (click)="toggleVolume = !toggleVolume">
     <mat-icon >volume_up</mat-icon>
   </mat-button-toggle>
   <mat-slider *ngIf="toggleVolume" min="0" max="100" step="1" value="25" (input)="setVolume($event)"></mat-slider>
   <mat-button-toggle-group style="margin-left: 5px;">
-    <mat-button-toggle (click)="playBackSpeed(0.5)">0.5x</mat-button-toggle>
-    <mat-button-toggle (click)="playBackSpeed(1)">1x</mat-button-toggle>
-    <mat-button-toggle (click)="playBackSpeed(1.5)">1.5x</mat-button-toggle>
-    <mat-button-toggle (click)="playBackSpeed(2)">2x</mat-button-toggle>
+    <mat-button-toggle title="Replay speed 0.5x" (click)="playBackSpeed(0.5)">0.5x</mat-button-toggle>
+    <mat-button-toggle title="Replay speed 1x" (click)="playBackSpeed(1)">1x</mat-button-toggle>
+    <mat-button-toggle title="Replay speed 1.5x" (click)="playBackSpeed(1.5)">1.5x</mat-button-toggle>
+    <mat-button-toggle title="Replay speed 2x" (click)="playBackSpeed(2)">2x</mat-button-toggle>
   </mat-button-toggle-group>
   <mat-button-toggle-group style="margin-left: 5px;">
-    <mat-button-toggle (click)="addRegion()">Add Region</mat-button-toggle>
+    <mat-button-toggle (click)="addRegion()">
+      <mat-icon>add_circle</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle (click)="deleteRegion()">
+      <mat-icon>delete</mat-icon>
+    </mat-button-toggle>
   </mat-button-toggle-group>
   <mat-button-toggle-group style="margin-left: 5px;">
     <mat-button-toggle title="Loop" (click)="loopRegion()">

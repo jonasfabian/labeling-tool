@@ -1,6 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -8,8 +7,9 @@ import {NavigationMenuComponent} from './navigation-menu/navigation-menu.compone
 import {ContentComponent, SnackBarComponent} from './content/content.component';
 import {MaterialModule} from './models/material.module';
 import {AudioPlayerComponent, SetTimeDialogComponent} from './audio-player/audio-player.component';
-import { MatchOverviewComponent } from './match-overview/match-overview.component';
+import {MatchOverviewComponent} from './match-overview/match-overview.component';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {IntToBooleanPipe} from './pipes/int-to-boolean.pipe';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,8 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
     AudioPlayerComponent,
     SnackBarComponent,
     MatchOverviewComponent,
-    SetTimeDialogComponent
+    SetTimeDialogComponent,
+    IntToBooleanPipe
   ],
   imports: [
     BrowserModule,
@@ -28,9 +29,16 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
     MaterialModule,
     HttpClientModule
   ],
-  providers: [HttpClient],
-  bootstrap: [AppComponent],
-  entryComponents: [SnackBarComponent, SetTimeDialogComponent]
+  providers: [
+    HttpClient
+  ],
+  bootstrap: [
+    AppComponent
+  ],
+  entryComponents: [
+    SnackBarComponent,
+    SetTimeDialogComponent
+  ],
 })
 export class AppModule {
 }

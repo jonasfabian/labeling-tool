@@ -5,7 +5,6 @@ package jooq.db
 
 
 import jooq.db.tables.FlywaySchemaHistory
-import jooq.db.tables.Match
 import jooq.db.tables.Textaudioindex
 
 import org.jooq.Index
@@ -21,7 +20,6 @@ object Indexes {
 
   val FLYWAY_SCHEMA_HISTORY_FLYWAY_SCHEMA_HISTORY_S_IDX = Indexes0.FLYWAY_SCHEMA_HISTORY_FLYWAY_SCHEMA_HISTORY_S_IDX
   val FLYWAY_SCHEMA_HISTORY_PRIMARY = Indexes0.FLYWAY_SCHEMA_HISTORY_PRIMARY
-  val MATCH_PRIMARY = Indexes0.MATCH_PRIMARY
   val TEXTAUDIOINDEX_PRIMARY = Indexes0.TEXTAUDIOINDEX_PRIMARY
 
   // -------------------------------------------------------------------------
@@ -31,7 +29,6 @@ object Indexes {
   private object Indexes0 {
     val FLYWAY_SCHEMA_HISTORY_FLYWAY_SCHEMA_HISTORY_S_IDX : Index = Internal.createIndex("flyway_schema_history_s_idx", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, Array[OrderField [_] ](FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.SUCCESS), false)
     val FLYWAY_SCHEMA_HISTORY_PRIMARY : Index = Internal.createIndex("PRIMARY", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, Array[OrderField [_] ](FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK), true)
-    val MATCH_PRIMARY : Index = Internal.createIndex("PRIMARY", Match.MATCH, Array[OrderField [_] ](Match.MATCH.MATCHID), true)
     val TEXTAUDIOINDEX_PRIMARY : Index = Internal.createIndex("PRIMARY", Textaudioindex.TEXTAUDIOINDEX, Array[OrderField [_] ](Textaudioindex.TEXTAUDIOINDEX.ID), true)
   }
 }

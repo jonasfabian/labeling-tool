@@ -21,7 +21,7 @@ export class ContentComponent implements OnInit {
 
   file: any;
   audio: string;
-  snip = new AudioSnippet(-1, -1);
+  snip = new AudioSnippet(null, null);
   text: string | ArrayBuffer = '';
 
   fileTextWords: Array<string> = [];
@@ -72,10 +72,6 @@ export class ContentComponent implements OnInit {
     this.textAudioMatch.audioSnippet = this.snip;
     this.textAudioMatch.textSnippet = new TextSnippet(this.highlightedTextStartPos, this.highlightedTextEndPos);
     this.selectTabIndex = 1;
-    this.apiService.createMatch(new Match(0, this.snip.startTime, this.snip.endTime, this.highlightedTextStartPos, this.highlightedTextEndPos)).subscribe(_ => {
-      this.apiService.getMatches();
-    });
-    // TODO sent post request to future API
   }
 
   openSnackBar(uploadSuccess: boolean): void {

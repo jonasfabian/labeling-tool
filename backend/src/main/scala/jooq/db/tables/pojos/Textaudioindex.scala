@@ -5,6 +5,7 @@ package jooq.db.tables.pojos
 
 
 import java.io.Serializable
+import java.lang.Byte
 import java.lang.Integer
 import java.lang.StringBuilder
 
@@ -17,6 +18,7 @@ case class Textaudioindex(
   , audiostartpos : Integer
   , audioendpos : Integer
   , speakerkey : Integer
+  , labeled : Byte
 ) extends Serializable {
 
   def this (value : Textaudioindex) = {
@@ -28,6 +30,7 @@ case class Textaudioindex(
       , value.audiostartpos
       , value.audioendpos
       , value.speakerkey
+      , value.labeled
     )
   }
 
@@ -59,6 +62,10 @@ case class Textaudioindex(
     this.speakerkey
   }
 
+  def getLabeled : Byte = {
+    this.labeled
+  }
+
   override def toString : String = {
     val sb = new StringBuilder("Textaudioindex (")
 
@@ -69,6 +76,7 @@ case class Textaudioindex(
     sb.append(", ").append(audiostartpos)
     sb.append(", ").append(audioendpos)
     sb.append(", ").append(speakerkey)
+    sb.append(", ").append(labeled)
 
     sb.append(")")
     return sb.toString

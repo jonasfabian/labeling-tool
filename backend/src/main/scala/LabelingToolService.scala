@@ -2,7 +2,7 @@ import com.typesafe.config.Config
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
 import jooq.db.Tables._
-import jooq.db.tables.records.{MatchRecord, TextaudioindexRecord}
+import jooq.db.tables.records.{TextaudioindexRecord}
 
 import scala.xml.XML
 
@@ -29,13 +29,13 @@ class LabelingToolService(config: Config) {
     val file = XML.loadFile("/home/jonas/Documents/DeutschAndreaErzaehlt/36/transcript_indexes.xml")
     val samplingRate = (file \ "SamplingRate").text
     (file \ "TextAudioIndex").foreach(m => {
-      val textAudioIndex = new TextAudioIndex(0 , samplingRate.toInt, (m \ "TextStartPos").text.toInt, (m \ "TextEndPos").text.toInt, (m \ "AudioStartPos").text.toInt, (m \ "AudioEndPos").text.toInt, (m \ "SpeakerKey").text.toInt)
+      val textAudioIndex = new TextAudioIndex(0 , samplingRate.toInt, (m \ "TextStartPos").text.toInt, (m \ "TextEndPos").text.toInt, (m \ "AudioStartPos").text.toInt, (m \ "AudioEndPos").text.toInt, (m \ "SpeakerKey").text.toInt, 0)
       newTextAudioIndex(textAudioIndex)
     })
   }
 
   def textAudioIndex: Array[TextAudioIndex] = withDslContext(dslContext => {
-    dslContext.selectFrom(TEXTAUDIOINDEX).fetchArray().map(m => TextAudioIndex(m.getId, m.getSamplingrate, m.getTextstartpos, m.getTextendpos, m.getAudiostartpos, m.getAudioendpos, m.getSpeakerkey))
+    dslContext.selectFrom(TEXTAUDIOINDEX).fetchArray().map(m => TextAudioIndex(m.getId, m.getSamplingrate, m.getTextstartpos, m.getTextendpos, m.getAudiostartpos, m.getAudioendpos, m.getSpeakerkey, m.getLabeled))
   })
 
   def newTextAudioIndex(t: TextAudioIndex): Unit = withDslContext(dslContext => {
@@ -43,25 +43,6 @@ class LabelingToolService(config: Config) {
     dslContext.executeInsert(rec)
     ()
   })
-
-  def matches: Array[Match] = withDslContext(dslContext => {
-    dslContext.selectFrom(MATCH).fetchArray().map(m => Match(m.getMatchid, m.getAudiostart, m.getAudioend, m.getTextstart, m.getTextend))
-  })
-
-  def newMatch(m: Match): Unit = withDslContext(dslContext => {
-    val rec = matchToRecord(m)
-    dslContext.executeInsert(rec)
-    ()
-  })
-
-  def matchToRecord(m: Match): MatchRecord = {
-    val rec = new MatchRecord()
-    rec.setAudiostart(m.audioStart)
-    rec.setAudioend(m.audioEnd)
-    rec.setTextstart(m.textStart)
-    rec.setTextend(m.textEnd)
-    rec
-  }
 
   def textAudioIndexToRecord(m: TextAudioIndex): TextaudioindexRecord = {
     val rec = new TextaudioindexRecord()

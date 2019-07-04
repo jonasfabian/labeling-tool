@@ -9,7 +9,6 @@ import java.util.Arrays
 import java.util.List
 
 import jooq.db.tables.FlywaySchemaHistory
-import jooq.db.tables.Match
 import jooq.db.tables.Textaudioindex
 
 import org.jooq.Catalog
@@ -35,7 +34,6 @@ class LabelingTool extends SchemaImpl("labeling-tool", DefaultCatalog.DEFAULT_CA
   private def getTables0(): List[Table[_]] = {
     return Arrays.asList[Table[_]](
       FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY,
-      Match.MATCH,
       Textaudioindex.TEXTAUDIOINDEX)
   }
 }

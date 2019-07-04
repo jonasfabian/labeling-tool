@@ -115,7 +115,14 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
       drag: true,
       color: 'hsla(200, 50%, 70%, 0.4)'
     });
+    this.snippet.emit(new AudioSnippet(this.waveSurfer.getCurrentTime(), this.waveSurfer.getCurrentTime() + 10));
     region.on('update-end', () => this.snippet.emit(new AudioSnippet(region.start, region.end)));
+  }
+
+  deleteRegion(): void {
+    this.waveSurfer.clearRegions();
+    this.snippet.emit(new AudioSnippet(null, null));
+    this.audioFile = '';
   }
 
   loopRegion(): void {

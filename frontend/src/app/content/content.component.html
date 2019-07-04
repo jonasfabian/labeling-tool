@@ -5,7 +5,7 @@
                         (snippet)="retrieveSnippet($event)"></app-audio-player>
     </mat-card>
     <div style="margin-top: 15px;">
-      <mat-card class="card" *ngIf="(snip.startTime !== -1) && (snip.endTime !== -1)">
+      <mat-card class="card" *ngIf="(snip.startTime !== null) && (snip.endTime !== null)">
         <strong>Marked Region</strong>
         <div>
           <span>Start: {{snip.startTime}}</span>

@@ -16,7 +16,7 @@ export class MatchOverviewComponent implements OnInit {
   }
 
   textAudioIndexArray: Array<TextAudioIndex> = [];
-  displayedColumns = ['id', 'samplingRate', 'textStartPos', 'textEndPos', 'audioStartPos', 'audioEndPos', 'speakerKey'];
+  displayedColumns = ['id', 'samplingRate', 'textStartPos', 'textEndPos', 'audioStartPos', 'audioEndPos', 'speakerKey', 'labeled'];
   dataSource = new MatTableDataSource<TextAudioIndex>();
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;

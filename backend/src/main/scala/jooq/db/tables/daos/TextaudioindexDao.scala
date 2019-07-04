@@ -4,6 +4,7 @@
 package jooq.db.tables.daos
 
 
+import java.lang.Byte
 import java.lang.Integer
 import java.util.List
 
@@ -54,5 +55,9 @@ class TextaudioindexDao(configuration : Configuration) extends DAOImpl[Textaudio
 
   def fetchBySpeakerkey(values : Integer*) : List[jooq.db.tables.pojos.Textaudioindex] = {
     fetch(Textaudioindex.TEXTAUDIOINDEX.SPEAKERKEY, values:_*)
+  }
+
+  def fetchByLabeled(values : Byte*) : List[jooq.db.tables.pojos.Textaudioindex] = {
+    fetch(Textaudioindex.TEXTAUDIOINDEX.LABELED, values:_*)
   }
 }
