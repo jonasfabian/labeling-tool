@@ -30,5 +30,4 @@ export class MatchOverviewComponent implements OnInit {
       this.dataSource.sort = this.sort;
     });
   }
-
 }

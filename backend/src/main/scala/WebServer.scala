@@ -23,6 +23,8 @@ object WebServer extends App with CorsSupport {
     val labelingToolRestApi = new LabelingToolRestApi(labelingToolService)
     val routes = corsHandler(labelingToolRestApi.route)
 
+    labelingToolService.extractFromXml()
+
     val bindingFuture = Http().bindAndHandle(routes, "localhost", 8080)
     println(s"Server online at http://localhost:8080/\nPress RETURN to stop...")
     StdIn.readLine() // let it run until user presses return
@@ -35,7 +37,7 @@ object WebServer extends App with CorsSupport {
 class LabelingToolRestApi(service: LabelingToolService) extends Directives with ErrorAccumulatingCirceSupport {
   val route = pathPrefix("api") {
     pathPrefix("match") {
-      getTextAudioIndex ~ setXMLData ~ updateTextAudioIndex
+      getTextAudioIndex ~ updateTextAudioIndex
     }
   }
 
@@ -45,15 +47,6 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
   def getTextAudioIndex = path("getTextAudioIndex") {
     get {
       complete(service.textAudioIndex)
-    }
-  }
-
-  @ApiOperation(value = "setXMLData", httpMethod = "POST", notes = "")
-  @ApiResponses(Array(new ApiResponse(code = 200, response = classOf[TextAudioIndex], message = "OK")))
-  @Path("xml")
-  def setXMLData = path("setXMLData") {
-    get {
-      complete(service.extractFromXml())
     }
   }
 
