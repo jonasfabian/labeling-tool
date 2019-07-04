@@ -2,7 +2,11 @@ import com.typesafe.config.Config
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
 import jooq.db.Tables._
-import jooq.db.tables.records.{TextaudioindexRecord}
+import jooq.db.tables.records.{TextaudioindexRecord, TranscriptRecord}
+import java.nio.file.{Files, Paths}
+import java.sql.Blob
+
+import javax.sql.rowset.serial.SerialBlob
 
 import scala.xml.XML
 
@@ -43,6 +47,19 @@ class LabelingToolService(config: Config) {
     dslContext.executeInsert(rec)
     ()
   })
+
+  def readTranscript(): Unit = withDslContext(dslContext => {
+    val byteArray = Files.readAllBytes(Paths.get("/home/jonas/Documents/DeutschAndreaErzaehlt/36/transcript.txt"))
+    val rec = transcriptToRecord(new Transcript(0, byteArray))
+    dslContext.executeInsert(rec)
+    ()
+  })
+
+  def transcriptToRecord(t: Transcript): TranscriptRecord = {
+    val rec = new TranscriptRecord()
+    rec.setFile(t.file)
+    rec
+  }
 
   def textAudioIndexToRecord(m: TextAudioIndex): TextaudioindexRecord = {
     val rec = new TextaudioindexRecord()

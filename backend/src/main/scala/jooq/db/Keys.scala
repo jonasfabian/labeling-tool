@@ -8,8 +8,10 @@ import java.lang.Integer
 
 import jooq.db.tables.FlywaySchemaHistory
 import jooq.db.tables.Textaudioindex
+import jooq.db.tables.Transcript
 import jooq.db.tables.records.FlywaySchemaHistoryRecord
 import jooq.db.tables.records.TextaudioindexRecord
+import jooq.db.tables.records.TranscriptRecord
 
 import org.jooq.Identity
 import org.jooq.UniqueKey
@@ -23,6 +25,7 @@ object Keys {
   // -------------------------------------------------------------------------
 
   val IDENTITY_TEXTAUDIOINDEX = Identities0.IDENTITY_TEXTAUDIOINDEX
+  val IDENTITY_TRANSCRIPT = Identities0.IDENTITY_TRANSCRIPT
 
   // -------------------------------------------------------------------------
   // UNIQUE and PRIMARY KEY definitions
@@ -30,6 +33,7 @@ object Keys {
 
   val KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY = UniqueKeys0.KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY
   val KEY_TEXTAUDIOINDEX_PRIMARY = UniqueKeys0.KEY_TEXTAUDIOINDEX_PRIMARY
+  val KEY_TRANSCRIPT_PRIMARY = UniqueKeys0.KEY_TRANSCRIPT_PRIMARY
 
   // -------------------------------------------------------------------------
   // FOREIGN KEY definitions
@@ -42,10 +46,12 @@ object Keys {
 
   private object Identities0 {
     val IDENTITY_TEXTAUDIOINDEX : Identity[TextaudioindexRecord, Integer] = Internal.createIdentity(Textaudioindex.TEXTAUDIOINDEX, Textaudioindex.TEXTAUDIOINDEX.ID)
+    val IDENTITY_TRANSCRIPT : Identity[TranscriptRecord, Integer] = Internal.createIdentity(Transcript.TRANSCRIPT, Transcript.TRANSCRIPT.ID)
   }
 
   private object UniqueKeys0 {
     val KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY : UniqueKey[FlywaySchemaHistoryRecord] = Internal.createUniqueKey(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, "KEY_flyway_schema_history_PRIMARY", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK)
     val KEY_TEXTAUDIOINDEX_PRIMARY : UniqueKey[TextaudioindexRecord] = Internal.createUniqueKey(Textaudioindex.TEXTAUDIOINDEX, "KEY_textAudioIndex_PRIMARY", Textaudioindex.TEXTAUDIOINDEX.ID)
+    val KEY_TRANSCRIPT_PRIMARY : UniqueKey[TranscriptRecord] = Internal.createUniqueKey(Transcript.TRANSCRIPT, "KEY_transcript_PRIMARY", Transcript.TRANSCRIPT.ID)
   }
 }

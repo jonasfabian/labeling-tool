@@ -10,6 +10,7 @@ import java.util.List
 
 import jooq.db.tables.FlywaySchemaHistory
 import jooq.db.tables.Textaudioindex
+import jooq.db.tables.Transcript
 
 import org.jooq.Catalog
 import org.jooq.Table
@@ -34,6 +35,7 @@ class LabelingTool extends SchemaImpl("labeling-tool", DefaultCatalog.DEFAULT_CA
   private def getTables0(): List[Table[_]] = {
     return Arrays.asList[Table[_]](
       FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY,
-      Textaudioindex.TEXTAUDIOINDEX)
+      Textaudioindex.TEXTAUDIOINDEX,
+      Transcript.TRANSCRIPT)
   }
 }
