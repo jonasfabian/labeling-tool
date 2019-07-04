@@ -3,9 +3,8 @@ import {AudioSnippet} from '../models/audioSnippet';
 import {TextAudioMatch} from '../models/textAudioMatch';
 import {TextSnippet} from '../models/textSnippet';
 import {MatSnackBar} from '@angular/material';
-import {ApiService} from "../services/api.service";
-import {Match} from "../models/match";
-import {TextAudioIndex} from "../models/textAudioIndex";
+import {ApiService} from '../services/api.service';
+import {TextAudioIndex} from '../models/textAudioIndex';
 
 @Component({
   selector: 'app-content',

@@ -42,6 +42,10 @@ class LabelingToolService(config: Config) {
     dslContext.selectFrom(TEXTAUDIOINDEX).fetchArray().map(m => TextAudioIndex(m.getId, m.getSamplingrate, m.getTextstartpos, m.getTextendpos, m.getAudiostartpos, m.getAudioendpos, m.getSpeakerkey, m.getLabeled))
   })
 
+  def transcript: Array[Transcript] = withDslContext(dslContext => {
+    dslContext.selectFrom(TRANSCRIPT).fetchArray().map(m => Transcript(m.getId, m.getFile))
+  })
+
   def newTextAudioIndex(t: TextAudioIndex): Unit = withDslContext(dslContext => {
     val rec = textAudioIndexToRecord(t)
     dslContext.executeInsert(rec)
