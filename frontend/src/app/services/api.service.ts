@@ -20,4 +20,7 @@ export class ApiService {
     return this.http.get<Array<TextAudioIndex>>(this.url + 'getTextAudioIndex');
   }
 
+  updateTextAudioIndex(textAudioIndex: TextAudioIndex): Observable<any> {
+    return this.http.post(this.url + 'updateTextAudioIndex', textAudioIndex);
+  }
 }

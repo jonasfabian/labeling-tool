@@ -5,6 +5,7 @@ import {TextSnippet} from '../models/textSnippet';
 import {MatSnackBar} from '@angular/material';
 import {ApiService} from "../services/api.service";
 import {Match} from "../models/match";
+import {TextAudioIndex} from "../models/textAudioIndex";
 
 @Component({
   selector: 'app-content',
@@ -32,6 +33,8 @@ export class ContentComponent implements OnInit {
   textAudioMatch = new TextAudioMatch(new AudioSnippet(0, 0), new TextSnippet(0, 0));
 
   selectTabIndex = 0;
+
+  textAudioIndexArray: Array<TextAudioIndex> = [];
 
   ngOnInit() {
   }
@@ -72,6 +75,9 @@ export class ContentComponent implements OnInit {
     this.textAudioMatch.audioSnippet = this.snip;
     this.textAudioMatch.textSnippet = new TextSnippet(this.highlightedTextStartPos, this.highlightedTextEndPos);
     this.selectTabIndex = 1;
+    this.apiService.updateTextAudioIndex(new TextAudioIndex(13, 0, 0, 0, 0, 0, 0, 1)).subscribe(_ => {
+      this.apiService.getTextAudioIndex().subscribe(t => this.textAudioIndexArray = t);
+    });
   }
 
   openSnackBar(uploadSuccess: boolean): void {

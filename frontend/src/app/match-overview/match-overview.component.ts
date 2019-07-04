@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ApiService} from '../services/api.service';
 import {TextAudioIndex} from '../models/textAudioIndex';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
@@ -15,7 +15,7 @@ export class MatchOverviewComponent implements OnInit {
   ) {
   }
 
-  textAudioIndexArray: Array<TextAudioIndex> = [];
+  @Input() textAudioIndexArray: Array<TextAudioIndex> = [];
   displayedColumns = ['id', 'samplingRate', 'textStartPos', 'textEndPos', 'audioStartPos', 'audioEndPos', 'speakerKey', 'labeled'];
   dataSource = new MatTableDataSource<TextAudioIndex>();
 

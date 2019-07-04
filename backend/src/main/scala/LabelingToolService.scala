@@ -54,4 +54,18 @@ class LabelingToolService(config: Config) {
     rec.setSpeakerkey(m.speakerKey)
     rec
   }
+
+  def updateTextAudioIndex(textAudioIndex: TextAudioIndex): Unit = withDslContext(dslContext => {
+    dslContext.update(TEXTAUDIOINDEX)
+      .set(TEXTAUDIOINDEX.SAMPLINGRATE, Integer.valueOf(textAudioIndex.samplingRate))
+      .set(TEXTAUDIOINDEX.TEXTSTARTPOS, Integer.valueOf(textAudioIndex.textStartPos))
+      .set(TEXTAUDIOINDEX.TEXTENDPOS, Integer.valueOf(textAudioIndex.textEndPos))
+      .set(TEXTAUDIOINDEX.AUDIOSTARTPOS, Integer.valueOf(textAudioIndex.audioStartPos))
+      .set(TEXTAUDIOINDEX.AUDIOENDPOS, Integer.valueOf(textAudioIndex.audioEndPos))
+      .set(TEXTAUDIOINDEX.SPEAKERKEY, Integer.valueOf(textAudioIndex.speakerKey))
+      .set(TEXTAUDIOINDEX.LABELED, byte2Byte( textAudioIndex.labeled))
+      .where(TEXTAUDIOINDEX.ID.eq(textAudioIndex.id))
+      .execute()
+    ()
+  })
 }

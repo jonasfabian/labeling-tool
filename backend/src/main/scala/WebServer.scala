@@ -1,10 +1,10 @@
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.server.{Directives}
+import akka.http.scaladsl.server.{Directives, Route}
 import akka.stream.ActorMaterializer
 import com.typesafe.config.{ConfigFactory, ConfigValueFactory}
 import de.heikoseeberger.akkahttpcirce.ErrorAccumulatingCirceSupport
-import io.swagger.annotations.{ApiOperation, ApiResponse, ApiResponses}
+import io.swagger.annotations.{ApiImplicitParam, ApiImplicitParams, ApiOperation, ApiResponse, ApiResponses}
 import javax.ws.rs.Path
 
 import scala.io.StdIn
@@ -35,7 +35,7 @@ object WebServer extends App with CorsSupport {
 class LabelingToolRestApi(service: LabelingToolService) extends Directives with ErrorAccumulatingCirceSupport {
   val route = pathPrefix("api") {
     pathPrefix("match") {
-      getTextAudioIndex ~ setXMLData
+      getTextAudioIndex ~ setXMLData ~ updateTextAudioIndex
     }
   }
 
@@ -48,12 +48,25 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
     }
   }
 
-  @ApiOperation(value = "setXMLData", httpMethod = "GET", notes = "")
+  @ApiOperation(value = "setXMLData", httpMethod = "POST", notes = "")
   @ApiResponses(Array(new ApiResponse(code = 200, response = classOf[TextAudioIndex], message = "OK")))
   @Path("xml")
   def setXMLData = path("setXMLData") {
     get {
       complete(service.extractFromXml())
+    }
+  }
+
+  @ApiOperation(value = "updateCountry", httpMethod = "POST")
+  @ApiImplicitParams(Array(new ApiImplicitParam(name = "body", required = true, dataTypeClass = classOf[TextAudioIndex], value = "the updated textAudioIndex", paramType = "body")))
+  @ApiResponses(Array(new ApiResponse(code = 200, message = "OK")))
+  @Path("textAudioIndex")
+  def updateTextAudioIndex: Route = path("updateTextAudioIndex") {
+    post {
+      entity(as[TextAudioIndex]) { t =>
+        service.updateTextAudioIndex(t)
+        complete("OK")
+      }
     }
   }
 }
