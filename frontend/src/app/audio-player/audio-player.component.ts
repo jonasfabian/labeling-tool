@@ -178,7 +178,7 @@ export class SetTimeDialogComponent {
   @ViewChild('startTimeInput', {static: false}) startTimeInput: ElementRef;
   @ViewChild('endTimeInput', {static: false}) endTimeInput: ElementRef;
 
-  onClick(): void {
+  closeDialog(): void {
     this.dialogRef.close();
   }
 }
