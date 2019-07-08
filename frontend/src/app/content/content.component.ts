@@ -5,7 +5,7 @@ import {TextSnippet} from '../models/textSnippet';
 import {MatSnackBar} from '@angular/material';
 import {ApiService} from '../services/api.service';
 import {TextAudioIndex} from '../models/textAudioIndex';
-import {DomSanitizer} from "@angular/platform-browser";
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-content',
@@ -15,7 +15,7 @@ import {DomSanitizer} from "@angular/platform-browser";
 export class ContentComponent implements OnInit {
 
   constructor(
-    private sanitizer : DomSanitizer,
+    private sanitizer: DomSanitizer,
     private snackBar: MatSnackBar,
     private apiService: ApiService
   ) {
@@ -38,17 +38,19 @@ export class ContentComponent implements OnInit {
   textAudioIndexArray: Array<TextAudioIndex> = [];
 
   ngOnInit() {
-    let url = '';
-    const reader = new FileReader();
-    this.apiService.getTranscript().subscribe(tr => {
-      tr.map(t => {
-        const blob = new Blob([t.file]);
-        reader.onload = (event: ProgressEvent) => {
-          url = reader.result as string;
-          console.log(url);
-        };
-        reader.readAsDataURL(blob);
+    this.readBlobAsText(3);
+  }
+
+  readBlobAsText(id: number): void {
+    this.apiService.getTranscript(id).subscribe(tr => {
+      const fileReader = new FileReader();
+      const byteArray = new Uint8Array(tr[0].file);
+      const blob = new Blob([byteArray], {type: 'application/octet-stream'});
+      fileReader.addEventListener('loadend', (e) => {
+        // @ts-ignore
+        this.text = e.target.result;
       });
+      fileReader.readAsText(blob);
     });
   }
 

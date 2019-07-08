@@ -66,7 +66,7 @@ class LabelingToolService(config: Config) {
   })
 
   def readTranscript(): Unit = withDslContext(dslContext => {
-    val byteArray = Files.readAllBytes(Paths.get("/home/jonas/Documents/DeutschAndreaErzaehlt/36/transcript.txt"))
+    val byteArray = Files.readAllBytes(Paths.get("/home/jonas/Documents/DeutschAndreaErzaehlt/37/transcript.txt"))
     val rec = transcriptToRecord(new Transcript(0, byteArray, 1))
     dslContext.executeInsert(rec)
     ()
