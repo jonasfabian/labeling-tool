@@ -76,6 +76,8 @@ extends TableImpl[TextaudioindexRecord](
 
   val LABELED : TableField[TextaudioindexRecord, Byte] = createField("labeled", org.jooq.impl.SQLDataType.TINYINT.defaultValue(org.jooq.impl.DSL.field("0", org.jooq.impl.SQLDataType.TINYINT)), "")
 
+  val TRANSCRIPT_FILE_ID : TableField[TextaudioindexRecord, Integer] = createField("transcript_file_id", org.jooq.impl.SQLDataType.INTEGER, "")
+
   def this() = {
     this(DSL.name("textAudioIndex"), null, null, null, null)
   }

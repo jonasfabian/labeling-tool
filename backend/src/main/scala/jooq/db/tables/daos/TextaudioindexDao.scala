@@ -60,4 +60,8 @@ class TextaudioindexDao(configuration : Configuration) extends DAOImpl[Textaudio
   def fetchByLabeled(values : Byte*) : List[jooq.db.tables.pojos.Textaudioindex] = {
     fetch(Textaudioindex.TEXTAUDIOINDEX.LABELED, values:_*)
   }
+
+  def fetchByTranscriptFileId(values : Integer*) : List[jooq.db.tables.pojos.Textaudioindex] = {
+    fetch(Textaudioindex.TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID, values:_*)
+  }
 }

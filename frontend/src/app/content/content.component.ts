@@ -38,7 +38,7 @@ export class ContentComponent implements OnInit {
   textAudioIndexArray: Array<TextAudioIndex> = [];
 
   ngOnInit() {
-    this.readBlobAsText(3);
+    this.readBlobAsText(1);
   }
 
   readBlobAsText(id: number): void {

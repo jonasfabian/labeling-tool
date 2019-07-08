@@ -10,15 +10,15 @@ import jooq.db.tables.Transcript
 
 import org.jooq.Field
 import org.jooq.Record1
-import org.jooq.Record3
-import org.jooq.Row3
+import org.jooq.Record2
+import org.jooq.Row2
 import org.jooq.impl.UpdatableRecordImpl
 
 import scala.Array
 import scala.Byte
 
 
-class TranscriptRecord extends UpdatableRecordImpl[TranscriptRecord](Transcript.TRANSCRIPT) with Record3[Integer, Array[Byte], Integer] {
+class TranscriptRecord extends UpdatableRecordImpl[TranscriptRecord](Transcript.TRANSCRIPT) with Record2[Integer, Array[Byte]] {
 
   def setId(value : Integer) : Unit = {
     set(0, value)
@@ -38,15 +38,6 @@ class TranscriptRecord extends UpdatableRecordImpl[TranscriptRecord](Transcript.
     if (r == null) null else r.asInstanceOf[Array[Byte]]
   }
 
-  def setFileId(value : Integer) : Unit = {
-    set(2, value)
-  }
-
-  def getFileId : Integer = {
-    val r = get(2)
-    if (r == null) null else r.asInstanceOf[Integer]
-  }
-
   // -------------------------------------------------------------------------
   // Primary key information
   // -------------------------------------------------------------------------
@@ -55,25 +46,22 @@ class TranscriptRecord extends UpdatableRecordImpl[TranscriptRecord](Transcript.
   }
 
   // -------------------------------------------------------------------------
-  // Record3 type implementation
+  // Record2 type implementation
   // -------------------------------------------------------------------------
 
-  override def fieldsRow : Row3[Integer, Array[Byte], Integer] = {
-    super.fieldsRow.asInstanceOf[ Row3[Integer, Array[Byte], Integer] ]
+  override def fieldsRow : Row2[Integer, Array[Byte]] = {
+    super.fieldsRow.asInstanceOf[ Row2[Integer, Array[Byte]] ]
   }
 
-  override def valuesRow : Row3[Integer, Array[Byte], Integer] = {
-    super.valuesRow.asInstanceOf[ Row3[Integer, Array[Byte], Integer] ]
+  override def valuesRow : Row2[Integer, Array[Byte]] = {
+    super.valuesRow.asInstanceOf[ Row2[Integer, Array[Byte]] ]
   }
   override def field1 : Field[Integer] = Transcript.TRANSCRIPT.ID
   override def field2 : Field[Array[Byte]] = Transcript.TRANSCRIPT.FILE
-  override def field3 : Field[Integer] = Transcript.TRANSCRIPT.FILE_ID
   override def component1 : Integer = getId
   override def component2 : Array[Byte] = getFile
-  override def component3 : Integer = getFileId
   override def value1 : Integer = getId
   override def value2 : Array[Byte] = getFile
-  override def value3 : Integer = getFileId
 
   override def value1(value : Integer) : TranscriptRecord = {
     setId(value)
@@ -85,23 +73,16 @@ class TranscriptRecord extends UpdatableRecordImpl[TranscriptRecord](Transcript.
     this
   }
 
-  override def value3(value : Integer) : TranscriptRecord = {
-    setFileId(value)
-    this
-  }
-
-  override def values(value1 : Integer, value2 : Array[Byte], value3 : Integer) : TranscriptRecord = {
+  override def values(value1 : Integer, value2 : Array[Byte]) : TranscriptRecord = {
     this.value1(value1)
     this.value2(value2)
-    this.value3(value3)
     this
   }
 
-  def this(id : Integer, file : Array[Byte], fileId : Integer) = {
+  def this(id : Integer, file : Array[Byte]) = {
     this()
 
     set(0, id)
     set(1, file)
-    set(2, fileId)
   }
 }

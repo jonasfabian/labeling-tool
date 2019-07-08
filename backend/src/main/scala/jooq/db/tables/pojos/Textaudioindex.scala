@@ -19,6 +19,7 @@ case class Textaudioindex(
   , audioendpos : Integer
   , speakerkey : Integer
   , labeled : Byte
+  , transcriptFileId : Integer
 ) extends Serializable {
 
   def this (value : Textaudioindex) = {
@@ -31,6 +32,7 @@ case class Textaudioindex(
       , value.audioendpos
       , value.speakerkey
       , value.labeled
+      , value.transcriptFileId
     )
   }
 
@@ -66,6 +68,10 @@ case class Textaudioindex(
     this.labeled
   }
 
+  def getTranscriptFileId : Integer = {
+    this.transcriptFileId
+  }
+
   override def toString : String = {
     val sb = new StringBuilder("Textaudioindex (")
 
@@ -77,6 +83,7 @@ case class Textaudioindex(
     sb.append(", ").append(audioendpos)
     sb.append(", ").append(speakerkey)
     sb.append(", ").append(labeled)
+    sb.append(", ").append(transcriptFileId)
 
     sb.append(")")
     return sb.toString

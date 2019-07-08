@@ -11,12 +11,12 @@ CREATE TABLE IF NOT EXISTS `textAudioIndex` (
     `audioEndPos` INT,
     `speakerKey` INT,
     `labeled` tinyInt default 0,
+    `transcript_file_id` INT,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `transcript` (
     `id` INT NOT NULL AUTO_INCREMENT,
-    `file` BLOB,
-    `file_id` INT NOT NULL default 0,
+    `file` MEDIUMBLOB,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
