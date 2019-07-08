@@ -38,4 +38,8 @@ class TranscriptDao(configuration : Configuration) extends DAOImpl[TranscriptRec
   def fetchByFile(values : Array[Byte]*) : List[jooq.db.tables.pojos.Transcript] = {
     fetch(Transcript.TRANSCRIPT.FILE, values:_*)
   }
+
+  def fetchByFileId(values : Integer*) : List[jooq.db.tables.pojos.Transcript] = {
+    fetch(Transcript.TRANSCRIPT.FILE_ID, values:_*)
+  }
 }

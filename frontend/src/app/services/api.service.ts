@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {TextAudioIndex} from '../models/textAudioIndex';
+import {Transcript} from "../models/transcript";
 
 @Injectable({
   providedIn: 'root'
@@ -22,5 +23,9 @@ export class ApiService {
 
   updateTextAudioIndex(textAudioIndex: TextAudioIndex): Observable<any> {
     return this.http.post(this.url + 'updateTextAudioIndex', textAudioIndex);
+  }
+
+  getTranscript(): Observable<Array<Transcript>> {
+    return this.http.get<Array<Transcript>>(this.url + 'getTranscript');
   }
 }

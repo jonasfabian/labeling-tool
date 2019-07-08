@@ -15,12 +15,14 @@ import scala.Byte
 case class Transcript(
     id : Integer
   , file : Array[Byte]
+  , fileId : Integer
 ) extends Serializable {
 
   def this (value : Transcript) = {
     this(
         value.id
       , value.file
+      , value.fileId
     )
   }
 
@@ -32,11 +34,16 @@ case class Transcript(
     this.file
   }
 
+  def getFileId : Integer = {
+    this.fileId
+  }
+
   override def toString : String = {
     val sb = new StringBuilder("Transcript (")
 
     sb.append(id)
     sb.append(", ").append("[binary...]")
+    sb.append(", ").append(fileId)
 
     sb.append(")")
     return sb.toString

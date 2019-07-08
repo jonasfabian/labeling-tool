@@ -5,6 +5,7 @@ import {TextSnippet} from '../models/textSnippet';
 import {MatSnackBar} from '@angular/material';
 import {ApiService} from '../services/api.service';
 import {TextAudioIndex} from '../models/textAudioIndex';
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-content',
@@ -14,6 +15,7 @@ import {TextAudioIndex} from '../models/textAudioIndex';
 export class ContentComponent implements OnInit {
 
   constructor(
+    private sanitizer : DomSanitizer,
     private snackBar: MatSnackBar,
     private apiService: ApiService
   ) {
@@ -36,6 +38,18 @@ export class ContentComponent implements OnInit {
   textAudioIndexArray: Array<TextAudioIndex> = [];
 
   ngOnInit() {
+    let url = '';
+    const reader = new FileReader();
+    this.apiService.getTranscript().subscribe(tr => {
+      tr.map(t => {
+        const blob = new Blob([t.file]);
+        reader.onload = (event: ProgressEvent) => {
+          url = reader.result as string;
+          console.log(url);
+        };
+        reader.readAsDataURL(blob);
+      });
+    });
   }
 
   fileChanged(e) {

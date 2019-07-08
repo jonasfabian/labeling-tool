@@ -38,29 +38,32 @@ object WebServer extends App with CorsSupport {
 class LabelingToolRestApi(service: LabelingToolService) extends Directives with ErrorAccumulatingCirceSupport {
   val route = pathPrefix("api") {
     pathPrefix("match") {
-      getTextAudioIndex ~ updateTextAudioIndex ~ getTranscript
+      getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudioIndex ~ getTranscript ~ getTranscripts
     }
   }
 
   @ApiOperation(value = "getTranscript", httpMethod = "GET", notes = "returns a Byte Array")
-  @ApiResponses(Array(new ApiResponse(code = 200, response = classOf[Transcript], message = "OK")))
+  @ApiImplicitParams(Array(new ApiImplicitParam(name = "id", required = true, example = "100", value = "id", paramType = "query")))
+  @ApiResponses(Array(new ApiResponse(code = 200, response = classOf[Array[Transcript]], message = "OK")))
   @Path("getTranscript")
   def getTranscript = path("getTranscript") {
     get {
-      complete(service.transcript)
+      parameters("id".as[Int] ? 0) { id =>
+        complete(service.getTranscript(id))
+      }
     }
   }
 
-  @ApiOperation(value = "getTextAudioIndex", httpMethod = "GET", notes = "returns an Array of TextAudioIndex")
-  @ApiResponses(Array(new ApiResponse(code = 200, response = classOf[TextAudioIndex], message = "OK")))
-  @Path("textAudioIndex")
-  def getTextAudioIndex = path("getTextAudioIndex") {
+  @ApiOperation(value = "getTranscripts", httpMethod = "GET", notes = "returns an Array of Byte Arrays")
+  @ApiResponses(Array(new ApiResponse(code = 200, response = classOf[Transcript], message = "OK")))
+  @Path("getTranscripts")
+  def getTranscripts = path("getTranscripts") {
     get {
-      complete(service.textAudioIndex)
+      complete(service.getTranscripts)
     }
   }
 
-  @ApiOperation(value = "updateCountry", httpMethod = "POST")
+  @ApiOperation(value = "updateCountry", httpMethod = "POST", notes = "updates the selected textAudioIndex")
   @ApiImplicitParams(Array(new ApiImplicitParam(name = "body", required = true, dataTypeClass = classOf[TextAudioIndex], value = "the updated textAudioIndex", paramType = "body")))
   @ApiResponses(Array(new ApiResponse(code = 200, message = "OK")))
   @Path("textAudioIndex")
@@ -70,6 +73,27 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
         service.updateTextAudioIndex(t)
         complete("OK")
       }
+    }
+  }
+
+  @ApiOperation(value = "", httpMethod = "GET", notes = "returns a textAudioIndex")
+  @ApiImplicitParams(Array(new ApiImplicitParam(name = "id", required = true, example = "100", value = "id", paramType = "query")))
+  @ApiResponses(Array(new ApiResponse(code = 200, response = classOf[Array[TextAudioIndex]], message = "OK")))
+  @Path("getTextAudioIndex")
+  def getTextAudioIndex = path("getTextAudioIndex") {
+    get {
+      parameters("id".as[Int] ? 0) { id =>
+        complete(service.getTextAudioIndex(id))
+      }
+    }
+  }
+
+  @ApiOperation(value = "getTextAudioIndexes", httpMethod = "GET", notes = "returns an Array of TextAudioIndex")
+  @ApiResponses(Array(new ApiResponse(code = 200, response = classOf[TextAudioIndex], message = "OK")))
+  @Path("textAudioIndexes")
+  def getTextAudioIndexes = path("getTextAudioIndexes") {
+    get {
+      complete(service.getTextAudioIndexes)
     }
   }
 }

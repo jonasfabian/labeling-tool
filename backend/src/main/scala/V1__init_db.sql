@@ -17,5 +17,6 @@ CREATE TABLE IF NOT EXISTS `textAudioIndex` (
 CREATE TABLE IF NOT EXISTS `transcript` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `file` BLOB,
+    `file_id` INT NOT NULL default 0,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;

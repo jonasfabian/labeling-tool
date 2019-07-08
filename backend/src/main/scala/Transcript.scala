@@ -1,6 +1,6 @@
 import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
 
-case class Transcript(id: Int, file: Array[Byte]) {
+case class Transcript(id: Int, file: Array[Byte], fileId: Int) {
 }
 
 object Transcript {

@@ -33,17 +33,30 @@ class LabelingToolService(config: Config) {
     val file = XML.loadFile("/home/jonas/Documents/DeutschAndreaErzaehlt/36/transcript_indexes.xml")
     val samplingRate = (file \ "SamplingRate").text
     (file \ "TextAudioIndex").foreach(m => {
-      val textAudioIndex = new TextAudioIndex(0 , samplingRate.toInt, (m \ "TextStartPos").text.toInt, (m \ "TextEndPos").text.toInt, (m \ "AudioStartPos").text.toInt, (m \ "AudioEndPos").text.toInt, (m \ "SpeakerKey").text.toInt, 0)
+      val textAudioIndex = new TextAudioIndex(0, samplingRate.toInt, (m \ "TextStartPos").text.toInt, (m \ "TextEndPos").text.toInt, (m \ "AudioStartPos").text.toInt, (m \ "AudioEndPos").text.toInt, (m \ "SpeakerKey").text.toInt, 0)
       newTextAudioIndex(textAudioIndex)
     })
   }
 
-  def textAudioIndex: Array[TextAudioIndex] = withDslContext(dslContext => {
+  def getTextAudioIndex(id: Int): Array[TextAudioIndex] = withDslContext(dslContext => {
+    dslContext.select()
+      .from(TEXTAUDIOINDEX)
+      .where(TEXTAUDIOINDEX.ID.eq(id))
+      .fetchArray().map(m => TextAudioIndex(m.get(TEXTAUDIOINDEX.ID).toInt, m.get(TEXTAUDIOINDEX.SAMPLINGRATE).toInt, m.get(TEXTAUDIOINDEX.TEXTSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.TEXTENDPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOENDPOS).toInt, m.get(TEXTAUDIOINDEX.SPEAKERKEY).toInt, m.get(TEXTAUDIOINDEX.LABELED).toByte))
+  })
+
+  def getTextAudioIndexes: Array[TextAudioIndex] = withDslContext(dslContext => {
     dslContext.selectFrom(TEXTAUDIOINDEX).fetchArray().map(m => TextAudioIndex(m.getId, m.getSamplingrate, m.getTextstartpos, m.getTextendpos, m.getAudiostartpos, m.getAudioendpos, m.getSpeakerkey, m.getLabeled))
   })
 
-  def transcript: Array[Transcript] = withDslContext(dslContext => {
-    dslContext.selectFrom(TRANSCRIPT).fetchArray().map(m => Transcript(m.getId, m.getFile))
+  def getTranscript(id: Int): Array[Transcript] = withDslContext(dslContext => {
+    dslContext.selectFrom(TRANSCRIPT)
+      .where(TRANSCRIPT.ID.eq(id))
+      .fetchArray().map(m => Transcript(m.getId, m.getFile, m.getFileId))
+  })
+
+  def getTranscripts: Array[Transcript] = withDslContext(dslContext => {
+    dslContext.selectFrom(TRANSCRIPT).fetchArray().map(m => Transcript(m.getId, m.getFile, m.getFileId))
   })
 
   def newTextAudioIndex(t: TextAudioIndex): Unit = withDslContext(dslContext => {
@@ -54,7 +67,7 @@ class LabelingToolService(config: Config) {
 
   def readTranscript(): Unit = withDslContext(dslContext => {
     val byteArray = Files.readAllBytes(Paths.get("/home/jonas/Documents/DeutschAndreaErzaehlt/36/transcript.txt"))
-    val rec = transcriptToRecord(new Transcript(0, byteArray))
+    val rec = transcriptToRecord(new Transcript(0, byteArray, 1))
     dslContext.executeInsert(rec)
     ()
   })
@@ -84,7 +97,7 @@ class LabelingToolService(config: Config) {
       .set(TEXTAUDIOINDEX.AUDIOSTARTPOS, Integer.valueOf(textAudioIndex.audioStartPos))
       .set(TEXTAUDIOINDEX.AUDIOENDPOS, Integer.valueOf(textAudioIndex.audioEndPos))
       .set(TEXTAUDIOINDEX.SPEAKERKEY, Integer.valueOf(textAudioIndex.speakerKey))
-      .set(TEXTAUDIOINDEX.LABELED, byte2Byte( textAudioIndex.labeled))
+      .set(TEXTAUDIOINDEX.LABELED, byte2Byte(textAudioIndex.labeled))
       .where(TEXTAUDIOINDEX.ID.eq(textAudioIndex.id))
       .execute()
     ()
