@@ -1,9 +1,9 @@
 export class Transcript {
   id: number;
-  file: Array<number>;
+  text: string;
 
-  constructor(id: number, file: Array<number>) {
+  constructor(id: number, file: string) {
     this.id = id;
-    this.file = file;
+    this.text = file;
   }
 }

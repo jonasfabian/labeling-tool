@@ -5,6 +5,7 @@ package jooq.db.tables.records
 
 
 import java.lang.Integer
+import java.lang.String
 
 import jooq.db.tables.Transcript
 
@@ -14,11 +15,8 @@ import org.jooq.Record2
 import org.jooq.Row2
 import org.jooq.impl.UpdatableRecordImpl
 
-import scala.Array
-import scala.Byte
 
-
-class TranscriptRecord extends UpdatableRecordImpl[TranscriptRecord](Transcript.TRANSCRIPT) with Record2[Integer, Array[Byte]] {
+class TranscriptRecord extends UpdatableRecordImpl[TranscriptRecord](Transcript.TRANSCRIPT) with Record2[Integer, String] {
 
   def setId(value : Integer) : Unit = {
     set(0, value)
@@ -29,13 +27,13 @@ class TranscriptRecord extends UpdatableRecordImpl[TranscriptRecord](Transcript.
     if (r == null) null else r.asInstanceOf[Integer]
   }
 
-  def setFile(value : Array[Byte]) : Unit = {
+  def setText(value : String) : Unit = {
     set(1, value)
   }
 
-  def getFile : Array[Byte] = {
+  def getText : String = {
     val r = get(1)
-    if (r == null) null else r.asInstanceOf[Array[Byte]]
+    if (r == null) null else r.asInstanceOf[String]
   }
 
   // -------------------------------------------------------------------------
@@ -49,40 +47,40 @@ class TranscriptRecord extends UpdatableRecordImpl[TranscriptRecord](Transcript.
   // Record2 type implementation
   // -------------------------------------------------------------------------
 
-  override def fieldsRow : Row2[Integer, Array[Byte]] = {
-    super.fieldsRow.asInstanceOf[ Row2[Integer, Array[Byte]] ]
+  override def fieldsRow : Row2[Integer, String] = {
+    super.fieldsRow.asInstanceOf[ Row2[Integer, String] ]
   }
 
-  override def valuesRow : Row2[Integer, Array[Byte]] = {
-    super.valuesRow.asInstanceOf[ Row2[Integer, Array[Byte]] ]
+  override def valuesRow : Row2[Integer, String] = {
+    super.valuesRow.asInstanceOf[ Row2[Integer, String] ]
   }
   override def field1 : Field[Integer] = Transcript.TRANSCRIPT.ID
-  override def field2 : Field[Array[Byte]] = Transcript.TRANSCRIPT.FILE
+  override def field2 : Field[String] = Transcript.TRANSCRIPT.TEXT
   override def component1 : Integer = getId
-  override def component2 : Array[Byte] = getFile
+  override def component2 : String = getText
   override def value1 : Integer = getId
-  override def value2 : Array[Byte] = getFile
+  override def value2 : String = getText
 
   override def value1(value : Integer) : TranscriptRecord = {
     setId(value)
     this
   }
 
-  override def value2(value : Array[Byte]) : TranscriptRecord = {
-    setFile(value)
+  override def value2(value : String) : TranscriptRecord = {
+    setText(value)
     this
   }
 
-  override def values(value1 : Integer, value2 : Array[Byte]) : TranscriptRecord = {
+  override def values(value1 : Integer, value2 : String) : TranscriptRecord = {
     this.value1(value1)
     this.value2(value2)
     this
   }
 
-  def this(id : Integer, file : Array[Byte]) = {
+  def this(id : Integer, text : String) = {
     this()
 
     set(0, id)
-    set(1, file)
+    set(1, text)
   }
 }

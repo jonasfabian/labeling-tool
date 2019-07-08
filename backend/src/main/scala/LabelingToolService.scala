@@ -5,6 +5,7 @@ import jooq.db.Tables._
 import jooq.db.tables.records.{TextaudioindexRecord, TranscriptRecord}
 import java.nio.file.{Files, Paths}
 
+import scala.io.Source
 import scala.xml.XML
 
 class LabelingToolService(config: Config) {
@@ -38,12 +39,12 @@ class LabelingToolService(config: Config) {
         val file = XML.loadFile(path + "/transcript_indexes.xml")
         val samplingRate = (file \ "SamplingRate").text
         (file \ "TextAudioIndex").foreach(m => {
-          val textAudioIndex = new TextAudioIndex(0, samplingRate.toInt, (m \ "TextStartPos").text.toInt, (m \ "TextEndPos").text.toInt, (m \ "AudioStartPos").text.toInt, (m \ "AudioEndPos").text.toInt, (m \ "SpeakerKey").text.toInt, 0, i)
+          val textAudioIndex = new TextAudioIndex(i, samplingRate.toInt, (m \ "TextStartPos").text.toInt, (m \ "TextEndPos").text.toInt, (m \ "AudioStartPos").text.toInt, (m \ "AudioEndPos").text.toInt, (m \ "SpeakerKey").text.toInt, 0, i)
           newTextAudioIndex(textAudioIndex)
         })
       }
-      if (new java.io.File(path + "/audio.mp3").exists) {
-        this.readTranscript(path + "/audio.mp3")
+      if (new java.io.File(path + "/transcript.txt").exists) {
+        this.readTranscript(i, path + "/transcript.txt")
       }
     }
   }
@@ -62,11 +63,11 @@ class LabelingToolService(config: Config) {
   def getTranscript(id: Int): Array[Transcript] = withDslContext(dslContext => {
     dslContext.selectFrom(TRANSCRIPT)
       .where(TRANSCRIPT.ID.eq(id))
-      .fetchArray().map(m => Transcript(m.getId, m.getFile))
+      .fetchArray().map(m => Transcript(m.getId, m.getText))
   })
 
   def getTranscripts: Array[Transcript] = withDslContext(dslContext => {
-    dslContext.selectFrom(TRANSCRIPT).fetchArray().map(m => Transcript(m.getId, m.getFile))
+    dslContext.selectFrom(TRANSCRIPT).fetchArray().map(m => Transcript(m.getId, m.getText))
   })
 
   def newTextAudioIndex(t: TextAudioIndex): Unit = withDslContext(dslContext => {
@@ -75,16 +76,16 @@ class LabelingToolService(config: Config) {
     ()
   })
 
-  def readTranscript(path: String): Unit = withDslContext(dslContext => {
-    val byteArray = Files.readAllBytes(Paths.get(path))
-    val rec = transcriptToRecord(new Transcript(0, byteArray))
+  def readTranscript(id: Int, path: String): Unit = withDslContext(dslContext => {
+    val text = scala.io.Source.fromFile(path, "utf-8").mkString
+    val rec = transcriptToRecord(new Transcript(id, text))
     dslContext.executeInsert(rec)
     ()
   })
 
   def transcriptToRecord(t: Transcript): TranscriptRecord = {
     val rec = new TranscriptRecord()
-    rec.setFile(t.file)
+    rec.setText(t.text)
     rec
   }
 
@@ -110,6 +111,7 @@ class LabelingToolService(config: Config) {
       .set(TEXTAUDIOINDEX.AUDIOENDPOS, Integer.valueOf(textAudioIndex.audioEndPos))
       .set(TEXTAUDIOINDEX.SPEAKERKEY, Integer.valueOf(textAudioIndex.speakerKey))
       .set(TEXTAUDIOINDEX.LABELED, byte2Byte(textAudioIndex.labeled))
+      .set(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID, Integer.valueOf(textAudioIndex.transcriptFileId))
       .where(TEXTAUDIOINDEX.ID.eq(textAudioIndex.id))
       .execute()
     ()

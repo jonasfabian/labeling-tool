@@ -6,21 +6,19 @@ package jooq.db.tables.pojos
 
 import java.io.Serializable
 import java.lang.Integer
+import java.lang.String
 import java.lang.StringBuilder
-
-import scala.Array
-import scala.Byte
 
 
 case class Transcript(
     id : Integer
-  , file : Array[Byte]
+  , text : String
 ) extends Serializable {
 
   def this (value : Transcript) = {
     this(
         value.id
-      , value.file
+      , value.text
     )
   }
 
@@ -28,15 +26,15 @@ case class Transcript(
     this.id
   }
 
-  def getFile : Array[Byte] = {
-    this.file
+  def getText : String = {
+    this.text
   }
 
   override def toString : String = {
     val sb = new StringBuilder("Transcript (")
 
     sb.append(id)
-    sb.append(", ").append("[binary...]")
+    sb.append(", ").append(text)
 
     sb.append(")")
     return sb.toString

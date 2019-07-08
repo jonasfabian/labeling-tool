@@ -34,24 +34,15 @@ export class ContentComponent implements OnInit {
   textAudioMatch = new TextAudioMatch(new AudioSnippet(0, 0), new TextSnippet(0, 0));
 
   selectTabIndex = 0;
+  index = 0;
 
   textAudioIndexArray: Array<TextAudioIndex> = [];
 
   ngOnInit() {
-    this.readBlobAsText(1);
-  }
-
-  readBlobAsText(id: number): void {
-    this.apiService.getTranscript(id).subscribe(tr => {
-      const fileReader = new FileReader();
-      const byteArray = new Uint8Array(tr[0].file);
-      const blob = new Blob([byteArray], {type: 'application/octet-stream'});
-      fileReader.addEventListener('loadend', (e) => {
-        // @ts-ignore
-        this.text = e.target.result;
-      });
-      fileReader.readAsText(blob);
-    });
+    this.index++;
+    this.apiService.getTranscript(this.index).subscribe(r => r.map(rt => {
+      this.text = rt.text;
+    }));
   }
 
   fileChanged(e) {
@@ -89,9 +80,11 @@ export class ContentComponent implements OnInit {
   submitText(): void {
     this.textAudioMatch.audioSnippet = this.snip;
     this.textAudioMatch.textSnippet = new TextSnippet(this.highlightedTextStartPos, this.highlightedTextEndPos);
-    this.selectTabIndex = 1;
-    this.apiService.updateTextAudioIndex(new TextAudioIndex(13, 0, 0, 0, 0, 0, 0, 1)).subscribe(_ => {
-      this.apiService.getTextAudioIndex().subscribe(t => this.textAudioIndexArray = t);
+    this.apiService.updateTextAudioIndex(new TextAudioIndex(this.index, 0, Math.round(this.textAudioMatch.textSnippet.startPos), Math.round(this.textAudioMatch.textSnippet.endPos), Math.round(this.textAudioMatch.audioSnippet.startTime), Math.round(this.textAudioMatch.audioSnippet.endTime), 0, 1, this.index)).subscribe(_ => {
+      this.apiService.getTranscript(this.index).subscribe(r => r.map(rt => {
+        this.text = rt.text;
+        this.index++;
+      }));
     });
   }
 

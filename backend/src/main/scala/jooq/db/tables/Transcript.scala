@@ -30,7 +30,6 @@ import org.jooq.impl.Internal
 import org.jooq.impl.TableImpl
 
 import scala.Array
-import scala.Byte
 
 
 object Transcript {
@@ -62,7 +61,7 @@ extends TableImpl[TranscriptRecord](
 
   val ID : TableField[TranscriptRecord, Integer] = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), "")
 
-  val FILE : TableField[TranscriptRecord, Array[Byte]] = createField("file", org.jooq.impl.SQLDataType.BLOB, "")
+  val TEXT : TableField[TranscriptRecord, String] = createField("text", org.jooq.impl.SQLDataType.CLOB, "")
 
   def this() = {
     this(DSL.name("transcript"), null, null, null, null)

@@ -5,6 +5,7 @@ package jooq.db.tables.daos
 
 
 import java.lang.Integer
+import java.lang.String
 import java.util.List
 
 import jooq.db.tables.Transcript
@@ -12,9 +13,6 @@ import jooq.db.tables.records.TranscriptRecord
 
 import org.jooq.Configuration
 import org.jooq.impl.DAOImpl
-
-import scala.Array
-import scala.Byte
 
 
 class TranscriptDao(configuration : Configuration) extends DAOImpl[TranscriptRecord, jooq.db.tables.pojos.Transcript, Integer](Transcript.TRANSCRIPT, classOf[jooq.db.tables.pojos.Transcript], configuration) {
@@ -35,7 +33,7 @@ class TranscriptDao(configuration : Configuration) extends DAOImpl[TranscriptRec
     fetchOne(Transcript.TRANSCRIPT.ID, value)
   }
 
-  def fetchByFile(values : Array[Byte]*) : List[jooq.db.tables.pojos.Transcript] = {
-    fetch(Transcript.TRANSCRIPT.FILE, values:_*)
+  def fetchByText(values : String*) : List[jooq.db.tables.pojos.Transcript] = {
+    fetch(Transcript.TRANSCRIPT.TEXT, values:_*)
   }
 }
