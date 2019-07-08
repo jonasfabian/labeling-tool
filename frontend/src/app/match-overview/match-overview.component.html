@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="textAudioIndexArray.length != 0">
   <table mat-table [dataSource]="dataSource" matSort style="width: 100%;">
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
@@ -36,4 +36,8 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
   <mat-paginator [pageSizeOptions]="[10, 5, 100]" showFirstLastButtons></mat-paginator>
+</div>
+
+<div>
+  No Data available yet!
 </div>

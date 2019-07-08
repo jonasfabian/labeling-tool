@@ -10,5 +10,8 @@
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
-  <mat-button-toggle (click)="onClick()">Submit</mat-button-toggle>
+  <mat-button-toggle-group>
+    <mat-button-toggle (click)="closeDialog()">Submit</mat-button-toggle>
+    <mat-button-toggle (click)="closeDialog()">Cancel</mat-button-toggle>
+  </mat-button-toggle-group>
 </div>
