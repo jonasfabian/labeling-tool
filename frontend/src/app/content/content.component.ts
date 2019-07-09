@@ -40,6 +40,10 @@ export class ContentComponent implements OnInit {
 
   ngOnInit() {
     this.index++;
+    this.nextTranscript();
+  }
+
+  nextTranscript() {
     this.apiService.getTranscript(this.index).subscribe(r => r.map(rt => {
       this.text = rt.text;
     }));
@@ -78,13 +82,13 @@ export class ContentComponent implements OnInit {
   }
 
   submitText(): void {
-    this.textAudioMatch.audioSnippet = this.snip;
-    this.textAudioMatch.textSnippet = new TextSnippet(this.highlightedTextStartPos, this.highlightedTextEndPos);
-    this.apiService.updateTextAudioIndex(new TextAudioIndex(this.index, 0, Math.round(this.textAudioMatch.textSnippet.startPos), Math.round(this.textAudioMatch.textSnippet.endPos), Math.round(this.textAudioMatch.audioSnippet.startTime), Math.round(this.textAudioMatch.audioSnippet.endTime), 0, 1, this.index)).subscribe(_ => {
-      this.apiService.getTranscript(this.index).subscribe(r => r.map(rt => {
-        this.text = rt.text;
-        this.index++;
-      }));
+    this.apiService.getTextAudioIndex(this.index).subscribe(t => {
+      t.map(tr => {
+        this.apiService.updateTextAudioIndex(new TextAudioIndex(tr.id, tr.samplingRate, this.highlightedTextStartPos, this.highlightedTextEndPos, this.snip.startTime, this.snip.endTime, tr.speakerKey, 1, tr.transcriptFileId)).subscribe(_ => {
+          this.index++;
+          this.nextTranscript();
+        });
+      });
     });
   }
 

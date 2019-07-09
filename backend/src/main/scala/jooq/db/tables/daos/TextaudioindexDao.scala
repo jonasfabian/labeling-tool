@@ -5,6 +5,7 @@ package jooq.db.tables.daos
 
 
 import java.lang.Byte
+import java.lang.Double
 import java.lang.Integer
 import java.util.List
 
@@ -45,11 +46,11 @@ class TextaudioindexDao(configuration : Configuration) extends DAOImpl[Textaudio
     fetch(Textaudioindex.TEXTAUDIOINDEX.TEXTENDPOS, values:_*)
   }
 
-  def fetchByAudiostartpos(values : Integer*) : List[jooq.db.tables.pojos.Textaudioindex] = {
+  def fetchByAudiostartpos(values : Double*) : List[jooq.db.tables.pojos.Textaudioindex] = {
     fetch(Textaudioindex.TEXTAUDIOINDEX.AUDIOSTARTPOS, values:_*)
   }
 
-  def fetchByAudioendpos(values : Integer*) : List[jooq.db.tables.pojos.Textaudioindex] = {
+  def fetchByAudioendpos(values : Double*) : List[jooq.db.tables.pojos.Textaudioindex] = {
     fetch(Textaudioindex.TEXTAUDIOINDEX.AUDIOENDPOS, values:_*)
   }
 

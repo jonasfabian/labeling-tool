@@ -23,7 +23,7 @@ export class MatchOverviewComponent implements OnInit, OnChanges {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   ngOnInit() {
-    this.apiService.getTextAudioIndex().subscribe(i => {
+    this.apiService.getTextAudioIndexes().subscribe(i => {
       this.textAudioIndexArray = i;
       this.dataSource = new MatTableDataSource<TextAudioIndex>(i);
       this.dataSource.paginator = this.paginator;
@@ -32,7 +32,7 @@ export class MatchOverviewComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    this.apiService.getTextAudioIndex().subscribe(i => {
+    this.apiService.getTextAudioIndexes().subscribe(i => {
       this.textAudioIndexArray = i;
     });
   }

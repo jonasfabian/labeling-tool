@@ -17,7 +17,11 @@ export class ApiService {
 
   url = 'http://localhost:8080/api/match/';
 
-  getTextAudioIndex(): Observable<Array<TextAudioIndex>> {
+  getTextAudioIndex(id: number): Observable<Array<TextAudioIndex>> {
+    return this.http.get<Array<TextAudioIndex>>(this.url + 'getTextAudioIndex?id=' + id);
+  }
+
+  getTextAudioIndexes(): Observable<Array<TextAudioIndex>> {
     return this.http.get<Array<TextAudioIndex>>(this.url + 'getTextAudioIndexes');
   }
 

@@ -63,6 +63,8 @@ extends TableImpl[TranscriptRecord](
 
   val TEXT : TableField[TranscriptRecord, String] = createField("text", org.jooq.impl.SQLDataType.CLOB, "")
 
+  val FILEID : TableField[TranscriptRecord, Integer] = createField("fileId", org.jooq.impl.SQLDataType.INTEGER.nullable(false), "")
+
   def this() = {
     this(DSL.name("transcript"), null, null, null, null)
   }

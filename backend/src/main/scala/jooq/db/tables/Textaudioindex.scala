@@ -6,6 +6,7 @@ package jooq.db.tables
 
 import java.lang.Byte
 import java.lang.Class
+import java.lang.Double
 import java.lang.Integer
 import java.lang.String
 import java.util.Arrays
@@ -68,9 +69,9 @@ extends TableImpl[TextaudioindexRecord](
 
   val TEXTENDPOS : TableField[TextaudioindexRecord, Integer] = createField("textEndPos", org.jooq.impl.SQLDataType.INTEGER, "")
 
-  val AUDIOSTARTPOS : TableField[TextaudioindexRecord, Integer] = createField("audioStartPos", org.jooq.impl.SQLDataType.INTEGER, "")
+  val AUDIOSTARTPOS : TableField[TextaudioindexRecord, Double] = createField("audioStartPos", org.jooq.impl.SQLDataType.DOUBLE, "")
 
-  val AUDIOENDPOS : TableField[TextaudioindexRecord, Integer] = createField("audioEndPos", org.jooq.impl.SQLDataType.INTEGER, "")
+  val AUDIOENDPOS : TableField[TextaudioindexRecord, Double] = createField("audioEndPos", org.jooq.impl.SQLDataType.DOUBLE, "")
 
   val SPEAKERKEY : TableField[TextaudioindexRecord, Integer] = createField("speakerKey", org.jooq.impl.SQLDataType.INTEGER, "")
 

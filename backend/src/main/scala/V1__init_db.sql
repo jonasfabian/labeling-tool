@@ -7,8 +7,8 @@ CREATE TABLE IF NOT EXISTS `textAudioIndex` (
     `samplingRate` INT,
     `textStartPos` INT,
     `textEndPos` INT,
-    `audioStartPos` INT,
-    `audioEndPos` INT,
+    `audioStartPos` DOUBLE,
+    `audioEndPos` DOUBLE,
     `speakerKey` INT,
     `labeled` tinyInt default 0,
     `transcript_file_id` INT,
@@ -18,5 +18,6 @@ CREATE TABLE IF NOT EXISTS `textAudioIndex` (
 CREATE TABLE IF NOT EXISTS `transcript` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `text` MEDIUMTEXT CHARACTER SET utf8,
+    `fileId` INT NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;

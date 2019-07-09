@@ -6,6 +6,7 @@ package jooq.db.tables.pojos
 
 import java.io.Serializable
 import java.lang.Byte
+import java.lang.Double
 import java.lang.Integer
 import java.lang.StringBuilder
 
@@ -15,8 +16,8 @@ case class Textaudioindex(
   , samplingrate : Integer
   , textstartpos : Integer
   , textendpos : Integer
-  , audiostartpos : Integer
-  , audioendpos : Integer
+  , audiostartpos : Double
+  , audioendpos : Double
   , speakerkey : Integer
   , labeled : Byte
   , transcriptFileId : Integer
@@ -52,11 +53,11 @@ case class Textaudioindex(
     this.textendpos
   }
 
-  def getAudiostartpos : Integer = {
+  def getAudiostartpos : Double = {
     this.audiostartpos
   }
 
-  def getAudioendpos : Integer = {
+  def getAudioendpos : Double = {
     this.audioendpos
   }
 

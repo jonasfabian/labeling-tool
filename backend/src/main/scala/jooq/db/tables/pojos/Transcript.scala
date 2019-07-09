@@ -13,12 +13,14 @@ import java.lang.StringBuilder
 case class Transcript(
     id : Integer
   , text : String
+  , fileid : Integer
 ) extends Serializable {
 
   def this (value : Transcript) = {
     this(
         value.id
       , value.text
+      , value.fileid
     )
   }
 
@@ -30,11 +32,16 @@ case class Transcript(
     this.text
   }
 
+  def getFileid : Integer = {
+    this.fileid
+  }
+
   override def toString : String = {
     val sb = new StringBuilder("Transcript (")
 
     sb.append(id)
     sb.append(", ").append(text)
+    sb.append(", ").append(fileid)
 
     sb.append(")")
     return sb.toString
