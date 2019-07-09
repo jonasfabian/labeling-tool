@@ -13,6 +13,7 @@ object MigrateDB extends App with CorsSupport {
     labelingToolService = new LabelingToolService(config)
     extractFromXml()
     extractFromTxt()
+    extractFromAudio()
   }
 
 
@@ -47,6 +48,19 @@ object MigrateDB extends App with CorsSupport {
     println("Extracted all txt-data from directory ...")
     ()
   })
+
+  def extractFromAudio(): Unit = labelingToolService.withDslContext(dslContext => {
+    var index = 0
+    val path = "/home/jonas/Documents/DeutschAndreaErzaehlt/"
+    getFileTree(new File(path)).filter(_.getName.endsWith(".mp3")).foreach(file => {
+      index = index + 1
+      val rec = labelingToolService.audioToRecord(new Audio(index, file.getAbsolutePath, file.getParentFile.getName.toInt))
+      dslContext.executeInsert(rec)
+    })
+    println("Extracted all audio-data from directory ...")
+    ()
+  })
+
 
   def newTextAudioIndex(t: TextAudioIndex): Unit = labelingToolService.withDslContext(dslContext => {
     val rec = labelingToolService.textAudioIndexToRecord(t)

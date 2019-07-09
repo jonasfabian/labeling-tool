@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {TextAudioIndex} from '../models/textAudioIndex';
 import {Transcript} from '../models/transcript';
+import {AudioFile} from '../models/Audio';
 
 @Injectable({
   providedIn: 'root'
@@ -35,5 +36,9 @@ export class ApiService {
 
   getTranscript(id: number): Observable<Transcript> {
     return this.http.get<Transcript>(this.url + 'getTranscript?id=' + id);
+  }
+
+  getAudio(fileId: number): Observable<AudioFile> {
+    return this.http.get<AudioFile>(this.url + 'getAudio?id=' + fileId);
   }
 }

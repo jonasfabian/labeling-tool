@@ -2,7 +2,7 @@ import com.typesafe.config.Config
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
 import jooq.db.Tables._
-import jooq.db.tables.records.{TextaudioindexRecord, TranscriptRecord}
+import jooq.db.tables.records.{AudioRecord, TextaudioindexRecord, TranscriptRecord}
 
 class LabelingToolService(config: Config) {
 
@@ -41,6 +41,13 @@ class LabelingToolService(config: Config) {
       .fetchOne().map(m => Transcript(m.get(TRANSCRIPT.ID).toInt, m.get(TRANSCRIPT.TEXT).toString, m.get(TRANSCRIPT.FILEID).toInt))
   })
 
+  def getAudio(id: Int): Audio = withDslContext(dslContext => {
+    dslContext.select()
+      .from(AUDIO)
+      .where(AUDIO.FILEID.eq(id))
+      .fetchOne().map(m => Audio(m.get(AUDIO.ID).toInt, m.get(AUDIO.PATH).toString, m.get(AUDIO.FILEID).toInt))
+  })
+
   def getTranscripts: Array[Transcript] = withDslContext(dslContext => {
     dslContext.selectFrom(TRANSCRIPT).fetchArray().map(m => Transcript(m.getId, m.getText, m.getFileid))
   })
@@ -48,6 +55,13 @@ class LabelingToolService(config: Config) {
   def transcriptToRecord(t: Transcript): TranscriptRecord = {
     val rec = new TranscriptRecord()
     rec.setText(t.text)
+    rec.setFileid(t.fileId)
+    rec
+  }
+
+  def audioToRecord(t: Audio): AudioRecord = {
+    val rec = new AudioRecord()
+    rec.setPath(t.path)
     rec.setFileid(t.fileId)
     rec
   }

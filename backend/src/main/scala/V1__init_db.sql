@@ -21,3 +21,10 @@ CREATE TABLE IF NOT EXISTS `transcript` (
     `fileId` INT NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `audio` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `path` VARCHAR(200),
+    `fileId` INT NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB;

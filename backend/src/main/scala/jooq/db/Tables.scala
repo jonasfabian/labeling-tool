@@ -7,6 +7,8 @@ package jooq.db
 
 object Tables {
 
+  val AUDIO = jooq.db.tables.Audio.AUDIO
+
   val FLYWAY_SCHEMA_HISTORY = jooq.db.tables.FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY
 
   val TEXTAUDIOINDEX = jooq.db.tables.Textaudioindex.TEXTAUDIOINDEX

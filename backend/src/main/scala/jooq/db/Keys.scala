@@ -6,9 +6,11 @@ package jooq.db
 
 import java.lang.Integer
 
+import jooq.db.tables.Audio
 import jooq.db.tables.FlywaySchemaHistory
 import jooq.db.tables.Textaudioindex
 import jooq.db.tables.Transcript
+import jooq.db.tables.records.AudioRecord
 import jooq.db.tables.records.FlywaySchemaHistoryRecord
 import jooq.db.tables.records.TextaudioindexRecord
 import jooq.db.tables.records.TranscriptRecord
@@ -24,6 +26,7 @@ object Keys {
   // IDENTITY definitions
   // -------------------------------------------------------------------------
 
+  val IDENTITY_AUDIO = Identities0.IDENTITY_AUDIO
   val IDENTITY_TEXTAUDIOINDEX = Identities0.IDENTITY_TEXTAUDIOINDEX
   val IDENTITY_TRANSCRIPT = Identities0.IDENTITY_TRANSCRIPT
 
@@ -31,6 +34,7 @@ object Keys {
   // UNIQUE and PRIMARY KEY definitions
   // -------------------------------------------------------------------------
 
+  val KEY_AUDIO_PRIMARY = UniqueKeys0.KEY_AUDIO_PRIMARY
   val KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY = UniqueKeys0.KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY
   val KEY_TEXTAUDIOINDEX_PRIMARY = UniqueKeys0.KEY_TEXTAUDIOINDEX_PRIMARY
   val KEY_TRANSCRIPT_PRIMARY = UniqueKeys0.KEY_TRANSCRIPT_PRIMARY
@@ -45,11 +49,13 @@ object Keys {
   // -------------------------------------------------------------------------
 
   private object Identities0 {
+    val IDENTITY_AUDIO : Identity[AudioRecord, Integer] = Internal.createIdentity(Audio.AUDIO, Audio.AUDIO.ID)
     val IDENTITY_TEXTAUDIOINDEX : Identity[TextaudioindexRecord, Integer] = Internal.createIdentity(Textaudioindex.TEXTAUDIOINDEX, Textaudioindex.TEXTAUDIOINDEX.ID)
     val IDENTITY_TRANSCRIPT : Identity[TranscriptRecord, Integer] = Internal.createIdentity(Transcript.TRANSCRIPT, Transcript.TRANSCRIPT.ID)
   }
 
   private object UniqueKeys0 {
+    val KEY_AUDIO_PRIMARY : UniqueKey[AudioRecord] = Internal.createUniqueKey(Audio.AUDIO, "KEY_audio_PRIMARY", Audio.AUDIO.ID)
     val KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY : UniqueKey[FlywaySchemaHistoryRecord] = Internal.createUniqueKey(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, "KEY_flyway_schema_history_PRIMARY", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK)
     val KEY_TEXTAUDIOINDEX_PRIMARY : UniqueKey[TextaudioindexRecord] = Internal.createUniqueKey(Textaudioindex.TEXTAUDIOINDEX, "KEY_textAudioIndex_PRIMARY", Textaudioindex.TEXTAUDIOINDEX.ID)
     val KEY_TRANSCRIPT_PRIMARY : UniqueKey[TranscriptRecord] = Internal.createUniqueKey(Transcript.TRANSCRIPT, "KEY_transcript_PRIMARY", Transcript.TRANSCRIPT.ID)
