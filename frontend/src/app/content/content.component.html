@@ -3,53 +3,24 @@
     <mat-card class="top-card">
       <app-audio-player (uploadSuccess)="openSnackBar($event)" (snippet)="retrieveSnippet($event)"></app-audio-player>
     </mat-card>
-    <div style="margin-top: 15px;">
-      <mat-grid-list cols="2" rowHeight="100px">
-        <mat-grid-tile>
-          <mat-card class="card" style="width: 100%;">
-            <span>Upload Text</span>
-            <input hidden id="uploadText" type="file" accept=".txt" (change)="fileChanged($event)">
-            <label style="float: right; cursor: pointer;" for="uploadText" title="Upload Text">
-              <mat-icon>cloud_upload</mat-icon>
-            </label>
-          </mat-card>
-        </mat-grid-tile>
-      </mat-grid-list>
-      <mat-grid-list gutterSize="15px" *ngIf="text != ''" cols="2">
-        <mat-grid-tile>
-          <mat-card
-            style="width: calc(100% - 35px); position: absolute; background-color: whitesmoke; max-height: calc(100% - 380px); height: calc(100% - 380px); top: 0; overflow-y: scroll;"
-            class="card">
-            <h2>Text</h2>
-            <div (mouseup)="displayHighlightedText()">
-              <span style="white-space: pre-wrap;">{{text}}</span>
-            </div>
-          </mat-card>
-        </mat-grid-tile>
-        <mat-grid-tile>
-          <mat-card
-            style="width: calc(100% - 35px); position: absolute; background-color: whitesmoke; max-height: calc(100% - 380px); height: calc(100% - 380px); top: 0; overflow-y: scroll;"
-            class="card">
-            <div>
-              <h2>Selected Text</h2>
-              <mat-button-toggle *ngIf="highlightedText != ''" (click)="submitText()"
-                                 style="position: absolute; right: 15px; top: 15px;">Submit
-              </mat-button-toggle>
-            </div>
-            <div *ngIf="highlightedText != ''">
-              <span style="white-space: pre-wrap;">{{highlightedText}}</span>
-            </div>
-          </mat-card>
-        </mat-grid-tile>
-      </mat-grid-list>
-      <!--<mat-card class="card">
-        <div>
-          <span>Starting position: {{this.highlightedTextStartPos}}</span>
+    <div style="max-height: calc(30% - 85px);">
+      <mat-card class="card" style="width: calc(50% - 30px); float: left;">
+        <h2>Text</h2>
+        <div (mouseup)="displayHighlightedText()">
+          <span style="white-space: pre-wrap;">{{text}}</span>
         </div>
+      </mat-card>
+      <mat-card class="card" style="width: calc(50% - 50px); float: right;">
         <div>
-          <span>Ending position: {{this.highlightedTextEndPos}}</span>
+          <h2>Selected Text</h2>
+          <mat-button-toggle *ngIf="highlightedText != ''" (click)="submitText()"
+                             style="position: absolute; right: 15px; top: 15px;">Submit
+          </mat-button-toggle>
         </div>
-      </mat-card>-->
+        <div *ngIf="highlightedText != ''">
+          <span style="white-space: pre-wrap;">{{highlightedText}}</span>
+        </div>
+      </mat-card>
     </div>
   </mat-tab>
   <mat-tab (click)="selectTabIndex = 1" label="Match Overview">
