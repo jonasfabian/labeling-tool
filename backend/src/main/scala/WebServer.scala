@@ -23,8 +23,6 @@ object WebServer extends App with CorsSupport {
     val labelingToolRestApi = new LabelingToolRestApi(labelingToolService)
     val routes = corsHandler(labelingToolRestApi.route)
 
-    labelingToolService.extractFromXml()
-
     val bindingFuture = Http().bindAndHandle(routes, "localhost", 8080)
     println(s"Server online at http://localhost:8080/\nPress RETURN to stop...")
     StdIn.readLine() // let it run until user presses return

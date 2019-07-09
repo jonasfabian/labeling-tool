@@ -22,6 +22,7 @@ object JooqSchemaGenerator extends App {
     flyway.setLocations("")
     flyway.clean()
     flyway.migrate()
+    println("Database cleaned and setup...")
     ()
   }
 

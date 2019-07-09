@@ -3,15 +3,12 @@ import org.jooq.DSLContext
 import org.jooq.impl.DSL
 import jooq.db.Tables._
 import jooq.db.tables.records.{TextaudioindexRecord, TranscriptRecord}
-import scala.xml.XML
 
 class LabelingToolService(config: Config) {
 
-  private val url = config.getString("labeling-tool.db.url")
-  private val user = config.getString("labeling-tool.db.user")
-  private val password = config.getString("labeling-tool.db.password")
-  private val path = "/home/jonas/Documents/DeutschAndreaErzaehlt/"
-  private var index = 0
+  val url: String = config.getString("labeling-tool.db.url")
+  val user: String = config.getString("labeling-tool.db.user")
+  val password: String = config.getString("labeling-tool.db.password")
 
   def withDslContext[A](f: DSLContext => A): A = {
     val ctx = DSL.using(url, user, password)
@@ -24,26 +21,6 @@ class LabelingToolService(config: Config) {
         throw new RuntimeException(e)
     }
     finally ctx.close()
-  }
-
-  def extractFromXml(): Unit = {
-    var i = 0
-    while (i < 10000) {
-      i = i+1
-      this.index = i
-      var path = "/home/jonas/Documents/DeutschAndreaErzaehlt/" + i
-      if (new java.io.File(path + "/transcript_indexes.xml").exists) {
-        val file = XML.loadFile(path + "/transcript_indexes.xml")
-        val samplingRate = (file \ "SamplingRate").text
-        (file \ "TextAudioIndex").foreach(m => {
-          val textAudioIndex = new TextAudioIndex(i, samplingRate.toInt, (m \ "TextStartPos").text.toInt, (m \ "TextEndPos").text.toInt, (m \ "AudioStartPos").text.toDouble, (m \ "AudioEndPos").text.toDouble, (m \ "SpeakerKey").text.toInt, 0, i)
-          newTextAudioIndex(textAudioIndex)
-        })
-      }
-      if (new java.io.File(path + "/transcript.txt").exists) {
-        this.readTranscript(i, path + "/transcript.txt")
-      }
-    }
   }
 
   def getTextAudioIndex(id: Int): TextAudioIndex = withDslContext(dslContext => {
@@ -66,19 +43,6 @@ class LabelingToolService(config: Config) {
 
   def getTranscripts: Array[Transcript] = withDslContext(dslContext => {
     dslContext.selectFrom(TRANSCRIPT).fetchArray().map(m => Transcript(m.getId, m.getText, m.getFileid))
-  })
-
-  def newTextAudioIndex(t: TextAudioIndex): Unit = withDslContext(dslContext => {
-    val rec = textAudioIndexToRecord(t)
-    dslContext.executeInsert(rec)
-    ()
-  })
-
-  def readTranscript(id: Int, path: String): Unit = withDslContext(dslContext => {
-    val text = scala.io.Source.fromFile(path, "utf-8").mkString
-    val rec = transcriptToRecord(new Transcript(id, text, id))
-    dslContext.executeInsert(rec)
-    ()
   })
 
   def transcriptToRecord(t: Transcript): TranscriptRecord = {
