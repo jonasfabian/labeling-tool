@@ -17,8 +17,8 @@ export class ApiService {
 
   url = 'http://localhost:8080/api/match/';
 
-  getTextAudioIndex(id: number): Observable<Array<TextAudioIndex>> {
-    return this.http.get<Array<TextAudioIndex>>(this.url + 'getTextAudioIndex?id=' + id);
+  getTextAudioIndex(id: number): Observable<TextAudioIndex> {
+    return this.http.get<TextAudioIndex>(this.url + 'getTextAudioIndex?id=' + id);
   }
 
   getTextAudioIndexes(): Observable<Array<TextAudioIndex>> {
@@ -33,7 +33,7 @@ export class ApiService {
     return this.http.get<Array<Transcript>>(this.url + 'getTranscripts');
   }
 
-  getTranscript(id: number): Observable<Array<Transcript>> {
-    return this.http.get<Array<Transcript>>(this.url + 'getTranscript?id=' + id);
+  getTranscript(id: number): Observable<Transcript> {
+    return this.http.get<Transcript>(this.url + 'getTranscript?id=' + id);
   }
 }

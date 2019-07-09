@@ -1,7 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {AudioSnippet} from '../models/audioSnippet';
-import {TextAudioMatch} from '../models/textAudioMatch';
-import {TextSnippet} from '../models/textSnippet';
 import {MatSnackBar} from '@angular/material';
 import {ApiService} from '../services/api.service';
 import {TextAudioIndex} from '../models/textAudioIndex';
@@ -22,7 +20,6 @@ export class ContentComponent implements OnInit {
   }
 
   file: any;
-  audio: string;
   snip = new AudioSnippet(null, null);
   text: string | ArrayBuffer = '';
 
@@ -31,7 +28,6 @@ export class ContentComponent implements OnInit {
   highlightedText = '';
   highlightedTextStartPos = 0;
   highlightedTextEndPos = 0;
-  textAudioMatch = new TextAudioMatch(new AudioSnippet(0, 0), new TextSnippet(0, 0));
 
   selectTabIndex = 0;
   index = 0;
@@ -44,9 +40,9 @@ export class ContentComponent implements OnInit {
   }
 
   nextTranscript() {
-    this.apiService.getTranscript(this.index).subscribe(r => r.map(rt => {
-      this.text = rt.text;
-    }));
+    this.apiService.getTranscript(this.index).subscribe(r => {
+      this.text = r.text;
+    });
   }
 
   fileChanged(e) {
@@ -78,14 +74,12 @@ export class ContentComponent implements OnInit {
   }
 
   submitText(): void {
-    this.apiService.getTextAudioIndex(this.index).subscribe(t => {
-      t.map(tr => {
-        this.apiService.updateTextAudioIndex(new TextAudioIndex(tr.id, tr.samplingRate, this.highlightedTextStartPos, this.highlightedTextEndPos, this.snip.startTime, this.snip.endTime, tr.speakerKey, 1, tr.transcriptFileId)).subscribe(_ => {
-          this.index++;
-          this.nextTranscript();
-          this.apiService.getTextAudioIndexes().subscribe(i => {
-            this.textAudioIndexArray = i;
-          });
+    this.apiService.getTextAudioIndex(this.index).subscribe(tr => {
+      this.apiService.updateTextAudioIndex(new TextAudioIndex(tr.id, tr.samplingRate, this.highlightedTextStartPos, this.highlightedTextEndPos, this.snip.startTime, this.snip.endTime, tr.speakerKey, 1, tr.transcriptFileId)).subscribe(_ => {
+        this.index++;
+        this.nextTranscript();
+        this.apiService.getTextAudioIndexes().subscribe(i => {
+          this.textAudioIndexArray = i;
         });
       });
     });
