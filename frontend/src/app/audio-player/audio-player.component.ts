@@ -35,7 +35,7 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
 
   @Output() snippet = new EventEmitter<AudioSnippet>();
   @Output() uploadSuccess = new EventEmitter<boolean>();
-  @Input() audioFile: string;
+  audioFile: string;
 
   reg: any;
 
@@ -144,6 +144,10 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   seekInAudio(seconds: any) {
     const totalTime = this.waveSurfer.getDuration();
     this.waveSurfer.seekTo(seconds / totalTime);
+  }
+
+  uploadAudioFile(file: File) {
+    this.audioFile = URL.createObjectURL(file);
   }
 
   openDialog(): void {

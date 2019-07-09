@@ -54,6 +54,13 @@
   <mat-button-toggle (click)="openDialog()" style="margin-left: 5px;">
    <span>Precise Region</span>
   </mat-button-toggle>
+  <mat-button-toggle style="margin-left: 5px; position: absolute; bottom: 16px; height: 48px;">
+    <label style="float: right; cursor: pointer;" for="uploadAudio" title="Upload Audio">
+      <mat-icon>cloud_upload</mat-icon>
+    </label>
+    <input hidden #AudioInput id="uploadAudio" type="file" accept=".mp3"
+           (change)="uploadAudioFile(AudioInput.files[0])">
+  </mat-button-toggle>
   <div style="float: right;">
     <mat-button-toggle style="margin-right: 5px;" (click)="zoomLevel(zoomLvl - 10)">
       <mat-icon>zoom_out</mat-icon>

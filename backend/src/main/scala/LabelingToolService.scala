@@ -3,9 +3,6 @@ import org.jooq.DSLContext
 import org.jooq.impl.DSL
 import jooq.db.Tables._
 import jooq.db.tables.records.{TextaudioindexRecord, TranscriptRecord}
-import java.nio.file.{Files, Paths}
-
-import scala.io.Source
 import scala.xml.XML
 
 class LabelingToolService(config: Config) {
@@ -49,21 +46,22 @@ class LabelingToolService(config: Config) {
     }
   }
 
-  def getTextAudioIndex(id: Int): Array[TextAudioIndex] = withDslContext(dslContext => {
+  def getTextAudioIndex(id: Int): TextAudioIndex = withDslContext(dslContext => {
     dslContext.select()
       .from(TEXTAUDIOINDEX)
       .where(TEXTAUDIOINDEX.ID.eq(id))
-      .fetchArray().map(m => TextAudioIndex(m.get(TEXTAUDIOINDEX.ID).toInt, m.get(TEXTAUDIOINDEX.SAMPLINGRATE).toInt, m.get(TEXTAUDIOINDEX.TEXTSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.TEXTENDPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOSTARTPOS).toDouble, m.get(TEXTAUDIOINDEX.AUDIOENDPOS).toDouble, m.get(TEXTAUDIOINDEX.SPEAKERKEY).toInt, m.get(TEXTAUDIOINDEX.LABELED).toByte, m.get(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID).toInt))
+      .fetchOne().map(m => TextAudioIndex(m.get(TEXTAUDIOINDEX.ID).toInt, m.get(TEXTAUDIOINDEX.SAMPLINGRATE).toInt, m.get(TEXTAUDIOINDEX.TEXTSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.TEXTENDPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOSTARTPOS).toDouble, m.get(TEXTAUDIOINDEX.AUDIOENDPOS).toDouble, m.get(TEXTAUDIOINDEX.SPEAKERKEY).toInt, m.get(TEXTAUDIOINDEX.LABELED).toByte, m.get(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID).toInt))
   })
 
   def getTextAudioIndexes: Array[TextAudioIndex] = withDslContext(dslContext => {
     dslContext.selectFrom(TEXTAUDIOINDEX).fetchArray().map(m => TextAudioIndex(m.getId, m.getSamplingrate, m.getTextstartpos, m.getTextendpos, m.getAudiostartpos, m.getAudioendpos, m.getSpeakerkey, m.getLabeled, m.getTranscriptFileId))
   })
 
-  def getTranscript(id: Int): Array[Transcript] = withDslContext(dslContext => {
-    dslContext.selectFrom(TRANSCRIPT)
+  def getTranscript(id: Int): Transcript = withDslContext(dslContext => {
+    dslContext.select()
+      .from(TRANSCRIPT)
       .where(TRANSCRIPT.ID.eq(id))
-      .fetchArray().map(m => Transcript(m.getId, m.getText, m.getFileid))
+      .fetchOne().map(m => Transcript(m.get(TRANSCRIPT.ID).toInt, m.get(TRANSCRIPT.TEXT).toString, m.get(TRANSCRIPT.FILEID).toInt))
   })
 
   def getTranscripts: Array[Transcript] = withDslContext(dslContext => {

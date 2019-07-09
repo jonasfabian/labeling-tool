@@ -77,16 +77,15 @@ export class ContentComponent implements OnInit {
     this.snip = snippet;
   }
 
-  onFileChanged(file: File) {
-    this.audio = URL.createObjectURL(file);
-  }
-
   submitText(): void {
     this.apiService.getTextAudioIndex(this.index).subscribe(t => {
       t.map(tr => {
         this.apiService.updateTextAudioIndex(new TextAudioIndex(tr.id, tr.samplingRate, this.highlightedTextStartPos, this.highlightedTextEndPos, this.snip.startTime, this.snip.endTime, tr.speakerKey, 1, tr.transcriptFileId)).subscribe(_ => {
           this.index++;
           this.nextTranscript();
+          this.apiService.getTextAudioIndexes().subscribe(i => {
+            this.textAudioIndexArray = i;
+          });
         });
       });
     });
