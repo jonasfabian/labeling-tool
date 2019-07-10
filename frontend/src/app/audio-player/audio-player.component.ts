@@ -2,7 +2,6 @@ import {
   Component,
   ElementRef,
   EventEmitter, Inject,
-  Input,
   OnChanges,
   OnInit,
   Output,
@@ -15,6 +14,8 @@ import CursorPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 import {AudioSnippet} from '../models/audioSnippet';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
+import {SafeResourceUrl} from '@angular/platform-browser';
+import {ApiService} from '../services/api.service';
 
 @Component({
   selector: 'app-audio-player',
@@ -24,7 +25,8 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 export class AudioPlayerComponent implements OnInit, OnChanges {
 
   constructor(
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private apiService: ApiService
   ) {
   }
 
@@ -35,19 +37,44 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
 
   @Output() snippet = new EventEmitter<AudioSnippet>();
   @Output() uploadSuccess = new EventEmitter<boolean>();
-  audioFile: string;
-
+  audioFile: SafeResourceUrl;
   reg: any;
+  BASE64_MARKER = ';base64,';
+  blobUrl = '';
 
   ngOnInit() {
     this.onPreviewPressed();
+    this.loadAudioBlob(37);
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (this.audioFile !== undefined) {
-      this.waveSurfer.load(this.audioFile);
-      this.uploadSuccess.emit(true);
+  convertDataURIToBinary(dataURI) {
+    const base64Index = dataURI.indexOf(this.BASE64_MARKER) + this.BASE64_MARKER.length;
+    const base64 = dataURI.substring(base64Index);
+    const raw = window.atob(base64);
+    const rawLength = raw.length;
+    const array = new Uint8Array(new ArrayBuffer(rawLength));
+
+    for (let i = 0; i < rawLength; i++) {
+      array[i] = raw.charCodeAt(i);
     }
+    return array;
+  }
+
+  ngOnChanges(): void {
+    this.loadAudioBlob(48);
+  }
+
+  loadAudioBlob(fileId: number): void {
+    this.apiService.getAudioFile(fileId).subscribe(resp => {
+      const reader = new FileReader();
+      reader.readAsDataURL(resp);
+      reader.addEventListener('loadend', _ => {
+        const binary = this.convertDataURIToBinary(reader.result);
+        const blob = new Blob([binary], {type: `application/octet-stream`});
+        this.blobUrl = URL.createObjectURL(blob);
+        this.waveSurfer.load(this.blobUrl);
+      });
+    });
   }
 
   generateWaveform(): void {

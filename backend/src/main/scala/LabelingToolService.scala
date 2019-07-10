@@ -1,8 +1,19 @@
+import java.io.File
+import java.nio.file.Paths
+
+import akka.http.scaladsl.marshalling.ToResponseMarshallable
+import akka.http.scaladsl.model.HttpEntity.Chunked
+import akka.http.scaladsl.model.headers._
+import akka.http.scaladsl.model.{ContentTypes, HttpEntity, HttpResponse}
+import akka.stream.scaladsl.FileIO
+import akka.util.ByteString
 import com.typesafe.config.Config
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
 import jooq.db.Tables._
 import jooq.db.tables.records.{AudioRecord, TextaudioindexRecord, TranscriptRecord}
+
+import scala.io.Source
 
 class LabelingToolService(config: Config) {
 
@@ -47,6 +58,11 @@ class LabelingToolService(config: Config) {
       .where(AUDIO.FILEID.eq(id))
       .fetchOne().map(m => Audio(m.get(AUDIO.ID).toInt, m.get(AUDIO.PATH).toString, m.get(AUDIO.FILEID).toInt))
   })
+
+  def getAudioFile(fileId: Int): ToResponseMarshallable = {
+    val path = "/home/jonas/Documents/DeutschAndreaErzaehlt/"
+    HttpEntity.fromFile(ContentTypes.`application/octet-stream`, new File(path + fileId + "/audio.mp3"))
+  }
 
   def getTranscripts: Array[Transcript] = withDslContext(dslContext => {
     dslContext.selectFrom(TRANSCRIPT).fetchArray().map(m => Transcript(m.getId, m.getText, m.getFileid))

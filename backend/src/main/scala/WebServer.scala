@@ -1,7 +1,12 @@
 import akka.actor.ActorSystem
+import akka.http.javadsl.model.MediaType
 import akka.http.scaladsl.Http
+import akka.http.scaladsl.marshalling.ToResponseMarshallable
+import akka.http.scaladsl.model.{HttpEntity, HttpResponse}
 import akka.http.scaladsl.server.{Directives, Route}
 import akka.stream.ActorMaterializer
+import akka.stream.scaladsl.Source
+import akka.util.ByteString
 import com.typesafe.config.{ConfigFactory, ConfigValueFactory}
 import de.heikoseeberger.akkahttpcirce.ErrorAccumulatingCirceSupport
 import io.swagger.annotations.{ApiImplicitParam, ApiImplicitParams, ApiOperation, ApiResponse, ApiResponses}
@@ -35,7 +40,7 @@ object WebServer extends App with CorsSupport {
 class LabelingToolRestApi(service: LabelingToolService) extends Directives with ErrorAccumulatingCirceSupport {
   val route = pathPrefix("api") {
     pathPrefix("match") {
-      getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudioIndex ~ getTranscript ~ getTranscripts ~ getAudio
+      getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudioIndex ~ getTranscript ~ getTranscripts ~ getAudio ~ getAudioFile
     }
   }
 
@@ -102,6 +107,18 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
     get {
       parameters("id".as[Int] ? 0) { id =>
         complete(service.getAudio(id))
+      }
+    }
+  }
+
+  @ApiOperation(value = "getAudioFile", httpMethod = "GET", notes = "returns a Blob-file")
+  @ApiImplicitParams(Array(new ApiImplicitParam(name = "id", required = true, example = "100", value = "id", paramType = "query")))
+  @ApiResponses(Array(new ApiResponse(code = 200, response = classOf[ToResponseMarshallable], message = "OK")))
+  @Path("getAudio")
+  def getAudioFile = path("getAudioFile") {
+    get {
+      parameters("id".as[Int] ? 0) { id =>
+        complete(service.getAudioFile(id))
       }
     }
   }

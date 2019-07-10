@@ -15,7 +15,7 @@ export class ContentComponent implements OnInit {
   constructor(
     private sanitizer: DomSanitizer,
     private snackBar: MatSnackBar,
-    private apiService: ApiService
+    private apiService: ApiService,
   ) {
   }
 
