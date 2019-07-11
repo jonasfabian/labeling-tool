@@ -44,7 +44,9 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.onPreviewPressed();
-    this.loadAudioBlob(37);
+    this.apiService.getNonLabeledTextAudioIndex().subscribe(n => {
+      this.loadAudioBlob(n.transcriptFileId);
+    });
   }
 
   convertDataURIToBinary(dataURI) {
@@ -61,7 +63,9 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    this.loadAudioBlob(48);
+    this.apiService.getNonLabeledTextAudioIndex().subscribe(n => {
+      this.loadAudioBlob(n.transcriptFileId);
+    });
     if ((this.waveSurfer !== undefined) && (this.audioPosition.startTime !== null)) {
       this.waveSurfer.on('ready', () => this.addRegion(this.audioPosition));
     }
