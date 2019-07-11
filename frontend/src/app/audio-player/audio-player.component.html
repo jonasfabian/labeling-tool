@@ -32,19 +32,6 @@
     <mat-button-toggle title="Replay speed 1.5x" (click)="playBackSpeed(1.5)">1.5x</mat-button-toggle>
     <mat-button-toggle title="Replay speed 2x" (click)="playBackSpeed(2)">2x</mat-button-toggle>
   </mat-button-toggle-group>
-  <mat-button-toggle-group style="margin-left: 5px;">
-    <mat-button-toggle (click)="addRegion()">
-      <mat-icon>add_circle</mat-icon>
-    </mat-button-toggle>
-    <mat-button-toggle (click)="deleteRegion()">
-      <mat-icon>delete</mat-icon>
-    </mat-button-toggle>
-  </mat-button-toggle-group>
-  <mat-button-toggle-group style="margin-left: 5px;">
-    <mat-button-toggle title="Loop" (click)="loopRegion()">
-      <mat-icon>loop</mat-icon>
-    </mat-button-toggle>
-  </mat-button-toggle-group>
   <mat-form-field style="margin-left: 15px; margin-bottom: -15px;">
     <input #seekInput matInput placeholder="Seek">
   </mat-form-field>

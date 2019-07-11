@@ -1,7 +1,7 @@
 import {
   Component,
   ElementRef,
-  EventEmitter, Inject,
+  EventEmitter, Inject, Input,
   OnChanges,
   OnInit,
   Output,
@@ -35,10 +35,10 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   zoomLvl = 0;
   toggleVolume = false;
 
-  @Output() snippet = new EventEmitter<AudioSnippet>();
+  @Input() audioPosition: AudioSnippet;
+  @Output() regionPosition = new EventEmitter<AudioSnippet>();
   @Output() uploadSuccess = new EventEmitter<boolean>();
   audioFile: SafeResourceUrl;
-  reg: any;
   BASE64_MARKER = ';base64,';
   blobUrl = '';
 
@@ -62,6 +62,9 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     this.loadAudioBlob(48);
+    if ((this.waveSurfer !== undefined) && (this.audioPosition.startTime !== null)) {
+      this.waveSurfer.on('ready', () => this.addRegion(this.audioPosition));
+    }
   }
 
   loadAudioBlob(fileId: number): void {
@@ -133,27 +136,17 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
     this.waveSurfer.skip(-5);
   }
 
-  addRegion(): void {
+  addRegion(snip: AudioSnippet): void {
     this.waveSurfer.clearRegions();
-    const region = this.reg = this.waveSurfer.addRegion({
-      start: this.waveSurfer.getCurrentTime(),
-      end: this.waveSurfer.getCurrentTime() + 10,
+    const region = this.waveSurfer.addRegion({
+      start: snip.startTime,
+      end: snip.endTime,
       resize: true,
       color: 'hsla(200, 50%, 70%, 0.4)'
     });
-    this.snippet.emit(new AudioSnippet(this.waveSurfer.getCurrentTime(), this.waveSurfer.getCurrentTime() + 10));
-    region.on('update-end', () => this.snippet.emit(new AudioSnippet(region.start, region.end)));
-  }
-
-  deleteRegion(): void {
-    this.waveSurfer.clearRegions();
-    this.snippet.emit(new AudioSnippet(null, null));
-    this.audioFile = '';
-  }
-
-  loopRegion(): void {
-    this.paused = true;
-    this.reg.playLoop();
+    region.on('update-end', () => {
+      this.regionPosition.emit(new AudioSnippet(region.start, region.end));
+    });
   }
 
   setVolume(volume: any): void {

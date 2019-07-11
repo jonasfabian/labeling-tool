@@ -48,7 +48,7 @@ class LabelingToolService(config: Config) {
   def getTranscript(id: Int): Transcript = withDslContext(dslContext => {
     dslContext.select()
       .from(TRANSCRIPT)
-      .where(TRANSCRIPT.ID.eq(id))
+      .where(TRANSCRIPT.FILEID.eq(id))
       .fetchOne().map(m => Transcript(m.get(TRANSCRIPT.ID).toInt, m.get(TRANSCRIPT.TEXT).toString, m.get(TRANSCRIPT.FILEID).toInt))
   })
 
@@ -66,6 +66,15 @@ class LabelingToolService(config: Config) {
 
   def getTranscripts: Array[Transcript] = withDslContext(dslContext => {
     dslContext.selectFrom(TRANSCRIPT).fetchArray().map(m => Transcript(m.getId, m.getText, m.getFileid))
+  })
+
+  def getNonLabeledDataIndexes(): TextAudioIndex = withDslContext(dslContext => {
+    dslContext.select()
+      .from(TEXTAUDIOINDEX)
+      .where(TEXTAUDIOINDEX.LABELED.eq(0.toByte))
+      .orderBy(TEXTAUDIOINDEX.ID.asc())
+      .limit(1)
+      .fetchOne().map(m => TextAudioIndex(m.get(TEXTAUDIOINDEX.ID).toInt, m.get(TEXTAUDIOINDEX.SAMPLINGRATE).toInt, m.get(TEXTAUDIOINDEX.TEXTSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.TEXTENDPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOSTARTPOS).toDouble, m.get(TEXTAUDIOINDEX.AUDIOENDPOS).toDouble, m.get(TEXTAUDIOINDEX.SPEAKERKEY).toInt, m.get(TEXTAUDIOINDEX.LABELED).toByte, m.get(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID).toInt))
   })
 
   def transcriptToRecord(t: Transcript): TranscriptRecord = {

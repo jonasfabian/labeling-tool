@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {AudioSnippet} from '../models/audioSnippet';
 import {MatSnackBar} from '@angular/material';
 import {ApiService} from '../services/api.service';
-import {TextAudioIndex} from '../models/textAudioIndex';
 import {DomSanitizer} from '@angular/platform-browser';
+import {TextAudioIndex} from '../models/textAudioIndex';
 
 @Component({
   selector: 'app-content',
@@ -19,40 +19,32 @@ export class ContentComponent implements OnInit {
   ) {
   }
 
-  file: any;
   snip = new AudioSnippet(null, null);
+  regionSnippet = new AudioSnippet(null, null);
   text: string | ArrayBuffer = '';
-
-  fileTextWords: Array<string> = [];
-
+  selectTabIndex = 0;
   highlightedText = '';
   highlightedTextStartPos = 0;
   highlightedTextEndPos = 0;
-
-  selectTabIndex = 0;
-  index = 0;
-
-  textAudioIndexArray: Array<TextAudioIndex> = [];
+  yeetTextAudioIndex = new TextAudioIndex(0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0);
 
   ngOnInit() {
-    this.index++;
     this.nextTranscript();
   }
 
-  nextTranscript() {
-    this.apiService.getTranscript(this.index).subscribe(r => {
-      this.text = r.text;
-    });
+  getRegionSnippet(snippet: AudioSnippet) {
+    this.yeetTextAudioIndex.audioStartPos = snippet.startTime * this.yeetTextAudioIndex.samplingRate;
+    this.yeetTextAudioIndex.audioEndPos = snippet.endTime * this.yeetTextAudioIndex.samplingRate;
   }
 
-  fileChanged(e) {
-    const reader = new FileReader();
-    this.file = e.target.files[0];
-    reader.onload = () => {
-      this.text = reader.result;
-      this.fileTextWords = this.text.toString().split(' ');
-    };
-    reader.readAsText(this.file);
+  nextTranscript() {
+    this.apiService.getNonLabeledTextAudioIndex().subscribe(n => {
+      this.yeetTextAudioIndex = n;
+      this.snip = new AudioSnippet(n.audioStartPos / n.samplingRate, n.audioEndPos / n.samplingRate);
+      this.apiService.getTranscript(n.transcriptFileId).subscribe(r => {
+        this.text = r.text;
+      });
+    });
   }
 
   displayHighlightedText() {
@@ -69,20 +61,9 @@ export class ContentComponent implements OnInit {
     }
   }
 
-  retrieveSnippet(snippet: AudioSnippet) {
-    this.snip = snippet;
-  }
-
   submitText(): void {
-    this.apiService.getTextAudioIndex(this.index).subscribe(tr => {
-      this.apiService.updateTextAudioIndex(new TextAudioIndex(tr.id, tr.samplingRate, this.highlightedTextStartPos, this.highlightedTextEndPos, this.snip.startTime, this.snip.endTime, tr.speakerKey, 1, tr.transcriptFileId)).subscribe(_ => {
-        this.index++;
-        this.nextTranscript();
-        this.apiService.getTextAudioIndexes().subscribe(i => {
-          this.textAudioIndexArray = i;
-        });
-      });
-    });
+    this.apiService.updateTextAudioIndex(new TextAudioIndex(this.yeetTextAudioIndex.id, this.yeetTextAudioIndex.samplingRate, this.yeetTextAudioIndex.textStartPos, this.yeetTextAudioIndex.textEndPos, this.yeetTextAudioIndex.audioStartPos, this.yeetTextAudioIndex.audioEndPos, this.yeetTextAudioIndex.speakerKey, 1, this.yeetTextAudioIndex.transcriptFileId)).subscribe();
+    this.nextTranscript();
   }
 
   openSnackBar(uploadSuccess: boolean): void {

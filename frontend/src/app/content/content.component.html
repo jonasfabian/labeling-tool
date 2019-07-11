@@ -1,7 +1,7 @@
 <mat-tab-group [selectedIndex]="selectTabIndex" mat-stretch-tabs style="margin: 0 15px 0 15px">
   <mat-tab (click)="selectTabIndex = 0;" label="Select Text">
     <mat-card class="top-card">
-      <app-audio-player (uploadSuccess)="openSnackBar($event)" (snippet)="retrieveSnippet($event)"></app-audio-player>
+      <app-audio-player (uploadSuccess)="openSnackBar($event)" (regionPosition)="getRegionSnippet($event)" [audioPosition]="snip"></app-audio-player>
     </mat-card>
     <div style="max-height: calc(30% - 85px);">
       <mat-card class="card" style="width: calc(50% - 30px); float: left;">

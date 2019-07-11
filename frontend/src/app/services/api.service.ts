@@ -45,4 +45,8 @@ export class ApiService {
   getAudioFile(fileId: number): Observable<any> {
     return this.http.get(this.url + 'getAudioFile?id=' + fileId, {responseType: 'blob'});
   }
+
+  getNonLabeledTextAudioIndex(): Observable<TextAudioIndex> {
+    return this.http.get<TextAudioIndex>(this.url + 'getNonLabeledDataIndexes');
+  }
 }
