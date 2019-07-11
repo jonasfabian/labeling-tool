@@ -139,7 +139,6 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
       start: this.waveSurfer.getCurrentTime(),
       end: this.waveSurfer.getCurrentTime() + 10,
       resize: true,
-      drag: true,
       color: 'hsla(200, 50%, 70%, 0.4)'
     });
     this.snippet.emit(new AudioSnippet(this.waveSurfer.getCurrentTime(), this.waveSurfer.getCurrentTime() + 10));

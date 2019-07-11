@@ -16,3 +16,10 @@ body {
 .card {
   margin: 0 0 15px 0;
 }
+
+.wavesurfer-handle {
+  width: 10px !important;
+  min-width: 10px !important;
+  max-width: None !important;
+  background-color: hsl(200, 50%, 58%, 0.4) !important;
+}
