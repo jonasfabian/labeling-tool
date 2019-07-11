@@ -43,6 +43,7 @@ export class ContentComponent implements OnInit {
       this.snip = new AudioSnippet(n.audioStartPos / n.samplingRate, n.audioEndPos / n.samplingRate);
       this.apiService.getTranscript(n.transcriptFileId).subscribe(r => {
         this.text = r.text;
+        this.highlightedText = r.text.toString().slice(n.textStartPos, n.textEndPos);
       });
     });
   }
