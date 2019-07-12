@@ -16,6 +16,7 @@ import {AudioSnippet} from '../models/audioSnippet';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {SafeResourceUrl} from '@angular/platform-browser';
 import {ApiService} from '../services/api.service';
+import {TextAudioIndexWithText} from '../models/textAudioIndexWithText';
 
 @Component({
   selector: 'app-audio-player',
@@ -36,6 +37,7 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   toggleVolume = false;
 
   @Input() audioPosition: AudioSnippet;
+  @Input() textAudioIndexWithText: TextAudioIndexWithText;
   @Output() regionPosition = new EventEmitter<AudioSnippet>();
   @Output() uploadSuccess = new EventEmitter<boolean>();
   audioFile: SafeResourceUrl;
@@ -62,12 +64,10 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     if (this.audioPosition.startTime !== null) {
-      this.apiService.getNonLabeledTextAudioIndex().subscribe(n => {
-        if (n.transcriptFileId !== this.fileId) {
-          this.fileId = n.transcriptFileId;
-          this.loadAudioBlob(n.transcriptFileId);
-        }
-      });
+      if (this.textAudioIndexWithText.transcriptFileId !== this.fileId) {
+        this.fileId = this.textAudioIndexWithText.transcriptFileId;
+        this.loadAudioBlob(this.textAudioIndexWithText.transcriptFileId);
+      }
       if ((this.waveSurfer !== undefined) && (this.audioPosition.startTime !== null)) {
         this.addRegion(this.audioPosition);
       }

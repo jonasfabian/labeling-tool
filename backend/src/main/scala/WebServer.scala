@@ -100,7 +100,7 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
   }
 
   @ApiOperation(value = "getTextAudioIndexes", httpMethod = "GET", notes = "returns an Array of TextAudioIndex")
-  @ApiResponses(Array(new ApiResponse(code = 200, response = classOf[TextAudioIndex], message = "OK")))
+  @ApiResponses(Array(new ApiResponse(code = 200, response = classOf[TextAudioIndexWithText], message = "OK")))
   @Path("getNonLabeledDataIndexes")
   def getNonLabeledDataIndexes = path("getNonLabeledDataIndexes") {
     get {

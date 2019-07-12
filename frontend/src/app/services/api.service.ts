@@ -1,9 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {TextAudioIndex} from '../models/textAudioIndex';
-import {Transcript} from '../models/transcript';
-import {AudioFile} from '../models/Audio';
+import {TextAudioIndexWithText} from '../models/textAudioIndexWithText';
 
 @Injectable({
   providedIn: 'root'
@@ -18,35 +16,19 @@ export class ApiService {
 
   url = 'http://localhost:8080/api/match/';
 
-  getTextAudioIndex(id: number): Observable<TextAudioIndex> {
-    return this.http.get<TextAudioIndex>(this.url + 'getTextAudioIndex?id=' + id);
+  getTextAudioIndexes(): Observable<Array<TextAudioIndexWithText>> {
+    return this.http.get<Array<TextAudioIndexWithText>>(this.url + 'getTextAudioIndexes');
   }
 
-  getTextAudioIndexes(): Observable<Array<TextAudioIndex>> {
-    return this.http.get<Array<TextAudioIndex>>(this.url + 'getTextAudioIndexes');
-  }
-
-  updateTextAudioIndex(textAudioIndex: TextAudioIndex): Observable<any> {
+  updateTextAudioIndex(textAudioIndex: TextAudioIndexWithText): Observable<any> {
     return this.http.post(this.url + 'updateTextAudioIndex', textAudioIndex);
-  }
-
-  getTranscripts(): Observable<Array<Transcript>> {
-    return this.http.get<Array<Transcript>>(this.url + 'getTranscripts');
-  }
-
-  getTranscript(id: number): Observable<Transcript> {
-    return this.http.get<Transcript>(this.url + 'getTranscript?id=' + id);
-  }
-
-  getAudio(fileId: number): Observable<AudioFile> {
-    return this.http.get<AudioFile>(this.url + 'getAudio?id=' + fileId);
   }
 
   getAudioFile(fileId: number): Observable<any> {
     return this.http.get(this.url + 'getAudioFile?id=' + fileId, {responseType: 'blob'});
   }
 
-  getNonLabeledTextAudioIndex(): Observable<TextAudioIndex> {
-    return this.http.get<TextAudioIndex>(this.url + 'getNonLabeledDataIndexes');
+  getNonLabeledTextAudioIndex(): Observable<TextAudioIndexWithText> {
+    return this.http.get<TextAudioIndexWithText>(this.url + 'getNonLabeledDataIndexes');
   }
 }

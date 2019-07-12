@@ -1,4 +1,4 @@
-export class TextAudioIndex {
+export class TextAudioIndexWithText {
   id: number;
   samplingRate: number;
   textStartPos: number;
@@ -8,8 +8,9 @@ export class TextAudioIndex {
   speakerKey: number;
   labeled: number;
   transcriptFileId: number;
+  text: string;
 
-  constructor(id: number, samplingRate: number, textStartPos: number, textEndPos: number, audioStartPos: number, audioEndPos: number, speakerKey: number, labeled: number, transcriptFileId: number) {
+  constructor(id: number, samplingRate: number, textStartPos: number, textEndPos: number, audioStartPos: number, audioEndPos: number, speakerKey: number, labeled: number, transcriptFileId: number, text: string) {
     this.id = id;
     this.samplingRate = samplingRate;
     this.textStartPos = textStartPos;
@@ -19,5 +20,6 @@ export class TextAudioIndex {
     this.speakerKey = speakerKey;
     this.labeled = labeled;
     this.transcriptFileId = transcriptFileId;
+    this.text = text;
   }
 }

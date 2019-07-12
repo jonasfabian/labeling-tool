@@ -3,7 +3,7 @@ import {AudioSnippet} from '../models/audioSnippet';
 import {MatSnackBar} from '@angular/material';
 import {ApiService} from '../services/api.service';
 import {DomSanitizer} from '@angular/platform-browser';
-import {TextAudioIndex} from '../models/textAudioIndex';
+import {TextAudioIndexWithText} from '../models/textAudioIndexWithText';
 
 @Component({
   selector: 'app-content',
@@ -25,7 +25,7 @@ export class ContentComponent implements OnInit {
   highlightedText = '';
   highlightedTextStartPos = 0;
   highlightedTextEndPos = 0;
-  yeetTextAudioIndex = new TextAudioIndex(0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0);
+  yeetTextAudioIndex = new TextAudioIndexWithText(0, 0, 0, 0, 0, 0, 0, 0, 0, '');
 
   ngOnInit() {
     this.nextTranscript();
@@ -40,10 +40,8 @@ export class ContentComponent implements OnInit {
     this.apiService.getNonLabeledTextAudioIndex().subscribe(n => {
       this.yeetTextAudioIndex = n;
       this.snip = new AudioSnippet(n.audioStartPos / n.samplingRate, n.audioEndPos / n.samplingRate);
-      this.apiService.getTranscript(n.transcriptFileId).subscribe(r => {
-        this.text = r.text;
-        this.highlightedText = r.text.toString().slice(n.textStartPos, n.textEndPos);
-      });
+      this.text = n.text;
+      this.highlightedText = n.text.slice(n.textStartPos, n.textEndPos);
       this.yeetTextAudioIndex.labeled = 1;
     });
   }
@@ -67,10 +65,8 @@ export class ContentComponent implements OnInit {
       this.apiService.getNonLabeledTextAudioIndex().subscribe(n => {
         this.yeetTextAudioIndex = n;
         this.snip = new AudioSnippet(n.audioStartPos / n.samplingRate, n.audioEndPos / n.samplingRate);
-        this.apiService.getTranscript(n.transcriptFileId).subscribe(r => {
-          this.text = r.text;
-          this.highlightedText = r.text.toString().slice(n.textStartPos, n.textEndPos);
-        });
+        this.text = n.text;
+        this.highlightedText = n.text.slice(n.textStartPos, n.textEndPos);
         this.yeetTextAudioIndex.labeled = 1;
       });
     });
