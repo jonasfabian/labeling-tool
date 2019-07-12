@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {BreadcrumbService} from '../services/breadcrumb.service';
 
 @Component({
   selector: 'app-navigation-menu',
@@ -7,9 +8,12 @@ import {Component, OnInit} from '@angular/core';
 })
 export class NavigationMenuComponent implements OnInit {
 
-  constructor() {
+  constructor(
+    public breadcrumbService: BreadcrumbService
+  ) {
   }
 
   ngOnInit() {
+    this.breadcrumbService.getBreadcrumb();
   }
 }

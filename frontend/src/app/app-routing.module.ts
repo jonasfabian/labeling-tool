@@ -6,7 +6,7 @@ import {MatchOverviewComponent} from './match-overview/match-overview.component'
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'label',
+    redirectTo: '/label',
     pathMatch: 'full'
   },
   {

@@ -1,10 +1,14 @@
 <mat-toolbar>
   <div style="width: 100%;">
     <div style="float: left; margin-top: 4px;">
-      <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
+      <mat-icon style="cursor: pointer;" (click)="sidenav.toggle()">menu</mat-icon>
     </div>
     <div style="float: left; margin-left: 15px;">
       <span>Labeling-Tool</span>
+      <span>&nbsp;</span>
+      <span>></span>
+      <span>&nbsp;</span>
+      <span>{{breadcrumbService.breadCrumb.getValue()}}</span>
     </div>
   </div>
 </mat-toolbar>
