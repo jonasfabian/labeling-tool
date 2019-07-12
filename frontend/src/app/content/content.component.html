@@ -1,31 +1,25 @@
-<mat-tab-group [selectedIndex]="selectTabIndex" mat-stretch-tabs style="margin: 0 15px 0 15px">
-  <mat-tab (click)="selectTabIndex = 0;" label="Select Text">
-    <mat-card class="top-card">
-      <app-audio-player [textAudioIndexWithText]="yeetTextAudioIndex" (uploadSuccess)="openSnackBar($event)" (regionPosition)="getRegionSnippet($event)" [audioPosition]="snip"></app-audio-player>
+<div style="margin: 0 15px 0 15px">
+  <mat-card class="top-card">
+    <app-audio-player [textAudioIndexWithText]="yeetTextAudioIndex" (uploadSuccess)="openSnackBar($event)"
+                      (regionPosition)="getRegionSnippet($event)" [audioPosition]="snip"></app-audio-player>
+  </mat-card>
+  <div style="max-height: calc(30% - 85px);">
+    <mat-card class="card" style="width: calc(50% - 30px); float: left;">
+      <h2>Text</h2>
+      <div (mouseup)="displayHighlightedText()">
+        <span style="white-space: pre-wrap;">{{text}}</span>
+      </div>
     </mat-card>
-    <div style="max-height: calc(30% - 85px);">
-      <mat-card class="card" style="width: calc(50% - 30px); float: left;">
-        <h2>Text</h2>
-        <div (mouseup)="displayHighlightedText()">
-          <span style="white-space: pre-wrap;">{{text}}</span>
-        </div>
-      </mat-card>
-      <mat-card class="card" style="width: calc(50% - 50px); float: right;">
-        <div>
-          <h2>Selected Text</h2>
-          <mat-button-toggle *ngIf="highlightedText != ''" (click)="submitText()"
-                             style="position: absolute; right: 15px; top: 15px;">Submit
-          </mat-button-toggle>
-        </div>
-        <div *ngIf="highlightedText != ''">
-          <span style="white-space: pre-wrap;">{{highlightedText}}</span>
-        </div>
-      </mat-card>
-    </div>
-  </mat-tab>
-  <mat-tab (click)="selectTabIndex = 1" label="Match Overview">
-    <div style="margin-top: 15px;">
-      <app-match-overview></app-match-overview>
-    </div>
-  </mat-tab>
-</mat-tab-group>
+    <mat-card class="card" style="width: calc(50% - 50px); float: right;">
+      <div>
+        <h2>Selected Text</h2>
+        <mat-button-toggle *ngIf="highlightedText != ''" (click)="submitText()"
+                           style="position: absolute; right: 15px; top: 15px;">Submit
+        </mat-button-toggle>
+      </div>
+      <div *ngIf="highlightedText != ''">
+        <span style="white-space: pre-wrap;">{{highlightedText}}</span>
+      </div>
+    </mat-card>
+  </div>
+</div>

@@ -12,5 +12,4 @@ export class NavigationMenuComponent implements OnInit {
 
   ngOnInit() {
   }
-
 }

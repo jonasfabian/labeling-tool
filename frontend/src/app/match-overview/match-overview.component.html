@@ -1,4 +1,4 @@
-<div>
+<mat-card style="margin: 15px;">
   <table mat-table [dataSource]="dataSource" matSort style="width: 100%;">
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
@@ -40,4 +40,4 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
   <mat-paginator [pageSizeOptions]="[10, 5, 100]" showFirstLastButtons></mat-paginator>
-</div>
+</mat-card>
