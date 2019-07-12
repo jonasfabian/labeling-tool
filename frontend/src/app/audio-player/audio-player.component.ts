@@ -5,7 +5,6 @@ import {
   OnChanges,
   OnInit,
   Output,
-  SimpleChanges,
   ViewChild
 } from '@angular/core';
 import WaveSurfer from 'wavesurfer.js';
@@ -14,7 +13,6 @@ import CursorPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 import {AudioSnippet} from '../models/audioSnippet';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
-import {SafeResourceUrl} from '@angular/platform-browser';
 import {ApiService} from '../services/api.service';
 import {TextAudioIndexWithText} from '../models/textAudioIndexWithText';
 
@@ -40,7 +38,6 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   @Input() textAudioIndexWithText: TextAudioIndexWithText;
   @Output() regionPosition = new EventEmitter<AudioSnippet>();
   @Output() uploadSuccess = new EventEmitter<boolean>();
-  audioFile: SafeResourceUrl;
   BASE64_MARKER = ';base64,';
   blobUrl = '';
   fileId = 0;
@@ -114,7 +111,6 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
     if (!this.waveSurfer) {
       this.generateWaveform();
     }
-    Promise.resolve().then(() => this.waveSurfer.load('../assets/song.mp3'));
   }
 
   play(): void {
@@ -170,10 +166,6 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   seekInAudio(seconds: any) {
     const totalTime = this.waveSurfer.getDuration();
     this.waveSurfer.seekTo(seconds / totalTime);
-  }
-
-  uploadAudioFile(file: File) {
-    this.audioFile = URL.createObjectURL(file);
   }
 
   openDialog(): void {
