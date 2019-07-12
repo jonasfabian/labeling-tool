@@ -41,6 +41,7 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   audioFile: SafeResourceUrl;
   BASE64_MARKER = ';base64,';
   blobUrl = '';
+  fileId = 0;
 
   ngOnInit() {
     this.onPreviewPressed();
@@ -62,10 +63,13 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   ngOnChanges(): void {
     if (this.audioPosition.startTime !== null) {
       this.apiService.getNonLabeledTextAudioIndex().subscribe(n => {
-        this.loadAudioBlob(n.transcriptFileId);
+        if (n.transcriptFileId !== this.fileId) {
+          this.fileId = n.transcriptFileId;
+          this.loadAudioBlob(n.transcriptFileId);
+        }
       });
       if ((this.waveSurfer !== undefined) && (this.audioPosition.startTime !== null)) {
-        this.waveSurfer.on('ready', () => this.addRegion(this.audioPosition));
+        this.addRegion(this.audioPosition);
       }
     }
   }
