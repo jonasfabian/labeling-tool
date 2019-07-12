@@ -4,12 +4,12 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NavigationMenuComponent} from './navigation-menu/navigation-menu.component';
-import {ContentComponent, SnackBarComponent} from './content/content.component';
 import {MaterialModule} from './models/material.module';
 import {AudioPlayerComponent, SetTimeDialogComponent} from './audio-player/audio-player.component';
 import {MatchOverviewComponent} from './match-overview/match-overview.component';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {IntToBooleanPipe} from './pipes/int-to-boolean.pipe';
+import {ContentComponent} from './content/content.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +17,6 @@ import {IntToBooleanPipe} from './pipes/int-to-boolean.pipe';
     NavigationMenuComponent,
     ContentComponent,
     AudioPlayerComponent,
-    SnackBarComponent,
     MatchOverviewComponent,
     SetTimeDialogComponent,
     IntToBooleanPipe
@@ -36,7 +35,6 @@ import {IntToBooleanPipe} from './pipes/int-to-boolean.pipe';
     AppComponent
   ],
   entryComponents: [
-    SnackBarComponent,
     SetTimeDialogComponent
   ],
 })

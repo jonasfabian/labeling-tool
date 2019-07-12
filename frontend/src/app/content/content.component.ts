@@ -70,20 +70,4 @@ export class ContentComponent implements OnInit {
       });
     });
   }
-
-  openSnackBar(uploadSuccess: boolean): void {
-    if (uploadSuccess) {
-      this.snackBar.openFromComponent(SnackBarComponent, {
-        duration: 5000
-      });
-    }
-  }
-}
-
-
-@Component({
-  selector: 'app-content-snack-bar-component',
-  templateUrl: 'app-content-snack-bar-component.html'
-})
-export class SnackBarComponent {
 }
