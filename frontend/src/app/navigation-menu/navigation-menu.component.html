@@ -1,4 +1,4 @@
-<mat-toolbar>
+<mat-toolbar style="position: fixed; z-index: 2;">
   <div style="width: 100%;">
     <div style="float: left; margin-top: 4px;">
       <mat-icon style="cursor: pointer;" (click)="sidenav.toggle()">menu</mat-icon>
@@ -13,27 +13,32 @@
   </div>
 </mat-toolbar>
 <mat-sidenav-container>
-  <mat-sidenav #sidenav mode="side" style="width: 200px;">
+  <mat-sidenav fixedInViewport #sidenav mode="side" style="width: 200px; margin-top: 65px;">
     <div style="padding: 15px;">
       <mat-list>
         <mat-list-item style="cursor: pointer;" [routerLink]="['label']">
           <mat-icon>label</mat-icon>
-          <span>Label</span>
+          <span style="margin-left: 15px;">Label</span>
         </mat-list-item>
         <mat-divider></mat-divider>
         <mat-list-item style="cursor: pointer;">
           <mat-icon>check</mat-icon>
-          <span>Check</span>
+          <span style="margin-left: 15px;">Check</span>
         </mat-list-item>
         <mat-divider></mat-divider>
         <mat-list-item style="cursor: pointer;" [routerLink]="['overview']">
           <mat-icon>view_list</mat-icon>
-          <span>Overview</span>
+          <span style="margin-left: 15px;">Overview</span>
         </mat-list-item>
       </mat-list>
     </div>
+    <div style="position: absolute; bottom: 0;">
+      <mat-list>
+        <mat-list-item>FHNW</mat-list-item>
+      </mat-list>
+    </div>
   </mat-sidenav>
-  <mat-sidenav-content>
+  <mat-sidenav-content style="margin-top: 65px;">
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
