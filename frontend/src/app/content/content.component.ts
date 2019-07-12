@@ -20,7 +20,6 @@ export class ContentComponent implements OnInit {
   }
 
   snip = new AudioSnippet(null, null);
-  regionSnippet = new AudioSnippet(null, null);
   text: string | ArrayBuffer = '';
   selectTabIndex = 0;
   highlightedText = '';
@@ -45,6 +44,7 @@ export class ContentComponent implements OnInit {
         this.text = r.text;
         this.highlightedText = r.text.toString().slice(n.textStartPos, n.textEndPos);
       });
+      this.yeetTextAudioIndex.labeled = 1;
     });
   }
 
@@ -63,8 +63,17 @@ export class ContentComponent implements OnInit {
   }
 
   submitText(): void {
-    this.apiService.updateTextAudioIndex(new TextAudioIndex(this.yeetTextAudioIndex.id, this.yeetTextAudioIndex.samplingRate, this.yeetTextAudioIndex.textStartPos, this.yeetTextAudioIndex.textEndPos, this.yeetTextAudioIndex.audioStartPos, this.yeetTextAudioIndex.audioEndPos, this.yeetTextAudioIndex.speakerKey, 1, this.yeetTextAudioIndex.transcriptFileId)).subscribe();
-    this.nextTranscript();
+    this.apiService.updateTextAudioIndex(this.yeetTextAudioIndex).subscribe(_ => {
+      this.apiService.getNonLabeledTextAudioIndex().subscribe(n => {
+        this.yeetTextAudioIndex = n;
+        this.snip = new AudioSnippet(n.audioStartPos / n.samplingRate, n.audioEndPos / n.samplingRate);
+        this.apiService.getTranscript(n.transcriptFileId).subscribe(r => {
+          this.text = r.text;
+          this.highlightedText = r.text.toString().slice(n.textStartPos, n.textEndPos);
+        });
+        this.yeetTextAudioIndex.labeled = 1;
+      });
+    });
   }
 
   openSnackBar(uploadSuccess: boolean): void {
