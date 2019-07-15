@@ -10,6 +10,8 @@ import {MatchOverviewComponent} from './match-overview/match-overview.component'
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {IntToBooleanPipe} from './pipes/int-to-boolean.pipe';
 import {ContentComponent} from './content/content.component';
+import { ChartsComponent } from './charts/charts.component';
+import {NgxChartsModule} from '@swimlane/ngx-charts';
 
 @NgModule({
   declarations: [
@@ -19,14 +21,16 @@ import {ContentComponent} from './content/content.component';
     AudioPlayerComponent,
     MatchOverviewComponent,
     SetTimeDialogComponent,
-    IntToBooleanPipe
+    IntToBooleanPipe,
+    ChartsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxChartsModule
   ],
   providers: [
     HttpClient
