@@ -37,6 +37,7 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   @Input() audioPosition: AudioSnippet;
   @Input() textAudioIndexWithText: TextAudioIndexWithText;
   @Output() regionPosition = new EventEmitter<AudioSnippet>();
+  reg = new AudioSnippet(null, null);
   @Output() uploadSuccess = new EventEmitter<boolean>();
   BASE64_MARKER = ';base64,';
   blobUrl = '';
@@ -67,8 +68,19 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
       }
       if ((this.waveSurfer !== undefined) && (this.audioPosition.startTime !== null)) {
         this.addRegion(this.audioPosition);
+        console.log('test');
+        this.setViewToRegion(this.audioPosition);
       }
     }
+  }
+
+  setViewToRegion(snip: AudioSnippet): void {
+    this.waveSurfer.zoom(50);
+    const diff = snip.startTime - snip.endTime;
+    const centre = snip.startTime + (diff / 2);
+    const fin = (centre / this.waveSurfer.getDuration());
+    console.log(this.waveSurfer.getDuration());
+    this.waveSurfer.seekAndCenter(fin);
   }
 
   loadAudioBlob(fileId: number): void {
@@ -141,6 +153,7 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
 
   addRegion(snip: AudioSnippet): void {
     this.waveSurfer.clearRegions();
+    this.reg = new AudioSnippet(snip.startTime, snip.endTime);
     const region = this.waveSurfer.addRegion({
       start: snip.startTime,
       end: snip.endTime,
