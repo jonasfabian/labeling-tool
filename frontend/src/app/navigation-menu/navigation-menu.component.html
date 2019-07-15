@@ -1,14 +1,15 @@
-<mat-toolbar style="position: fixed; z-index: 2;">
+<mat-toolbar color="primary" style="position: fixed; z-index: 2;">
   <div style="width: 100%;">
     <div style="float: left; margin-top: 4px;">
       <mat-icon style="cursor: pointer;" (click)="sidenav.toggle()">menu</mat-icon>
     </div>
     <div style="float: left; margin-left: 15px;">
       <span>Labeling-Tool</span>
-      <span>&nbsp;</span>
-      <span>></span>
-      <span>&nbsp;</span>
+      <span>&nbsp;>&nbsp;</span>
       <span>{{breadcrumbService.breadCrumb.getValue()}}</span>
+    </div>
+    <div style="position: absolute; top: 18px; right: 30px;">
+      <mat-icon>help_outline</mat-icon>
     </div>
   </div>
 </mat-toolbar>

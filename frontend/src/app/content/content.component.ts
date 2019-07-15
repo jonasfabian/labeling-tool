@@ -59,14 +59,14 @@ export class ContentComponent implements OnInit {
     }
   }
 
-  submitText(): void {
+  submitText(labeled: number): void {
     this.apiService.updateTextAudioIndex(this.yeetTextAudioIndex).subscribe(_ => {
       this.apiService.getNonLabeledTextAudioIndex().subscribe(n => {
         this.yeetTextAudioIndex = n;
         this.snip = new AudioSnippet(n.audioStartPos / n.samplingRate, n.audioEndPos / n.samplingRate);
         this.text = n.text;
         this.highlightedText = n.text.slice(n.textStartPos, n.textEndPos);
-        this.yeetTextAudioIndex.labeled = 1;
+        this.yeetTextAudioIndex.labeled = labeled;
       });
     });
   }

@@ -1,7 +1,6 @@
 <div style="margin: 0 15px 0 15px">
   <mat-card class="top-card">
-    <app-audio-player [textAudioIndexWithText]="yeetTextAudioIndex" (uploadSuccess)="openSnackBar($event)"
-                      (regionPosition)="getRegionSnippet($event)" [audioPosition]="snip"></app-audio-player>
+    <app-audio-player [textAudioIndexWithText]="yeetTextAudioIndex" (regionPosition)="getRegionSnippet($event)" [audioPosition]="snip"></app-audio-player>
   </mat-card>
   <mat-card class="card" style="width: calc(50% - 30px); float: left;">
     <h2>Text</h2>
@@ -10,11 +9,14 @@
     </div>
   </mat-card>
   <mat-card class="card" style="width: calc(50% - 50px); float: right;">
+    <mat-button-toggle-group style="width: 100%;">
+      <mat-button-toggle (click)="submitText(1)" style="width: 50%;">Submit</mat-button-toggle>
+      <mat-button-toggle (click)="submitText(1)" style="width: 50%;">Skip</mat-button-toggle>
+    </mat-button-toggle-group>
+  </mat-card>
+  <mat-card class="card" style="width: calc(50% - 50px); float: right;">
     <div>
       <h2>Selected Text</h2>
-      <mat-button-toggle *ngIf="highlightedText != ''" (click)="submitText()"
-                         style="position: absolute; right: 15px; top: 15px;">Submit
-      </mat-button-toggle>
     </div>
     <div *ngIf="highlightedText != ''">
       <span style="white-space: pre-wrap;">{{highlightedText}}</span>
