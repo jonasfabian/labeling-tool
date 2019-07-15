@@ -68,8 +68,9 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
       }
       if ((this.waveSurfer !== undefined) && (this.audioPosition.startTime !== null)) {
         this.addRegion(this.audioPosition);
-        console.log('test');
-        this.setViewToRegion(this.audioPosition);
+        if (this.waveSurfer.isReady) {
+          this.setViewToRegion(this.audioPosition);
+        }
       }
     }
   }
@@ -79,7 +80,6 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
     const diff = snip.startTime - snip.endTime;
     const centre = snip.startTime + (diff / 2);
     const fin = (centre / this.waveSurfer.getDuration());
-    console.log(this.waveSurfer.getDuration());
     this.waveSurfer.seekAndCenter(fin);
   }
 
