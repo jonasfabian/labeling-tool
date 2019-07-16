@@ -12,6 +12,7 @@ import {IntToBooleanPipe} from './pipes/int-to-boolean.pipe';
 import {ContentComponent} from './content/content.component';
 import { ChartsComponent } from './charts/charts.component';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
+import { CheckComponent } from './check/check.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import {NgxChartsModule} from '@swimlane/ngx-charts';
     MatchOverviewComponent,
     SetTimeDialogComponent,
     IntToBooleanPipe,
-    ChartsComponent
+    ChartsComponent,
+    CheckComponent
   ],
   imports: [
     BrowserModule,

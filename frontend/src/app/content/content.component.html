@@ -2,10 +2,12 @@
   <mat-card class="top-card">
     <app-audio-player [textAudioIndexWithText]="yeetTextAudioIndex" (regionPosition)="getRegionSnippet($event)" [audioPosition]="snip"></app-audio-player>
   </mat-card>
-  <mat-card class="card" style="width: calc(50% - 30px); float: left;">
+  <mat-card class="card" style="width: calc(50% - 30px); float: left; height: 62vh; overflow-y: scroll;">
     <h2>Text</h2>
     <div (mouseup)="displayHighlightedText()">
-      <span style="white-space: pre-wrap;">{{text}}</span>
+      <span style="white-space: pre-wrap;">{{textBegin}}</span>
+      <span style="white-space: pre-wrap; background-color: steelblue;">{{highlightedText}}</span>
+      <span style="white-space: pre-wrap;">{{textEnd}}</span>
     </div>
   </mat-card>
   <mat-card class="card" style="width: calc(50% - 50px); float: right;">

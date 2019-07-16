@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {ContentComponent} from './content/content.component';
 import {MatchOverviewComponent} from './match-overview/match-overview.component';
+import {CheckComponent} from './check/check.component';
 
 const routes: Routes = [
   {
@@ -12,6 +13,10 @@ const routes: Routes = [
   {
     path: 'label',
     component: ContentComponent
+  },
+  {
+    path: 'check',
+    component: CheckComponent
   },
   {
     path: 'overview',

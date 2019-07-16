@@ -16,7 +16,7 @@ export class ChartsComponent implements OnInit {
   showLegend = true;
 
   colorScheme = {
-    domain: ['blue', 'steelblue']
+    domain: ['#3f51b5', '#7482cf']
   };
 
   single = [];
