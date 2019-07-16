@@ -13,6 +13,7 @@ import {ContentComponent} from './content/content.component';
 import { ChartsComponent } from './charts/charts.component';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
 import { CheckComponent } from './check/check.component';
+import {CarouselModule} from 'ngx-carousel-lib';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { CheckComponent } from './check/check.component';
     BrowserAnimationsModule,
     MaterialModule,
     HttpClientModule,
-    NgxChartsModule
+    NgxChartsModule,
+    CarouselModule
   ],
   providers: [
     HttpClient

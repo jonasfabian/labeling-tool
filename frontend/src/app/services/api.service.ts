@@ -31,4 +31,8 @@ export class ApiService {
   getNonLabeledTextAudioIndex(): Observable<TextAudioIndexWithText> {
     return this.http.get<TextAudioIndexWithText>(this.url + 'getNonLabeledDataIndexes');
   }
+
+  getTenNonLabeledTextAudioIndex(): Observable<Array<TextAudioIndexWithText>> {
+    return this.http.get<Array<TextAudioIndexWithText>>(this.url + 'getTenNonLabeledDataIndexes');
+  }
 }

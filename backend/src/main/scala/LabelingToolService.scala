@@ -73,6 +73,19 @@ class LabelingToolService(config: Config) {
       .fetchOne().map(m => TextAudioIndexWithText(m.get(TEXTAUDIOINDEX.ID).toInt, m.get(TEXTAUDIOINDEX.SAMPLINGRATE).toInt, m.get(TEXTAUDIOINDEX.TEXTSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.TEXTENDPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOSTARTPOS).toDouble, m.get(TEXTAUDIOINDEX.AUDIOENDPOS).toDouble, m.get(TEXTAUDIOINDEX.SPEAKERKEY).toInt, m.get(TEXTAUDIOINDEX.LABELED).toByte, m.get(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID).toInt, m.get(TRANSCRIPT.TEXT).toString))
   })
 
+  def getTenNonLabeledDataIndexes(): Array[TextAudioIndexWithText] = withDslContext(dslContext => {
+    dslContext.select(
+      TEXTAUDIOINDEX.ID, TEXTAUDIOINDEX.SAMPLINGRATE, TEXTAUDIOINDEX.TEXTSTARTPOS, TEXTAUDIOINDEX.TEXTENDPOS, TEXTAUDIOINDEX.AUDIOSTARTPOS, TEXTAUDIOINDEX.AUDIOENDPOS,
+      TEXTAUDIOINDEX.SPEAKERKEY, TEXTAUDIOINDEX.LABELED, TRANSCRIPT.FILEID.as("transcript_file_id"), TRANSCRIPT.TEXT
+    ).from(TEXTAUDIOINDEX)
+      .join(TRANSCRIPT)
+      .on(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID.eq(TRANSCRIPT.FILEID))
+      .where(TEXTAUDIOINDEX.LABELED.eq(0.toByte))
+      .orderBy(TEXTAUDIOINDEX.ID.asc())
+      .limit(10)
+      .fetchArray().map(m => TextAudioIndexWithText(m.get(TEXTAUDIOINDEX.ID).toInt, m.get(TEXTAUDIOINDEX.SAMPLINGRATE).toInt, m.get(TEXTAUDIOINDEX.TEXTSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.TEXTENDPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOSTARTPOS).toDouble, m.get(TEXTAUDIOINDEX.AUDIOENDPOS).toDouble, m.get(TEXTAUDIOINDEX.SPEAKERKEY).toInt, m.get(TEXTAUDIOINDEX.LABELED).toByte, m.get(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID).toInt, m.get(TRANSCRIPT.TEXT).toString))
+  })
+
   def transcriptToRecord(t: Transcript): TranscriptRecord = {
     val rec = new TranscriptRecord()
     rec.setText(t.text)

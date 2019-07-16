@@ -1,3 +1,25 @@
-<p>
-  check works!
-</p>
+<carousel-component [lockSlides]="true" [perspective]="4000" #carousel style="margin-top: 15px;">
+  <div class="item-carousel" style="border: 0; height: 300px; width: 500px;" *ngFor="let te of yeetArray">
+    <mat-card style="height: 100%;">
+      <div>{{te.textAudioIndexWithText.text}}</div>
+    </mat-card>
+  </div>
+</carousel-component>
+<div *ngIf="blobUrl != ''">
+  <audio controls #audioPlayer>
+    <source [src]="blobUrl">
+  </audio>
+</div>
+<div style="margin-top: 50px; text-align: center;">
+  <mat-button-toggle (click)="correct()">
+    <mat-icon>thumb_up</mat-icon>
+    <span>&nbsp; Correct</span>
+  </mat-button-toggle>
+  <mat-button-toggle style="margin-left: 5px;">
+    <mat-icon>play_arrow</mat-icon>
+  </mat-button-toggle>
+  <mat-button-toggle (click)="wrong()" style="margin-left: 5px;">
+    <mat-icon>thumb_down</mat-icon>
+    <span>&nbsp; Wrong</span>
+  </mat-button-toggle>
+</div>
