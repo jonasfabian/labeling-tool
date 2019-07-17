@@ -23,6 +23,8 @@ export class CheckComponent implements OnInit {
   @ViewChild('carousel', {static: false}) carousel: CarouselComponent;
   @ViewChild('audioPlayer', {static: false}) audioPlayer: ElementRef;
 
+  isPlaying = false;
+
   ngOnInit() {
     let i = 0;
     this.apiService.getTenNonLabeledTextAudioIndex().subscribe(r => r.forEach(l => {
@@ -40,6 +42,22 @@ export class CheckComponent implements OnInit {
   wrong(): void {
     this.getInfo(0);
     this.carousel.slideNext();
+  }
+
+  play(): void {
+    if (!this.isPlaying) {
+      this.isPlaying = !this.isPlaying;
+      this.audioPlayer.nativeElement.seekable.start(0);
+      this.audioPlayer.nativeElement.seekable.end(0);
+      console.log(this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioStartPos / this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate);
+      console.log(this.audioPlayer.nativeElement.currentTime);
+      console.log(this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
+      this.audioPlayer.nativeElement.currentTime = this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioStartPos / this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate;
+      this.audioPlayer.nativeElement.play();
+    } else {
+      this.audioPlayer.nativeElement.pause();
+      this.isPlaying = !this.isPlaying;
+    }
   }
 
   getInfo(correct: number): void {
