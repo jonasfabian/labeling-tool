@@ -47,12 +47,14 @@ export class CheckComponent implements OnInit {
   play(): void {
     if (!this.isPlaying) {
       this.isPlaying = !this.isPlaying;
-      this.audioPlayer.nativeElement.seekable.start(0);
-      this.audioPlayer.nativeElement.seekable.end(0);
-      console.log(this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioStartPos / this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate);
-      console.log(this.audioPlayer.nativeElement.currentTime);
-      console.log(this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
       this.audioPlayer.nativeElement.currentTime = this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioStartPos / this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate;
+      this.audioPlayer.nativeElement.addEventListener('timeupdate', (event) => {
+        console.log(this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioEndPos / this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate);
+        console.log(this.audioPlayer.nativeElement.currentTime);
+        if (this.audioPlayer.nativeElement.currentTime === this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioEndPos / this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate) {
+          this.audioPlayer.nativeElement.pause();
+        }
+      });
       this.audioPlayer.nativeElement.play();
     } else {
       this.audioPlayer.nativeElement.pause();
