@@ -31,7 +31,10 @@ export class CheckComponent implements OnInit {
       l.text = l.text.slice(l.textStartPos, l.textEndPos);
       this.yeetArray.push(new CheckIndex(i, l));
       i++;
-    }));
+    }), () => {
+    }, () => {
+      this.loadAudioBlob(this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
+    });
   }
 
   correct(): void {
@@ -51,6 +54,7 @@ export class CheckComponent implements OnInit {
       this.audioPlayer.nativeElement.addEventListener('timeupdate', () => {
         if (this.audioPlayer.nativeElement.currentTime > this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioEndPos / this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate) {
           this.audioPlayer.nativeElement.pause();
+          this.isPlaying = false;
         }
       });
       this.audioPlayer.nativeElement.play();
