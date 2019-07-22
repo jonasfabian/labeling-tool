@@ -24,17 +24,30 @@ export class CheckComponent implements OnInit {
   @ViewChild('audioPlayer', {static: false}) audioPlayer: ElementRef;
 
   isPlaying = false;
+  i = 0;
 
   ngOnInit() {
-    let i = 0;
     this.apiService.getTenNonLabeledTextAudioIndex().subscribe(r => r.forEach(l => {
       l.text = l.text.slice(l.textStartPos, l.textEndPos);
-      this.yeetArray.push(new CheckIndex(i, l));
-      i++;
+      this.yeetArray.push(new CheckIndex(this.i, l));
+      this.i++;
     }), () => {
     }, () => {
       this.loadAudioBlob(this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
     });
+  }
+
+  lastSlide(): void {
+    if (this.carousel.carousel.activeIndex === this.yeetArray.length - 1) {
+      this.apiService.getTenNonLabeledTextAudioIndex().subscribe(r => r.forEach(l => {
+        l.text = l.text.slice(l.textStartPos, l.textEndPos);
+        this.yeetArray.push(new CheckIndex(this.i, l));
+        this.i++;
+      }), () => {
+      }, () => {
+        this.loadAudioBlob(this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
+      });
+    }
   }
 
   correct(): void {
