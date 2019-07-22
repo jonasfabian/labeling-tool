@@ -48,9 +48,7 @@ export class CheckComponent implements OnInit {
     if (!this.isPlaying) {
       this.isPlaying = !this.isPlaying;
       this.audioPlayer.nativeElement.currentTime = this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioStartPos / this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate;
-      this.audioPlayer.nativeElement.addEventListener('timeupdate', (event) => {
-        console.log(this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioEndPos / this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate);
-        console.log(this.audioPlayer.nativeElement.currentTime);
+      this.audioPlayer.nativeElement.addEventListener('timeupdate', () => {
         if (this.audioPlayer.nativeElement.currentTime > this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioEndPos / this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate) {
           this.audioPlayer.nativeElement.pause();
         }

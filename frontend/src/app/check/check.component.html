@@ -16,7 +16,8 @@
     <span>&nbsp; Correct</span>
   </mat-button-toggle>
   <mat-button-toggle (click)="play()" style="margin-left: 5px;">
-    <mat-icon>play_arrow</mat-icon>
+    <mat-icon *ngIf="!isPlaying">play_arrow</mat-icon>
+    <mat-icon *ngIf="isPlaying">pause</mat-icon>
   </mat-button-toggle>
   <mat-button-toggle (click)="wrong()" style="margin-left: 5px;">
     <mat-icon>thumb_down</mat-icon>

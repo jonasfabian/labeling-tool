@@ -1,4 +1,7 @@
-<div id="wave">
+<div [hidden]="!loading">
+  <mat-spinner></mat-spinner>
+</div>
+<div [hidden]="loading" id="wave">
   <div style="width: 100%">
     <div style="position: relative;" id="waveform"></div>
     <div id="wave-timeline"></div>
@@ -23,7 +26,7 @@
     </mat-button-toggle>
   </mat-button-toggle-group>
   <mat-button-toggle title="Volume" style="margin-left: 5px;" (click)="toggleVolume = !toggleVolume">
-    <mat-icon >volume_up</mat-icon>
+    <mat-icon>volume_up</mat-icon>
   </mat-button-toggle>
   <mat-slider *ngIf="toggleVolume" min="0" max="100" step="1" value="25" (input)="setVolume($event)"></mat-slider>
   <mat-button-toggle-group style="margin-left: 5px;">
@@ -39,7 +42,7 @@
     <mat-icon>search</mat-icon>
   </mat-button-toggle>
   <mat-button-toggle (click)="openDialog()" style="margin-left: 5px;">
-   <span>Precise Region</span>
+    <span>Precise Region</span>
   </mat-button-toggle>
   <div style="float: right;">
     <mat-button-toggle style="margin-right: 5px;" (click)="zoomLevel(zoomLvl - 10)">

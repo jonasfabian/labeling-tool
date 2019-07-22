@@ -43,6 +43,8 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   blobUrl = '';
   fileId = 0;
 
+  loading = false;
+
   ngOnInit() {
     this.onPreviewPressed();
   }
@@ -63,10 +65,20 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   ngOnChanges(): void {
     if (this.audioPosition.startTime !== null) {
       if (this.textAudioIndexWithText.transcriptFileId !== this.fileId) {
+        this.loading = true;
         this.fileId = this.textAudioIndexWithText.transcriptFileId;
         this.loadAudioBlob(this.textAudioIndexWithText.transcriptFileId);
       }
       if ((this.waveSurfer !== undefined) && (this.audioPosition.startTime !== null)) {
+        this.waveSurfer.on('ready', () => {
+          this.addRegion(this.audioPosition);
+          this.setViewToRegion(this.audioPosition);
+        });
+        this.waveSurfer.on('loading', r => {
+          if (r === 100) {
+            this.loading = false;
+          }
+        });
         this.addRegion(this.audioPosition);
         if (this.waveSurfer.isReady) {
           this.setViewToRegion(this.audioPosition);
