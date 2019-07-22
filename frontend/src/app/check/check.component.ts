@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {CarouselComponent} from 'ngx-carousel-lib';
 import {ApiService} from '../services/api.service';
 import {TextAudioIndexWithText} from '../models/textAudioIndexWithText';
@@ -39,6 +39,19 @@ export class CheckComponent implements OnInit {
     }, () => {
       this.loadAudioBlob(this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
     });
+  }
+
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    if (event.key === 'p') {
+      this.play();
+    } else if (event.key === 'c') {
+      this.correct();
+    } else if (event.key === 'w') {
+      this.wrong();
+    } else if (event.key === 's') {
+     // TODO add skip method
+    }
   }
 
   lastSlide(): void {
