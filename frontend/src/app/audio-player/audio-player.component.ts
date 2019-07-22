@@ -1,18 +1,15 @@
 import {
   Component,
-  ElementRef,
-  EventEmitter, Inject, Input,
+  EventEmitter, Input,
   OnChanges,
   OnInit,
-  Output,
-  ViewChild
+  Output
 } from '@angular/core';
 import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
 import CursorPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 import {AudioSnippet} from '../models/audioSnippet';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {ApiService} from '../services/api.service';
 import {TextAudioIndexWithText} from '../models/textAudioIndexWithText';
 
@@ -24,7 +21,6 @@ import {TextAudioIndexWithText} from '../models/textAudioIndexWithText';
 export class AudioPlayerComponent implements OnInit, OnChanges {
 
   constructor(
-    public dialog: MatDialog,
     private apiService: ApiService
   ) {
   }
@@ -191,41 +187,5 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   seekInAudio(seconds: any) {
     const totalTime = this.waveSurfer.getDuration();
     this.waveSurfer.seekTo(seconds / totalTime);
-  }
-
-  openDialog(): void {
-    const dialogRef = this.dialog.open(SetTimeDialogComponent, {
-      width: '500px',
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.waveSurfer.clearRegions();
-      this.waveSurfer.addRegion({
-        start: dialogRef.componentInstance.startTimeInput.nativeElement.value,
-        end: dialogRef.componentInstance.endTimeInput.nativeElement.value,
-        resize: true,
-        drag: true,
-        color: 'hsla(200, 50%, 70%, 0.4)'
-      });
-    });
-  }
-}
-
-@Component({
-  selector: 'app-audio-player-set-time-dialog-component',
-  templateUrl: 'set-time-dialog-component.html',
-})
-export class SetTimeDialogComponent {
-
-  constructor(
-    public dialogRef: MatDialogRef<SetTimeDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: AudioSnippet) {
-  }
-
-  @ViewChild('startTimeInput', {static: false}) startTimeInput: ElementRef;
-  @ViewChild('endTimeInput', {static: false}) endTimeInput: ElementRef;
-
-  closeDialog(): void {
-    this.dialogRef.close();
   }
 }

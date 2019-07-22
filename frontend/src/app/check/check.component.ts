@@ -3,6 +3,9 @@ import {CarouselComponent} from 'ngx-carousel-lib';
 import {ApiService} from '../services/api.service';
 import {TextAudioIndexWithText} from '../models/textAudioIndexWithText';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
+import {CheckIndex} from '../models/checkIndex';
+import {MatDialog} from '@angular/material';
+import {ShortcutComponent} from '../shortcut/shortcut.component';
 
 @Component({
   selector: 'app-check',
@@ -13,7 +16,8 @@ export class CheckComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    public dialog: MatDialog
   ) {
   }
 
@@ -48,6 +52,10 @@ export class CheckComponent implements OnInit {
         this.loadAudioBlob(this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
       });
     }
+  }
+
+  openShortcutDialog(): void {
+    this.dialog.open(ShortcutComponent, {width: '500px'});
   }
 
   correct(): void {
@@ -111,15 +119,5 @@ export class CheckComponent implements OnInit {
         this.blobUrl = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(blob));
       });
     });
-  }
-}
-
-export class CheckIndex {
-  id: number;
-  textAudioIndexWithText: TextAudioIndexWithText;
-
-  constructor(id: number, textAudioIndexWithText: TextAudioIndexWithText) {
-    this.id = id;
-    this.textAudioIndexWithText = textAudioIndexWithText;
   }
 }

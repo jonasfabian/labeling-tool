@@ -5,15 +5,16 @@ import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NavigationMenuComponent} from './navigation-menu/navigation-menu.component';
 import {MaterialModule} from './models/material.module';
-import {AudioPlayerComponent, SetTimeDialogComponent} from './audio-player/audio-player.component';
+import {AudioPlayerComponent} from './audio-player/audio-player.component';
 import {MatchOverviewComponent} from './match-overview/match-overview.component';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {IntToBooleanPipe} from './pipes/int-to-boolean.pipe';
 import {ContentComponent} from './content/content.component';
-import { ChartsComponent } from './charts/charts.component';
+import {ChartsComponent} from './charts/charts.component';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
-import { CheckComponent } from './check/check.component';
+import {CheckComponent} from './check/check.component';
 import {CarouselModule} from 'ngx-carousel-lib';
+import {ShortcutComponent} from './shortcut/shortcut.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import {CarouselModule} from 'ngx-carousel-lib';
     ContentComponent,
     AudioPlayerComponent,
     MatchOverviewComponent,
-    SetTimeDialogComponent,
+    ShortcutComponent,
     IntToBooleanPipe,
     ChartsComponent,
     CheckComponent
@@ -43,8 +44,8 @@ import {CarouselModule} from 'ngx-carousel-lib';
     AppComponent
   ],
   entryComponents: [
-    SetTimeDialogComponent
-  ],
+    ShortcutComponent
+  ]
 })
 export class AppModule {
 }
