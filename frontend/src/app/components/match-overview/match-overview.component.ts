@@ -10,6 +10,12 @@ export class MatchOverviewComponent implements OnInit {
   constructor() {
   }
 
+  str = '';
+
   ngOnInit() {
+  }
+
+  getVale(input: string): void {
+    this.str = input;
   }
 }

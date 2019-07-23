@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {TextAudioIndexWithText} from '../../models/textAudioIndexWithText';
 import {ApiService} from '../../services/api.service';
@@ -8,7 +8,7 @@ import {ApiService} from '../../services/api.service';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })
-export class TableComponent implements OnInit {
+export class TableComponent implements OnInit, OnChanges {
 
   constructor(
     private apiService: ApiService
@@ -20,6 +20,7 @@ export class TableComponent implements OnInit {
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @Input() vale: string;
 
   ngOnInit() {
     this.apiService.getTextAudioIndexes().subscribe(i => {
@@ -27,6 +28,12 @@ export class TableComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
+  }
+
+  ngOnChanges(): void {
+    if (this.vale !== '') {
+      this.filter(this.vale);
+    }
   }
 
   filter(input: string): void {

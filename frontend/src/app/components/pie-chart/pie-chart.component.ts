@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {ApiService} from '../../services/api.service';
+import {BaseChartComponent} from '@swimlane/ngx-charts';
 
 @Component({
   selector: 'app-pie-chart',
@@ -14,6 +15,8 @@ export class PieChartComponent implements OnInit {
   }
 
   showLegend = true;
+  @Output() vale = new EventEmitter<string>();
+  @ViewChild('pie', {static: false}) pie: BaseChartComponent;
 
   colorScheme = {
     domain: ['#3f51b5', '#7482cf', 'blue', 'darkblue']
@@ -26,6 +29,10 @@ export class PieChartComponent implements OnInit {
   }
 
   logThis(event: any): void {
-    console.log('yeet');
+    if (event.name === 'Labeled') {
+      this.vale.emit('true');
+    } else if (event.name === 'Not-Labeled') {
+      this.vale.emit('false');
+    }
   }
 }
