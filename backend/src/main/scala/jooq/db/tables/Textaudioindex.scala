@@ -76,6 +76,10 @@ extends TableImpl[TextaudioindexRecord](
 
   val LABELED : TableField[TextaudioindexRecord, Integer] = createField("labeled", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("0", org.jooq.impl.SQLDataType.INTEGER)), "")
 
+  val CORRECT : TableField[TextaudioindexRecord, Integer] = createField("correct", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("0", org.jooq.impl.SQLDataType.INTEGER)), "")
+
+  val WRONG : TableField[TextaudioindexRecord, Integer] = createField("wrong", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("0", org.jooq.impl.SQLDataType.INTEGER)), "")
+
   val TRANSCRIPT_FILE_ID : TableField[TextaudioindexRecord, Integer] = createField("transcript_file_id", org.jooq.impl.SQLDataType.INTEGER, "")
 
   def this() = {

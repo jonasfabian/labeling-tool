@@ -23,7 +23,7 @@ export class ContentComponent implements OnInit {
   text: string | ArrayBuffer = '';
   highlightedTextStartPos = 0;
   highlightedTextEndPos = 0;
-  yeetTextAudioIndex = new TextAudioIndexWithText(0, 0, 0, 0, 0, 0, 0, 0, 0, '');
+  yeetTextAudioIndex = new TextAudioIndexWithText(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '');
 
   textBegin = '';
   highlightedText = '';
@@ -39,7 +39,7 @@ export class ContentComponent implements OnInit {
   }
 
   nextTranscript() {
-    this.apiService.getNonLabeledTextAudioIndex().subscribe(n => {
+    this.apiService.getNonLabeledTextAudioIndex(0).subscribe(n => {
       this.yeetTextAudioIndex = n;
       this.snip = new AudioSnippet(n.audioStartPos / n.samplingRate, n.audioEndPos / n.samplingRate);
       this.text = n.text;
@@ -66,7 +66,7 @@ export class ContentComponent implements OnInit {
 
   submitText(labeled: number): void {
     this.apiService.updateTextAudioIndex(this.yeetTextAudioIndex).subscribe(_ => {
-      this.apiService.getNonLabeledTextAudioIndex().subscribe(n => {
+      this.apiService.getNonLabeledTextAudioIndex(0).subscribe(n => {
         this.yeetTextAudioIndex = n;
         this.snip = new AudioSnippet(n.audioStartPos / n.samplingRate, n.audioEndPos / n.samplingRate);
         this.text = n.text;

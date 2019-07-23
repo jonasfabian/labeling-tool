@@ -29,7 +29,7 @@ object MigrateDB extends App with CorsSupport {
       val f = XML.loadFile(file.getAbsolutePath)
       val samplingRate = (f \ "SamplingRate").text
       (f \ "TextAudioIndex").foreach(m => {
-        val textAudioIndex = new TextAudioIndex(index, samplingRate.toInt, (m \ "TextStartPos").text.toInt, (m \ "TextEndPos").text.toInt, (m \ "AudioStartPos").text.toDouble, (m \ "AudioEndPos").text.toDouble, (m \ "SpeakerKey").text.toInt, 0, file.getParentFile.getName.toInt)
+        val textAudioIndex = new TextAudioIndex(index, samplingRate.toInt, (m \ "TextStartPos").text.toInt, (m \ "TextEndPos").text.toInt, (m \ "AudioStartPos").text.toDouble, (m \ "AudioEndPos").text.toDouble, (m \ "SpeakerKey").text.toInt, 0, 0, 0, file.getParentFile.getName.toInt)
         newTextAudioIndex(textAudioIndex)
       })
     })

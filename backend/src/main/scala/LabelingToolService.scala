@@ -29,7 +29,7 @@ class LabelingToolService(config: Config) {
 
   // get all
   def getTextAudioIndexes: Array[TextAudioIndex] = withDslContext(dslContext => {
-    dslContext.selectFrom(TEXTAUDIOINDEX).fetchArray().map(m => TextAudioIndex(m.getId, m.getSamplingrate, m.getTextstartpos, m.getTextendpos, m.getAudiostartpos, m.getAudioendpos, m.getSpeakerkey, m.getLabeled, m.getTranscriptFileId))
+    dslContext.selectFrom(TEXTAUDIOINDEX).fetchArray().map(m => TextAudioIndex(m.getId, m.getSamplingrate, m.getTextstartpos, m.getTextendpos, m.getAudiostartpos, m.getAudioendpos, m.getSpeakerkey, m.getLabeled, m.getCorrect, m.getWrong, m.getTranscriptFileId))
   })
 
   // get one by id
@@ -37,7 +37,7 @@ class LabelingToolService(config: Config) {
     dslContext.select()
       .from(TEXTAUDIOINDEX)
       .where(TEXTAUDIOINDEX.ID.eq(id))
-      .fetchOne().map(m => TextAudioIndex(m.get(TEXTAUDIOINDEX.ID).toInt, m.get(TEXTAUDIOINDEX.SAMPLINGRATE).toInt, m.get(TEXTAUDIOINDEX.TEXTSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.TEXTENDPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOSTARTPOS).toDouble, m.get(TEXTAUDIOINDEX.AUDIOENDPOS).toDouble, m.get(TEXTAUDIOINDEX.SPEAKERKEY).toInt, m.get(TEXTAUDIOINDEX.LABELED).toInt, m.get(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID).toInt))
+      .fetchOne().map(m => TextAudioIndex(m.get(TEXTAUDIOINDEX.ID).toInt, m.get(TEXTAUDIOINDEX.SAMPLINGRATE).toInt, m.get(TEXTAUDIOINDEX.TEXTSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.TEXTENDPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOSTARTPOS).toDouble, m.get(TEXTAUDIOINDEX.AUDIOENDPOS).toDouble, m.get(TEXTAUDIOINDEX.SPEAKERKEY).toInt, m.get(TEXTAUDIOINDEX.LABELED).toInt, m.get(TEXTAUDIOINDEX.CORRECT).toInt, m.get(TEXTAUDIOINDEX.WRONG).toInt, m.get(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID).toInt))
   })
 
   // get all of labeled-type
@@ -45,7 +45,7 @@ class LabelingToolService(config: Config) {
     dslContext.select()
       .from(TEXTAUDIOINDEX)
       .where(TEXTAUDIOINDEX.LABELED.eq(labeledType))
-      .fetchArray().map(m => TextAudioIndex(m.get(TEXTAUDIOINDEX.ID).toInt, m.get(TEXTAUDIOINDEX.SAMPLINGRATE).toInt, m.get(TEXTAUDIOINDEX.TEXTSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.TEXTENDPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOSTARTPOS).toDouble, m.get(TEXTAUDIOINDEX.AUDIOENDPOS).toDouble, m.get(TEXTAUDIOINDEX.SPEAKERKEY).toInt, m.get(TEXTAUDIOINDEX.LABELED).toInt, m.get(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID).toInt))
+      .fetchArray().map(m => TextAudioIndex(m.get(TEXTAUDIOINDEX.ID).toInt, m.get(TEXTAUDIOINDEX.SAMPLINGRATE).toInt, m.get(TEXTAUDIOINDEX.TEXTSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.TEXTENDPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOSTARTPOS).toDouble, m.get(TEXTAUDIOINDEX.AUDIOENDPOS).toDouble, m.get(TEXTAUDIOINDEX.SPEAKERKEY).toInt, m.get(TEXTAUDIOINDEX.LABELED).toInt, m.get(TEXTAUDIOINDEX.CORRECT).toInt, m.get(TEXTAUDIOINDEX.WRONG).toInt, m.get(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID).toInt))
   })
 
   // get sums of labeled
@@ -82,30 +82,30 @@ class LabelingToolService(config: Config) {
     dslContext.selectFrom(TRANSCRIPT).fetchArray().map(m => Transcript(m.getId, m.getText, m.getFileid))
   })
 
-  def getNonLabeledDataIndexes(): TextAudioIndexWithText = withDslContext(dslContext => {
+  def getNonLabeledDataIndexes(labeledType: Integer): TextAudioIndexWithText = withDslContext(dslContext => {
     dslContext.select(
       TEXTAUDIOINDEX.ID, TEXTAUDIOINDEX.SAMPLINGRATE, TEXTAUDIOINDEX.TEXTSTARTPOS, TEXTAUDIOINDEX.TEXTENDPOS, TEXTAUDIOINDEX.AUDIOSTARTPOS, TEXTAUDIOINDEX.AUDIOENDPOS,
-      TEXTAUDIOINDEX.SPEAKERKEY, TEXTAUDIOINDEX.LABELED, TRANSCRIPT.FILEID.as("transcript_file_id"), TRANSCRIPT.TEXT
+      TEXTAUDIOINDEX.SPEAKERKEY, TEXTAUDIOINDEX.LABELED, TEXTAUDIOINDEX.CORRECT, TEXTAUDIOINDEX.WRONG, TRANSCRIPT.FILEID.as("transcript_file_id"), TRANSCRIPT.TEXT
     ).from(TEXTAUDIOINDEX)
       .join(TRANSCRIPT)
       .on(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID.eq(TRANSCRIPT.FILEID))
-      .where(TEXTAUDIOINDEX.LABELED.eq(0))
+      .where(TEXTAUDIOINDEX.LABELED.eq(labeledType))
       .orderBy(TEXTAUDIOINDEX.ID.asc())
       .limit(1)
-      .fetchOne().map(m => TextAudioIndexWithText(m.get(TEXTAUDIOINDEX.ID).toInt, m.get(TEXTAUDIOINDEX.SAMPLINGRATE).toInt, m.get(TEXTAUDIOINDEX.TEXTSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.TEXTENDPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOSTARTPOS).toDouble, m.get(TEXTAUDIOINDEX.AUDIOENDPOS).toDouble, m.get(TEXTAUDIOINDEX.SPEAKERKEY).toInt, m.get(TEXTAUDIOINDEX.LABELED).toInt, m.get(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID).toInt, m.get(TRANSCRIPT.TEXT).toString))
+      .fetchOne().map(m => TextAudioIndexWithText(m.get(TEXTAUDIOINDEX.ID).toInt, m.get(TEXTAUDIOINDEX.SAMPLINGRATE).toInt, m.get(TEXTAUDIOINDEX.TEXTSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.TEXTENDPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOSTARTPOS).toDouble, m.get(TEXTAUDIOINDEX.AUDIOENDPOS).toDouble, m.get(TEXTAUDIOINDEX.SPEAKERKEY).toInt, m.get(TEXTAUDIOINDEX.LABELED).toInt, m.get(TEXTAUDIOINDEX.CORRECT).toInt, m.get(TEXTAUDIOINDEX.WRONG).toInt, m.get(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID).toInt, m.get(TRANSCRIPT.TEXT).toString))
   })
 
-  def getTenNonLabeledDataIndexes(): Array[TextAudioIndexWithText] = withDslContext(dslContext => {
+  def getTenNonLabeledDataIndexes(labeledType: Integer): Array[TextAudioIndexWithText] = withDslContext(dslContext => {
     dslContext.select(
       TEXTAUDIOINDEX.ID, TEXTAUDIOINDEX.SAMPLINGRATE, TEXTAUDIOINDEX.TEXTSTARTPOS, TEXTAUDIOINDEX.TEXTENDPOS, TEXTAUDIOINDEX.AUDIOSTARTPOS, TEXTAUDIOINDEX.AUDIOENDPOS,
-      TEXTAUDIOINDEX.SPEAKERKEY, TEXTAUDIOINDEX.LABELED, TRANSCRIPT.FILEID.as("transcript_file_id"), TRANSCRIPT.TEXT
+      TEXTAUDIOINDEX.SPEAKERKEY, TEXTAUDIOINDEX.LABELED, TEXTAUDIOINDEX.CORRECT, TEXTAUDIOINDEX.WRONG, TRANSCRIPT.FILEID.as("transcript_file_id"), TRANSCRIPT.TEXT
     ).from(TEXTAUDIOINDEX)
       .join(TRANSCRIPT)
       .on(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID.eq(TRANSCRIPT.FILEID))
-      .where(TEXTAUDIOINDEX.LABELED.eq(0))
+      .where(TEXTAUDIOINDEX.LABELED.eq(labeledType))
       .orderBy(TEXTAUDIOINDEX.ID.asc())
       .limit(10)
-      .fetchArray().map(m => TextAudioIndexWithText(m.get(TEXTAUDIOINDEX.ID).toInt, m.get(TEXTAUDIOINDEX.SAMPLINGRATE).toInt, m.get(TEXTAUDIOINDEX.TEXTSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.TEXTENDPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOSTARTPOS).toDouble, m.get(TEXTAUDIOINDEX.AUDIOENDPOS).toDouble, m.get(TEXTAUDIOINDEX.SPEAKERKEY).toInt, m.get(TEXTAUDIOINDEX.LABELED).toInt, m.get(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID).toInt, m.get(TRANSCRIPT.TEXT).toString))
+      .fetchArray().map(m => TextAudioIndexWithText(m.get(TEXTAUDIOINDEX.ID).toInt, m.get(TEXTAUDIOINDEX.SAMPLINGRATE).toInt, m.get(TEXTAUDIOINDEX.TEXTSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.TEXTENDPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOSTARTPOS).toDouble, m.get(TEXTAUDIOINDEX.AUDIOENDPOS).toDouble, m.get(TEXTAUDIOINDEX.SPEAKERKEY).toInt, m.get(TEXTAUDIOINDEX.LABELED).toInt, m.get(TEXTAUDIOINDEX.CORRECT).toInt, m.get(TEXTAUDIOINDEX.WRONG).toInt, m.get(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID).toInt, m.get(TRANSCRIPT.TEXT).toString))
   })
 
   def updateTextAudioIndex(textAudioIndex: TextAudioIndex): Unit = withDslContext(dslContext => {
@@ -117,6 +117,8 @@ class LabelingToolService(config: Config) {
       .set(TEXTAUDIOINDEX.AUDIOENDPOS, java.lang.Double.valueOf(textAudioIndex.audioEndPos))
       .set(TEXTAUDIOINDEX.SPEAKERKEY, Integer.valueOf(textAudioIndex.speakerKey))
       .set(TEXTAUDIOINDEX.LABELED, Integer.valueOf(textAudioIndex.labeled))
+      .set(TEXTAUDIOINDEX.CORRECT, Integer.valueOf(textAudioIndex.correct))
+      .set(TEXTAUDIOINDEX.WRONG, Integer.valueOf(textAudioIndex.wrong))
       .set(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID, Integer.valueOf(textAudioIndex.transcriptFileId))
       .where(TEXTAUDIOINDEX.ID.eq(textAudioIndex.id))
       .execute()

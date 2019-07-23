@@ -19,6 +19,8 @@ case class Textaudioindex(
   , audioendpos : Double
   , speakerkey : Integer
   , labeled : Integer
+  , correct : Integer
+  , wrong : Integer
   , transcriptFileId : Integer
 ) extends Serializable {
 
@@ -32,6 +34,8 @@ case class Textaudioindex(
       , value.audioendpos
       , value.speakerkey
       , value.labeled
+      , value.correct
+      , value.wrong
       , value.transcriptFileId
     )
   }
@@ -68,6 +72,14 @@ case class Textaudioindex(
     this.labeled
   }
 
+  def getCorrect : Integer = {
+    this.correct
+  }
+
+  def getWrong : Integer = {
+    this.wrong
+  }
+
   def getTranscriptFileId : Integer = {
     this.transcriptFileId
   }
@@ -83,6 +95,8 @@ case class Textaudioindex(
     sb.append(", ").append(audioendpos)
     sb.append(", ").append(speakerkey)
     sb.append(", ").append(labeled)
+    sb.append(", ").append(correct)
+    sb.append(", ").append(wrong)
     sb.append(", ").append(transcriptFileId)
 
     sb.append(")")

@@ -11,6 +11,8 @@ CREATE TABLE IF NOT EXISTS `textAudioIndex` (
     `audioEndPos` DOUBLE,
     `speakerKey` INT,
     `labeled` INT default 0,
+    `correct` INT default 0,
+    `wrong` INT default 0,
     `transcript_file_id` INT,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;

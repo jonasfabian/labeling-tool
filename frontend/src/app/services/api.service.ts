@@ -29,12 +29,12 @@ export class ApiService {
     return this.http.get(this.url + 'getAudioFile?id=' + fileId, {responseType: 'blob'});
   }
 
-  getNonLabeledTextAudioIndex(): Observable<TextAudioIndexWithText> {
-    return this.http.get<TextAudioIndexWithText>(this.url + 'getNonLabeledDataIndexes');
+  getNonLabeledTextAudioIndex(labeledType: number): Observable<TextAudioIndexWithText> {
+    return this.http.get<TextAudioIndexWithText>(this.url + 'getNonLabeledDataIndexes?id=' + labeledType);
   }
 
-  getTenNonLabeledTextAudioIndex(): Observable<Array<TextAudioIndexWithText>> {
-    return this.http.get<Array<TextAudioIndexWithText>>(this.url + 'getTenNonLabeledDataIndexes');
+  getTenNonLabeledTextAudioIndex(labeledType: number): Observable<Array<TextAudioIndexWithText>> {
+    return this.http.get<Array<TextAudioIndexWithText>>(this.url + 'getTenNonLabeledDataIndexes?id=' + labeledType);
   }
 
   getLabeledSums(): Observable<Array<Sums>> {

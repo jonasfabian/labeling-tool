@@ -27,17 +27,25 @@ export class CheckComponent implements OnInit {
   @ViewChild('carousel', {static: false}) carousel: CarouselComponent;
   @ViewChild('audioPlayer', {static: false}) audioPlayer: ElementRef;
 
+  available = false;
   isPlaying = false;
   i = 0;
 
   ngOnInit() {
-    this.apiService.getTenNonLabeledTextAudioIndex().subscribe(r => r.forEach(l => {
-      l.text = l.text.slice(l.textStartPos, l.textEndPos);
-      this.yeetArray.push(new CheckIndex(this.i, l));
-      this.i++;
+    this.apiService.getTenNonLabeledTextAudioIndex(1).subscribe(r => r.forEach(l => {
+      if (r.length !== 0) {
+        this.available = true;
+        l.text = l.text.slice(l.textStartPos, l.textEndPos);
+        this.yeetArray.push(new CheckIndex(this.i, l));
+        this.i++;
+      } else {
+        this.available = false;
+      }
     }), () => {
     }, () => {
-      this.loadAudioBlob(this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
+      if (this.yeetArray.length !== 0) {
+        this.loadAudioBlob(this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
+      }
     });
   }
 
@@ -50,13 +58,13 @@ export class CheckComponent implements OnInit {
     } else if (event.key === 'w') {
       this.wrong();
     } else if (event.key === 's') {
-     this.skip();
+      this.skip();
     }
   }
 
   lastSlide(): void {
     if (this.carousel.carousel.activeIndex === this.yeetArray.length - 1) {
-      this.apiService.getTenNonLabeledTextAudioIndex().subscribe(r => r.forEach(l => {
+      this.apiService.getTenNonLabeledTextAudioIndex(1).subscribe(r => r.forEach(l => {
         l.text = l.text.slice(l.textStartPos, l.textEndPos);
         this.yeetArray.push(new CheckIndex(this.i, l));
         this.i++;
@@ -110,15 +118,35 @@ export class CheckComponent implements OnInit {
     }
   }
 
-  getInfo(correct: number): void {
-    const val = this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText;
-    this.apiService.updateTextAudioIndex(new TextAudioIndexWithText(
-      val.id, val.samplingRate, val.textStartPos, val.textEndPos,
-      val.audioStartPos, val.audioEndPos, val.speakerKey,
-      correct, val.transcriptFileId, val.text
-    )).subscribe(_ => {
-      this.loadAudioBlob(val);
-    });
+  getInfo(labeledType: number): void {
+    if (labeledType === 1) {
+      const val = this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText;
+      this.apiService.updateTextAudioIndex(new TextAudioIndexWithText(
+        val.id, val.samplingRate, val.textStartPos, val.textEndPos,
+        val.audioStartPos, val.audioEndPos, val.speakerKey,
+        labeledType, val.correct + 1, val.wrong, val.transcriptFileId, val.text
+      )).subscribe(_ => {
+        this.loadAudioBlob(val);
+      });
+    } else if (labeledType === 2) {
+      const val = this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText;
+      this.apiService.updateTextAudioIndex(new TextAudioIndexWithText(
+        val.id, val.samplingRate, val.textStartPos, val.textEndPos,
+        val.audioStartPos, val.audioEndPos, val.speakerKey,
+        labeledType, val.correct, val.wrong + 1, val.transcriptFileId, val.text
+      )).subscribe(_ => {
+        this.loadAudioBlob(val);
+      });
+    } else {
+      const val = this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText;
+      this.apiService.updateTextAudioIndex(new TextAudioIndexWithText(
+        val.id, val.samplingRate, val.textStartPos, val.textEndPos,
+        val.audioStartPos, val.audioEndPos, val.speakerKey,
+        labeledType, val.correct, val.wrong, val.transcriptFileId, val.text
+      )).subscribe(_ => {
+        this.loadAudioBlob(val);
+      });
+    }
   }
 
   convertDataURIToBinary(dataURI) {

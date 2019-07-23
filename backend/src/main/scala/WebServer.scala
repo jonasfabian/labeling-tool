@@ -121,20 +121,26 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
   }
 
   @ApiOperation(value = "getTextAudioIndexes", httpMethod = "GET", notes = "returns an Array of TextAudioIndex")
+  @ApiImplicitParams(Array(new ApiImplicitParam(name = "id", required = true, example = "100", value = "id", paramType = "query")))
   @ApiResponses(Array(new ApiResponse(code = 200, response = classOf[TextAudioIndexWithText], message = "OK")))
   @Path("getNonLabeledDataIndexes")
   def getNonLabeledDataIndexes = path("getNonLabeledDataIndexes") {
     get {
-      complete(service.getNonLabeledDataIndexes)
+      parameters("id".as[Int] ? 0) { labeledType =>
+        complete(service.getNonLabeledDataIndexes(labeledType))
+      }
     }
   }
 
   @ApiOperation(value = "getTenNonLabeledDataIndexes", httpMethod = "GET", notes = "returns an Array of TextAudioIndex")
+  @ApiImplicitParams(Array(new ApiImplicitParam(name = "id", required = true, example = "100", value = "id", paramType = "query")))
   @ApiResponses(Array(new ApiResponse(code = 200, response = classOf[Array[TextAudioIndexWithText]], message = "OK")))
   @Path("getTenNonLabeledDataIndexes")
   def getTenNonLabeledDataIndexes = path("getTenNonLabeledDataIndexes") {
     get {
-      complete(service.getTenNonLabeledDataIndexes)
+      parameters("id".as[Int] ? 0) { labeledType =>
+        complete(service.getTenNonLabeledDataIndexes(labeledType))
+      }
     }
   }
 
