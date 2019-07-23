@@ -24,4 +24,8 @@ export class PieChartComponent implements OnInit {
   ngOnInit() {
     this.apiService.getLabeledSums().subscribe(l => l.forEach(s => this.single = [{name: 'Not-Labeled', value: s.nonLabeled}, {name: 'Labeled', value: s.correct + s.wrong + s.skipped}]));
   }
+
+  logThis(event: any): void {
+    console.log('yeet');
+  }
 }

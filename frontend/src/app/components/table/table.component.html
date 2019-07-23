@@ -1,3 +1,6 @@
+<mat-form-field style="width: 100%;">
+  <input matInput (keyup)="filter($event.target.value)" placeholder="Filter by property">
+</mat-form-field>
 <table mat-table [dataSource]="dataSource" matSort style="width: 100%;">
   <ng-container matColumnDef="id">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>

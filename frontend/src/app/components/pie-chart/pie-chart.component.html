@@ -4,5 +4,7 @@
   [results]="single"
   [legend]="showLegend"
   [legendPosition]="'below'"
-  [animations]="true">
+  [animations]="true"
+  (select)="logThis($event)"
+>
 </ngx-charts-pie-chart>
