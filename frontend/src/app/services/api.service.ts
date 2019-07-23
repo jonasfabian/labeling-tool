@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {TextAudioIndexWithText} from '../models/textAudioIndexWithText';
+import {Sums} from '../models/Sums';
 
 @Injectable({
   providedIn: 'root'
@@ -34,5 +35,9 @@ export class ApiService {
 
   getTenNonLabeledTextAudioIndex(): Observable<Array<TextAudioIndexWithText>> {
     return this.http.get<Array<TextAudioIndexWithText>>(this.url + 'getTenNonLabeledDataIndexes');
+  }
+
+  getLabeledSums(): Observable<Array<Sums>> {
+    return this.http.get<Array<Sums>>(this.url + 'getLabeledSums');
   }
 }
