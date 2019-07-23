@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {BreadcrumbService} from '../services/breadcrumb.service';
+import {BreadcrumbService} from '../../services/breadcrumb.service';
 
 @Component({
   selector: 'app-navigation-menu',

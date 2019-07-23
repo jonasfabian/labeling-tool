@@ -1,14 +1,14 @@
-import {Component, OnChanges, OnInit, ViewChild} from '@angular/core';
-import {ApiService} from '../services/api.service';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
-import {TextAudioIndexWithText} from '../models/textAudioIndexWithText';
+import {TextAudioIndexWithText} from '../../models/textAudioIndexWithText';
+import {ApiService} from '../../services/api.service';
 
 @Component({
-  selector: 'app-match-overview',
-  templateUrl: './match-overview.component.html',
-  styleUrls: ['./match-overview.component.scss']
+  selector: 'app-table',
+  templateUrl: './table.component.html',
+  styleUrls: ['./table.component.scss']
 })
-export class MatchOverviewComponent implements OnInit, OnChanges {
+export class TableComponent implements OnInit {
 
   constructor(
     private apiService: ApiService
@@ -29,6 +29,4 @@ export class MatchOverviewComponent implements OnInit, OnChanges {
     });
   }
 
-  ngOnChanges(): void {
-  }
 }

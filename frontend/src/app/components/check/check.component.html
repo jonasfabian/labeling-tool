@@ -10,7 +10,7 @@
     <source [src]="blobUrl">
   </audio>
 </div>
-<div style="position: absolute; bottom: calc(100% - 625px); left: 0; margin-left: auto; margin-right: auto; right: 0; width: 275px;">
+<div style="position: absolute; bottom: calc(100% - 625px); left: 0; margin-left: auto; margin-right: auto; right: 0; width: 336px;">
   <mat-button-toggle (click)="correct()">
     <mat-icon>thumb_up</mat-icon>
     <span>&nbsp; Correct</span>
@@ -22,6 +22,9 @@
   <mat-button-toggle (click)="wrong()" style="margin-left: 5px;">
     <mat-icon>thumb_down</mat-icon>
     <span>&nbsp; Wrong</span>
+  </mat-button-toggle>
+  <mat-button-toggle (click)="skip()" style="margin-left: 5px;">
+    <span>Skip</span>
   </mat-button-toggle>
 </div>
 <div style="position: absolute; bottom: 75px; left: 15px;">

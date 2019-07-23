@@ -1,9 +1,9 @@
 import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {CarouselComponent} from 'ngx-carousel-lib';
-import {ApiService} from '../services/api.service';
-import {TextAudioIndexWithText} from '../models/textAudioIndexWithText';
+import {ApiService} from '../../services/api.service';
+import {TextAudioIndexWithText} from '../../models/textAudioIndexWithText';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
-import {CheckIndex} from '../models/checkIndex';
+import {CheckIndex} from '../../models/checkIndex';
 import {MatDialog} from '@angular/material';
 import {ShortcutComponent} from '../shortcut/shortcut.component';
 
@@ -50,7 +50,7 @@ export class CheckComponent implements OnInit {
     } else if (event.key === 'w') {
       this.wrong();
     } else if (event.key === 's') {
-     // TODO add skip method
+     this.skip();
     }
   }
 
@@ -71,13 +71,25 @@ export class CheckComponent implements OnInit {
     this.dialog.open(ShortcutComponent, {width: '500px'});
   }
 
+  /*
+  * 0 ==  not labeled
+  * 1 == correct
+  * 2 == wrong
+  * 3 == skipped
+  * */
+
   correct(): void {
     this.getInfo(1);
     this.carousel.slideNext();
   }
 
   wrong(): void {
-    this.getInfo(0);
+    this.getInfo(2);
+    this.carousel.slideNext();
+  }
+
+  skip(): void {
+    this.getInfo(3);
     this.carousel.slideNext();
   }
 

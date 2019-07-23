@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {AudioSnippet} from '../models/audioSnippet';
+import {AudioSnippet} from '../../models/audioSnippet';
 import {MatSnackBar} from '@angular/material';
-import {ApiService} from '../services/api.service';
+import {ApiService} from '../../services/api.service';
 import {DomSanitizer} from '@angular/platform-browser';
-import {TextAudioIndexWithText} from '../models/textAudioIndexWithText';
+import {TextAudioIndexWithText} from '../../models/textAudioIndexWithText';
 
 @Component({
   selector: 'app-content',

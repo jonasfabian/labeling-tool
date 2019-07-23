@@ -1,8 +1,9 @@
-import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 import {ContentComponent} from './content/content.component';
-import {MatchOverviewComponent} from './match-overview/match-overview.component';
 import {CheckComponent} from './check/check.component';
+import {MatchOverviewComponent} from './match-overview/match-overview.component';
+import {NgModule} from '@angular/core';
+
 
 const routes: Routes = [
   {
