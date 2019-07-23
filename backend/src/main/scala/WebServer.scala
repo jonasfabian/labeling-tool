@@ -40,7 +40,7 @@ object WebServer extends App with CorsSupport {
 class LabelingToolRestApi(service: LabelingToolService) extends Directives with ErrorAccumulatingCirceSupport {
   val route = pathPrefix("api") {
     pathPrefix("match") {
-      getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudioIndex ~ getTranscript ~ getTranscripts ~ getAudio ~ getAudioFile ~ getNonLabeledDataIndexes ~ getTenNonLabeledDataIndexes
+      getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudioIndex ~ getTranscript ~ getTranscripts ~ getAudio ~ getAudioFile ~ getNonLabeledDataIndexes ~ getTenNonLabeledDataIndexes ~ getTextAudioIndexesByLabeledType ~ getLabeledSums
     }
   }
 
@@ -78,24 +78,45 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
     }
   }
 
-  @ApiOperation(value = "", httpMethod = "GET", notes = "returns a textAudioIndex")
-  @ApiImplicitParams(Array(new ApiImplicitParam(name = "id", required = true, example = "100", value = "id", paramType = "query")))
-  @ApiResponses(Array(new ApiResponse(code = 200, response = classOf[Array[TextAudioIndex]], message = "OK")))
-  @Path("getTextAudioIndex")
-  def getTextAudioIndex = path("getTextAudioIndex") {
-    get {
-      parameters("id".as[Int] ? 0) { id =>
-        complete(service.getTextAudioIndex(id))
-      }
-    }
-  }
-
   @ApiOperation(value = "getTextAudioIndexes", httpMethod = "GET", notes = "returns an Array of TextAudioIndex")
   @ApiResponses(Array(new ApiResponse(code = 200, response = classOf[TextAudioIndex], message = "OK")))
   @Path("textAudioIndexes")
   def getTextAudioIndexes = path("getTextAudioIndexes") {
     get {
       complete(service.getTextAudioIndexes)
+    }
+  }
+
+  @ApiOperation(value = "getLabeledSums", httpMethod = "GET", notes = "returns an Array of TextAudioIndex")
+  @ApiResponses(Array(new ApiResponse(code = 200, response = classOf[Array[Sums]], message = "OK")))
+  @Path("getLabeledSums")
+  def getLabeledSums = path("getLabeledSums") {
+    get {
+      complete(service.getLabeledSums)
+    }
+  }
+
+  @ApiOperation(value = "", httpMethod = "GET", notes = "returns a textAudioIndex")
+  @ApiImplicitParams(Array(new ApiImplicitParam(name = "id", required = true, example = "100", value = "id", paramType = "query")))
+  @ApiResponses(Array(new ApiResponse(code = 200, response = classOf[Array[TextAudioIndex]], message = "OK")))
+  @Path("getTextAudioIndexById")
+  def getTextAudioIndex = path("getTextAudioIndexById") {
+    get {
+      parameters("id".as[Int] ? 0) { id =>
+        complete(service.getTextAudioIndexById(id))
+      }
+    }
+  }
+
+  @ApiOperation(value = "", httpMethod = "GET", notes = "returns a textAudioIndex")
+  @ApiImplicitParams(Array(new ApiImplicitParam(name = "id", required = true, example = "100", value = "id", paramType = "query")))
+  @ApiResponses(Array(new ApiResponse(code = 200, response = classOf[Array[TextAudioIndex]], message = "OK")))
+  @Path("getTextAudioIndexesByLabeledType")
+  def getTextAudioIndexesByLabeledType = path("getTextAudioIndexesByLabeledType") {
+    get {
+      parameters("id".as[Int] ? 0) { labeledType =>
+        complete(service.getTextAudioIndexesByLabeledType(labeledType))
+      }
     }
   }
 

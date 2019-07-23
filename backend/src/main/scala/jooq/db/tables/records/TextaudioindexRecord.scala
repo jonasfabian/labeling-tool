@@ -4,7 +4,6 @@
 package jooq.db.tables.records
 
 
-import java.lang.Byte
 import java.lang.Double
 import java.lang.Integer
 
@@ -17,7 +16,7 @@ import org.jooq.Row9
 import org.jooq.impl.UpdatableRecordImpl
 
 
-class TextaudioindexRecord extends UpdatableRecordImpl[TextaudioindexRecord](Textaudioindex.TEXTAUDIOINDEX) with Record9[Integer, Integer, Integer, Integer, Double, Double, Integer, Byte, Integer] {
+class TextaudioindexRecord extends UpdatableRecordImpl[TextaudioindexRecord](Textaudioindex.TEXTAUDIOINDEX) with Record9[Integer, Integer, Integer, Integer, Double, Double, Integer, Integer, Integer] {
 
   def setId(value : Integer) : Unit = {
     set(0, value)
@@ -82,13 +81,13 @@ class TextaudioindexRecord extends UpdatableRecordImpl[TextaudioindexRecord](Tex
     if (r == null) null else r.asInstanceOf[Integer]
   }
 
-  def setLabeled(value : Byte) : Unit = {
+  def setLabeled(value : Integer) : Unit = {
     set(7, value)
   }
 
-  def getLabeled : Byte = {
+  def getLabeled : Integer = {
     val r = get(7)
-    if (r == null) null else r.asInstanceOf[Byte]
+    if (r == null) null else r.asInstanceOf[Integer]
   }
 
   def setTranscriptFileId(value : Integer) : Unit = {
@@ -111,12 +110,12 @@ class TextaudioindexRecord extends UpdatableRecordImpl[TextaudioindexRecord](Tex
   // Record9 type implementation
   // -------------------------------------------------------------------------
 
-  override def fieldsRow : Row9[Integer, Integer, Integer, Integer, Double, Double, Integer, Byte, Integer] = {
-    super.fieldsRow.asInstanceOf[ Row9[Integer, Integer, Integer, Integer, Double, Double, Integer, Byte, Integer] ]
+  override def fieldsRow : Row9[Integer, Integer, Integer, Integer, Double, Double, Integer, Integer, Integer] = {
+    super.fieldsRow.asInstanceOf[ Row9[Integer, Integer, Integer, Integer, Double, Double, Integer, Integer, Integer] ]
   }
 
-  override def valuesRow : Row9[Integer, Integer, Integer, Integer, Double, Double, Integer, Byte, Integer] = {
-    super.valuesRow.asInstanceOf[ Row9[Integer, Integer, Integer, Integer, Double, Double, Integer, Byte, Integer] ]
+  override def valuesRow : Row9[Integer, Integer, Integer, Integer, Double, Double, Integer, Integer, Integer] = {
+    super.valuesRow.asInstanceOf[ Row9[Integer, Integer, Integer, Integer, Double, Double, Integer, Integer, Integer] ]
   }
   override def field1 : Field[Integer] = Textaudioindex.TEXTAUDIOINDEX.ID
   override def field2 : Field[Integer] = Textaudioindex.TEXTAUDIOINDEX.SAMPLINGRATE
@@ -125,7 +124,7 @@ class TextaudioindexRecord extends UpdatableRecordImpl[TextaudioindexRecord](Tex
   override def field5 : Field[Double] = Textaudioindex.TEXTAUDIOINDEX.AUDIOSTARTPOS
   override def field6 : Field[Double] = Textaudioindex.TEXTAUDIOINDEX.AUDIOENDPOS
   override def field7 : Field[Integer] = Textaudioindex.TEXTAUDIOINDEX.SPEAKERKEY
-  override def field8 : Field[Byte] = Textaudioindex.TEXTAUDIOINDEX.LABELED
+  override def field8 : Field[Integer] = Textaudioindex.TEXTAUDIOINDEX.LABELED
   override def field9 : Field[Integer] = Textaudioindex.TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID
   override def component1 : Integer = getId
   override def component2 : Integer = getSamplingrate
@@ -134,7 +133,7 @@ class TextaudioindexRecord extends UpdatableRecordImpl[TextaudioindexRecord](Tex
   override def component5 : Double = getAudiostartpos
   override def component6 : Double = getAudioendpos
   override def component7 : Integer = getSpeakerkey
-  override def component8 : Byte = getLabeled
+  override def component8 : Integer = getLabeled
   override def component9 : Integer = getTranscriptFileId
   override def value1 : Integer = getId
   override def value2 : Integer = getSamplingrate
@@ -143,7 +142,7 @@ class TextaudioindexRecord extends UpdatableRecordImpl[TextaudioindexRecord](Tex
   override def value5 : Double = getAudiostartpos
   override def value6 : Double = getAudioendpos
   override def value7 : Integer = getSpeakerkey
-  override def value8 : Byte = getLabeled
+  override def value8 : Integer = getLabeled
   override def value9 : Integer = getTranscriptFileId
 
   override def value1(value : Integer) : TextaudioindexRecord = {
@@ -181,7 +180,7 @@ class TextaudioindexRecord extends UpdatableRecordImpl[TextaudioindexRecord](Tex
     this
   }
 
-  override def value8(value : Byte) : TextaudioindexRecord = {
+  override def value8(value : Integer) : TextaudioindexRecord = {
     setLabeled(value)
     this
   }
@@ -191,7 +190,7 @@ class TextaudioindexRecord extends UpdatableRecordImpl[TextaudioindexRecord](Tex
     this
   }
 
-  override def values(value1 : Integer, value2 : Integer, value3 : Integer, value4 : Integer, value5 : Double, value6 : Double, value7 : Integer, value8 : Byte, value9 : Integer) : TextaudioindexRecord = {
+  override def values(value1 : Integer, value2 : Integer, value3 : Integer, value4 : Integer, value5 : Double, value6 : Double, value7 : Integer, value8 : Integer, value9 : Integer) : TextaudioindexRecord = {
     this.value1(value1)
     this.value2(value2)
     this.value3(value3)
@@ -204,7 +203,7 @@ class TextaudioindexRecord extends UpdatableRecordImpl[TextaudioindexRecord](Tex
     this
   }
 
-  def this(id : Integer, samplingrate : Integer, textstartpos : Integer, textendpos : Integer, audiostartpos : Double, audioendpos : Double, speakerkey : Integer, labeled : Byte, transcriptFileId : Integer) = {
+  def this(id : Integer, samplingrate : Integer, textstartpos : Integer, textendpos : Integer, audiostartpos : Double, audioendpos : Double, speakerkey : Integer, labeled : Integer, transcriptFileId : Integer) = {
     this()
 
     set(0, id)

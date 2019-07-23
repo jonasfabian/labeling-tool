@@ -5,7 +5,6 @@ package jooq.db.tables.pojos
 
 
 import java.io.Serializable
-import java.lang.Byte
 import java.lang.Double
 import java.lang.Integer
 import java.lang.StringBuilder
@@ -19,7 +18,7 @@ case class Textaudioindex(
   , audiostartpos : Double
   , audioendpos : Double
   , speakerkey : Integer
-  , labeled : Byte
+  , labeled : Integer
   , transcriptFileId : Integer
 ) extends Serializable {
 
@@ -65,7 +64,7 @@ case class Textaudioindex(
     this.speakerkey
   }
 
-  def getLabeled : Byte = {
+  def getLabeled : Integer = {
     this.labeled
   }
 

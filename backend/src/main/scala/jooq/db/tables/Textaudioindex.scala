@@ -4,7 +4,6 @@
 package jooq.db.tables
 
 
-import java.lang.Byte
 import java.lang.Class
 import java.lang.Double
 import java.lang.Integer
@@ -75,7 +74,7 @@ extends TableImpl[TextaudioindexRecord](
 
   val SPEAKERKEY : TableField[TextaudioindexRecord, Integer] = createField("speakerKey", org.jooq.impl.SQLDataType.INTEGER, "")
 
-  val LABELED : TableField[TextaudioindexRecord, Byte] = createField("labeled", org.jooq.impl.SQLDataType.TINYINT.defaultValue(org.jooq.impl.DSL.field("0", org.jooq.impl.SQLDataType.TINYINT)), "")
+  val LABELED : TableField[TextaudioindexRecord, Integer] = createField("labeled", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("0", org.jooq.impl.SQLDataType.INTEGER)), "")
 
   val TRANSCRIPT_FILE_ID : TableField[TextaudioindexRecord, Integer] = createField("transcript_file_id", org.jooq.impl.SQLDataType.INTEGER, "")
 
