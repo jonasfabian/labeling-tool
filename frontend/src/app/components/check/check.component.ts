@@ -97,7 +97,7 @@ export class CheckComponent implements OnInit {
   }
 
   skip(): void {
-    this.getInfo(3);
+    this.getInfo(0);
     this.carousel.slideNext();
   }
 
@@ -124,7 +124,7 @@ export class CheckComponent implements OnInit {
       this.apiService.updateTextAudioIndex(new TextAudioIndexWithText(
         val.id, val.samplingRate, val.textStartPos, val.textEndPos,
         val.audioStartPos, val.audioEndPos, val.speakerKey,
-        labeledType, val.correct + 1, val.wrong, val.transcriptFileId, val.text
+        1, val.correct + 1, val.wrong, val.transcriptFileId, val.text
       )).subscribe(_ => {
         this.loadAudioBlob(val);
       });
@@ -133,7 +133,7 @@ export class CheckComponent implements OnInit {
       this.apiService.updateTextAudioIndex(new TextAudioIndexWithText(
         val.id, val.samplingRate, val.textStartPos, val.textEndPos,
         val.audioStartPos, val.audioEndPos, val.speakerKey,
-        labeledType, val.correct, val.wrong + 1, val.transcriptFileId, val.text
+        1, val.correct, val.wrong + 1, val.transcriptFileId, val.text
       )).subscribe(_ => {
         this.loadAudioBlob(val);
       });
@@ -142,7 +142,7 @@ export class CheckComponent implements OnInit {
       this.apiService.updateTextAudioIndex(new TextAudioIndexWithText(
         val.id, val.samplingRate, val.textStartPos, val.textEndPos,
         val.audioStartPos, val.audioEndPos, val.speakerKey,
-        labeledType, val.correct, val.wrong, val.transcriptFileId, val.text
+        0, val.correct, val.wrong, val.transcriptFileId, val.text
       )).subscribe(_ => {
         this.loadAudioBlob(val);
       });

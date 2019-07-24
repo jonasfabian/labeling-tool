@@ -15,7 +15,7 @@ export class TableComponent implements OnInit, OnChanges {
   ) {
   }
 
-  displayedColumns = ['id', 'samplingRate', 'textStartPos', 'textEndPos', 'audioStartPos', 'audioEndPos', 'speakerKey', 'labeled', 'transcriptFileId'];
+  displayedColumns = ['id', 'samplingRate', 'textStartPos', 'textEndPos', 'audioStartPos', 'audioEndPos', 'speakerKey', 'labeled', 'correct', 'wrong', 'transcriptFileId'];
   dataSource = new MatTableDataSource<TextAudioIndexWithText>();
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
@@ -27,19 +27,22 @@ export class TableComponent implements OnInit, OnChanges {
       this.dataSource = new MatTableDataSource<TextAudioIndexWithText>(i);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+    }, () => {}, () => {
+      this.dataSource.filterPredicate = (data, filter: string): boolean => {
+        return data.labeled.toString().toLowerCase().includes(filter);
+      };
     });
   }
 
   ngOnChanges(): void {
     if (this.vale !== '') {
-      this.filter(this.vale);
+      this.filterPie(this.vale);
     }
   }
 
-  filter(input: string): void {
+  filterPie(input: string): void {
     input = input.trim();
     input = input.toLowerCase();
     this.dataSource.filter = input;
   }
-
 }
