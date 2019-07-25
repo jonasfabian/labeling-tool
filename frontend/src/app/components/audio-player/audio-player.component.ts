@@ -110,6 +110,7 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
         container: '#waveform',
         waveColor: 'lightblue',
         progressColor: 'blue',
+        partialRender: true,
         responsive: true,
         plugins: [
           TimelinePlugin.create({
