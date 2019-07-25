@@ -49,6 +49,14 @@ export class CheckComponent implements OnInit {
     });
   }
 
+  changeButtonAppearance(): string {
+    if (this.isPlaying) {
+      return '2px solid blue';
+    } else {
+      return 'None';
+    }
+  }
+
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
     if (event.key === 'p') {
