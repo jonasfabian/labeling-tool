@@ -3,12 +3,14 @@ import {ContentComponent} from './content/content.component';
 import {CheckComponent} from './check/check.component';
 import {MatchOverviewComponent} from './match-overview/match-overview.component';
 import {NgModule} from '@angular/core';
+import {HomeComponent} from './home/home.component';
+import {ErrorComponent} from './error/error.component';
 
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/label',
+    redirectTo: 'home',
     pathMatch: 'full'
   },
   {
@@ -22,6 +24,18 @@ const routes: Routes = [
   {
     path: 'overview',
     component: MatchOverviewComponent
+  },
+  {
+    path: 'home',
+    component: HomeComponent
+  },
+  {
+    path: '404',
+    component: ErrorComponent
+  },
+  {
+    path: '**',
+    redirectTo: '404'
   }
 ];
 

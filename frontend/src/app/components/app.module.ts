@@ -17,6 +17,8 @@ import {MaterialModule} from '../models/material.module';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {CarouselModule} from 'ngx-carousel-lib';
+import { HomeComponent } from './home/home.component';
+import { ErrorComponent } from './error/error.component';
 
 
 @NgModule({
@@ -31,7 +33,9 @@ import {CarouselModule} from 'ngx-carousel-lib';
     PieChartComponent,
     CheckComponent,
     BarChartComponent,
-    TableComponent
+    TableComponent,
+    HomeComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,
