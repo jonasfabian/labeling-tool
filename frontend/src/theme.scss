@@ -9,3 +9,17 @@ $my-theme-warn: mat-palette($mat-red);
 $my-theme: mat-light-theme($my-theme-primary, $my-theme-accent, $my-theme-warn);
 
 @include angular-material-theme($my-theme);
+
+.alternate-theme {
+  $alternate-primary: mat-palette($mat-light-blue);
+  $alternate-accent:  mat-palette($mat-yellow, 400);
+  $alternate-theme: mat-light-theme($alternate-primary, $alternate-accent);
+  @include angular-material-theme($alternate-theme);
+}
+
+.alternate-theme-2 {
+  $alternate-2-primary: mat-palette($mat-blue-gray);
+  $alternate-2-accent:  mat-palette($mat-pink, 400);
+  $alternate-2-theme: mat-light-theme($alternate-2-primary, $alternate-2-accent);
+  @include angular-material-theme($alternate-2-theme);
+}

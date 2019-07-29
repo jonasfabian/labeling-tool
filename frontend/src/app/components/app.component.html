@@ -1,2 +1,4 @@
-<app-navigation-menu></app-navigation-menu>
-<router-outlet></router-outlet>
+<div [ngClass]="apiService.switchTheme()">
+  <app-navigation-menu></app-navigation-menu>
+  <router-outlet></router-outlet>
+</div>

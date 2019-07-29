@@ -17,6 +17,8 @@ export class ApiService {
 
   url = 'http://localhost:8080/api/match/';
 
+  theme = false;
+
   getTextAudioIndexes(): Observable<Array<TextAudioIndexWithText>> {
     return this.http.get<Array<TextAudioIndexWithText>>(this.url + 'getTextAudioIndexes');
   }
@@ -39,5 +41,13 @@ export class ApiService {
 
   getLabeledSums(): Observable<Array<Sums>> {
     return this.http.get<Array<Sums>>(this.url + 'getLabeledSums');
+  }
+
+  switchTheme(): string {
+    if (this.theme) {
+      return '.alternate-theme';
+    } else {
+      return 'alternate-theme-2';
+    }
   }
 }
