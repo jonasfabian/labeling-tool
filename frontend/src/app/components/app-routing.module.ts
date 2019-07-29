@@ -5,6 +5,7 @@ import {MatchOverviewComponent} from './match-overview/match-overview.component'
 import {NgModule} from '@angular/core';
 import {HomeComponent} from './home/home.component';
 import {ErrorComponent} from './error/error.component';
+import {SettingsComponent} from './settings/settings.component';
 
 
 const routes: Routes = [
@@ -28,6 +29,10 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent
+  },
+  {
+    path: 'settings',
+    component: SettingsComponent
   },
   {
     path: '404',

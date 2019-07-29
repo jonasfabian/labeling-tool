@@ -19,6 +19,7 @@ import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {CarouselModule} from 'ngx-carousel-lib';
 import { HomeComponent } from './home/home.component';
 import { ErrorComponent } from './error/error.component';
+import { SettingsComponent } from './settings/settings.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { ErrorComponent } from './error/error.component';
     BarChartComponent,
     TableComponent,
     HomeComponent,
-    ErrorComponent
+    ErrorComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
