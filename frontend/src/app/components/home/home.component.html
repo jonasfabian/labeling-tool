@@ -3,27 +3,32 @@
     <h1>Labeling Tool</h1>
   </mat-card>
 </div>
-<div>
-  <mat-card class="top-card" style="margin-left: 15px; width: calc(50% - 55px); float: left;">
-    <img src="../../../assets/images/wave.png" height="283" width="1675" style="width: 100%; height: auto;"/>
-  </mat-card>
-  <mat-card class="top-card" style="margin-right: 15px; width: calc(50% - 55px); float: right;">
-    Label
-  </mat-card>
-</div>
-<div>
-  <mat-card class="top-card" style="margin-left: 15px; width: calc(50% - 55px); float: left;">
-    <img src="../../../assets/images/check.png" height="283" width="1675" style="width: 100%; height: auto;"/>
-  </mat-card>
-  <mat-card class="top-card" style="margin-right: 15px; width: calc(50% - 55px); float: right;">
-    Check
-  </mat-card>
-</div>
-<div>
-  <mat-card class="top-card" style="margin-left: 15px; width: calc(50% - 55px); float: left;">
-    <img src="../../../assets/images/overview.png" height="283" width="1675" style="width: 100%; height: auto;"/>
-  </mat-card>
-  <mat-card class="top-card" style="margin-right: 15px; width: calc(50% - 55px); float: right;">
-    Overview
-  </mat-card>
-</div>
+
+<mat-accordion>
+  <mat-expansion-panel style="margin: 0 15px 0 15px;">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Check data
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <img alt="overview" src="../../assets/images/check.png" style="width: 100%; height: auto;"/>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel style="margin: 0 15px 0 15px;">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Edit Data
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <img alt="overview" src="../../assets/images/wave.png" style="width: 100%; height: auto;"/>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel style="margin: 0 15px 0 15px;">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        View Data
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <img alt="overview" src="../../assets/images/overview.png" style="width: 100%; height: auto;"/>
+  </mat-expansion-panel>
+</mat-accordion>
