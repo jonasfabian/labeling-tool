@@ -43,7 +43,7 @@ export class ContentComponent implements OnInit {
       this.yeetTextAudioIndex = n;
       this.snip = new AudioSnippet(n.audioStartPos / n.samplingRate, n.audioEndPos / n.samplingRate);
       this.text = n.text;
-      this.textBegin = n.text.slice(0, n.textStartPos - 1);
+      this.textBegin = n.text.slice(0, n.textStartPos);
       this.highlightedText = n.text.slice(n.textStartPos, n.textEndPos);
       this.textEnd = n.text.slice(n.textEndPos, this.text.length - 1);
       this.yeetTextAudioIndex.labeled = 1;
@@ -70,7 +70,7 @@ export class ContentComponent implements OnInit {
         this.yeetTextAudioIndex = n;
         this.snip = new AudioSnippet(n.audioStartPos / n.samplingRate, n.audioEndPos / n.samplingRate);
         this.text = n.text;
-        this.textBegin = n.text.slice(0, n.textStartPos - 1);
+        this.textBegin = n.text.slice(0, n.textStartPos);
         this.highlightedText = n.text.slice(n.textStartPos, n.textEndPos);
         this.textEnd = n.text.slice(n.textEndPos, this.text.length - 1);
         this.yeetTextAudioIndex.labeled = labeled;
