@@ -14,6 +14,11 @@
   <mat-sidenav fixedInViewport #sidenav mode="side" style="width: 200px; margin-top: 65px;">
     <div style="padding: 15px;">
       <mat-list>
+        <mat-list-item style="cursor: pointer;" [routerLink]="['home']">
+          <mat-icon>home</mat-icon>
+          <span style="margin-left: 15px;">Home</span>
+        </mat-list-item>
+        <mat-divider></mat-divider>
         <mat-list-item style="cursor: pointer;" [routerLink]="['check']">
           <mat-icon>check</mat-icon>
           <span style="margin-left: 15px;">Check</span>
