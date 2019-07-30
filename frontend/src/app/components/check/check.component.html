@@ -1,9 +1,9 @@
 <div>
-  <carousel-component (onSlideChange)="lastSlide()" [morePairSlides]="1" [lockSlides]="true" [perspective]="4000"
-                      #carousel style="margin-top: 15px; height: calc(100% - 15px);">
-    <div class="item-carousel" style="border: 0; height: 300px; width: 500px; top: 220px;" *ngFor="let te of yeetArray">
-      <mat-card style="height: 100%;">
-        <div style="margin-top: 130px;">{{te.textAudioIndexWithText.text}}</div>
+  <carousel-component id="carousel" (onSlideChange)="lastSlide()" [morePairSlides]="1" [lockSlides]="true"
+                      [perspective]="4000" #carousel>
+    <div class="item-carousel" *ngFor="let te of yeetArray">
+      <mat-card>
+        <div>{{te.textAudioIndexWithText.text}}</div>
       </mat-card>
     </div>
   </carousel-component>
@@ -12,25 +12,24 @@
       <source [src]="blobUrl">
     </audio>
   </div>
-  <div
-    style="position: absolute; bottom: calc(100% - 625px); left: 0; margin-left: auto; margin-right: auto; right: 0; width: 336px;">
+  <div id="navigation-button-container">
     <mat-button-toggle (click)="correct()">
       <mat-icon>thumb_up</mat-icon>
       <span>&nbsp; Correct</span>
     </mat-button-toggle>
-    <mat-button-toggle (click)="play()" style="margin-left: 5px;">
+    <mat-button-toggle class="check-navigation-button" (click)="play()">
       <mat-icon *ngIf="!isPlaying">play_arrow</mat-icon>
       <mat-icon *ngIf="isPlaying">pause</mat-icon>
     </mat-button-toggle>
-    <mat-button-toggle (click)="wrong()" style="margin-left: 5px;">
+    <mat-button-toggle class="check-navigation-button" (click)="wrong()">
       <mat-icon>thumb_down</mat-icon>
       <span>&nbsp; Wrong</span>
     </mat-button-toggle>
-    <mat-button-toggle (click)="skip()" style="margin-left: 5px;">
+    <mat-button-toggle class="check-navigation-button" (click)="skip()">
       <span>Skip</span>
     </mat-button-toggle>
   </div>
-  <div style="position: absolute; bottom: 75px; left: 15px;">
+  <div id="shortcut-button">
     <mat-button-toggle (click)="openShortcutDialog()">
       <mat-icon>keyboard</mat-icon>
     </mat-button-toggle>
