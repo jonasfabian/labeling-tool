@@ -1,44 +1,15 @@
-<div>
-  <mat-card color="primary" style="margin: 15px;">
-    <h1>Labeling Tool</h1>
-  </mat-card>
-</div>
-
-<mat-grid-list cols="3" rowHeight="3:1">
-  <mat-grid-tile>
-    <mat-accordion style="position: absolute; top: 0; width: 100%;">
-      <mat-expansion-panel style="margin: 0 15px 0 15px;">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Check data
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <img alt="overview" src="../../assets/images/check.png" style="width: 100%; height: auto;"/>
-      </mat-expansion-panel>
-    </mat-accordion>
+<mat-card style="margin: 15px 15px 0 15px;">
+  <h1>Labeling Tool</h1>
+</mat-card>
+<mat-grid-list [cols]="10" rowHeight="200px" style="margin: 15px;" gutterSize="15">
+  <mat-grid-tile colspan="4">
+    <mat-card style="width: calc(100% - 35px); height: calc(100% - 35px);">
+      <img src="../../../assets/images/check.png" style="width: 100%; height: 100%;">
+    </mat-card>
   </mat-grid-tile>
-  <mat-grid-tile>
-    <mat-accordion style="position: absolute; top: 0; width: 100%;">
-      <mat-expansion-panel style="margin: 0 15px 0 15px;">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Edit Data
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <img alt="overview" src="../../assets/images/wave.png" style="width: 100%; height: auto;"/>
-      </mat-expansion-panel>
-    </mat-accordion>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <mat-accordion style="position: absolute; top: 0; width: 100%;">
-      <mat-expansion-panel style="margin: 0 15px 0 15px;">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            View Data
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <img alt="overview" src="../../assets/images/overview.png" style="width: 100%; height: auto;"/>
-      </mat-expansion-panel>
-    </mat-accordion>
+  <mat-grid-tile colspan="6">
+    <mat-card style="width: calc(100% - 35px); height: calc(100% - 35px);">
+      <img src="../../../assets/images/wave.png" style="width: 100%; height: 100%;">
+    </mat-card>
   </mat-grid-tile>
 </mat-grid-list>

@@ -1,11 +1,16 @@
-<div style="width: calc(100% - 30px); margin: 15px; height: calc(100% - 30px);">
-  <mat-card style="float: left; width: calc(100% - 480px); height: calc(100% - 100px);">
+<div>
+  <mat-card style="margin: 15px;">
+    <h1>Overview</h1>
+  </mat-card>
+</div>
+<div style="width: calc(100% - 30px); margin: 15px; height: calc(100% - 180px);">
+  <mat-card style="float: left; width: calc(100% - 480px); height: calc(100% - 30px);">
     <app-table [vale]="str"></app-table>
   </mat-card>
-  <mat-card style="float: right; width: 400px; height: calc(50% - 74px);">
+  <mat-card style="float: right; width: 400px; height: calc(50% - 37px);">
     <app-pie-chart (vale)="getVale($event)"></app-pie-chart>
   </mat-card>
-  <mat-card style="float: right; width: 400px; margin-top: 15px; height: calc(50% - 74px);">
+  <mat-card style="float: right; width: 400px; margin-top: 15px; height: calc(50% - 40px);">
     <app-bar-chart></app-bar-chart>
   </mat-card>
 </div>
