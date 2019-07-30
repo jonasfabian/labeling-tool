@@ -6,3 +6,16 @@
   transform: scale(1.05);
   cursor: pointer;
 }
+
+#image-grid {
+  margin: 15px;
+}
+
+#image-grid mat-grid-tile mat-card {
+  width: calc(100% - 35px);
+  height: calc(100% - 35px);
+}
+
+#image-grid mat-grid-tile mat-card img {
+  width: 100%; height: 100%;
+}
