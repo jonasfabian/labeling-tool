@@ -7,3 +7,28 @@
 #wave-navigation {
   margin-top: 0;
 }
+
+#wave div {
+  width: 100%;
+}
+
+#waveform {
+  position: relative;
+}
+
+#wave-navigation {
+  margin-top: 15px;
+}
+
+.audio-nav-button {
+  margin-left: 5px;
+}
+
+mat-form-field {
+  margin-bottom: -15px;
+}
+
+.zoomLevelValue {
+  position: absolute;
+  right: 125px;
+}

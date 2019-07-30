@@ -1,0 +1,8 @@
+.yeet {
+  transition: transform .2s;
+}
+
+.yeet:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
