@@ -1,47 +1,47 @@
-<mat-toolbar color="primary" style="position: fixed; z-index: 2;">
-  <div style="width: 100%;">
-    <div style="float: left; margin-top: 4px;">
-      <mat-icon style="cursor: pointer;" (click)="sidenav.toggle()">menu</mat-icon>
+<mat-toolbar color="primary" id="navigation-toolbar">
+  <div>
+    <div>
+      <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
     </div>
-    <div style="float: left; margin-left: 15px;">
+    <div>
       <span>Labeling-Tool</span>
       <span>&nbsp;/&nbsp;</span>
       <span>{{breadcrumbService.breadCrumb.getValue() | titlecase}}</span>
     </div>
   </div>
 </mat-toolbar>
-<mat-sidenav-container style="position: fixed; height: 100%; min-height: 100%; width: 100%; min-width: 100%;">
-  <mat-sidenav fixedInViewport #sidenav mode="side" style="width: 200px; margin-top: 65px;">
-    <div style="padding: 15px;">
+<mat-sidenav-container id="sidenav-container">
+  <mat-sidenav fixedInViewport #sidenav mode="side">
+    <div>
       <mat-list>
-        <mat-list-item style="cursor: pointer;" [routerLink]="['home']">
+        <mat-list-item [routerLink]="['home']">
           <mat-icon>home</mat-icon>
-          <span style="margin-left: 15px;">Home</span>
+          <span>Home</span>
         </mat-list-item>
         <mat-divider></mat-divider>
-        <mat-list-item style="cursor: pointer;" [routerLink]="['check']">
+        <mat-list-item [routerLink]="['check']">
           <mat-icon>check</mat-icon>
-          <span style="margin-left: 15px;">Check</span>
+          <span>Check</span>
         </mat-list-item>
         <mat-divider></mat-divider>
-        <mat-list-item style="cursor: pointer;" [routerLink]="['label']">
+        <mat-list-item [routerLink]="['label']">
           <mat-icon>label</mat-icon>
-          <span style="margin-left: 15px;">Label</span>
+          <span>Label</span>
         </mat-list-item>
         <mat-divider></mat-divider>
-        <mat-list-item style="cursor: pointer;" [routerLink]="['overview']">
+        <mat-list-item [routerLink]="['overview']">
           <mat-icon>view_list</mat-icon>
-          <span style="margin-left: 15px;">Overview</span>
+          <span>Overview</span>
         </mat-list-item>
         <mat-divider></mat-divider>
-        <mat-list-item style="cursor: pointer;" [routerLink]="['settings']">
+        <mat-list-item [routerLink]="['settings']">
           <mat-icon>settings</mat-icon>
-          <span style="margin-left: 15px;">Settings</span>
+          <span>Settings</span>
         </mat-list-item>
       </mat-list>
     </div>
   </mat-sidenav>
-  <mat-sidenav-content style="margin-top: 65px;">
+  <mat-sidenav-content>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
