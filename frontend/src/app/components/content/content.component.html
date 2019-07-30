@@ -1,27 +1,27 @@
-<div style="margin: 0 15px 0 15px; height: 100%;">
+<div id="label-container">
   <mat-card class="top-card">
     <app-audio-player [textAudioIndexWithText]="yeetTextAudioIndex" (regionPosition)="getRegionSnippet($event)" [audioPosition]="snip"></app-audio-player>
   </mat-card>
-  <mat-card class="card" style="width: calc(50% - 30px); float: left; height: calc(100% - 425px); overflow-y: scroll;">
+  <mat-card id="main-text-container" class="card">
     <h2>Text</h2>
     <div (mouseup)="displayHighlightedText()">
-      <span style="white-space: pre-wrap;">{{textBegin}}</span>
-      <span style="white-space: pre-wrap; background-color: steelblue;">{{highlightedText}}</span>
-      <span style="white-space: pre-wrap;">{{textEnd}}</span>
+      <span>{{textBegin}}</span>
+      <span style="background-color: steelblue;">{{highlightedText}}</span>
+      <span>{{textEnd}}</span>
     </div>
   </mat-card>
-  <mat-card class="card" style="width: calc(50% - 50px); float: right;">
-    <mat-button-toggle-group style="width: 100%;">
-      <mat-button-toggle (click)="submitText(1)" style="width: 50%;">Submit</mat-button-toggle>
-      <mat-button-toggle (click)="submitText(1)" style="width: 50%;">Skip</mat-button-toggle>
+  <mat-card id="select-container" class="card">
+    <mat-button-toggle-group>
+      <mat-button-toggle (click)="submitText(1)">Submit</mat-button-toggle>
+      <mat-button-toggle (click)="submitText(1)">Skip</mat-button-toggle>
     </mat-button-toggle-group>
   </mat-card>
-  <mat-card class="card" style="width: calc(50% - 50px); float: right;">
+  <mat-card id="selected-text-container" class="card">
     <div>
       <h2>Selected Text</h2>
     </div>
     <div *ngIf="highlightedText != ''">
-      <span style="white-space: pre-wrap;">{{highlightedText}}</span>
+      <span>{{highlightedText}}</span>
     </div>
   </mat-card>
 </div>
