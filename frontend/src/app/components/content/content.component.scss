@@ -4,7 +4,7 @@
 
 #label-container {
   margin: 0 15px 0 15px;
-  height: 100%;
+  height: calc(100% - 15px);
 }
 
 #main-text-container {
@@ -38,4 +38,10 @@
 
 #selected-text-container:nth-child(2) {
   white-space: pre-wrap;
+}
+
+#shortcut-button {
+  position: absolute;
+  bottom: 75px;
+  right: 15px;
 }

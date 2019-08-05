@@ -33,8 +33,8 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   @Input() audioPosition: AudioSnippet;
   @Input() textAudioIndexWithText: TextAudioIndexWithText;
   @Output() regionPosition = new EventEmitter<AudioSnippet>();
-  reg = new AudioSnippet(null, null);
   @Output() uploadSuccess = new EventEmitter<boolean>();
+  reg = new AudioSnippet(null, null);
   BASE64_MARKER = ';base64,';
   blobUrl = '';
   fileId = 0;

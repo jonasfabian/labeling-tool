@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {AudioSnippet} from '../../models/audioSnippet';
-import {MatSnackBar} from '@angular/material';
+import {MatDialog, MatSnackBar} from '@angular/material';
 import {ApiService} from '../../services/api.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import {TextAudioIndexWithText} from '../../models/textAudioIndexWithText';
+import {ShortcutComponent} from '../shortcut/shortcut.component';
 
 @Component({
   selector: 'app-content',
@@ -15,7 +16,8 @@ export class ContentComponent implements OnInit {
   constructor(
     private sanitizer: DomSanitizer,
     private snackBar: MatSnackBar,
-    private apiService: ApiService
+    private apiService: ApiService,
+    public dialog: MatDialog
   ) {
   }
 
@@ -76,5 +78,18 @@ export class ContentComponent implements OnInit {
         this.dummyTextAudioIndex.labeled = labeled;
       });
     });
+  }
+
+  openShortcutDialog(): void {
+    this.dialog.open(ShortcutComponent, {width: '500px'});
+  }
+
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    if (event.key === 'c') {
+      this.submitText(1);
+    } else if (event.key === 's') {
+      this.submitText(1);
+    }
   }
 }

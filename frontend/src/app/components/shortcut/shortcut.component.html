@@ -3,8 +3,8 @@
   <h2>Shortcuts</h2>
 </div>
 <hr id="break">
-<mat-grid-list cols="4" rowHeight="2:1">
-  <mat-grid-tile>
+<mat-grid-list [cols]="cols" rowHeight="75px">
+  <mat-grid-tile *ngIf="!isInLabeling">
     <div class="shortcut-key">
       <span>P</span>
     </div>
@@ -14,7 +14,7 @@
       <span>C</span>
     </div>
   </mat-grid-tile>
-  <mat-grid-tile>
+  <mat-grid-tile *ngIf="!isInLabeling">
     <div class="shortcut-key">
       <span>W</span>
     </div>
@@ -24,13 +24,13 @@
       <span>S</span>
     </div>
   </mat-grid-tile>
-  <mat-grid-tile>
+  <mat-grid-tile *ngIf="!isInLabeling">
     <span class="shortcut-description">Play/Stop</span>
   </mat-grid-tile>
   <mat-grid-tile>
     <span class="shortcut-description">Correct</span>
   </mat-grid-tile>
-  <mat-grid-tile>
+  <mat-grid-tile *ngIf="!isInLabeling">
     <span class="shortcut-description">Wrong</span>
   </mat-grid-tile>
   <mat-grid-tile>
