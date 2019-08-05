@@ -20,7 +20,7 @@ export class PieChartComponent implements OnInit {
 
   single = [];
   colorScheme = {
-    domain: ['#3f51b5', '#7482cf', 'blue', 'darkblue']
+    domain: ['#3f51b5', '#7482cf']
   };
 
   ngOnInit() {

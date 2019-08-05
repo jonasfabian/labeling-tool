@@ -26,30 +26,17 @@ export class ContentComponent implements OnInit {
   highlightedTextStartPos = 0;
   highlightedTextEndPos = 0;
   dummyTextAudioIndex = new TextAudioIndexWithText(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '');
-
   textBegin = '';
   highlightedText = '';
   textEnd = '';
 
   ngOnInit() {
-    this.nextTranscript();
+    this.textSetup();
   }
 
   getRegionSnippet(snippet: AudioSnippet) {
     this.dummyTextAudioIndex.audioStartPos = snippet.startTime * this.dummyTextAudioIndex.samplingRate;
     this.dummyTextAudioIndex.audioEndPos = snippet.endTime * this.dummyTextAudioIndex.samplingRate;
-  }
-
-  nextTranscript() {
-    this.apiService.getNonLabeledTextAudioIndex(0).subscribe(n => {
-      this.dummyTextAudioIndex = n;
-      this.snip = new AudioSnippet(n.audioStartPos / n.samplingRate, n.audioEndPos / n.samplingRate);
-      this.text = n.text;
-      this.textBegin = n.text.slice(0, n.textStartPos);
-      this.highlightedText = n.text.slice(n.textStartPos, n.textEndPos);
-      this.textEnd = n.text.slice(n.textEndPos, this.text.length - 1);
-      this.dummyTextAudioIndex.labeled = 1;
-    });
   }
 
   displayHighlightedText() {
@@ -66,17 +53,21 @@ export class ContentComponent implements OnInit {
     }
   }
 
-  submitText(labeled: number): void {
+  submitText(): void {
     this.apiService.updateTextAudioIndex(this.dummyTextAudioIndex).subscribe(_ => {
-      this.apiService.getNonLabeledTextAudioIndex(0).subscribe(n => {
-        this.dummyTextAudioIndex = n;
-        this.snip = new AudioSnippet(n.audioStartPos / n.samplingRate, n.audioEndPos / n.samplingRate);
-        this.text = n.text;
-        this.textBegin = n.text.slice(0, n.textStartPos);
-        this.highlightedText = n.text.slice(n.textStartPos, n.textEndPos);
-        this.textEnd = n.text.slice(n.textEndPos, this.text.length - 1);
-        this.dummyTextAudioIndex.labeled = labeled;
-      });
+      this.textSetup();
+    });
+  }
+
+  textSetup(): void {
+    this.apiService.getNonLabeledTextAudioIndex(0).subscribe(n => {
+      this.dummyTextAudioIndex = n;
+      this.snip = new AudioSnippet(n.audioStartPos / n.samplingRate, n.audioEndPos / n.samplingRate);
+      this.text = n.text;
+      this.textBegin = n.text.slice(n.textStartPos - 100, n.textStartPos);
+      this.highlightedText = n.text.slice(n.textStartPos, n.textEndPos);
+      this.textEnd = n.text.slice(n.textEndPos, n.textEndPos + 100);
+      this.dummyTextAudioIndex.labeled = 1;
     });
   }
 
@@ -87,9 +78,9 @@ export class ContentComponent implements OnInit {
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
     if (event.key === 'c') {
-      this.submitText(1);
+      this.submitText();
     } else if (event.key === 's') {
-      this.submitText(1);
+      this.submitText();
     }
   }
 }
