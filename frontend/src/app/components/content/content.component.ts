@@ -30,8 +30,14 @@ export class ContentComponent implements OnInit {
   highlightedText = '';
   textEnd = '';
 
+  loading = false;
+
   ngOnInit() {
     this.textSetup();
+  }
+
+  getLoading(bool: boolean): void {
+    this.loading = bool;
   }
 
   getRegionSnippet(snippet: AudioSnippet) {

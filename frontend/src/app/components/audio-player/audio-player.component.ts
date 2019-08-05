@@ -34,12 +34,11 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   @Input() textAudioIndexWithText: TextAudioIndexWithText;
   @Output() regionPosition = new EventEmitter<AudioSnippet>();
   @Output() uploadSuccess = new EventEmitter<boolean>();
+  @Output() loading = new EventEmitter<boolean>();
   reg = new AudioSnippet(null, null);
   BASE64_MARKER = ';base64,';
   blobUrl = '';
   fileId = 0;
-
-  loading = false;
 
   ngOnInit() {
     this.onPreviewPressed();
@@ -61,7 +60,7 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   ngOnChanges(): void {
     if (this.audioPosition.startTime !== null) {
       if (this.textAudioIndexWithText.transcriptFileId !== this.fileId) {
-        this.loading = true;
+        this.loading.emit(true);
         this.fileId = this.textAudioIndexWithText.transcriptFileId;
         this.loadAudioBlob(this.textAudioIndexWithText.transcriptFileId);
       }
@@ -72,7 +71,9 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
         });
         this.waveSurfer.on('loading', r => {
           if (r === 100) {
-            this.loading = false;
+            setInterval(() => {
+              this.loading.emit(false);
+            }, 2000);
           }
         });
         this.addRegion(this.audioPosition);
