@@ -19,7 +19,7 @@ export class CheckComponent implements OnInit {
   ) {
   }
 
-  yeetArray: Array<CheckIndex> = [];
+  checkIndexArray: Array<CheckIndex> = [];
   @ViewChild('carousel', {static: false}) carousel: CarouselComponent;
   @ViewChild('audioPlayer', {static: false}) audioPlayer: ElementRef;
 
@@ -32,15 +32,15 @@ export class CheckComponent implements OnInit {
       if (r.length !== 0) {
         this.available = true;
         l.text = l.text.slice(l.textStartPos, l.textEndPos);
-        this.yeetArray.push(new CheckIndex(this.i, l));
+        this.checkIndexArray.push(new CheckIndex(this.i, l));
         this.i++;
       } else {
         this.available = false;
       }
     }), () => {
     }, () => {
-      if (this.yeetArray.length !== 0) {
-        this.apiService.loadAudioBlob(this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
+      if (this.checkIndexArray.length !== 0) {
+        this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
       }
     });
   }
@@ -59,14 +59,14 @@ export class CheckComponent implements OnInit {
   }
 
   lastSlide(): void {
-    if (this.carousel.carousel.activeIndex === this.yeetArray.length - 1) {
+    if (this.carousel.carousel.activeIndex === this.checkIndexArray.length - 1) {
       this.apiService.getTenNonLabeledTextAudioIndex(1).subscribe(r => r.forEach(l => {
         l.text = l.text.slice(l.textStartPos, l.textEndPos);
-        this.yeetArray.push(new CheckIndex(this.i, l));
+        this.checkIndexArray.push(new CheckIndex(this.i, l));
         this.i++;
       }), () => {
       }, () => {
-        this.apiService.loadAudioBlob(this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
+        this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
       });
     }
   }
@@ -76,10 +76,9 @@ export class CheckComponent implements OnInit {
   }
 
   /*
-  * 0 ==  not labeled
+  * 0 == not labeled
   * 1 == correct
   * 2 == wrong
-  * 3 == skipped
   * */
 
   correct(): void {
@@ -100,9 +99,9 @@ export class CheckComponent implements OnInit {
   play(): void {
     if (!this.isPlaying) {
       this.isPlaying = !this.isPlaying;
-      this.audioPlayer.nativeElement.currentTime = this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioStartPos / this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate;
+      this.audioPlayer.nativeElement.currentTime = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioStartPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate;
       this.audioPlayer.nativeElement.addEventListener('timeupdate', () => {
-        if (this.audioPlayer.nativeElement.currentTime > this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioEndPos / this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate) {
+        if (this.audioPlayer.nativeElement.currentTime > this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioEndPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate) {
           this.audioPlayer.nativeElement.pause();
           this.isPlaying = false;
         }
@@ -116,7 +115,7 @@ export class CheckComponent implements OnInit {
 
   getInfo(labeledType: number): void {
     if (labeledType === 1) {
-      const val = this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText;
+      const val = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText;
       this.apiService.updateTextAudioIndex(new TextAudioIndexWithText(
         val.id, val.samplingRate, val.textStartPos, val.textEndPos,
         val.audioStartPos, val.audioEndPos, val.speakerKey,

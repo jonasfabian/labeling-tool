@@ -1,7 +1,7 @@
 <div>
   <carousel-component id="carousel" (onSlideChange)="lastSlide()" [morePairSlides]="1" [lockSlides]="true"
                       [perspective]="4000" #carousel>
-    <div class="item-carousel" *ngFor="let te of yeetArray">
+    <div class="item-carousel" *ngFor="let te of checkIndexArray">
       <mat-card>
         <div>{{te.textAudioIndexWithText.text}}</div>
       </mat-card>
