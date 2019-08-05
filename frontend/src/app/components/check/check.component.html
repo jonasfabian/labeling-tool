@@ -1,4 +1,9 @@
 <div>
+  <mat-card id="header-card">
+    <h1>Check</h1>
+  </mat-card>
+</div>
+<div>
   <carousel-component id="carousel" (onSlideChange)="lastSlide()" [morePairSlides]="1" [lockSlides]="true"
                       [perspective]="4000" #carousel>
     <div class="item-carousel" *ngFor="let te of checkIndexArray">

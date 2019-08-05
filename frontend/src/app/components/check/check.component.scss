@@ -20,7 +20,7 @@
 
 #navigation-button-container {
   position: absolute;
-  bottom: calc(100% - 625px);
+  bottom: calc(100% - 725px);
   left: 0;
   margin-left: auto;
   margin-right: auto;
@@ -36,4 +36,8 @@
   position: absolute;
   bottom: 75px;
   right: 15px;
+}
+
+#header-card {
+  margin: 15px;
 }

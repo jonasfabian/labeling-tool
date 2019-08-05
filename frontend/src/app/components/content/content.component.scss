@@ -4,7 +4,7 @@
 
 #label-container {
   margin: 0 15px 0 15px;
-  height: calc(100% - 15px);
+  height: calc(100% - 100px);
 }
 
 #main-text-container {
@@ -42,4 +42,8 @@
   position: absolute;
   bottom: 75px;
   right: 15px;
+}
+
+#header-card {
+  margin: 15px;
 }
