@@ -7,9 +7,9 @@
       </mat-card>
     </div>
   </carousel-component>
-  <div *ngIf="blobUrl != ''">
+  <div *ngIf="apiService.blobUrl != ''">
     <audio #audioPlayer hidden>
-      <source [src]="blobUrl">
+      <source [src]="apiService.blobUrl">
     </audio>
   </div>
   <div id="navigation-button-container">

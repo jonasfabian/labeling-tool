@@ -2,7 +2,6 @@ import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/c
 import {CarouselComponent} from 'ngx-carousel-lib';
 import {ApiService} from '../../services/api.service';
 import {TextAudioIndexWithText} from '../../models/textAudioIndexWithText';
-import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {CheckIndex} from '../../models/checkIndex';
 import {MatDialog} from '@angular/material';
 import {ShortcutComponent} from '../shortcut/shortcut.component';
@@ -16,14 +15,11 @@ export class CheckComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private sanitizer: DomSanitizer,
     public dialog: MatDialog
   ) {
   }
 
   yeetArray: Array<CheckIndex> = [];
-  blobUrl: SafeUrl = '';
-  BASE64_MARKER = ';base64,';
   @ViewChild('carousel', {static: false}) carousel: CarouselComponent;
   @ViewChild('audioPlayer', {static: false}) audioPlayer: ElementRef;
 
@@ -44,7 +40,7 @@ export class CheckComponent implements OnInit {
     }), () => {
     }, () => {
       if (this.yeetArray.length !== 0) {
-        this.loadAudioBlob(this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
+        this.apiService.loadAudioBlob(this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
       }
     });
   }
@@ -70,7 +66,7 @@ export class CheckComponent implements OnInit {
         this.i++;
       }), () => {
       }, () => {
-        this.loadAudioBlob(this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
+        this.apiService.loadAudioBlob(this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
       });
     }
   }
@@ -126,51 +122,8 @@ export class CheckComponent implements OnInit {
         val.audioStartPos, val.audioEndPos, val.speakerKey,
         1, val.correct + 1, val.wrong, val.transcriptFileId, val.text
       )).subscribe(_ => {
-        this.loadAudioBlob(val);
-      });
-    } else if (labeledType === 2) {
-      const val = this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText;
-      this.apiService.updateTextAudioIndex(new TextAudioIndexWithText(
-        val.id, val.samplingRate, val.textStartPos, val.textEndPos,
-        val.audioStartPos, val.audioEndPos, val.speakerKey,
-        1, val.correct, val.wrong + 1, val.transcriptFileId, val.text
-      )).subscribe(_ => {
-        this.loadAudioBlob(val);
-      });
-    } else {
-      const val = this.yeetArray[this.carousel.carousel.activeIndex].textAudioIndexWithText;
-      this.apiService.updateTextAudioIndex(new TextAudioIndexWithText(
-        val.id, val.samplingRate, val.textStartPos, val.textEndPos,
-        val.audioStartPos, val.audioEndPos, val.speakerKey,
-        0, val.correct, val.wrong, val.transcriptFileId, val.text
-      )).subscribe(_ => {
-        this.loadAudioBlob(val);
+        this.apiService.loadAudioBlob(val);
       });
     }
-  }
-
-  convertDataURIToBinary(dataURI) {
-    const base64Index = dataURI.indexOf(this.BASE64_MARKER) + this.BASE64_MARKER.length;
-    const base64 = dataURI.substring(base64Index);
-    const raw = window.atob(base64);
-    const rawLength = raw.length;
-    const array = new Uint8Array(new ArrayBuffer(rawLength));
-
-    for (let i = 0; i < rawLength; i++) {
-      array[i] = raw.charCodeAt(i);
-    }
-    return array;
-  }
-
-  loadAudioBlob(file: TextAudioIndexWithText): void {
-    this.apiService.getAudioFile(file.transcriptFileId).subscribe(resp => {
-      const reader = new FileReader();
-      reader.readAsDataURL(resp);
-      reader.addEventListener('loadend', _ => {
-        const binary = this.convertDataURIToBinary(reader.result);
-        const blob = new Blob([binary], {type: `application/octet-stream`});
-        this.blobUrl = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(blob));
-      });
-    });
   }
 }

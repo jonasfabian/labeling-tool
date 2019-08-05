@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {TextAudioIndexWithText} from '../models/textAudioIndexWithText';
 import {Sums} from '../models/Sums';
+import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root'
@@ -11,13 +12,15 @@ import {Sums} from '../models/Sums';
 export class ApiService {
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private sanitizer: DomSanitizer
   ) {
   }
 
   url = 'http://localhost:8080/api/match/';
-
   theme = false;
+  BASE64_MARKER = ';base64,';
+  blobUrl: SafeUrl = '';
 
   getTextAudioIndexes(): Observable<Array<TextAudioIndexWithText>> {
     return this.http.get<Array<TextAudioIndexWithText>>(this.url + 'getTextAudioIndexes');
@@ -49,5 +52,30 @@ export class ApiService {
     } else {
       return 'alternate-theme-2';
     }
+  }
+
+  convertDataURIToBinary(dataURI): Uint8Array {
+    const base64Index = dataURI.indexOf(this.BASE64_MARKER) + this.BASE64_MARKER.length;
+    const base64 = dataURI.substring(base64Index);
+    const raw = window.atob(base64);
+    const rawLength = raw.length;
+    const array = new Uint8Array(new ArrayBuffer(rawLength));
+
+    for (let i = 0; i < rawLength; i++) {
+      array[i] = raw.charCodeAt(i);
+    }
+    return array;
+  }
+
+  loadAudioBlob(file: TextAudioIndexWithText): void {
+    this.getAudioFile(file.transcriptFileId).subscribe(resp => {
+      const reader = new FileReader();
+      reader.readAsDataURL(resp);
+      reader.addEventListener('loadend', _ => {
+        const binary = this.convertDataURIToBinary(reader.result);
+        const blob = new Blob([binary], {type: `application/octet-stream`});
+        this.blobUrl = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(blob));
+      });
+    });
   }
 }
