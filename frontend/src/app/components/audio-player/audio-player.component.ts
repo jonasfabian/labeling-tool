@@ -67,15 +67,13 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
       }
       if ((this.waveSurfer !== undefined) && (this.audioPosition.startTime !== null)) {
         this.waveSurfer.on('ready', () => {
+          console.log('yeet');
           this.addRegion(this.audioPosition);
           this.setViewToRegion(this.audioPosition);
         });
-        this.waveSurfer.on('loading', r => {
-          if (r === 100) {
-            setInterval(() => {
-              this.loading.emit(false);
-            }, 2000);
-          }
+        this.waveSurfer.on('waveform-ready', () => {
+          console.log('ready');
+          this.loading.emit(false);
         });
         this.addRegion(this.audioPosition);
         if (this.waveSurfer.isReady) {
@@ -97,7 +95,7 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
     this.apiService.getAudioFile(fileId).subscribe(resp => {
       const reader = new FileReader();
       reader.readAsDataURL(resp);
-      reader.addEventListener('loadend', _ => {
+      reader.addEventListener('loadend', () => {
         const binary = this.convertDataURIToBinary(reader.result);
         const blob = new Blob([binary], {type: `application/octet-stream`});
         this.blobUrl = URL.createObjectURL(blob);
@@ -110,6 +108,7 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
     Promise.resolve(null).then(() => {
       this.waveSurfer = WaveSurfer.create({
         container: '#waveform',
+        backend: 'MediaElement',
         waveColor: 'lightblue',
         progressColor: 'blue',
         partialRender: false,
