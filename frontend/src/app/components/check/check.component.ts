@@ -19,21 +19,24 @@ export class CheckComponent implements OnInit {
   ) {
   }
 
-  checkIndexArray: Array<CheckIndex> = [];
   @ViewChild('carousel', {static: false}) carousel: CarouselComponent;
   @ViewChild('audioPlayer', {static: false}) audioPlayer: ElementRef;
 
+  checkIndexArray: Array<CheckIndex> = [];
   available = false;
   isPlaying = false;
-  i = 0;
+  carouselIndex = 0;
+  skip = 0;
+  correct = 1;
+  wrong = 1;
 
   ngOnInit() {
     this.apiService.getTenNonLabeledTextAudioIndex(1).subscribe(r => r.forEach(l => {
       if (r.length !== 0) {
         this.available = true;
         l.text = l.text.slice(l.textStartPos, l.textEndPos);
-        this.checkIndexArray.push(new CheckIndex(this.i, l));
-        this.i++;
+        this.checkIndexArray.push(new CheckIndex(this.carouselIndex, l));
+        this.carouselIndex++;
       } else {
         this.available = false;
       }
@@ -50,20 +53,20 @@ export class CheckComponent implements OnInit {
     if (event.key === 'p') {
       this.play();
     } else if (event.key === 'c') {
-      this.correct();
+      this.setCorrect();
     } else if (event.key === 'w') {
-      this.wrong();
+      this.setWrong();
     } else if (event.key === 's') {
-      this.skip();
+      this.setSkip();
     }
   }
 
   lastSlide(): void {
     if (this.carousel.carousel.activeIndex === this.checkIndexArray.length - 1) {
-      this.apiService.getTenNonLabeledTextAudioIndex(1).subscribe(r => r.forEach(l => {
-        l.text = l.text.slice(l.textStartPos, l.textEndPos);
-        this.checkIndexArray.push(new CheckIndex(this.i, l));
-        this.i++;
+      this.apiService.getTenNonLabeledTextAudioIndex(1).subscribe(r => r.forEach(labeledTextAudioIndex => {
+        labeledTextAudioIndex.text = labeledTextAudioIndex.text.slice(labeledTextAudioIndex.textStartPos, labeledTextAudioIndex.textEndPos);
+        this.checkIndexArray.push(new CheckIndex(this.carouselIndex, labeledTextAudioIndex));
+        this.carouselIndex++;
       }), () => {
       }, () => {
         this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
@@ -75,24 +78,18 @@ export class CheckComponent implements OnInit {
     this.dialog.open(ShortcutComponent, {width: '500px'});
   }
 
-  /*
-  * 0 == not labeled
-  * 1 == correct
-  * 2 == wrong
-  * */
-
-  correct(): void {
-    this.getInfo(1);
+  setCorrect(): void {
+    this.getInfo(this.correct);
     this.carousel.slideNext();
   }
 
-  wrong(): void {
-    this.getInfo(2);
+  setWrong(): void {
+    this.getInfo(this.wrong);
     this.carousel.slideNext();
   }
 
-  skip(): void {
-    this.getInfo(0);
+  setSkip(): void {
+    this.getInfo(this.skip);
     this.carousel.slideNext();
   }
 

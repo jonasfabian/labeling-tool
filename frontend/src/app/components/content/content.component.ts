@@ -29,7 +29,6 @@ export class ContentComponent implements OnInit {
   textBegin = '';
   highlightedText = '';
   textEnd = '';
-
   loading = false;
 
   ngOnInit() {
@@ -66,13 +65,13 @@ export class ContentComponent implements OnInit {
   }
 
   textSetup(): void {
-    this.apiService.getNonLabeledTextAudioIndex(0).subscribe(n => {
-      this.dummyTextAudioIndex = n;
-      this.snip = new AudioSnippet(n.audioStartPos / n.samplingRate, n.audioEndPos / n.samplingRate);
-      this.text = n.text;
-      this.textBegin = n.text.slice(n.textStartPos - 100, n.textStartPos);
-      this.highlightedText = n.text.slice(n.textStartPos, n.textEndPos);
-      this.textEnd = n.text.slice(n.textEndPos, n.textEndPos + 100);
+    this.apiService.getNonLabeledTextAudioIndex(0).subscribe(nonLabeledTextAudioI => {
+      this.dummyTextAudioIndex = nonLabeledTextAudioI;
+      this.snip = new AudioSnippet(nonLabeledTextAudioI.audioStartPos / nonLabeledTextAudioI.samplingRate, nonLabeledTextAudioI.audioEndPos / nonLabeledTextAudioI.samplingRate);
+      this.text = nonLabeledTextAudioI.text;
+      this.textBegin = nonLabeledTextAudioI.text.slice(nonLabeledTextAudioI.textStartPos - 100, nonLabeledTextAudioI.textStartPos);
+      this.highlightedText = nonLabeledTextAudioI.text.slice(nonLabeledTextAudioI.textStartPos, nonLabeledTextAudioI.textEndPos);
+      this.textEnd = nonLabeledTextAudioI.text.slice(nonLabeledTextAudioI.textEndPos, nonLabeledTextAudioI.textEndPos + 100);
       this.dummyTextAudioIndex.labeled = 1;
     });
   }

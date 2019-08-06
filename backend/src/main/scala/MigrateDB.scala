@@ -22,41 +22,40 @@ object MigrateDB extends App with CorsSupport {
     else Stream.empty)
 
   def extractFromXml(): Unit = {
-    var index = 0
     val path = "/home/jonas/Documents/DeutschAndreaErzaehlt/"
-    getFileTree(new File(path)).filter(_.getName.endsWith(".xml")).foreach(file => {
-      index = index + 1
-      val f = XML.loadFile(file.getAbsolutePath)
-      val samplingRate = (f \ "SamplingRate").text
-      (f \ "TextAudioIndex").foreach(m => {
-        val textAudioIndex = new TextAudioIndex(index, samplingRate.toInt, (m \ "TextStartPos").text.toInt, (m \ "TextEndPos").text.toInt, (m \ "AudioStartPos").text.toDouble, (m \ "AudioEndPos").text.toDouble, (m \ "SpeakerKey").text.toInt, 0, 0, 0, file.getParentFile.getName.toInt)
-        newTextAudioIndex(textAudioIndex)
-      })
-    })
+    getFileTree(new File(path)).filter(_.getName.endsWith(".xml")).zipWithIndex.foreach {
+      case (file, count) => {
+        val f = XML.loadFile(file.getAbsolutePath)
+        val samplingRate = (f \ "SamplingRate").text
+        (f \ "TextAudioIndex").foreach(m => {
+          val textAudioIndex = new TextAudioIndex(count, samplingRate.toInt, (m \ "TextStartPos").text.toInt, (m \ "TextEndPos").text.toInt, (m \ "AudioStartPos").text.toDouble, (m \ "AudioEndPos").text.toDouble, (m \ "SpeakerKey").text.toInt, 0, 0, 0, file.getParentFile.getName.toInt)
+          newTextAudioIndex(textAudioIndex)
+        })
+      }
+    }
     println("Extracted all xml-data from directory ...")
   }
 
   def extractFromTxt(): Unit = labelingToolService.withDslContext(dslContext => {
-    var index = 0
     val path = "/home/jonas/Documents/DeutschAndreaErzaehlt/"
-    getFileTree(new File(path)).filter(_.getName.endsWith(".txt")).foreach(file => {
-      index = index + 1
-      val text = Source.fromFile(file.getAbsolutePath, "utf-8").mkString
-      val rec = labelingToolService.transcriptToRecord(new Transcript(index, text, file.getParentFile.getName.toInt))
-      dslContext.executeInsert(rec)
-    })
+    getFileTree(new File(path)).filter(_.getName.endsWith(".txt")).zipWithIndex.foreach {
+      case (file, count) => {
+        val text = Source.fromFile(file.getAbsolutePath, "utf-8").mkString
+        val rec = labelingToolService.transcriptToRecord(new Transcript(count, text, file.getParentFile.getName.toInt))
+        dslContext.executeInsert(rec)
+      }
+    }
     println("Extracted all txt-data from directory ...")
-    ()
   })
 
   def extractFromAudio(): Unit = labelingToolService.withDslContext(dslContext => {
-    var index = 0
     val path = "/home/jonas/Documents/DeutschAndreaErzaehlt/"
-    getFileTree(new File(path)).filter(_.getName.endsWith(".mp3")).foreach(file => {
-      index = index + 1
-      val rec = labelingToolService.audioToRecord(new Audio(index, file.getAbsolutePath, file.getParentFile.getName.toInt))
-      dslContext.executeInsert(rec)
-    })
+    getFileTree(new File(path)).filter(_.getName.endsWith(".mp3")).zipWithIndex.foreach {
+      case (file, count) => {
+        val rec = labelingToolService.audioToRecord(new Audio(count, file.getAbsolutePath, file.getParentFile.getName.toInt))
+        dslContext.executeInsert(rec)
+      }
+    }
     println("Extracted all audio-data from directory ...")
     ()
   })
