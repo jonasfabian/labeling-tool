@@ -28,7 +28,7 @@ export class CheckComponent implements OnInit {
   carouselIndex = 0;
   skip = 0;
   correct = 1;
-  wrong = 1;
+  wrong = 2;
 
   ngOnInit() {
     this.apiService.getTenNonLabeledTextAudioIndex(1).subscribe(r => r.forEach(l => {

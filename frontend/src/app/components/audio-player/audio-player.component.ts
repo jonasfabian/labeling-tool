@@ -25,11 +25,6 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   ) {
   }
 
-  waveSurfer: WaveSurfer = null;
-  paused = false;
-  zoomLvl = 0;
-  toggleVolume = false;
-
   @Input() audioPosition: AudioSnippet;
   @Input() textAudioIndexWithText: TextAudioIndexWithText;
   @Output() regionPosition = new EventEmitter<AudioSnippet>();
@@ -39,6 +34,12 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   BASE64_MARKER = ';base64,';
   blobUrl = '';
   fileId = 0;
+  waveSurfer: WaveSurfer = null;
+  paused = false;
+  zoomLvl = 0;
+  toggleVolume = false;
+  skipSound = 5;
+  replaySound = -5;
 
   ngOnInit() {
     this.onPreviewPressed();
@@ -151,7 +152,7 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   }
 
   skip(): void {
-    this.waveSurfer.skip(5);
+    this.waveSurfer.skip(this.skipSound);
   }
 
   playBackSpeed(speed: number): void {
@@ -159,7 +160,7 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   }
 
   replay(): void {
-    this.waveSurfer.skip(-5);
+    this.waveSurfer.skip(this.replaySound);
   }
 
   addRegion(snip: AudioSnippet): void {
