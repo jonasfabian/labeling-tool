@@ -37,6 +37,7 @@ export class ContentComponent implements OnInit {
 
   getLoading(bool: boolean): void {
     this.loading = bool;
+    console.log(this.loading);
   }
 
   getRegionSnippet(snippet: AudioSnippet) {

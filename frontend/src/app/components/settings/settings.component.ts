@@ -12,7 +12,12 @@ export class SettingsComponent implements OnInit {
     private apiService: ApiService
   ) { }
 
+  test = 0;
+
   ngOnInit() {
+    setInterval(() => {
+      this.test++;
+    }, 1000);
   }
 
 }
