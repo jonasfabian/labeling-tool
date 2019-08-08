@@ -1,3 +1,5 @@
+package models
+
 import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
 
 case class Audio(id: Int, path: String, fileId: Int) {

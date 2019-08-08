@@ -1,3 +1,5 @@
+package models
+
 import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
 
 case class Sums(nonLabeled: Integer, correct: Integer, wrong: Integer, skipped: Integer) {
