@@ -28,8 +28,12 @@ export class ContentComponent implements OnInit {
   dummyTextAudioIndex = new TextAudioIndexWithText(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '');
   textBegin = '';
   highlightedText = '';
+  selectedText = '';
   textEnd = '';
   loading = false;
+  edit = false;
+
+  yeet = false;
 
   ngOnInit() {
     this.textSetup();
@@ -47,10 +51,11 @@ export class ContentComponent implements OnInit {
   displayHighlightedText() {
     let highlightedTextLength = 0;
     if (window.getSelection) {
-      this.highlightedText = window.getSelection().toString();
+      this.yeet = true;
+      this.selectedText = window.getSelection().toString();
       highlightedTextLength = this.highlightedText.length;
     }
-    const tempStartPos = this.text.toString().indexOf(this.highlightedText.toString());
+    const tempStartPos = this.text.toString().indexOf(this.selectedText.toString());
     const tempEndPos = tempStartPos + highlightedTextLength;
     if (tempStartPos !== -1) {
       this.highlightedTextStartPos = tempStartPos;
@@ -70,7 +75,7 @@ export class ContentComponent implements OnInit {
       this.snip = new AudioSnippet(nonLabeledTextAudioI.audioStartPos / nonLabeledTextAudioI.samplingRate, nonLabeledTextAudioI.audioEndPos / nonLabeledTextAudioI.samplingRate);
       this.text = nonLabeledTextAudioI.text;
       this.textBegin = nonLabeledTextAudioI.text.slice(nonLabeledTextAudioI.textStartPos - 100, nonLabeledTextAudioI.textStartPos);
-      this.highlightedText = nonLabeledTextAudioI.text.slice(nonLabeledTextAudioI.textStartPos, nonLabeledTextAudioI.textEndPos);
+      this.selectedText = this.highlightedText = nonLabeledTextAudioI.text.slice(nonLabeledTextAudioI.textStartPos, nonLabeledTextAudioI.textEndPos);
       this.textEnd = nonLabeledTextAudioI.text.slice(nonLabeledTextAudioI.textEndPos, nonLabeledTextAudioI.textEndPos + 100);
       this.dummyTextAudioIndex.labeled = 1;
     });
@@ -87,5 +92,16 @@ export class ContentComponent implements OnInit {
     } else if (event.key === 's') {
       this.submitText();
     }
+  }
+
+  submitChangeText(): void {
+    this.yeet = false;
+    this.highlightedText = this.selectedText;
+    this.edit = false;
+  }
+
+  reset(): void {
+    this.yeet = false;
+    this.selectedText = this.highlightedText;
   }
 }

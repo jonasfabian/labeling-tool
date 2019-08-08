@@ -7,8 +7,8 @@
   height: calc(100% - 100px);
 }
 
-#main-text-container {
-  width: calc(50% - 30px);
+.text-container {
+  width: calc(70% - 30px);
   float: left;
 }
 
@@ -17,7 +17,7 @@
 }
 
 #select-container {
-  width: calc(50% - 50px);
+  width: calc(30% - 50px);
   float: right;
 }
 
@@ -27,15 +27,6 @@
 
 #select-container mat-button-toggle-group mat-button-toggle {
   width: 50%;
-}
-
-#selected-text-container {
-  width: calc(50% - 50px);
-  float: right;
-}
-
-#selected-text-container:nth-child(2) {
-  white-space: pre-wrap;
 }
 
 #shortcut-button {
