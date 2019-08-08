@@ -14,4 +14,6 @@ object Tables {
   val TEXTAUDIOINDEX = jooq.db.tables.Textaudioindex.TEXTAUDIOINDEX
 
   val TRANSCRIPT = jooq.db.tables.Transcript.TRANSCRIPT
+
+  val USER = jooq.db.tables.User.USER
 }

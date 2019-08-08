@@ -12,6 +12,7 @@ import jooq.db.tables.Audio
 import jooq.db.tables.FlywaySchemaHistory
 import jooq.db.tables.Textaudioindex
 import jooq.db.tables.Transcript
+import jooq.db.tables.User
 
 import org.jooq.Catalog
 import org.jooq.Table
@@ -38,6 +39,7 @@ class LabelingTool extends SchemaImpl("labeling-tool", DefaultCatalog.DEFAULT_CA
       Audio.AUDIO,
       FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY,
       Textaudioindex.TEXTAUDIOINDEX,
-      Transcript.TRANSCRIPT)
+      Transcript.TRANSCRIPT,
+      User.USER)
   }
 }
