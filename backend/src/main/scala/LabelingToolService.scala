@@ -40,6 +40,13 @@ class LabelingToolService(config: Config) {
       .fetchOne().map(m => TextAudioIndex(m.get(TEXTAUDIOINDEX.ID).toInt, m.get(TEXTAUDIOINDEX.SAMPLINGRATE).toInt, m.get(TEXTAUDIOINDEX.TEXTSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.TEXTENDPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOSTARTPOS).toDouble, m.get(TEXTAUDIOINDEX.AUDIOENDPOS).toDouble, m.get(TEXTAUDIOINDEX.SPEAKERKEY).toInt, m.get(TEXTAUDIOINDEX.LABELED).toInt, m.get(TEXTAUDIOINDEX.CORRECT).toInt, m.get(TEXTAUDIOINDEX.WRONG).toInt, m.get(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID).toInt))
   })
 
+  def getUserById(id: Int): User = withDslContext(dslContext => {
+    dslContext.select()
+      .from(USER)
+      .where(USER.ID.eq(id))
+      .fetchOne().map(m => User(m.get(USER.ID).toInt, m.get(USER.FIRSTNAME), m.get(USER.LASTNAME), m.get(USER.EMAIL), m.get(USER.PASSWORD)))
+  })
+
   // get all of labeled-type
   def getTextAudioIndexesByLabeledType(labeledType: Int): Array[TextAudioIndex] = withDslContext(dslContext => {
     dslContext.select()

@@ -8,5 +8,5 @@ CREATE TABLE IF NOT EXISTS `user` (
     UNIQUE KEY `email` (`email`)
 ) ENGINE = InnoDB;
 
-INSERT INTO `user` (`email`, `password`) VALUES ('yeet@gmx.ch', MD5('yeet'));
-INSERT INTO `user` (`email`, `password`) VALUES ('yote@gmail.ch', MD5('yote'));
+INSERT INTO `user` (`firstName`, `lastName`, `email`, `password`) VALUES ('hans', 'müller', 'yeet@gmx.ch', SHA1('yeet'));
+INSERT INTO `user` (`firstName`, `lastName`, `email`, `password`) VALUES ('peter', 'lichtsteiner', 'yote@gmx.ch', SHA1('yote'));
