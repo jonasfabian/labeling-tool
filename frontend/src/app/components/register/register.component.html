@@ -1,0 +1,22 @@
+<form [formGroup]="registerForm" (ngSubmit)="register()">
+  <fieldset class="form-group">
+    <div><label class="control-label" for="firstName">First name</label></div>
+    <div><input class="form-control" id="firstName" type="text" formControlName="firstName" required></div>
+  </fieldset>
+  <fieldset class="form-group">
+    <div><label class="control-label" for="lastName">Last name</label></div>
+    <div><input class="form-control" id="lastName" type="text" formControlName="lastName" required></div>
+  </fieldset>
+  <fieldset class="form-group">
+    <div><label class="control-label" for="email">Email</label></div>
+    <div><input class="form-control" id="email" type="email" formControlName="email" required></div>
+  </fieldset>
+  <fieldset class="form-group">
+    <div><label class="control-label" for="password">Password</label></div>
+    <div><input class="form-control" id="password" type="password" formControlName="password" required></div>
+  </fieldset>
+  <fieldset class="form-group">
+    <button type="submit">Register</button>
+    <button type="button" (click)="cancel()">Cancel</button>
+  </fieldset>
+</form>

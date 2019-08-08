@@ -6,6 +6,7 @@ import {NgModule} from '@angular/core';
 import {HomeComponent} from './home/home.component';
 import {ErrorComponent} from './error/error.component';
 import {SettingsComponent} from './settings/settings.component';
+import {RegisterComponent} from './register/register.component';
 
 
 const routes: Routes = [
@@ -37,6 +38,10 @@ const routes: Routes = [
   {
     path: '404',
     component: ErrorComponent
+  },
+  {
+    path: 'register',
+    component: RegisterComponent
   },
   {
     path: '**',

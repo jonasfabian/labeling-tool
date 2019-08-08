@@ -20,6 +20,8 @@ import {CarouselModule} from 'ngx-carousel-lib';
 import { HomeComponent } from './home/home.component';
 import { ErrorComponent } from './error/error.component';
 import { SettingsComponent } from './settings/settings.component';
+import { RegisterComponent } from './register/register.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -37,7 +39,8 @@ import { SettingsComponent } from './settings/settings.component';
     TableComponent,
     HomeComponent,
     ErrorComponent,
-    SettingsComponent
+    SettingsComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +49,8 @@ import { SettingsComponent } from './settings/settings.component';
     MaterialModule,
     HttpClientModule,
     NgxChartsModule,
-    CarouselModule
+    CarouselModule,
+    ReactiveFormsModule
   ],
   providers: [
     HttpClient
