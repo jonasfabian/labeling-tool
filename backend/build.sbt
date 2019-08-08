@@ -4,7 +4,7 @@ version := "0.1"
 
 scalaVersion := "2.12.0"
 
-libraryDependencies ++= Seq (
+libraryDependencies ++= Seq(
   "com.typesafe.akka" % "akka-actor_2.12" % "2.5.18",
   "com.typesafe.akka" % "akka-stream_2.12" % "2.5.18",
   "com.typesafe.akka" % "akka-slf4j_2.12" % "2.5.18",
@@ -27,5 +27,7 @@ libraryDependencies ++= Seq (
   "org.jooq" % "jooq-scala_2.12" % "3.11.7",
 
   "org.mariadb.jdbc" % "mariadb-java-client" % "2.3.0",
-  "org.scala-lang.modules" %% "scala-xml" % "1.2.0"
+  "org.scala-lang.modules" %% "scala-xml" % "1.2.0",
+
+  "org.mindrot" % "jbcrypt" % "0.3m"
 )

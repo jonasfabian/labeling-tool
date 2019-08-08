@@ -7,6 +7,7 @@ import org.jooq.{DSLContext, Field}
 import org.jooq.impl.DSL
 import jooq.db.Tables._
 import jooq.db.tables.records.{AudioRecord, TextaudioindexRecord, TranscriptRecord, UserRecord}
+import org.mindrot.jbcrypt.BCrypt
 
 class LabelingToolService(config: Config) {
 
@@ -133,7 +134,8 @@ class LabelingToolService(config: Config) {
   })
 
   def createUser(user: User): Unit = withDslContext(dslContext => {
-    val rec = userToRecord(user)
+    val hashedPw = BCrypt.hashpw(user.password, BCrypt.gensalt())
+    val rec = userToRecord(new User(user.id, user.firstName, user.lastName, user.email, hashedPw))
     dslContext.executeInsert(rec)
     ()
   })

@@ -17,7 +17,10 @@ export class HomeComponent implements OnInit {
   }
 
   createUser(): void {
-    this.apiService.createUser(new User(-1, 'peter', 'zwerg', 'p.zwerg@yeet.ch', 'test')).subscribe();
+    this.apiService.createUser(new User(-1, 'peter', 'zwerg', 'p.tw@yeet.ch', 'test')).subscribe();
+  }
+
+  checkPassword(): void {
   }
 
 }
