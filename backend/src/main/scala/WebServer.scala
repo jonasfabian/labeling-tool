@@ -40,7 +40,7 @@ object WebServer extends App with CorsSupport {
 class LabelingToolRestApi(service: LabelingToolService) extends Directives with ErrorAccumulatingCirceSupport {
   val route = pathPrefix("api") {
     pathPrefix("match") {
-      getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudioIndex ~ getTranscript ~ getTranscripts ~ getAudio ~ getAudioFile ~ getNonLabeledDataIndexes ~ getTenNonLabeledDataIndexes ~ getTextAudioIndexesByLabeledType ~ getLabeledSums ~ getUser
+      getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudioIndex ~ getTranscript ~ getTranscripts ~ getAudio ~ getAudioFile ~ getNonLabeledDataIndexes ~ getTenNonLabeledDataIndexes ~ getTextAudioIndexesByLabeledType ~ getLabeledSums ~ getUser ~ createUser
     }
   }
 
@@ -176,6 +176,19 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
     get {
       parameters("id".as[Int] ? 0) { id =>
         complete(service.getAudioFile(id))
+      }
+    }
+  }
+
+  @ApiOperation(value = "createUser", httpMethod = "POST")
+  @ApiImplicitParams(Array(new ApiImplicitParam(name = "body", required = true, dataTypeClass = classOf[User], value = "", paramType = "body")))
+  @ApiResponses(Array(new ApiResponse(code = 200, message = "OK")))
+  @Path("createUser")
+  def createUser: Route = path("createUser") {
+    post {
+      entity(as[User]) { user =>
+        service.createUser(user)
+        complete("OK")
       }
     }
   }

@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {TextAudioIndexWithText} from '../models/textAudioIndexWithText';
 import {Sums} from '../models/Sums';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
+import {User} from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,14 @@ export class ApiService {
 
   getTextAudioIndexes(): Observable<Array<TextAudioIndexWithText>> {
     return this.http.get<Array<TextAudioIndexWithText>>(this.url + 'getTextAudioIndexes');
+  }
+
+  getUser(id: number): Observable<User> {
+    return this.http.get<User>(this.url + 'getUser?id=' + id);
+  }
+
+  createUser(user: User): Observable<any> {
+    return this.http.post(this.url + 'createUser', user);
   }
 
   updateTextAudioIndex(textAudioIndex: TextAudioIndexWithText): Observable<any> {

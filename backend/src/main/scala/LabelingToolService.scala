@@ -6,7 +6,7 @@ import com.typesafe.config.Config
 import org.jooq.{DSLContext, Field}
 import org.jooq.impl.DSL
 import jooq.db.Tables._
-import jooq.db.tables.records.{AudioRecord, TextaudioindexRecord, TranscriptRecord}
+import jooq.db.tables.records.{AudioRecord, TextaudioindexRecord, TranscriptRecord, UserRecord}
 
 class LabelingToolService(config: Config) {
 
@@ -132,6 +132,12 @@ class LabelingToolService(config: Config) {
     ()
   })
 
+  def createUser(user: User): Unit = withDslContext(dslContext => {
+    val rec = userToRecord(user)
+    dslContext.executeInsert(rec)
+    ()
+  })
+
   def transcriptToRecord(t: Transcript): TranscriptRecord = {
     val rec = new TranscriptRecord()
     rec.setText(t.text)
@@ -143,6 +149,15 @@ class LabelingToolService(config: Config) {
     val rec = new AudioRecord()
     rec.setPath(t.path)
     rec.setFileid(t.fileId)
+    rec
+  }
+
+  def userToRecord(u: User): UserRecord = {
+    val rec = new UserRecord()
+    rec.setFirstname(u.firstName)
+    rec.setLastname(u.lastName)
+    rec.setEmail(u.email)
+    rec.setPassword(u.password)
     rec
   }
 
