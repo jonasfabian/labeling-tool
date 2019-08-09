@@ -1,5 +1,8 @@
 import java.io.File
+
+import models.{Audio, TextAudioIndex, Transcript}
 import com.typesafe.config.{ConfigFactory, ConfigValueFactory}
+
 import scala.io.Source
 import scala.xml.XML
 

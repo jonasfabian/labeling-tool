@@ -6,7 +6,7 @@ import org.jooq.meta.jaxb._
   * JooqSchemaGenerator util
   */
 
-object JooqSchemaGenerator extends App {
+object SetupDB extends App {
 
   generate()
 
