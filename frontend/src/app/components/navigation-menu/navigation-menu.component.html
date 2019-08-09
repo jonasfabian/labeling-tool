@@ -6,37 +6,41 @@
       <span>&nbsp;/&nbsp;</span>
       <span>{{breadcrumbService.breadCrumb.getValue() | titlecase}}</span>
     </div>
-    <span style="position: absolute; right: 30px; top: 15px; cursor: pointer;" [routerLink]="['login']">Login</span>
+    <span style="position: absolute; right: 30px; top: 15px; cursor: pointer;" [routerLink]="['labeling-tool/login']">
+      Login
+    </span>
   </div>
 </mat-toolbar>
 <mat-sidenav-container id="sidenav-container">
   <mat-sidenav fixedInViewport #sidenav mode="side">
     <div>
       <mat-list>
-        <mat-list-item [routerLink]="['home']">
+        <mat-list-item [routerLink]="['labeling-tool/home']">
           <mat-icon>home</mat-icon>
           <span>Home</span>
         </mat-list-item>
-        <mat-divider></mat-divider>
-        <mat-list-item [routerLink]="['check']">
-          <mat-icon>check</mat-icon>
-          <span>Check</span>
-        </mat-list-item>
-        <mat-divider></mat-divider>
-        <mat-list-item [routerLink]="['label']">
-          <mat-icon>label</mat-icon>
-          <span>Label</span>
-        </mat-list-item>
-        <mat-divider></mat-divider>
-        <mat-list-item [routerLink]="['overview']">
-          <mat-icon>view_list</mat-icon>
-          <span>Overview</span>
-        </mat-list-item>
-        <mat-divider></mat-divider>
-        <mat-list-item [routerLink]="['settings']">
-          <mat-icon>settings</mat-icon>
-          <span>Settings</span>
-        </mat-list-item>
+        <ng-container *ngIf="authService.isAuthenticated">
+          <mat-divider></mat-divider>
+          <mat-list-item [routerLink]="['labeling-tool/check']">
+            <mat-icon>check</mat-icon>
+            <span>Check</span>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item [routerLink]="['labeling-tool/label']">
+            <mat-icon>label</mat-icon>
+            <span>Label</span>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item [routerLink]="['labeling-tool/overview']">
+            <mat-icon>view_list</mat-icon>
+            <span>Overview</span>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item [routerLink]="['labeling-tool/settings']">
+            <mat-icon>settings</mat-icon>
+            <span>Settings</span>
+          </mat-list-item>
+        </ng-container>
       </mat-list>
     </div>
   </mat-sidenav>

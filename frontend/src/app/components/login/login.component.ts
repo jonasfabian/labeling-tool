@@ -3,6 +3,7 @@ import {ApiService} from '../../services/api.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {EmailPassword} from '../../models/EmailPassword';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private apiService: ApiService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
   }
 
@@ -35,7 +37,8 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.apiService.checkLogin(
         new EmailPassword(this.loginForm.controls.email.value, this.loginForm.controls.password.value)).subscribe(_ => {
-        this.router.navigate(['home']);
+        this.router.navigate(['labeling-tool/home']);
+        this.authService.isAuthenticated = true;
       }, error => {
         if (error.status === 401) {
           alert('Unauthorized');

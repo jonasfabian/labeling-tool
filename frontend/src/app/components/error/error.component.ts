@@ -16,7 +16,7 @@ export class ErrorComponent implements OnInit {
   }
 
   goHome(): void {
-    this.router.navigate(['home']);
+    this.router.navigate(['labeling-tool/home']);
   }
 
 }

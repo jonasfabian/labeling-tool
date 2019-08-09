@@ -8,49 +8,63 @@ import {ErrorComponent} from './error/error.component';
 import {SettingsComponent} from './settings/settings.component';
 import {RegisterComponent} from './register/register.component';
 import {LoginComponent} from './login/login.component';
+import {AuthGuardService} from '../guards/auth-guard.service';
 
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'labeling-tool/home',
     pathMatch: 'full'
   },
   {
-    path: 'label',
-    component: ContentComponent
-  },
-  {
-    path: 'check',
-    component: CheckComponent
-  },
-  {
-    path: 'overview',
-    component: MatchOverviewComponent
-  },
-  {
-    path: 'home',
-    component: HomeComponent
-  },
-  {
-    path: 'settings',
-    component: SettingsComponent
-  },
-  {
-    path: '404',
-    component: ErrorComponent
-  },
-  {
-    path: 'register',
-    component: RegisterComponent
-  },
-  {
-    path: 'login',
-    component: LoginComponent
+    path: 'labeling-tool',
+    children: [
+      {
+        path: 'home',
+        component: HomeComponent
+      },
+      {
+        path: 'label',
+        component: ContentComponent,
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: 'check',
+        component: CheckComponent,
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: 'overview',
+        component: MatchOverviewComponent,
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: 'settings',
+        component: SettingsComponent,
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: '404',
+        component: ErrorComponent
+      },
+      {
+        path: 'register',
+        component: RegisterComponent
+      },
+      {
+        path: 'login',
+        component: LoginComponent
+      },
+      {
+        path: '**',
+        redirectTo: '404'
+      }
+    ]
   },
   {
     path: '**',
-    redirectTo: '404'
+    redirectTo: 'labeling-tool/404'
   }
 ];
 
