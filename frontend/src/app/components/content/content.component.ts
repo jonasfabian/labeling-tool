@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, HostListener, OnInit} from '@angular/core';
 import {AudioSnippet} from '../../models/audioSnippet';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {ApiService} from '../../services/api.service';
@@ -17,7 +17,8 @@ export class ContentComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private snackBar: MatSnackBar,
     private apiService: ApiService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private ref: ChangeDetectorRef
   ) {
   }
 
@@ -37,7 +38,7 @@ export class ContentComponent implements OnInit {
 
   getLoading(bool: boolean): void {
     this.loading = bool;
-    console.log(this.loading);
+    this.ref.detectChanges();
   }
 
   getRegionSnippet(snippet: AudioSnippet) {

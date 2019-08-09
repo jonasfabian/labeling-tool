@@ -3,7 +3,10 @@
     <h1>Label</h1>
   </mat-card>
 </div>
-<div id="label-container">
+<div [hidden]="!loading" style="height: calc(100% - 100px)">
+  <mat-spinner style="margin-left: auto; margin-right: auto; top: calc(50% - 150px);"></mat-spinner>
+</div>
+<div [hidden]="loading" id="label-container">
   <mat-card class="top-card">
     <app-audio-player (loading)="getLoading($event)" [textAudioIndexWithText]="dummyTextAudioIndex" (regionPosition)="getRegionSnippet($event)" [audioPosition]="snip"></app-audio-player>
   </mat-card>
