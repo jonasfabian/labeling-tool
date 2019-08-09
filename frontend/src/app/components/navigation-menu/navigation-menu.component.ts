@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {BreadcrumbService} from '../../services/breadcrumb.service';
-import {ApiService} from '../../services/api.service';
 
 @Component({
   selector: 'app-navigation-menu',
@@ -10,8 +9,7 @@ import {ApiService} from '../../services/api.service';
 export class NavigationMenuComponent implements OnInit {
 
   constructor(
-    public breadcrumbService: BreadcrumbService,
-    private apiService: ApiService
+    public breadcrumbService: BreadcrumbService
   ) {
   }
 
