@@ -67,12 +67,10 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
       }
       if ((this.waveSurfer !== undefined) && (this.audioPosition.startTime !== null)) {
         this.waveSurfer.on('ready', () => {
-          console.log('yeet');
           this.addRegion(this.audioPosition);
           this.setViewToRegion(this.audioPosition);
         });
         this.waveSurfer.on('waveform-ready', () => {
-          console.log('ready');
           this.loading.emit(false);
         });
         this.addRegion(this.audioPosition);
