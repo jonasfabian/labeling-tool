@@ -2,7 +2,7 @@ import java.io.File
 
 import akka.http.scaladsl.marshalling.ToResponseMarshallable
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
-import models.{Audio, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User}
+import models.{Audio, EmailPassword, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User}
 import com.typesafe.config.Config
 import org.jooq.{DSLContext, Field}
 import org.jooq.impl.DSL
@@ -114,7 +114,7 @@ class LabelingToolService(config: Config) {
       .where(TEXTAUDIOINDEX.LABELED.eq(labeledType))
       .orderBy(TEXTAUDIOINDEX.ID.asc())
       .limit(10)
-      .fetchArray().map(m => TextAudioIndexWithText(m.get(TEXTAUDIOINDEX.ID).toInt, m.get(TEXTAUDIOINDEX.SAMPLINGRATE).toInt, m.get(TEXTAUDIOINDEX.TEXTSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.TEXTENDPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOSTARTPOS).toDouble, m.get(TEXTAUDIOINDEX.AUDIOENDPOS).toDouble, m.get(TEXTAUDIOINDEX.SPEAKERKEY).toInt, m.get(TEXTAUDIOINDEX.LABELED).toInt, m.get(TEXTAUDIOINDEX.CORRECT).toInt, m.get(TEXTAUDIOINDEX.WRONG).toInt, m.get(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID).toInt, m.get(TRANSCRIPT.TEXT).toString))
+      .fetchArray().map(m => TextAudioIndexWithText(m.get(TEXTAUDIOINDEX.ID).toInt, m.get(TEXTAUDIOINDEX.SAMPLINGRATE).toInt, m.get(TEXTAUDIOINDEX.TEXTSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.TEXTENDPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOSTARTPOS).toDouble, m.get(TEXTAUDIOINDEX.AUDIOENDPOS).toDouble, m.get(TEXTAUDIOINDEX.SPEAKERKEY).toInt, m.get(TEXTAUDIOINDEX.LABELED).toInt, m.get(TEXTAUDIOINDEX.CORRECT).toInt, m.get(TEXTAUDIOINDEX.WRONG).toInt, m.get(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID).toInt, m.get(TRANSCRIPT.TEXT)))
   })
 
   def updateTextAudioIndex(textAudioIndex: TextAudioIndex): Unit = withDslContext(dslContext => {
@@ -139,6 +139,14 @@ class LabelingToolService(config: Config) {
     val rec = userToRecord(new User(user.id, user.firstName, user.lastName, user.email, hashedPw))
     dslContext.executeInsert(rec)
     ()
+  })
+
+  def checkLogin(emailPassword: EmailPassword): Boolean = withDslContext(dslContext => {
+    val test = dslContext.select()
+      .from(USER)
+      .where(USER.EMAIL.eq(emailPassword.email))
+      .fetchOptional(USER.PASSWORD)
+    test.filter(test=>BCrypt.checkpw(emailPassword.password, test)).isPresent()
   })
 
   def transcriptToRecord(t: Transcript): TranscriptRecord = {

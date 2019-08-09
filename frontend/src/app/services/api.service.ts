@@ -5,6 +5,7 @@ import {TextAudioIndexWithText} from '../models/textAudioIndexWithText';
 import {Sums} from '../models/Sums';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {User} from '../models/user';
+import {EmailPassword} from '../models/EmailPassword';
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +34,10 @@ export class ApiService {
 
   createUser(user: User): Observable<any> {
     return this.http.post(this.url + 'createUser', user);
+  }
+
+  checkLogin(emailPassword: EmailPassword): Observable<any> {
+    return this.http.post(this.url + 'checkLogin', emailPassword);
   }
 
   updateTextAudioIndex(textAudioIndex: TextAudioIndexWithText): Observable<any> {
