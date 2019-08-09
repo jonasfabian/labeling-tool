@@ -22,6 +22,7 @@ import { ErrorComponent } from './error/error.component';
 import { SettingsComponent } from './settings/settings.component';
 import { RegisterComponent } from './register/register.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import {ReactiveFormsModule} from '@angular/forms';
     HomeComponent,
     ErrorComponent,
     SettingsComponent,
-    RegisterComponent
+    RegisterComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

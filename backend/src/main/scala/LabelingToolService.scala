@@ -2,7 +2,7 @@ import java.io.File
 
 import akka.http.scaladsl.marshalling.ToResponseMarshallable
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
-import models.{Audio, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript}
+import models.{Audio, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User}
 import com.typesafe.config.Config
 import org.jooq.{DSLContext, Field}
 import org.jooq.impl.DSL
