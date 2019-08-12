@@ -6,9 +6,10 @@
       <span>&nbsp;/&nbsp;</span>
       <span>{{breadcrumbService.breadCrumb.getValue() | titlecase}}</span>
     </div>
-    <span style="position: absolute; right: 30px; top: 15px; cursor: pointer;" [routerLink]="['labeling-tool/login']">
+    <span *ngIf="apiService.loggedInUser.id === -1" style="position: absolute; right: 30px; top: 15px; cursor: pointer;" [routerLink]="['labeling-tool/login']">
       Login
     </span>
+    <app-avatar *ngIf="apiService.loggedInUser.id !== -1" [user]="apiService.loggedInUser" style="position: absolute; right: 15px; top: 5px;"></app-avatar>
   </div>
 </mat-toolbar>
 <mat-sidenav-container id="sidenav-container">

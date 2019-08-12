@@ -24,6 +24,8 @@ import { RegisterComponent } from './register/register.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import {AuthGuardService} from '../guards/auth-guard.service';
+import { ProfileComponent } from './profile/profile.component';
+import { AvatarComponent } from './avatar/avatar.component';
 
 
 @NgModule({
@@ -43,7 +45,9 @@ import {AuthGuardService} from '../guards/auth-guard.service';
     ErrorComponent,
     SettingsComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    ProfileComponent,
+    AvatarComponent
   ],
   imports: [
     BrowserModule,
