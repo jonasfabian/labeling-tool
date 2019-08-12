@@ -119,7 +119,11 @@ export class CheckComponent implements OnInit {
         val.audioStartPos, val.audioEndPos, val.speakerKey,
         1, val.correct + 1, val.wrong, val.transcriptFileId, val.text
       )).subscribe(_ => {
-        this.apiService.loadAudioBlob(val);
+        this.apiService.createUserAndTextAudioIndex(new UserAndTextAudioIndex(-1, this.apiService.loggedInUser.id, val.id)).subscribe(_ => {
+        }, () => {
+        }, () => {
+          this.apiService.loadAudioBlob(val);
+        });
       });
     }
   }

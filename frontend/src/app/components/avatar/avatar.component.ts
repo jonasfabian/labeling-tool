@@ -28,7 +28,6 @@ export class AvatarComponent implements OnInit {
   }
 
   generateColor() {
-    console.log(stringToColor(this.initials));
     this.color = stringToColor(this.user.firstName + this.user.lastName);
   }
 }
