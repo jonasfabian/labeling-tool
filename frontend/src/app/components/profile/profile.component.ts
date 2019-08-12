@@ -23,11 +23,4 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this.user = this.apiService.loggedInUser;
   }
-
-  logOut(): void {
-    this.router.navigate(['labeling-tool/home']);
-    this.authService.isAuthenticated = false;
-    this.apiService.loggedInUser = new UserPublicInfo(-1, '', '', '');
-  }
-
 }

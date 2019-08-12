@@ -7,7 +7,9 @@ import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {User} from '../models/user';
 import {EmailPassword} from '../models/EmailPassword';
 import {UserAndTextAudioIndex} from '../models/UserAndTextAudioIndex';
-import {UserPublicInfo} from "../models/UserPublicInfo";
+import {UserPublicInfo} from '../models/UserPublicInfo';
+import {AuthService} from './auth.service';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +19,9 @@ export class ApiService {
 
   constructor(
     private http: HttpClient,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private router: Router,
+    private authService: AuthService
   ) {
   }
 
@@ -26,6 +30,7 @@ export class ApiService {
   BASE64_MARKER = ';base64,';
   blobUrl: SafeUrl = '';
   loggedInUser = new UserPublicInfo(-1, '', '', '');
+  amountOfLabeled = 0;
 
   getTextAudioIndexes(): Observable<Array<TextAudioIndexWithText>> {
     return this.http.get<Array<TextAudioIndexWithText>>(this.url + 'getTextAudioIndexes');
@@ -102,5 +107,11 @@ export class ApiService {
         this.blobUrl = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(blob));
       });
     });
+  }
+
+  logOut(): void {
+    this.router.navigate(['labeling-tool/home']);
+    this.authService.isAuthenticated = false;
+    this.loggedInUser = new UserPublicInfo(-1, '', '', '');
   }
 }

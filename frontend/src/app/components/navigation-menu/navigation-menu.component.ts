@@ -17,7 +17,13 @@ export class NavigationMenuComponent implements OnInit {
   ) {
   }
 
+  showDetails = false;
+
   ngOnInit() {
     this.breadcrumbService.getBreadcrumb();
+  }
+
+  openDetails(): void {
+    this.showDetails = !this.showDetails;
   }
 }

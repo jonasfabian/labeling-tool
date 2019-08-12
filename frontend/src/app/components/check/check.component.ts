@@ -80,16 +80,19 @@ export class CheckComponent implements OnInit {
   }
 
   setCorrect(): void {
+    this.apiService.amountOfLabeled++;
     this.getInfo(this.correct);
     this.carousel.slideNext();
   }
 
   setWrong(): void {
+    this.apiService.amountOfLabeled++;
     this.getInfo(this.wrong);
     this.carousel.slideNext();
   }
 
   setSkip(): void {
+    this.apiService.amountOfLabeled++;
     this.getInfo(this.skip);
     this.carousel.slideNext();
   }

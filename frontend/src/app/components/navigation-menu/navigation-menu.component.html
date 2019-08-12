@@ -6,10 +6,22 @@
       <span>&nbsp;/&nbsp;</span>
       <span>{{breadcrumbService.breadCrumb.getValue() | titlecase}}</span>
     </div>
-    <span *ngIf="apiService.loggedInUser.id === -1" style="position: absolute; right: 30px; top: 15px; cursor: pointer;" [routerLink]="['labeling-tool/login']">
+    <span *ngIf="apiService.loggedInUser.id === -1"
+      style="position: absolute; right: 30px; top: 15px; cursor: pointer;" [routerLink]="['labeling-tool/login']">
       Login
     </span>
-    <app-avatar *ngIf="apiService.loggedInUser.id !== -1" [user]="apiService.loggedInUser" style="position: absolute; right: 15px; top: 5px;"></app-avatar>
+    <div>
+      <app-avatar (click)="openDetails()" *ngIf="apiService.loggedInUser.id !== -1" [user]="apiService.loggedInUser"
+        style="position: absolute; right: 15px; top: 5px;"></app-avatar>
+      <mat-card
+        style="background-color: lightgray; position: absolute; right: 10px; top: 60px; width: 200px; padding: 0;" *ngIf="showDetails">
+        <mat-list>
+          <mat-list-item style="height: 40px;" [routerLink]="['/labeling-tool/profile']">Profile</mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item style="height: 40px;" (click)="apiService.logOut()">Sign Out</mat-list-item>
+        </mat-list>
+      </mat-card>
+    </div>
   </div>
 </mat-toolbar>
 <mat-sidenav-container id="sidenav-container">
