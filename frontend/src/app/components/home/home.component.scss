@@ -7,16 +7,16 @@
   cursor: pointer;
 }
 
-#image-grid {
+.image-grid {
   margin: 15px;
 }
 
-#image-grid mat-grid-tile mat-card {
+.image-grid mat-grid-tile mat-card {
   width: calc(100% - 35px);
   height: calc(100% - 35px);
 }
 
-#image-grid mat-grid-tile mat-card img {
+.image-grid mat-grid-tile mat-card img {
   width: 100%;
   height: 100%;
 }
