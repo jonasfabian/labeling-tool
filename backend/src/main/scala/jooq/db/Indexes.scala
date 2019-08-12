@@ -9,6 +9,7 @@ import jooq.db.tables.FlywaySchemaHistory
 import jooq.db.tables.Textaudioindex
 import jooq.db.tables.Transcript
 import jooq.db.tables.User
+import jooq.db.tables.Userandtextaudioindex
 
 import org.jooq.Index
 import org.jooq.OrderField
@@ -28,6 +29,7 @@ object Indexes {
   val TRANSCRIPT_PRIMARY = Indexes0.TRANSCRIPT_PRIMARY
   val USER_EMAIL = Indexes0.USER_EMAIL
   val USER_PRIMARY = Indexes0.USER_PRIMARY
+  val USERANDTEXTAUDIOINDEX_PRIMARY = Indexes0.USERANDTEXTAUDIOINDEX_PRIMARY
 
   // -------------------------------------------------------------------------
   // [#1459] distribute members to avoid static initialisers > 64kb
@@ -41,5 +43,6 @@ object Indexes {
     val TRANSCRIPT_PRIMARY : Index = Internal.createIndex("PRIMARY", Transcript.TRANSCRIPT, Array[OrderField [_] ](Transcript.TRANSCRIPT.ID), true)
     val USER_EMAIL : Index = Internal.createIndex("email", User.USER, Array[OrderField [_] ](User.USER.EMAIL), true)
     val USER_PRIMARY : Index = Internal.createIndex("PRIMARY", User.USER, Array[OrderField [_] ](User.USER.ID), true)
+    val USERANDTEXTAUDIOINDEX_PRIMARY : Index = Internal.createIndex("PRIMARY", Userandtextaudioindex.USERANDTEXTAUDIOINDEX, Array[OrderField [_] ](Userandtextaudioindex.USERANDTEXTAUDIOINDEX.ID), true)
   }
 }

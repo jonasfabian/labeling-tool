@@ -6,6 +6,8 @@ import {Sums} from '../models/Sums';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {User} from '../models/user';
 import {EmailPassword} from '../models/EmailPassword';
+import {UserAndTextAudioIndex} from '../models/UserAndTextAudioIndex';
+import {UserPublicInfo} from "../models/UserPublicInfo";
 
 @Injectable({
   providedIn: 'root'
@@ -23,17 +25,26 @@ export class ApiService {
   theme = false;
   BASE64_MARKER = ';base64,';
   blobUrl: SafeUrl = '';
+  loggedInUser = new UserPublicInfo(-1, '', '', '');
 
   getTextAudioIndexes(): Observable<Array<TextAudioIndexWithText>> {
     return this.http.get<Array<TextAudioIndexWithText>>(this.url + 'getTextAudioIndexes');
   }
 
-  getUser(id: number): Observable<User> {
-    return this.http.get<User>(this.url + 'getUser?id=' + id);
+  getUser(id: number): Observable<UserPublicInfo> {
+    return this.http.get<UserPublicInfo>(this.url + 'getUser?id=' + id);
+  }
+
+  getUserByEmail(email: string): Observable<UserPublicInfo> {
+    return this.http.get<UserPublicInfo>(this.url + 'getUserByEmail?email=' + email);
   }
 
   createUser(user: User): Observable<any> {
     return this.http.post(this.url + 'createUser', user);
+  }
+
+  createUserAndTextAudioIndex(userAndTextAudioIndex: UserAndTextAudioIndex): Observable<any> {
+    return this.http.post(this.url + 'createUserAndTextAudioIndex', userAndTextAudioIndex);
   }
 
   checkLogin(emailPassword: EmailPassword): Observable<any> {

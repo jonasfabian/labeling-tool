@@ -2,12 +2,12 @@ import java.io.File
 
 import akka.http.scaladsl.marshalling.ToResponseMarshallable
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
-import models.{Audio, EmailPassword, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User}
+import models.{Audio, EmailPassword, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User, UserAndTextAudioIndex, UserPublicInfo}
 import com.typesafe.config.Config
 import org.jooq.{DSLContext, Field}
 import org.jooq.impl.DSL
 import jooq.db.Tables._
-import jooq.db.tables.records.{AudioRecord, TextaudioindexRecord, TranscriptRecord, UserRecord}
+import jooq.db.tables.records.{AudioRecord, TextaudioindexRecord, TranscriptRecord, UserRecord, UserandtextaudioindexRecord}
 import org.mindrot.jbcrypt.BCrypt
 
 class LabelingToolService(config: Config) {
@@ -42,11 +42,18 @@ class LabelingToolService(config: Config) {
       .fetchOne().map(m => TextAudioIndex(m.get(TEXTAUDIOINDEX.ID).toInt, m.get(TEXTAUDIOINDEX.SAMPLINGRATE).toInt, m.get(TEXTAUDIOINDEX.TEXTSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.TEXTENDPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOSTARTPOS).toDouble, m.get(TEXTAUDIOINDEX.AUDIOENDPOS).toDouble, m.get(TEXTAUDIOINDEX.SPEAKERKEY).toInt, m.get(TEXTAUDIOINDEX.LABELED).toInt, m.get(TEXTAUDIOINDEX.CORRECT).toInt, m.get(TEXTAUDIOINDEX.WRONG).toInt, m.get(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID).toInt))
   })
 
-  def getUserById(id: Int): User = withDslContext(dslContext => {
+  def getUserById(id: Int): UserPublicInfo = withDslContext(dslContext => {
     dslContext.select()
       .from(USER)
       .where(USER.ID.eq(id))
-      .fetchOne().map(m => User(m.get(USER.ID).toInt, m.get(USER.FIRSTNAME), m.get(USER.LASTNAME), m.get(USER.EMAIL), m.get(USER.PASSWORD)))
+      .fetchOne().map(m => UserPublicInfo(m.get(USER.ID).toInt, m.get(USER.FIRSTNAME), m.get(USER.LASTNAME), m.get(USER.EMAIL)))
+  })
+
+  def getUserByEmail(email: String): UserPublicInfo = withDslContext(dslContext => {
+    dslContext.select()
+      .from(USER)
+      .where(USER.EMAIL.eq(email))
+      .fetchOne().map(m => UserPublicInfo(m.get(USER.ID).toInt, m.get(USER.FIRSTNAME), m.get(USER.LASTNAME), m.get(USER.EMAIL)))
   })
 
   // get all of labeled-type
@@ -141,6 +148,12 @@ class LabelingToolService(config: Config) {
     ()
   })
 
+  def createUserAndTextAudioIndex(userAndTextAudioIndex: UserAndTextAudioIndex): Unit = withDslContext(dslContext => {
+    val rec = userAndTextAudioIndexToRecord(new UserAndTextAudioIndex(userAndTextAudioIndex.id, userAndTextAudioIndex.userId, userAndTextAudioIndex.textAudioIndexId))
+    dslContext.executeInsert(rec)
+    ()
+  })
+
   def checkLogin(emailPassword: EmailPassword): Boolean = withDslContext(dslContext => {
     val test = dslContext.select()
       .from(USER)
@@ -153,6 +166,13 @@ class LabelingToolService(config: Config) {
     val rec = new TranscriptRecord()
     rec.setText(t.text)
     rec.setFileid(t.fileId)
+    rec
+  }
+
+  def userAndTextAudioIndexToRecord(t: UserAndTextAudioIndex): UserandtextaudioindexRecord = {
+    val rec = new UserandtextaudioindexRecord()
+    rec.setUserid(t.userId)
+    rec.setTextaudioindexid(t.textAudioIndexId)
     rec
   }
 

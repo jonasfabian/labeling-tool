@@ -39,6 +39,9 @@ export class LoginComponent implements OnInit {
         new EmailPassword(this.loginForm.controls.email.value, this.loginForm.controls.password.value)).subscribe(_ => {
         this.router.navigate(['labeling-tool/home']);
         this.authService.isAuthenticated = true;
+        this.apiService.getUserByEmail(this.loginForm.controls.email.value).subscribe(u => {
+          this.apiService.loggedInUser = u;
+        });
       }, error => {
         if (error.status === 401) {
           alert('Unauthorized');

@@ -5,6 +5,7 @@ import {TextAudioIndexWithText} from '../../models/textAudioIndexWithText';
 import {CheckIndex} from '../../models/checkIndex';
 import {MatDialog} from '@angular/material';
 import {ShortcutComponent} from '../shortcut/shortcut.component';
+import {UserAndTextAudioIndex} from "../../models/UserAndTextAudioIndex";
 
 @Component({
   selector: 'app-check',
@@ -120,6 +121,12 @@ export class CheckComponent implements OnInit {
       )).subscribe(_ => {
         this.apiService.loadAudioBlob(val);
       });
+    }
+  }
+
+  createUserAndTextAudiIndex(): void {
+    if (this.apiService.loggedInUser.id !== -1) {
+      this.apiService.createUserAndTextAudioIndex(new UserAndTextAudioIndex(-1, this.apiService.loggedInUser.id, 43)).subscribe();
     }
   }
 }

@@ -7,11 +7,12 @@ import akka.http.scaladsl.server.{Directives, Route}
 import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.Source
 import akka.util.ByteString
-import models.{Audio, EmailPassword, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User}
+import models.{Audio, EmailPassword, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User, UserAndTextAudioIndex, UserPublicInfo}
 import com.typesafe.config.{ConfigFactory, ConfigValueFactory}
 import de.heikoseeberger.akkahttpcirce.ErrorAccumulatingCirceSupport
 import io.swagger.annotations.{ApiImplicitParam, ApiImplicitParams, ApiOperation, ApiResponse, ApiResponses}
 import javax.ws.rs.Path
+import jooq.db.tables.pojos.Userandtextaudioindex
 
 import scala.io.StdIn
 
@@ -41,7 +42,7 @@ object WebServer extends App with CorsSupport {
 class LabelingToolRestApi(service: LabelingToolService) extends Directives with ErrorAccumulatingCirceSupport {
   val route = pathPrefix("api") {
     pathPrefix("match") {
-      getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudioIndex ~ getTranscript ~ getTranscripts ~ getAudio ~ getAudioFile ~ getNonLabeledDataIndexes ~ getTenNonLabeledDataIndexes ~ getTextAudioIndexesByLabeledType ~ getLabeledSums ~ getUser ~ createUser ~ checkLogin
+      getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudioIndex ~ getTranscript ~ getTranscripts ~ getAudio ~ getAudioFile ~ getNonLabeledDataIndexes ~ getTenNonLabeledDataIndexes ~ getTextAudioIndexesByLabeledType ~ getLabeledSums ~ getUser ~ createUser ~ checkLogin ~ createUserAndTextAudioIndex ~ getUserByEmail
     }
   }
 
@@ -59,12 +60,21 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
 
   @ApiOperation(value = "getUser", httpMethod = "GET", notes = "returns a user")
   @ApiImplicitParams(Array(new ApiImplicitParam(name = "id", required = true, example = "100", value = "id", paramType = "query")))
-  @ApiResponses(Array(new ApiResponse(code = 200, response = classOf[User], message = "OK")))
+  @ApiResponses(Array(new ApiResponse(code = 200, response = classOf[UserPublicInfo], message = "OK")))
   @Path("getUser")
   def getUser = path("getUser") {
     get {
       parameters("id".as[Int] ? 0) { id =>
         complete(service.getUserById(id))
+      }
+    }
+  }
+
+  @Path("getUserByEmail")
+  def getUserByEmail = path("getUserByEmail") {
+    get {
+      parameters("email".as[String] ? "") { email =>
+        complete(service.getUserByEmail(email))
       }
     }
   }
@@ -189,6 +199,19 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
     post {
       entity(as[User]) { user =>
         service.createUser(user)
+        complete("OK")
+      }
+    }
+  }
+
+  @ApiOperation(value = "createUserAndTextAudioIndex", httpMethod = "POST")
+  @ApiImplicitParams(Array(new ApiImplicitParam(name = "body", required = true, dataTypeClass = classOf[UserAndTextAudioIndex], value = "", paramType = "body")))
+  @ApiResponses(Array(new ApiResponse(code = 200, message = "OK")))
+  @Path("createUserAndTextAudioIndex")
+  def createUserAndTextAudioIndex: Route = path("createUserAndTextAudioIndex") {
+    post {
+      entity(as[UserAndTextAudioIndex]) { userAndTextAudioIndex =>
+        service.createUserAndTextAudioIndex(userAndTextAudioIndex)
         complete("OK")
       }
     }
