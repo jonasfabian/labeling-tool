@@ -10,6 +10,7 @@ import {UserAndTextAudioIndex} from '../models/UserAndTextAudioIndex';
 import {UserPublicInfo} from '../models/UserPublicInfo';
 import {AuthService} from './auth.service';
 import {Router} from '@angular/router';
+import {TextAudioIndex} from '../models/textAudioIndex';
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +34,10 @@ export class ApiService {
 
   getTextAudioIndexes(): Observable<Array<TextAudioIndexWithText>> {
     return this.http.get<Array<TextAudioIndexWithText>>(this.url + 'getTextAudioIndexes');
+  }
+
+  getCheckedTextAudioIndexesByUser(userId: number): Observable<Array<TextAudioIndex>> {
+    return this.http.get<Array<TextAudioIndex>>(this.url + 'getCheckedTextAudioIndexesByUser?id=' + userId);
   }
 
   getUser(id: number): Observable<UserPublicInfo> {

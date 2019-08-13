@@ -159,7 +159,27 @@ class LabelingToolService(config: Config) {
       .from(USER)
       .where(USER.EMAIL.eq(emailPassword.email))
       .fetchOptional(USER.PASSWORD)
-    test.filter(test=>BCrypt.checkpw(emailPassword.password, test)).isPresent()
+    test.filter(test => BCrypt.checkpw(emailPassword.password, test)).isPresent()
+  })
+
+  def getCheckedTextAudioIndexesByUser(userId: Int): Array[TextAudioIndex] = withDslContext(dslContext => {
+    dslContext.select(
+      TEXTAUDIOINDEX.ID,
+      TEXTAUDIOINDEX.SAMPLINGRATE,
+      TEXTAUDIOINDEX.TEXTSTARTPOS,
+      TEXTAUDIOINDEX.TEXTENDPOS,
+      TEXTAUDIOINDEX.AUDIOSTARTPOS,
+      TEXTAUDIOINDEX.AUDIOENDPOS,
+      TEXTAUDIOINDEX.SPEAKERKEY,
+      TEXTAUDIOINDEX.LABELED,
+      TEXTAUDIOINDEX.CORRECT,
+      TEXTAUDIOINDEX.WRONG,
+      TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID
+    ).from(TEXTAUDIOINDEX)
+      .join(USERANDTEXTAUDIOINDEX)
+      .on(TEXTAUDIOINDEX.ID.eq(USERANDTEXTAUDIOINDEX.TEXTAUDIOINDEXID))
+      .and(USERANDTEXTAUDIOINDEX.USERID.eq(userId))
+      .fetchArray().map(m => TextAudioIndex(m.get(TEXTAUDIOINDEX.ID).toInt, m.get(TEXTAUDIOINDEX.SAMPLINGRATE).toInt, m.get(TEXTAUDIOINDEX.TEXTSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.TEXTENDPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOENDPOS).toInt, m.get(TEXTAUDIOINDEX.SPEAKERKEY).toInt, m.get(TEXTAUDIOINDEX.LABELED).toInt, m.get(TEXTAUDIOINDEX.CORRECT).toInt, m.get(TEXTAUDIOINDEX.WRONG).toInt, m.get(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID).toInt))
   })
 
   def transcriptToRecord(t: Transcript): TranscriptRecord = {

@@ -3,6 +3,7 @@ import {ApiService} from '../../services/api.service';
 import {UserPublicInfo} from '../../models/UserPublicInfo';
 import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
+import {TextAudioIndex} from '../../models/textAudioIndex';
 
 @Component({
   selector: 'app-profile',
@@ -19,8 +20,10 @@ export class ProfileComponent implements OnInit {
   }
 
   user = new UserPublicInfo(-1, '', '', '');
+  textAudioIndexArray: Array<TextAudioIndex> = [];
 
   ngOnInit() {
     this.user = this.authService.loggedInUser;
+    this.apiService.getCheckedTextAudioIndexesByUser(this.authService.loggedInUser.id).subscribe(l => this.textAudioIndexArray = l);
   }
 }

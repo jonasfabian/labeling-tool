@@ -42,7 +42,7 @@ object WebServer extends App with CorsSupport {
 class LabelingToolRestApi(service: LabelingToolService) extends Directives with ErrorAccumulatingCirceSupport {
   val route = pathPrefix("api") {
     pathPrefix("match") {
-      getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudioIndex ~ getTranscript ~ getTranscripts ~ getAudio ~ getAudioFile ~ getNonLabeledDataIndexes ~ getTenNonLabeledDataIndexes ~ getTextAudioIndexesByLabeledType ~ getLabeledSums ~ getUser ~ createUser ~ checkLogin ~ createUserAndTextAudioIndex ~ getUserByEmail
+      getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudioIndex ~ getTranscript ~ getTranscripts ~ getAudio ~ getAudioFile ~ getNonLabeledDataIndexes ~ getTenNonLabeledDataIndexes ~ getTextAudioIndexesByLabeledType ~ getLabeledSums ~ getUser ~ createUser ~ checkLogin ~ createUserAndTextAudioIndex ~ getUserByEmail ~ getCheckedTextAudioIndexesByUser
     }
   }
 
@@ -116,6 +116,16 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
   def getLabeledSums = path("getLabeledSums") {
     get {
       complete(service.getLabeledSums)
+    }
+  }
+
+
+  @Path("getCheckedTextAudioIndexesByUser")
+  def getCheckedTextAudioIndexesByUser = path("getCheckedTextAudioIndexesByUser") {
+    get {
+      parameters("id".as[Int] ? 0) { id =>
+        complete(service.getCheckedTextAudioIndexesByUser(id))
+      }
     }
   }
 
