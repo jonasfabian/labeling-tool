@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
       this.apiService.checkLogin(
         new EmailPassword(this.loginForm.controls.email.value, this.loginForm.controls.password.value)).subscribe(_ => {
         this.apiService.getUserByEmail(this.loginForm.controls.email.value).subscribe(u => {
-          sessionStorage.setItem('user', JSON.stringify([{'id': u.id, 'firstName': u.firstName, 'lastName': u.lastName, 'email': u.email}]));
+          sessionStorage.setItem('user', JSON.stringify([{'id': u.id, 'firstName': u.firstName, 'lastName': u.lastName, 'email': u.email, 'time': new Date()}]));
           this.authService.checkAuthenticated();
           this.authService.isAuthenticated = true;
           this.router.navigate(['labeling-tool/home']);
