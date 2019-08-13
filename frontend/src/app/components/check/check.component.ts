@@ -5,7 +5,8 @@ import {TextAudioIndexWithText} from '../../models/textAudioIndexWithText';
 import {CheckIndex} from '../../models/checkIndex';
 import {MatDialog} from '@angular/material';
 import {ShortcutComponent} from '../shortcut/shortcut.component';
-import {UserAndTextAudioIndex} from "../../models/UserAndTextAudioIndex";
+import {UserAndTextAudioIndex} from '../../models/UserAndTextAudioIndex';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-check',
@@ -16,7 +17,8 @@ export class CheckComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private authService: AuthService
   ) {
   }
 
@@ -122,7 +124,7 @@ export class CheckComponent implements OnInit {
         val.audioStartPos, val.audioEndPos, val.speakerKey,
         1, val.correct + 1, val.wrong, val.transcriptFileId, val.text
       )).subscribe(_ => {
-        this.apiService.createUserAndTextAudioIndex(new UserAndTextAudioIndex(-1, this.apiService.loggedInUser.id, val.id)).subscribe(_ => {
+        this.apiService.createUserAndTextAudioIndex(new UserAndTextAudioIndex(-1, this.authService.loggedInUser.id, val.id)).subscribe(() => {
         }, () => {
         }, () => {
           this.apiService.loadAudioBlob(val);
@@ -132,8 +134,8 @@ export class CheckComponent implements OnInit {
   }
 
   createUserAndTextAudiIndex(): void {
-    if (this.apiService.loggedInUser.id !== -1) {
-      this.apiService.createUserAndTextAudioIndex(new UserAndTextAudioIndex(-1, this.apiService.loggedInUser.id, 43)).subscribe();
+    if (this.authService.loggedInUser.id !== -1) {
+      this.apiService.createUserAndTextAudioIndex(new UserAndTextAudioIndex(-1, this.authService.loggedInUser.id, 43)).subscribe();
     }
   }
 }

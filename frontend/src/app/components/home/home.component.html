@@ -13,7 +13,7 @@
     </mat-card>
   </mat-grid-tile>
 </mat-grid-list>
-<mat-grid-list *ngIf="apiService.loggedInUser.id === -1" class="image-grid" cols="10" rowHeight="300px" gutterSize="15">
+<mat-grid-list *ngIf="authService.loggedInUser.id === -1" class="image-grid" cols="10" rowHeight="300px" gutterSize="15">
   <mat-grid-tile colspan="7"></mat-grid-tile>
   <mat-grid-tile class="landing-page-tiles" colspan="3">
     <mat-card [routerLink]="['/labeling-tool/register']">

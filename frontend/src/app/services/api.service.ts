@@ -29,7 +29,6 @@ export class ApiService {
   theme = false;
   BASE64_MARKER = ';base64,';
   blobUrl: SafeUrl = '';
-  loggedInUser = new UserPublicInfo(-1, '', '', '');
   amountOfLabeled = 0;
 
   getTextAudioIndexes(): Observable<Array<TextAudioIndexWithText>> {
@@ -113,6 +112,6 @@ export class ApiService {
     sessionStorage.clear();
     this.router.navigate(['labeling-tool/home']);
     this.authService.isAuthenticated = false;
-    this.loggedInUser = new UserPublicInfo(-1, '', '', '');
+    this.authService.loggedInUser = new UserPublicInfo(-1, '', '', '');
   }
 }

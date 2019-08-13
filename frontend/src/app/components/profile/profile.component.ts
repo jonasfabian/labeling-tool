@@ -21,6 +21,6 @@ export class ProfileComponent implements OnInit {
   user = new UserPublicInfo(-1, '', '', '');
 
   ngOnInit() {
-    this.user = this.apiService.loggedInUser;
+    this.user = this.authService.loggedInUser;
   }
 }
