@@ -41,6 +41,7 @@ export class LoginComponent implements OnInit {
         this.authService.isAuthenticated = true;
         this.apiService.getUserByEmail(this.loginForm.controls.email.value).subscribe(u => {
           this.apiService.loggedInUser = u;
+          sessionStorage.setItem('user', JSON.stringify([{'email': u.email, 'firstName': u.firstName}]));
         });
       }, error => {
         if (error.status === 401) {

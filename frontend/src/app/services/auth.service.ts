@@ -9,4 +9,12 @@ export class AuthService {
   }
 
   isAuthenticated = false;
+
+  checkAuthenticated(): void {
+    if (sessionStorage.getItem('user')) {
+      this.isAuthenticated = true;
+    } else {
+      this.isAuthenticated = false;
+    }
+  }
 }
