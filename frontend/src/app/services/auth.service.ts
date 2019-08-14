@@ -14,21 +14,14 @@ export class AuthService {
   loggedInUser = new UserPublicInfo(-1, '', '', '');
 
   checkAuthenticated(): void {
-    this.test();
     if (sessionStorage.getItem('user')) {
       JSON.parse(sessionStorage.getItem('user')).map(r => {
-        console.log('test');
-        if (r.time > new Date(r.time).setSeconds(r.time.getSeconds + 20)) {
-          console.log('time\'s up');
-        }
+        this.isAuthenticated = r.time <= new Date(r.time).setSeconds(r.time.getSeconds + 20);
         this.loggedInUser = new UserPublicInfo(r.id, r.firstName, r.lastName, r.email);
       });
       this.isAuthenticated = true;
     } else {
       this.isAuthenticated = false;
     }
-  }
-
-  test(): void {
   }
 }
