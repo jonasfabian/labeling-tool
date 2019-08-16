@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {UserPublicInfo} from '../models/UserPublicInfo';
 
 @Injectable({
@@ -6,8 +6,7 @@ import {UserPublicInfo} from '../models/UserPublicInfo';
 })
 export class AuthService {
 
-  constructor(
-  ) {
+  constructor() {
   }
 
   isAuthenticated = false;
@@ -16,7 +15,10 @@ export class AuthService {
   checkAuthenticated(): void {
     if (sessionStorage.getItem('user')) {
       JSON.parse(sessionStorage.getItem('user')).map(r => {
-        this.isAuthenticated = r.time <= new Date(r.time).setSeconds(r.time.getSeconds + 20);
+        const expirationDate = new Date(new Date(r.time).setMinutes(new Date(r.time).getMinutes() + 30));
+        if (expirationDate < new Date()) {
+          this.isAuthenticated = false;
+        }
         this.loggedInUser = new UserPublicInfo(r.id, r.firstName, r.lastName, r.email);
       });
       this.isAuthenticated = true;
