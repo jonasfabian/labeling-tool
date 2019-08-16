@@ -34,7 +34,7 @@ export class CheckComponent implements OnInit {
   wrong = 2;
 
   ngOnInit() {
-    this.apiService.getTenNonLabeledTextAudioIndex(1).subscribe(r => r.forEach(l => {
+    this.apiService.getTenNonLabeledTextAudioIndex(this.authService.loggedInUser.id).subscribe(r => r.forEach(l => {
       if (r.length !== 0) {
         this.available = true;
         l.text = l.text.slice(l.textStartPos, l.textEndPos);
@@ -66,7 +66,7 @@ export class CheckComponent implements OnInit {
 
   lastSlide(): void {
     if (this.carousel.carousel.activeIndex === this.checkIndexArray.length - 1) {
-      this.apiService.getTenNonLabeledTextAudioIndex(1).subscribe(r => r.forEach(labeledTextAudioIndex => {
+      this.apiService.getTenNonLabeledTextAudioIndex(this.authService.loggedInUser.id).subscribe(r => r.forEach(labeledTextAudioIndex => {
         labeledTextAudioIndex.text = labeledTextAudioIndex.text.slice(labeledTextAudioIndex.textStartPos, labeledTextAudioIndex.textEndPos);
         this.checkIndexArray.push(new CheckIndex(this.carouselIndex, labeledTextAudioIndex));
         this.carouselIndex++;

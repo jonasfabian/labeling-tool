@@ -171,8 +171,9 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
   @Path("getTenNonLabeledDataIndexes")
   def getTenNonLabeledDataIndexes = path("getTenNonLabeledDataIndexes") {
     get {
-      parameters("id".as[Int] ? 0) { labeledType =>
-        complete(service.getTenNonLabeledDataIndexes(labeledType))
+      parameters("userId".as[Int] ? 0) { (userId) =>
+        val test = service.getTenNonLabeledDataIndexes(userId)
+        complete(service.getTenNonLabeledDataIndexes(userId))
       }
     }
   }
