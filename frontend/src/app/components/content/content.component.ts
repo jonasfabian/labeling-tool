@@ -1,10 +1,11 @@
 import {ChangeDetectorRef, Component, HostListener, OnInit} from '@angular/core';
 import {AudioSnippet} from '../../models/audioSnippet';
-import {MatDialog, MatSnackBar} from '@angular/material';
+import {MatDialog} from '@angular/material';
 import {ApiService} from '../../services/api.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import {TextAudioIndexWithText} from '../../models/textAudioIndexWithText';
 import {ShortcutComponent} from '../shortcut/shortcut.component';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-content',
@@ -15,8 +16,8 @@ export class ContentComponent implements OnInit {
 
   constructor(
     private sanitizer: DomSanitizer,
-    private snackBar: MatSnackBar,
     private apiService: ApiService,
+    private authService: AuthService,
     public dialog: MatDialog,
     private ref: ChangeDetectorRef
   ) {

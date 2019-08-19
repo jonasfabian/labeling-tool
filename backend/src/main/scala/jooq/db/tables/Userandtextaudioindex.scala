@@ -88,7 +88,7 @@ extends TableImpl[UserandtextaudioindexRecord](
   override def getSchema : Schema = LabelingTool.LABELING_TOOL
 
   override def getIndexes : List[ Index ] = {
-    return Arrays.asList[ Index ](Indexes.USERANDTEXTAUDIOINDEX_PRIMARY)
+    return Arrays.asList[ Index ](Indexes.USERANDTEXTAUDIOINDEX_PRIMARY, Indexes.USERANDTEXTAUDIOINDEX_UNI)
   }
 
   override def getIdentity : Identity[UserandtextaudioindexRecord, Integer] = {
@@ -100,7 +100,7 @@ extends TableImpl[UserandtextaudioindexRecord](
   }
 
   override def getKeys : List[ UniqueKey[UserandtextaudioindexRecord] ] = {
-    return Arrays.asList[ UniqueKey[UserandtextaudioindexRecord] ](Keys.KEY_USERANDTEXTAUDIOINDEX_PRIMARY)
+    return Arrays.asList[ UniqueKey[UserandtextaudioindexRecord] ](Keys.KEY_USERANDTEXTAUDIOINDEX_PRIMARY, Keys.KEY_USERANDTEXTAUDIOINDEX_UNI)
   }
 
   override def as(alias : String) : Userandtextaudioindex = {

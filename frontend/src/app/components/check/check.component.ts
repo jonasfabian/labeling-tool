@@ -130,6 +130,19 @@ export class CheckComponent implements OnInit {
           this.apiService.loadAudioBlob(val);
         });
       });
+    } else if (labeledType === 2) {
+      const val = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText;
+      this.apiService.updateTextAudioIndex(new TextAudioIndexWithText(
+        val.id, val.samplingRate, val.textStartPos, val.textEndPos,
+        val.audioStartPos, val.audioEndPos, val.speakerKey,
+        1, val.correct, val.wrong + 1, val.transcriptFileId, val.text
+      )).subscribe(_ => {
+        this.apiService.createUserAndTextAudioIndex(new UserAndTextAudioIndex(-1, this.authService.loggedInUser.id, val.id)).subscribe(() => {
+        }, () => {
+        }, () => {
+          this.apiService.loadAudioBlob(val);
+        });
+      });
     }
   }
 
