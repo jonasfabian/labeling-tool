@@ -26,6 +26,7 @@ import { LoginComponent } from './login/login.component';
 import {AuthGuardService} from '../guards/auth-guard.service';
 import { ProfileComponent } from './profile/profile.component';
 import { AvatarComponent } from './avatar/avatar.component';
+import { CheckMoreComponent } from './check-more/check-more.component';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import { AvatarComponent } from './avatar/avatar.component';
     RegisterComponent,
     LoginComponent,
     ProfileComponent,
-    AvatarComponent
+    AvatarComponent,
+    CheckMoreComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +69,8 @@ import { AvatarComponent } from './avatar/avatar.component';
     AppComponent
   ],
   entryComponents: [
-    ShortcutComponent
+    ShortcutComponent,
+    CheckMoreComponent
   ]
 })
 export class AppModule {

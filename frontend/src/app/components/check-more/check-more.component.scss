@@ -1,0 +1,22 @@
+.shortcut-description {
+  font-style: italic;
+}
+
+.shortcut-key {
+  border: 1px solid lightgray;
+  padding: 15px;
+  border-radius: 4px;
+}
+
+#shortcuts-title {
+  text-align: center;
+}
+
+#break {
+  color: lightgray;
+}
+
+#shortcut-icon {
+  cursor: pointer;
+  float: right;
+}
