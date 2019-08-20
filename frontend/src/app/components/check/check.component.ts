@@ -8,6 +8,7 @@ import {ShortcutComponent} from '../shortcut/shortcut.component';
 import {UserAndTextAudioIndex} from '../../models/UserAndTextAudioIndex';
 import {AuthService} from '../../services/auth.service';
 import {CheckMoreComponent} from '../check-more/check-more.component';
+import {SessionOverviewComponent} from "../session-overview/session-overview.component";
 
 @Component({
   selector: 'app-check',
@@ -84,6 +85,10 @@ export class CheckComponent implements OnInit {
 
   openShortcutDialog(): void {
     this.dialog.open(ShortcutComponent, {width: '500px'});
+  }
+
+  openSessionOverview(): void {
+    this.dialog.open(SessionOverviewComponent, {width: '500px'});
   }
 
   openCheckMoreDialog(): void {
