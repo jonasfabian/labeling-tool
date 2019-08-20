@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {CarouselComponent} from 'ngx-carousel-lib';
 import {ApiService} from '../../services/api.service';
 import {TextAudioIndexWithText} from '../../models/textAudioIndexWithText';
@@ -20,8 +20,7 @@ export class CheckComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     public dialog: MatDialog,
-    private authService: AuthService,
-    private ref: ChangeDetectorRef
+    private authService: AuthService
   ) {
   }
 

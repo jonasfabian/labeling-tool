@@ -6,9 +6,9 @@
 <div [hidden]="available" style="height: calc(100% - 100px)">
   <mat-spinner style="margin-left: auto; margin-right: auto; top: calc(50% - 150px);"></mat-spinner>
 </div>
-<div style="position: absolute; right: 15px; width: 75px;">
+<div style="position: absolute; right: 15px; width: 48px;">
   <ng-container *ngFor="let cont of checkIndexArray; let i = index;">
-    <mat-card style="margin-top: 5px; height: 40px;">
+    <mat-card style="margin-top: 5px; height: 48px; padding: 0;">
       <mat-icon style="color: green;" *ngIf="checkedTextAudioIndexWithTextArrayCorrect.includes(cont.textAudioIndexWithText)">check</mat-icon>
       <mat-icon style="color: red;" *ngIf="checkedTextAudioIndexWithTextArrayWrong.includes(cont.textAudioIndexWithText)">clear</mat-icon>
       <mat-icon style="color: gray;" *ngIf="checkedTextAudioIndexWithTextArraySkipped.includes(cont.textAudioIndexWithText)">redo</mat-icon>
