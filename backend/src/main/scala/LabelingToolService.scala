@@ -124,7 +124,7 @@ class LabelingToolService(config: Config) {
   })
 
   def getTenNonLabeledDataIndexesByUser(userId: Integer): Array[TextAudioIndexWithText] = withDslContext(dslContext => {
-    val subQuery = dslContext.select(
+    val selectAllByUser = dslContext.select(
       TEXTAUDIOINDEX.ID
     ).from(TEXTAUDIOINDEX)
       .join(USERANDTEXTAUDIOINDEX)
@@ -137,7 +137,7 @@ class LabelingToolService(config: Config) {
     ).from(TEXTAUDIOINDEX)
       .join(TRANSCRIPT)
       .on(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID.eq(TRANSCRIPT.FILEID))
-      .where(TEXTAUDIOINDEX.ID.notIn(subQuery))
+      .where(TEXTAUDIOINDEX.ID.notIn(selectAllByUser))
       .limit(10)
       .fetchArray().map(m => TextAudioIndexWithText(m.get(TEXTAUDIOINDEX.ID).toInt, m.get(TEXTAUDIOINDEX.SAMPLINGRATE).toInt, m.get(TEXTAUDIOINDEX.TEXTSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.TEXTENDPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOSTARTPOS).toDouble, m.get(TEXTAUDIOINDEX.AUDIOENDPOS).toDouble, m.get(TEXTAUDIOINDEX.SPEAKERKEY).toInt, m.get(TEXTAUDIOINDEX.LABELED).toInt, m.get(TEXTAUDIOINDEX.CORRECT).toInt, m.get(TEXTAUDIOINDEX.WRONG).toInt, m.get(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID).toInt, m.get(TRANSCRIPT.TEXT)))
   })
