@@ -34,6 +34,6 @@ export class NavigationMenuComponent implements OnInit {
 
   toggleSidenav(): void {
     this.sidenav.toggle();
-    sessionStorage.setItem('sidenav', JSON.stringify({'open': this.sidenav.opened}));
+    sessionStorage.setItem('sidenav', JSON.stringify({open: this.sidenav.opened}));
   }
 }
