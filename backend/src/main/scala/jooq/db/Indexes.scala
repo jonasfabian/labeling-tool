@@ -30,6 +30,7 @@ object Indexes {
   val USER_EMAIL = Indexes0.USER_EMAIL
   val USER_PRIMARY = Indexes0.USER_PRIMARY
   val USERANDTEXTAUDIOINDEX_PRIMARY = Indexes0.USERANDTEXTAUDIOINDEX_PRIMARY
+  val USERANDTEXTAUDIOINDEX_UNI = Indexes0.USERANDTEXTAUDIOINDEX_UNI
 
   // -------------------------------------------------------------------------
   // [#1459] distribute members to avoid static initialisers > 64kb
@@ -44,5 +45,6 @@ object Indexes {
     val USER_EMAIL : Index = Internal.createIndex("email", User.USER, Array[OrderField [_] ](User.USER.EMAIL), true)
     val USER_PRIMARY : Index = Internal.createIndex("PRIMARY", User.USER, Array[OrderField [_] ](User.USER.ID), true)
     val USERANDTEXTAUDIOINDEX_PRIMARY : Index = Internal.createIndex("PRIMARY", Userandtextaudioindex.USERANDTEXTAUDIOINDEX, Array[OrderField [_] ](Userandtextaudioindex.USERANDTEXTAUDIOINDEX.ID), true)
+    val USERANDTEXTAUDIOINDEX_UNI : Index = Internal.createIndex("uni", Userandtextaudioindex.USERANDTEXTAUDIOINDEX, Array[OrderField [_] ](Userandtextaudioindex.USERANDTEXTAUDIOINDEX.USERID, Userandtextaudioindex.USERANDTEXTAUDIOINDEX.TEXTAUDIOINDEXID), true)
   }
 }

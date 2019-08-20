@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ApiService} from '../../services/api.service';
 
 @Component({
@@ -19,6 +19,12 @@ export class BarChartComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.apiService.getLabeledSums().subscribe(l => l.forEach(s => this.single = [{name: 'Not-Labeled', value: s.nonLabeled}, {name: 'Correct', value: s.correct}, {name: 'Wrong', value: s.wrong}, {name: 'Skipped', value: s.skipped}]));
+    this.apiService.getLabeledSums().subscribe(l => l.forEach(s => {
+      this.single = [
+        {name: 'Not-Labeled', value: s.nonLabeled},
+        {name: 'Correct', value: s.correct},
+        {name: 'Wrong', value: s.wrong},
+        {name: 'Skipped', value: s.skipped}];
+    }));
   }
 }

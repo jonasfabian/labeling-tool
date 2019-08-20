@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {UserPublicInfo} from '../models/UserPublicInfo';
-import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +7,6 @@ import {Router} from '@angular/router';
 export class AuthService {
 
   constructor(
-    private router: Router
   ) {
   }
 
@@ -18,7 +16,7 @@ export class AuthService {
   checkAuthenticated(): void {
     if (sessionStorage.getItem('user')) {
       JSON.parse(sessionStorage.getItem('user')).map(r => {
-        const expirationDate = new Date(new Date(r.time).setMinutes(new Date(r.time).getMinutes() + 1));
+        const expirationDate = new Date(new Date(r.time).setMinutes(new Date(r.time).getMinutes() + 30));
         if (expirationDate < new Date()) {
           sessionStorage.clear();
           this.isAuthenticated = false;

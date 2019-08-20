@@ -47,6 +47,7 @@ object Keys {
   val KEY_USER_PRIMARY = UniqueKeys0.KEY_USER_PRIMARY
   val KEY_USER_EMAIL = UniqueKeys0.KEY_USER_EMAIL
   val KEY_USERANDTEXTAUDIOINDEX_PRIMARY = UniqueKeys0.KEY_USERANDTEXTAUDIOINDEX_PRIMARY
+  val KEY_USERANDTEXTAUDIOINDEX_UNI = UniqueKeys0.KEY_USERANDTEXTAUDIOINDEX_UNI
 
   // -------------------------------------------------------------------------
   // FOREIGN KEY definitions
@@ -73,5 +74,6 @@ object Keys {
     val KEY_USER_PRIMARY : UniqueKey[UserRecord] = Internal.createUniqueKey(User.USER, "KEY_user_PRIMARY", User.USER.ID)
     val KEY_USER_EMAIL : UniqueKey[UserRecord] = Internal.createUniqueKey(User.USER, "KEY_user_email", User.USER.EMAIL)
     val KEY_USERANDTEXTAUDIOINDEX_PRIMARY : UniqueKey[UserandtextaudioindexRecord] = Internal.createUniqueKey(Userandtextaudioindex.USERANDTEXTAUDIOINDEX, "KEY_userAndTextAudioIndex_PRIMARY", Userandtextaudioindex.USERANDTEXTAUDIOINDEX.ID)
+    val KEY_USERANDTEXTAUDIOINDEX_UNI : UniqueKey[UserandtextaudioindexRecord] = Internal.createUniqueKey(Userandtextaudioindex.USERANDTEXTAUDIOINDEX, "KEY_userAndTextAudioIndex_uni", Userandtextaudioindex.USERANDTEXTAUDIOINDEX.USERID, Userandtextaudioindex.USERANDTEXTAUDIOINDEX.TEXTAUDIOINDEXID)
   }
 }

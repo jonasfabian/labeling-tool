@@ -6,47 +6,60 @@
 <div [hidden]="available" style="height: calc(100% - 100px)">
   <mat-spinner style="margin-left: auto; margin-right: auto; top: calc(50% - 150px);"></mat-spinner>
 </div>
-<div [hidden]="!available">
-  <div>
-    <mat-card style="position: absolute; margin: 0 15px 15px 15px;">
-      <span>Amount labeled: {{apiService.amountOfLabeled}}</span>
+<div style="position: absolute; right: 15px; width: 48px;">
+  <ng-container *ngFor="let cont of checkIndexArray; let i = index;">
+    <mat-card style="margin-top: 5px; height: 48px; padding: 0;">
+      <mat-icon style="color: green;" *ngIf="checkedTextAudioIndexWithTextArrayCorrect.includes(cont.textAudioIndexWithText)">check</mat-icon>
+      <mat-icon style="color: red;" *ngIf="checkedTextAudioIndexWithTextArrayWrong.includes(cont.textAudioIndexWithText)">clear</mat-icon>
+      <mat-icon style="color: gray;" *ngIf="checkedTextAudioIndexWithTextArraySkipped.includes(cont.textAudioIndexWithText)">redo</mat-icon>
+      <span>{{i + 1}}</span>
     </mat-card>
-  </div>
-  <div>
-    <carousel-component id="carousel" (onSlideChange)="lastSlide()" [morePairSlides]="1" [lockSlides]="true"
-                        [perspective]="4000" #carousel>
-      <div class="item-carousel" *ngFor="let te of checkIndexArray">
-        <mat-card>
-          <div>{{te.textAudioIndexWithText.text}}</div>
-        </mat-card>
+  </ng-container>
+</div>
+<div [hidden]="!available">
+  <div [hidden]="apiService.showTenMoreQuest">
+    <div>
+      <carousel-component id="carousel" (onSlideChange)="lastSlide()" [morePairSlides]="1" [lockSlides]="true"
+                          [perspective]="4000" #carousel>
+        <div class="item-carousel" *ngFor="let te of checkIndexArray">
+          <mat-card>
+            <div>{{te.textAudioIndexWithText.text}}</div>
+          </mat-card>
+        </div>
+      </carousel-component>
+      <div *ngIf="apiService.blobUrl != ''">
+        <audio #audioPlayer hidden>
+          <source [src]="apiService.blobUrl">
+        </audio>
       </div>
-    </carousel-component>
-    <div *ngIf="apiService.blobUrl != ''">
-      <audio #audioPlayer hidden>
-        <source [src]="apiService.blobUrl">
-      </audio>
-    </div>
-    <div id="navigation-button-container">
-      <mat-button-toggle (click)="setCorrect()">
-        <mat-icon>thumb_up</mat-icon>
-        <span>&nbsp; Correct</span>
-      </mat-button-toggle>
-      <mat-button-toggle class="check-navigation-button" (click)="play()">
-        <mat-icon *ngIf="!isPlaying">play_arrow</mat-icon>
-        <mat-icon *ngIf="isPlaying">pause</mat-icon>
-      </mat-button-toggle>
-      <mat-button-toggle class="check-navigation-button" (click)="setWrong()">
-        <mat-icon>thumb_down</mat-icon>
-        <span>&nbsp; Wrong</span>
-      </mat-button-toggle>
-      <mat-button-toggle class="check-navigation-button" (click)="setSkip()">
-        <span>Skip</span>
-      </mat-button-toggle>
-    </div>
-    <div id="shortcut-button">
-      <mat-button-toggle (click)="openShortcutDialog()">
-        <mat-icon>keyboard</mat-icon>
-      </mat-button-toggle>
+      <div id="navigation-button-container">
+        <mat-button-toggle (click)="setCorrect()">
+          <mat-icon>thumb_up</mat-icon>
+          <span>&nbsp; Correct</span>
+        </mat-button-toggle>
+        <mat-button-toggle class="check-navigation-button" (click)="play()">
+          <mat-icon *ngIf="!isPlaying">play_arrow</mat-icon>
+          <mat-icon *ngIf="isPlaying">pause</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle class="check-navigation-button" (click)="setWrong()">
+          <mat-icon>thumb_down</mat-icon>
+          <span>&nbsp; Wrong</span>
+        </mat-button-toggle>
+        <mat-button-toggle class="check-navigation-button" (click)="setSkip()">
+          <span>Skip</span>
+        </mat-button-toggle>
+      </div>
+      <div id="shortcut-button">
+        <mat-button-toggle (click)="openShortcutDialog()">
+          <mat-icon>keyboard</mat-icon>
+        </mat-button-toggle>
+      </div>
+      <div id="session-overview-button">
+        <mat-button-toggle (click)="openSessionOverview()">
+          <mat-icon>table_chart</mat-icon>
+        </mat-button-toggle>
+      </div>
+      <mat-progress-bar style="top: 340px; width: 500px; margin-left: auto; margin-right: auto;" mode="determinate" [value]="progress"></mat-progress-bar>
     </div>
   </div>
 </div>
