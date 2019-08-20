@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {MatDialogRef} from '@angular/material';
 
 @Component({
   selector: 'app-session-overview',
@@ -8,7 +9,9 @@ import {Component, OnInit} from '@angular/core';
 
 export class SessionOverviewComponent implements OnInit {
 
-  constructor() {
+  constructor(
+    public dialogRef: MatDialogRef<SessionOverviewComponent>
+  ) {
   }
 
   showLegend = true;
@@ -30,5 +33,9 @@ export class SessionOverviewComponent implements OnInit {
       {name: 'Wrong', value: sessionData.wrong},
       {name: 'Skipped', value: sessionData.skipped}
     ];
+  }
+
+  close(): void {
+    this.dialogRef.close();
   }
 }

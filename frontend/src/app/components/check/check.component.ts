@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {CarouselComponent} from 'ngx-carousel-lib';
 import {ApiService} from '../../services/api.service';
 import {TextAudioIndexWithText} from '../../models/textAudioIndexWithText';
@@ -20,7 +20,8 @@ export class CheckComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     public dialog: MatDialog,
-    private authService: AuthService
+    private authService: AuthService,
+    private ref: ChangeDetectorRef
   ) {
   }
 
@@ -28,6 +29,9 @@ export class CheckComponent implements OnInit {
   @ViewChild('audioPlayer', {static: false}) audioPlayer: ElementRef;
 
   checkIndexArray: Array<CheckIndex> = [];
+  checkedTextAudioIndexWithTextArrayCorrect: Array<TextAudioIndexWithText> = [];
+  checkedTextAudioIndexWithTextArrayWrong: Array<TextAudioIndexWithText> = [];
+  checkedTextAudioIndexWithTextArraySkipped: Array<TextAudioIndexWithText> = [];
   available = false;
   isPlaying = false;
   carouselIndex = 0;
@@ -104,18 +108,21 @@ export class CheckComponent implements OnInit {
   setCorrect(): void {
     this.numberCorrect++;
     this.getInfo(this.correct);
+    this.checkedTextAudioIndexWithTextArrayCorrect.push(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
     this.carousel.slideNext();
   }
 
   setWrong(): void {
     this.numberWrong++;
     this.getInfo(this.wrong);
+    this.checkedTextAudioIndexWithTextArrayWrong.push(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
     this.carousel.slideNext();
   }
 
   setSkip(): void {
     this.numberSkipped++;
     this.getInfo(this.skip);
+    this.checkedTextAudioIndexWithTextArraySkipped.push(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
     this.carousel.slideNext();
   }
 
@@ -200,6 +207,7 @@ export class CheckComponent implements OnInit {
 
   resetCarousel(): void {
     this.checkIndexArray = [];
+    this.checkedTextAudioIndexWithTextArrayCorrect = [];
     this.initCarousel();
     this.carousel.carousel.activeIndex = 0;
   }
