@@ -40,6 +40,7 @@ export class CheckComponent implements OnInit {
   numberCorrect = 0;
   numberWrong = 0;
   numberSkipped = 0;
+  progress = 0;
 
   ngOnInit() {
     this.initCarousel();
@@ -143,6 +144,8 @@ export class CheckComponent implements OnInit {
   }
 
   play(): void {
+    this.progress = 0;
+    this.audioPlayerStatus();
     if (!this.isPlaying) {
       this.isPlaying = !this.isPlaying;
       this.audioPlayer.nativeElement.currentTime = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioStartPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate;
@@ -159,7 +162,17 @@ export class CheckComponent implements OnInit {
     }
   }
 
+  audioPlayerStatus(): void {
+    const startTime = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioStartPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate;
+    const endTime = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioEndPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate;
+    const totalTime = endTime - startTime;
+    this.audioPlayer.nativeElement.addEventListener('timeupdate', () => {
+      this.progress = 100 - Math.round((endTime - this.audioPlayer.nativeElement.currentTime) / totalTime * 100);
+    });
+  }
+
   getInfo(labeledType: number): void {
+    this.progress = 0;
     this.updateSessionCheckData();
     if (this.carousel.carousel.activeIndex === this.checkIndexArray.length - 1) {
       const val = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText;
