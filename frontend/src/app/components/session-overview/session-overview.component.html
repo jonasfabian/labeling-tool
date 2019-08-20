@@ -1,9 +1,16 @@
-<ngx-charts-bar-vertical
-  [view]="[400, 200]"
-  [yAxis]="true"
-  [scheme]="colorScheme"
-  [results]="single"
-  [legend]="showLegend"
-  [legendPosition]="'below'"
-  [animations]="true">
-</ngx-charts-bar-vertical>
+<ng-container *ngIf="!noDataAvailable">
+  <ngx-charts-bar-vertical
+    [view]="[400, 200]"
+    [yAxis]="true"
+    [scheme]="colorScheme"
+    [results]="single"
+    [legend]="showLegend"
+    [legendPosition]="'below'"
+    [animations]="true">
+  </ngx-charts-bar-vertical>
+</ng-container>
+<ng-container *ngIf="noDataAvailable">
+  <h1 style="text-align: center;">
+    No data available yet
+  </h1>
+</ng-container>
