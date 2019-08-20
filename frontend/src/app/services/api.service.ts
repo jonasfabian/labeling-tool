@@ -30,7 +30,6 @@ export class ApiService {
   theme = false;
   BASE64_MARKER = ';base64,';
   blobUrl: SafeUrl = '';
-  amountOfLabeled = 0;
   showTenMoreQuest = false;
 
   getTextAudioIndexes(): Observable<Array<TextAudioIndexWithText>> {

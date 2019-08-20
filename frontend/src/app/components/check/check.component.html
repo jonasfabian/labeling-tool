@@ -9,11 +9,6 @@
 <div [hidden]="!available">
   <div [hidden]="apiService.showTenMoreQuest">
     <div>
-      <mat-card style="position: absolute; margin: 0 15px 15px 15px;">
-        <span>Amount labeled: {{apiService.amountOfLabeled}}</span>
-      </mat-card>
-    </div>
-    <div>
       <carousel-component id="carousel" (onSlideChange)="lastSlide()" [morePairSlides]="1" [lockSlides]="true"
                           [perspective]="4000" #carousel>
         <div class="item-carousel" *ngFor="let te of checkIndexArray">
