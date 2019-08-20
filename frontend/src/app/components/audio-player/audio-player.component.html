@@ -4,46 +4,15 @@
 </div>
 <div id="wave-navigation">
   <mat-button-toggle-group>
-    <mat-button-toggle (click)="replay()" title="Replay last 5 seconds">
-      <mat-icon>replay_5</mat-icon>
-    </mat-button-toggle>
     <mat-button-toggle (click)="play()" *ngIf="!paused" title="Play">
       <mat-icon>play_arrow</mat-icon>
     </mat-button-toggle>
     <mat-button-toggle (click)="pause()" *ngIf="paused" title="Pause">
       <mat-icon>pause</mat-icon>
     </mat-button-toggle>
-    <mat-button-toggle (click)="reset()" title="Reset">
-      <mat-icon>stop</mat-icon>
-    </mat-button-toggle>
-    <mat-button-toggle (click)="skip()" title="Skip 5 Seconds">
-      <mat-icon>forward_5</mat-icon>
-    </mat-button-toggle>
   </mat-button-toggle-group>
   <mat-button-toggle class="audio-nav-button" title="Volume" (click)="toggleVolume = !toggleVolume">
     <mat-icon>volume_up</mat-icon>
   </mat-button-toggle>
   <mat-slider *ngIf="toggleVolume" min="0" max="100" step="1" value="25" (input)="setVolume($event)"></mat-slider>
-  <mat-button-toggle-group class="audio-nav-button">
-    <mat-button-toggle title="Replay speed 0.5x" (click)="playBackSpeed(0.5)">0.5x</mat-button-toggle>
-    <mat-button-toggle title="Replay speed 1x" (click)="playBackSpeed(1)">1x</mat-button-toggle>
-    <mat-button-toggle title="Replay speed 1.5x" (click)="playBackSpeed(1.5)">1.5x</mat-button-toggle>
-    <mat-button-toggle title="Replay speed 2x" (click)="playBackSpeed(2)">2x</mat-button-toggle>
-  </mat-button-toggle-group>
-  <mat-form-field class="audio-nav-button">
-    <input #seekInput matInput placeholder="Seek">
-  </mat-form-field>
-  <mat-button-toggle class="search-button" (click)="seekInAudio(seekInput.value)">
-    <mat-icon>search</mat-icon>
-  </mat-button-toggle>
-  <div class="pull-right">
-    <mat-button-toggle class="audio-nav-button" (click)="zoomLevel(zoomLvl - 10)">
-      <mat-icon>zoom_out</mat-icon>
-    </mat-button-toggle>
-    <span id="zoomLevelValue">{{zoomLevelInput.value}}</span>
-    <mat-slider #zoomLevelInput min="1" max="200" [value]="zoomLvl" (input)="zoomLevel($event.value)"></mat-slider>
-    <mat-button-toggle (click)="zoomLevel(zoomLvl + 10)">
-      <mat-icon>zoom_in</mat-icon>
-    </mat-button-toggle>
-  </div>
 </div>
