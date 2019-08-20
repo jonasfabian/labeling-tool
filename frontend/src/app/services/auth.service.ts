@@ -16,7 +16,7 @@ export class AuthService {
   checkAuthenticated(): void {
     if (sessionStorage.getItem('user')) {
       JSON.parse(sessionStorage.getItem('user')).map(r => {
-        const expirationDate = new Date(new Date(r.time).setMinutes(new Date(r.time).getMinutes() + 10));
+        const expirationDate = new Date(new Date(r.time).setMinutes(new Date(r.time).getMinutes() + 30));
         if (expirationDate < new Date()) {
           sessionStorage.clear();
           this.isAuthenticated = false;
