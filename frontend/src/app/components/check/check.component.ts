@@ -8,7 +8,7 @@ import {ShortcutComponent} from '../shortcut/shortcut.component';
 import {UserAndTextAudioIndex} from '../../models/UserAndTextAudioIndex';
 import {AuthService} from '../../services/auth.service';
 import {CheckMoreComponent} from '../check-more/check-more.component';
-import {SessionOverviewComponent} from "../session-overview/session-overview.component";
+import {SessionOverviewComponent} from '../session-overview/session-overview.component';
 
 @Component({
   selector: 'app-check',
@@ -34,9 +34,13 @@ export class CheckComponent implements OnInit {
   skip = 0;
   correct = 1;
   wrong = 2;
+  numberCorrect = 0;
+  numberWrong = 0;
+  numberSkipped = 0;
 
   ngOnInit() {
     this.initCarousel();
+    this.initSessionCheckData();
   }
 
   initCarousel(): void {
@@ -98,18 +102,38 @@ export class CheckComponent implements OnInit {
   }
 
   setCorrect(): void {
+    this.numberCorrect++;
     this.getInfo(this.correct);
     this.carousel.slideNext();
   }
 
   setWrong(): void {
+    this.numberWrong++;
     this.getInfo(this.wrong);
     this.carousel.slideNext();
   }
 
   setSkip(): void {
+    this.numberSkipped++;
     this.getInfo(this.skip);
     this.carousel.slideNext();
+  }
+
+  initSessionCheckData(): void {
+    if (!sessionStorage.getItem('checkData')) {
+      sessionStorage.setItem('checkData', JSON.stringify([{correct: 0, wrong: 0, skipped: 0}]));
+    }
+    this.numberCorrect = JSON.parse(sessionStorage.getItem('checkData')).correct;
+    this.numberWrong = JSON.parse(sessionStorage.getItem('checkData')).wrong;
+    this.numberSkipped = JSON.parse(sessionStorage.getItem('checkData')).skipped;
+  }
+
+  updateSessionCheckData(): void {
+    sessionStorage.setItem('checkData', JSON.stringify({
+      correct: this.numberCorrect,
+      wrong: this.numberWrong,
+      skipped: this.numberSkipped
+    }));
   }
 
   play(): void {
@@ -130,6 +154,7 @@ export class CheckComponent implements OnInit {
   }
 
   getInfo(labeledType: number): void {
+    this.updateSessionCheckData();
     if (this.carousel.carousel.activeIndex === this.checkIndexArray.length - 1) {
       const val = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText;
       this.apiService.updateTextAudioIndex(new TextAudioIndexWithText(
