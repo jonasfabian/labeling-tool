@@ -35,7 +35,7 @@ export class CheckComponent implements OnInit {
   wrong = 2;
 
   ngOnInit() {
-    this.resetCarousel();
+    this.initCarousel();
   }
 
   initCarousel(): void {
@@ -87,7 +87,9 @@ export class CheckComponent implements OnInit {
   }
 
   openCheckMoreDialog(): void {
-    this.dialog.open(CheckMoreComponent, {width: '500px'});
+    this.dialog.open(CheckMoreComponent, {width: '500px'}).afterClosed().subscribe(() => {
+      this.resetCarousel();
+    });
   }
 
   setCorrect(): void {
@@ -127,6 +129,15 @@ export class CheckComponent implements OnInit {
 
   getInfo(labeledType: number): void {
     if (this.carousel.carousel.activeIndex === this.checkIndexArray.length - 1) {
+      const val = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText;
+      this.apiService.updateTextAudioIndex(new TextAudioIndexWithText(
+        val.id, val.samplingRate, val.textStartPos, val.textEndPos,
+        val.audioStartPos, val.audioEndPos, val.speakerKey,
+        1, val.correct + 1, val.wrong, val.transcriptFileId, val.text
+      )).subscribe(_ => {
+        this.apiService.createUserAndTextAudioIndex(new UserAndTextAudioIndex(-1, this.authService.loggedInUser.id, val.id)).subscribe(() => {
+        });
+      });
       this.apiService.showTenMoreQuest = true;
       this.openCheckMoreDialog();
     } else {
@@ -137,7 +148,6 @@ export class CheckComponent implements OnInit {
           val.audioStartPos, val.audioEndPos, val.speakerKey,
           1, val.correct + 1, val.wrong, val.transcriptFileId, val.text
         )).subscribe(_ => {
-          console.log(val);
           this.apiService.createUserAndTextAudioIndex(new UserAndTextAudioIndex(-1, this.authService.loggedInUser.id, val.id)).subscribe(() => {
           }, () => {
           }, () => {
@@ -164,5 +174,6 @@ export class CheckComponent implements OnInit {
   resetCarousel(): void {
     this.checkIndexArray = [];
     this.initCarousel();
+    this.carousel.carousel.activeIndex = 0;
   }
 }
