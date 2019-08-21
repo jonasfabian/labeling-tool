@@ -2,9 +2,7 @@
   <div>
     <mat-icon style="cursor: pointer; margin-top: 4px; float: left;" (click)="toggleSidenav()">menu</mat-icon>
     <div style="margin-left: 35px;">
-      <span>Labeling-Tool</span>
-      <span>&nbsp;/&nbsp;</span>
-      <span>{{breadcrumbService.breadCrumb.getValue() | titlecase}}</span>
+      <app-breadcrumb></app-breadcrumb>
     </div>
     <span *ngIf="!authService.isAuthenticated"
       style="position: absolute; right: 30px; top: 15px; cursor: pointer;" [routerLink]="['labeling-tool/login']">

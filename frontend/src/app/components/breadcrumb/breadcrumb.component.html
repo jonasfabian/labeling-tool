@@ -1,0 +1,9 @@
+<mat-chip-list>
+  <ng-container *ngFor="let chip of breadcrumbService.breadCrumb.getValue()">
+    <mat-chip color="secondary">
+      {{chip | titlecase}}
+    </mat-chip>
+    <span
+      *ngIf="breadcrumbService.breadCrumb.getValue().indexOf(chip) != breadcrumbService.breadCrumb.getValue().length - 1">&thinsp;>&thinsp;</span>
+  </ng-container>
+</mat-chip-list>

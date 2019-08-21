@@ -1,5 +1,4 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {BreadcrumbService} from '../../services/breadcrumb.service';
 import {AuthService} from '../../services/auth.service';
 import {ApiService} from '../../services/api.service';
 import {MatSidenav} from '@angular/material';
@@ -12,7 +11,6 @@ import {MatSidenav} from '@angular/material';
 export class NavigationMenuComponent implements OnInit {
 
   constructor(
-    public breadcrumbService: BreadcrumbService,
     private authService: AuthService,
     private apiService: ApiService
   ) {
@@ -22,7 +20,6 @@ export class NavigationMenuComponent implements OnInit {
   @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
 
   ngOnInit() {
-    this.breadcrumbService.getBreadcrumb();
     if (sessionStorage.getItem('sidenav')) {
       this.sidenav.toggle(JSON.parse(sessionStorage.getItem('sidenav')).open);
     }
