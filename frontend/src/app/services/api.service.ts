@@ -29,7 +29,7 @@ export class ApiService {
   url = 'http://localhost:8080/api/match/';
   theme = false;
   BASE64_MARKER = ';base64,';
-  blobUrl: SafeUrl = '';
+  blobUrl: SafeUrl | string = '';
   showTenMoreQuest = false;
 
   getTextAudioIndexes(): Observable<Array<TextAudioIndexWithText>> {

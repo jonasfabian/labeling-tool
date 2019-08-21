@@ -110,6 +110,10 @@ export class CheckComponent implements OnInit {
     this.getInfo(this.correct);
     this.checkedTextAudioIndexWithTextArrayCorrect.push(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
     this.carousel.slideNext();
+    this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
+    // @ts-ignore
+    this.audioPlayer.nativeElement.src = this.apiService.blobUrl.changingThisBreaksApplicationSecurity;
+    this.audioPlayer.nativeElement.load();
   }
 
   setWrong(): void {
@@ -117,6 +121,10 @@ export class CheckComponent implements OnInit {
     this.getInfo(this.wrong);
     this.checkedTextAudioIndexWithTextArrayWrong.push(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
     this.carousel.slideNext();
+    this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
+    // @ts-ignore
+    this.audioPlayer.nativeElement.src = this.apiService.blobUrl.changingThisBreaksApplicationSecurity;
+    this.audioPlayer.nativeElement.load();
   }
 
   setSkip(): void {
@@ -124,6 +132,10 @@ export class CheckComponent implements OnInit {
     this.getInfo(this.skip);
     this.checkedTextAudioIndexWithTextArraySkipped.push(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
     this.carousel.slideNext();
+    this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
+    // @ts-ignore
+    this.audioPlayer.nativeElement.src = this.apiService.blobUrl.changingThisBreaksApplicationSecurity;
+    this.audioPlayer.nativeElement.load();
   }
 
   initSessionCheckData(): void {
