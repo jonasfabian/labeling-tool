@@ -185,7 +185,7 @@ export class CheckComponent implements OnInit {
       } else {
         clearInterval(timer);
       }
-    }, 1);
+    }, 16);
   }
 
   getInfo(labeledType: number): void {
