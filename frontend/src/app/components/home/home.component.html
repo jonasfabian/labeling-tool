@@ -1,19 +1,34 @@
 <mat-card class="title-card">
   <h1>Labeling Tool</h1>
 </mat-card>
-<mat-grid-list class="image-grid" [cols]="10" rowHeight="300px" gutterSize="15">
+<mat-grid-list class="image-grid" [cols]="10" rowHeight="400px" gutterSize="15">
   <mat-grid-tile class="landing-page-tiles" colspan="4" [routerLink]="['/labeling-tool/check']">
     <mat-card>
-      <img src="../../../assets/images/check.png">
+      <h3>Check audio and text files</h3>
+      <p>
+        Checking already labeled audio and text. Listen to the audio carefully and then select if the text matches it,
+        by clicking on the correct or wrong button.
+      </p>
+      <div>
+        <img src="../../../assets/images/check.png">
+      </div>
     </mat-card>
   </mat-grid-tile>
   <mat-grid-tile class="landing-page-tiles" colspan="6" [routerLink]="['/labeling-tool/label']">
     <mat-card>
-      <img src="../../../assets/images/wave.png">
+      <h3>Correct audio and text files</h3>
+      <p>
+        Checking already labeled audio and text. Listen to the audio carefully and then select if the text matches it,
+        by clicking on the correct or wrong button.
+      </p>
+      <div>
+        <img src="../../../assets/images/wave.png">
+      </div>
     </mat-card>
   </mat-grid-tile>
 </mat-grid-list>
-<mat-grid-list *ngIf="authService.loggedInUser.id === -1" class="image-grid" cols="10" rowHeight="300px" gutterSize="15">
+<mat-grid-list *ngIf="authService.loggedInUser.id === -1" class="image-grid" cols="10" rowHeight="300px"
+               gutterSize="15">
   <mat-grid-tile colspan="7"></mat-grid-tile>
   <mat-grid-tile class="landing-page-tiles" colspan="3">
     <mat-card [routerLink]="['/labeling-tool/register']">

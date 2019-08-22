@@ -25,6 +25,7 @@
           <mat-card>
             <div>{{te.textAudioIndexWithText.text}}</div>
           </mat-card>
+          <mat-progress-bar *ngIf="te.id === carousel.carousel.activeIndex" style="margin-left: auto; margin-right: auto; border-radius: 50%; transition: none;" mode="determinate" [value]="progress"></mat-progress-bar>
         </div>
       </carousel-component>
       <div *ngIf="apiService.blobUrl != ''">
@@ -59,7 +60,6 @@
           <mat-icon>table_chart</mat-icon>
         </mat-button-toggle>
       </div>
-      <mat-progress-bar style="top: 340px; width: 500px; margin-left: auto; margin-right: auto; transition: none" mode="determinate" [value]="progress"></mat-progress-bar>
     </div>
   </div>
 </div>
