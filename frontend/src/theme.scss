@@ -2,14 +2,6 @@
 
 @include mat-core();
 
-$my-theme-primary: mat-palette($mat-amber);
-$my-theme-accent: mat-palette($mat-purple);
-$my-theme-warn: mat-palette($mat-red);
-
-$my-theme: mat-light-theme($my-theme-primary, $my-theme-accent, $my-theme-warn);
-
-@include angular-material-theme($my-theme);
-
 .alternate-theme {
   $alternate-primary: mat-palette($mat-light-blue);
   $alternate-accent:  mat-palette($mat-yellow, 400);

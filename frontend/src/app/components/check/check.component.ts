@@ -110,6 +110,10 @@ export class CheckComponent implements OnInit {
     this.getInfo(this.correct);
     this.checkedTextAudioIndexWithTextArrayCorrect.push(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
     this.carousel.slideNext();
+    this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
+    // @ts-ignore
+    this.audioPlayer.nativeElement.src = this.apiService.blobUrl.changingThisBreaksApplicationSecurity;
+    this.audioPlayer.nativeElement.load();
   }
 
   setWrong(): void {
@@ -117,6 +121,10 @@ export class CheckComponent implements OnInit {
     this.getInfo(this.wrong);
     this.checkedTextAudioIndexWithTextArrayWrong.push(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
     this.carousel.slideNext();
+    this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
+    // @ts-ignore
+    this.audioPlayer.nativeElement.src = this.apiService.blobUrl.changingThisBreaksApplicationSecurity;
+    this.audioPlayer.nativeElement.load();
   }
 
   setSkip(): void {
@@ -124,6 +132,10 @@ export class CheckComponent implements OnInit {
     this.getInfo(this.skip);
     this.checkedTextAudioIndexWithTextArraySkipped.push(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
     this.carousel.slideNext();
+    this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
+    // @ts-ignore
+    this.audioPlayer.nativeElement.src = this.apiService.blobUrl.changingThisBreaksApplicationSecurity;
+    this.audioPlayer.nativeElement.load();
   }
 
   initSessionCheckData(): void {
@@ -163,12 +175,17 @@ export class CheckComponent implements OnInit {
   }
 
   audioPlayerStatus(): void {
+    this.progress = 0;
     const startTime = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioStartPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate;
     const endTime = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioEndPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate;
     const totalTime = endTime - startTime;
-    this.audioPlayer.nativeElement.addEventListener('timeupdate', () => {
-      this.progress = 100 - Math.round((endTime - this.audioPlayer.nativeElement.currentTime) / totalTime * 100);
-    });
+    const timer = setInterval(() => {
+      if (this.audioPlayer.nativeElement.currentTime <= endTime) {
+        this.progress = 100 - Math.round((endTime - this.audioPlayer.nativeElement.currentTime) / totalTime * 100);
+      } else {
+        clearInterval(timer);
+      }
+    }, 16);
   }
 
   getInfo(labeledType: number): void {

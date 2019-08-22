@@ -13,11 +13,18 @@ export class BreadcrumbService {
   ) {
   }
 
-  breadCrumb = new BehaviorSubject<string>('');
+  breadCrumb = new BehaviorSubject<Array<string>>([]);
 
   getBreadcrumb() {
     this.router.events.subscribe(_ => {
-      this.breadCrumb.next(this.router.url.replace('/', ''));
+      this.breadCrumb.next([]);
+      const bc = this.breadCrumb.getValue();
+      this.router.url.split('/').forEach(chip => {
+        if (chip !== '' && !bc.includes(chip)) {
+          bc.push(chip);
+        }
+      });
+      this.breadCrumb.next(bc);
     });
   }
 }

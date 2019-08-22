@@ -1,8 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {BreadcrumbService} from '../../services/breadcrumb.service';
 import {AuthService} from '../../services/auth.service';
 import {ApiService} from '../../services/api.service';
 import {MatSidenav} from '@angular/material';
+import {MatMenu} from '@angular/material/menu';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-navigation-menu',
@@ -12,24 +13,19 @@ import {MatSidenav} from '@angular/material';
 export class NavigationMenuComponent implements OnInit {
 
   constructor(
-    public breadcrumbService: BreadcrumbService,
     private authService: AuthService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private router: Router
   ) {
   }
 
-  showDetails = false;
   @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
+  @ViewChild('menu', {static: true}) menu: MatMenu;
 
   ngOnInit() {
-    this.breadcrumbService.getBreadcrumb();
     if (sessionStorage.getItem('sidenav')) {
       this.sidenav.toggle(JSON.parse(sessionStorage.getItem('sidenav')).open);
     }
-  }
-
-  openDetails(): void {
-    this.showDetails = !this.showDetails;
   }
 
   toggleSidenav(): void {
