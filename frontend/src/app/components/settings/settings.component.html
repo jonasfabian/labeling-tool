@@ -2,7 +2,16 @@
   <h1>Settings</h1>
 </mat-card>
 <mat-card id="content-card">
+  <h3>
+    Select a theme
+  </h3>
   <div>
-    <mat-slide-toggle color="primary" (toggleChange)="apiService.theme = !apiService.theme">Change Theme</mat-slide-toggle>
+    <mat-chip-list>
+      <ng-container *ngFor="let theme of themeService.themes">
+        <mat-chip color="primary" (click)="themeService.setTheme(theme)">
+          {{theme}}
+        </mat-chip>
+      </ng-container>
+    </mat-chip-list>
   </div>
 </mat-card>
