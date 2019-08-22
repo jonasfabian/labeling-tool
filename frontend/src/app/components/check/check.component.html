@@ -6,13 +6,21 @@
 <div [hidden]="available" style="height: calc(100% - 100px)">
   <mat-spinner style="margin-left: auto; margin-right: auto; top: calc(50% - 150px);"></mat-spinner>
 </div>
-<div style="position: absolute; right: 15px; width: 48px;">
+<div style="position: absolute; right: 15px; width: 48px; height: calc(100% - 280px); z-index: 1;">
   <ng-container *ngFor="let cont of checkIndexArray; let i = index;">
-    <mat-card style="margin-top: 5px; height: 48px; padding: 0;">
-      <mat-icon style="color: green;" *ngIf="checkedTextAudioIndexWithTextArrayCorrect.includes(cont.textAudioIndexWithText)">check</mat-icon>
-      <mat-icon style="color: red;" *ngIf="checkedTextAudioIndexWithTextArrayWrong.includes(cont.textAudioIndexWithText)">clear</mat-icon>
-      <mat-icon style="color: gray;" *ngIf="checkedTextAudioIndexWithTextArraySkipped.includes(cont.textAudioIndexWithText)">redo</mat-icon>
-      <span>{{i + 1}}</span>
+    <mat-card class="info-card">
+      <div>
+        <mat-icon style="color: green;"
+                  *ngIf="checkedTextAudioIndexWithTextArrayCorrect.includes(cont.textAudioIndexWithText)">check
+        </mat-icon>
+        <mat-icon style="color: red;"
+                  *ngIf="checkedTextAudioIndexWithTextArrayWrong.includes(cont.textAudioIndexWithText)">clear
+        </mat-icon>
+        <mat-icon style="color: gray;"
+                  *ngIf="checkedTextAudioIndexWithTextArraySkipped.includes(cont.textAudioIndexWithText)">redo
+        </mat-icon>
+      </div>
+      <div>{{i + 1}}</div>
     </mat-card>
   </ng-container>
 </div>
@@ -25,7 +33,9 @@
           <mat-card>
             <div>{{te.textAudioIndexWithText.text}}</div>
           </mat-card>
-          <mat-progress-bar *ngIf="te.id === carousel.carousel.activeIndex" style="margin-left: auto; margin-right: auto; border-radius: 50%; transition: none;" mode="determinate" [value]="progress"></mat-progress-bar>
+          <mat-progress-bar *ngIf="te.id === carousel.carousel.activeIndex"
+                            style="margin-left: auto; margin-right: auto; border-radius: 50%; transition: none;"
+                            mode="determinate" [value]="progress"></mat-progress-bar>
         </div>
       </carousel-component>
       <div *ngIf="apiService.blobUrl != ''">

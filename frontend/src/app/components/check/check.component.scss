@@ -47,3 +47,15 @@
 #header-card {
   margin: 15px;
 }
+
+.info-card {
+  height: calc(10% - 4.5px);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-card:not(:first-child) {
+  margin-top: 5px;
+}
