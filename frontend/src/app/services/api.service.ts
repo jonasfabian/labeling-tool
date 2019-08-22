@@ -82,7 +82,7 @@ export class ApiService {
 
   switchTheme(): string {
     if (this.theme) {
-      return '.alternate-theme';
+      return 'alternate-theme';
     } else {
       return 'alternate-theme-2';
     }
