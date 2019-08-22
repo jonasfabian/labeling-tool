@@ -9,16 +9,15 @@
       Login
     </span>
     <ng-container *ngIf="authService.isAuthenticated">
-      <app-avatar (click)="openDetails()" [user]="authService.loggedInUser"
+      <app-avatar [matMenuTriggerFor]="menu" [user]="authService.loggedInUser"
         style="position: absolute; right: 15px; top: 5px;"></app-avatar>
-      <mat-card
-        style="background-color: lightgray; position: absolute; right: 10px; top: 60px; width: 200px; padding: 0;" *ngIf="showDetails">
-        <mat-list>
-          <mat-list-item style="height: 40px;" [routerLink]="['/labeling-tool/profile']">Profile</mat-list-item>
+      <mat-menu #menu>
+        <mat-list style="padding: 0;">
+          <mat-list-item [routerLink]="['/labeling-tool/profile']">Profile</mat-list-item>
           <mat-divider></mat-divider>
-          <mat-list-item style="height: 40px;" (click)="apiService.logOut()">Sign Out</mat-list-item>
+          <mat-list-item (click)="apiService.logOut()">Log Out</mat-list-item>
         </mat-list>
-      </mat-card>
+      </mat-menu>
     </ng-container>
   </div>
 </mat-toolbar>

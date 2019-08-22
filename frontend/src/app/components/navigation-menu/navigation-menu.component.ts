@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {ApiService} from '../../services/api.service';
 import {MatSidenav} from '@angular/material';
+import {MatMenu} from '@angular/material/menu';
 
 @Component({
   selector: 'app-navigation-menu',
@@ -16,17 +17,13 @@ export class NavigationMenuComponent implements OnInit {
   ) {
   }
 
-  showDetails = false;
   @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
+  @ViewChild('menu', {static: true}) menu: MatMenu;
 
   ngOnInit() {
     if (sessionStorage.getItem('sidenav')) {
       this.sidenav.toggle(JSON.parse(sessionStorage.getItem('sidenav')).open);
     }
-  }
-
-  openDetails(): void {
-    this.showDetails = !this.showDetails;
   }
 
   toggleSidenav(): void {
