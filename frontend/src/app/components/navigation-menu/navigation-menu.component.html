@@ -4,7 +4,7 @@
     <div style="margin-left: 35px;">
       <app-breadcrumb></app-breadcrumb>
     </div>
-    <span *ngIf="!authService.isAuthenticated"
+    <span *ngIf="!authService.isAuthenticated && !router.url.includes('login')"
       style="position: absolute; right: 30px; top: 15px; cursor: pointer;" [routerLink]="['labeling-tool/login']">
       Login
     </span>

@@ -3,6 +3,7 @@ import {AuthService} from '../../services/auth.service';
 import {ApiService} from '../../services/api.service';
 import {MatSidenav} from '@angular/material';
 import {MatMenu} from '@angular/material/menu';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-navigation-menu',
@@ -13,7 +14,8 @@ export class NavigationMenuComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private router: Router
   ) {
   }
 
