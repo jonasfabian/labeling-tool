@@ -9,7 +9,7 @@
     <mat-chip-list>
       <ng-container *ngFor="let theme of themeService.themes">
         <mat-chip color="primary" (click)="themeService.setTheme(theme)">
-          {{theme}}
+          {{theme | titlecase}}
         </mat-chip>
       </ng-container>
     </mat-chip-list>
