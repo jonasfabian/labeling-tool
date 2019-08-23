@@ -10,23 +10,17 @@
   <mat-card class="top-card">
     <app-audio-player (loading)="getLoading($event)" [textAudioIndexWithText]="dummyTextAudioIndex" (regionPosition)="getRegionSnippet($event)" [audioPosition]="snip"></app-audio-player>
   </mat-card>
-  <mat-card *ngIf="!edit" class="card text-container">
+  <mat-card class="card text-container">
     <h2>Text</h2>
-    <mat-icon title="Edit this text" (click)="edit = true" style="cursor: pointer; position: absolute; right: 15px; top: 15px;">edit</mat-icon>
-    <div>
-      <span>{{highlightedText}}</span>
-    </div>
-  </mat-card>
-  <mat-card *ngIf="edit" class="card text-container">
-    <h2>Edit Text</h2>
-    <mat-icon title="Close text edit" (click)="reset(); edit = false;" style="cursor: pointer; position: absolute; right: 15px; top: 15px;">close</mat-icon>
     <div (mouseup)="displayHighlightedText()">
-      <span *ngIf="!yeet">{{textBegin}}</span>
-      <span style="background-color: steelblue;">{{selectedText}}</span>
-      <span *ngIf="!yeet">{{textEnd}}</span>
+      <span>{{textBegin}}</span>
+      <span #hT>{{highlightedText}}</span>
+      <span>{{textEnd}}</span>
     </div>
-    <mat-button-toggle (click)="submitChangeText()" style="margin-top: 15px; float: right;">Submit</mat-button-toggle>
-    <mat-button-toggle (click)="reset()" style="margin-top: 15px; float: left;">Reset</mat-button-toggle>
+    <h2>Matching Text</h2>
+    <div>
+      <span>{{selectedText}}</span>
+    </div>
   </mat-card>
   <mat-card id="select-container" class="card">
     <mat-button-toggle-group>

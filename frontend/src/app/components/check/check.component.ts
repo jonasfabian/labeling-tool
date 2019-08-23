@@ -47,95 +47,46 @@ export class CheckComponent implements OnInit {
     this.initSessionCheckData();
   }
 
-  initCarousel(): void {
-    this.apiService.getTenNonLabeledTextAudioIndex(this.authService.loggedInUser.id).subscribe(r => r.forEach(l => {
-      if (r.length !== 0) {
-        this.available = true;
-        l.text = l.text.slice(l.textStartPos, l.textEndPos);
-        this.checkIndexArray.push(new CheckIndex(this.carouselIndex, l));
-        this.carouselIndex++;
-      } else {
-        this.available = false;
-      }
-    }), () => {
-    }, () => {
-      if (this.checkIndexArray.length !== 0) {
-        this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
-      }
-    });
-  }
-
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
     if (event.key === 'p') {
       this.play();
     } else if (event.key === 'c') {
-      this.setCorrect();
+      this.setCheckedType(1);
     } else if (event.key === 'w') {
-      this.setWrong();
+      this.setCheckedType(2);
     } else if (event.key === 's') {
-      this.setSkip();
+      this.setCheckedType(0);
     }
   }
 
-  lastSlide(): void {
-    if (this.carousel.carousel.activeIndex === this.checkIndexArray.length) {
-      this.apiService.getTenNonLabeledTextAudioIndex(this.authService.loggedInUser.id).subscribe(r => r.forEach(labeledTextAudioIndex => {
-        labeledTextAudioIndex.text = labeledTextAudioIndex.text.slice(labeledTextAudioIndex.textStartPos, labeledTextAudioIndex.textEndPos);
-        this.checkIndexArray.push(new CheckIndex(this.carouselIndex, labeledTextAudioIndex));
-        this.carouselIndex++;
-      }), () => {
-      }, () => {
-        this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
-      });
-    }
-  }
-
-  openShortcutDialog(): void {
-    this.dialog.open(ShortcutComponent, {width: '500px'});
-  }
-
-  openSessionOverview(): void {
-    this.dialog.open(SessionOverviewComponent, {width: '500px'});
-  }
-
-  openCheckMoreDialog(): void {
-    this.dialog.open(CheckMoreComponent, {width: '500px'}).afterClosed().subscribe(() => {
-      this.resetCarousel();
-    });
-  }
-
-  setCorrect(): void {
-    this.numberCorrect++;
-    this.getInfo(this.correct);
+  setCheckedType(checkType: number): void {
+    this.addNumberOfCheckType(checkType);
+    this.prepareNextSlide(checkType);
     this.checkedTextAudioIndexWithTextArrayCorrect.push(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
-    this.carousel.slideNext();
+    this.nextSlide();
+    this.loadNextAudioFile();
+  }
+
+  addNumberOfCheckType(checkType: number): void {
+    if (checkType === this.correct) {
+      this.numberCorrect++;
+    } else if (checkType === this.wrong) {
+      this.numberWrong++;
+    } else {
+      this.numberSkipped++;
+    }
+  }
+
+  loadNextAudioFile(): void {
     this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
     // @ts-ignore
     this.audioPlayer.nativeElement.src = this.apiService.blobUrl.changingThisBreaksApplicationSecurity;
     this.audioPlayer.nativeElement.load();
   }
 
-  setWrong(): void {
-    this.numberWrong++;
-    this.getInfo(this.wrong);
-    this.checkedTextAudioIndexWithTextArrayWrong.push(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
+  nextSlide(): void {
     this.carousel.slideNext();
-    this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
-    // @ts-ignore
-    this.audioPlayer.nativeElement.src = this.apiService.blobUrl.changingThisBreaksApplicationSecurity;
-    this.audioPlayer.nativeElement.load();
-  }
-
-  setSkip(): void {
-    this.numberSkipped++;
-    this.getInfo(this.skip);
-    this.checkedTextAudioIndexWithTextArraySkipped.push(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
-    this.carousel.slideNext();
-    this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
-    // @ts-ignore
-    this.audioPlayer.nativeElement.src = this.apiService.blobUrl.changingThisBreaksApplicationSecurity;
-    this.audioPlayer.nativeElement.load();
   }
 
   initSessionCheckData(): void {
@@ -156,17 +107,12 @@ export class CheckComponent implements OnInit {
   }
 
   play(): void {
-    this.progress = 0;
-    this.audioPlayerStatus();
+    this.resetAudioProgress();
+    this.calculateAudioPlayerStatus();
     if (!this.isPlaying) {
       this.isPlaying = !this.isPlaying;
-      this.audioPlayer.nativeElement.currentTime = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioStartPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate;
-      this.audioPlayer.nativeElement.addEventListener('timeupdate', () => {
-        if (this.audioPlayer.nativeElement.currentTime > this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioEndPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate) {
-          this.audioPlayer.nativeElement.pause();
-          this.isPlaying = false;
-        }
-      });
+      this.setAudioPlayerStartTime();
+      this.setAudioPlayerEndTime();
       this.audioPlayer.nativeElement.play();
     } else {
       this.audioPlayer.nativeElement.pause();
@@ -174,8 +120,25 @@ export class CheckComponent implements OnInit {
     }
   }
 
-  audioPlayerStatus(): void {
+  resetAudioProgress(): void {
     this.progress = 0;
+  }
+
+  setAudioPlayerStartTime(): void {
+    this.audioPlayer.nativeElement.currentTime = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioStartPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate;
+  }
+
+  setAudioPlayerEndTime(): void {
+    this.audioPlayer.nativeElement.addEventListener('timeupdate', () => {
+      if (this.audioPlayer.nativeElement.currentTime > this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioEndPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate) {
+        this.audioPlayer.nativeElement.pause();
+        this.isPlaying = false;
+      }
+    });
+  }
+
+  calculateAudioPlayerStatus(): void {
+    this.resetAudioProgress();
     const startTime = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioStartPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate;
     const endTime = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioEndPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate;
     const totalTime = endTime - startTime;
@@ -188,50 +151,63 @@ export class CheckComponent implements OnInit {
     }, 16);
   }
 
-  getInfo(labeledType: number): void {
-    this.progress = 0;
+  prepareNextSlide(labeledType: number): void {
+    this.resetAudioProgress();
     this.updateSessionCheckData();
-    if (this.carousel.carousel.activeIndex === this.checkIndexArray.length - 1) {
-      const val = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText;
-      this.apiService.updateTextAudioIndex(new TextAudioIndexWithText(
-        val.id, val.samplingRate, val.textStartPos, val.textEndPos,
-        val.audioStartPos, val.audioEndPos, val.speakerKey,
-        1, val.correct + 1, val.wrong, val.transcriptFileId, val.text
-      )).subscribe(_ => {
-        this.apiService.createUserAndTextAudioIndex(new UserAndTextAudioIndex(-1, this.authService.loggedInUser.id, val.id)).subscribe(() => {
-        });
+    this.checkIfFinishedChunk();
+    const currentCheckIndex = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText;
+    if (labeledType === this.correct) {
+      currentCheckIndex.labeled = 1;
+      currentCheckIndex.correct++;
+    } else if (labeledType === this.wrong) {
+      currentCheckIndex.labeled = 1;
+      currentCheckIndex.wrong++;
+    }
+    this.apiService.updateTextAudioIndex(currentCheckIndex).subscribe(_ => {
+      this.apiService.createUserAndTextAudioIndex(new UserAndTextAudioIndex(-1, this.authService.loggedInUser.id, currentCheckIndex.id)).subscribe(() => {
+      }, () => {
+      }, () => {
+        this.apiService.loadAudioBlob(currentCheckIndex);
       });
+    });
+  }
+
+  checkIfFinishedChunk(): void {
+    if (this.carousel.carousel.activeIndex === this.checkIndexArray.length - 1) {
       this.apiService.showTenMoreQuest = true;
       this.openCheckMoreDialog();
-    } else {
-      if (labeledType === 1) {
-        const val = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText;
-        this.apiService.updateTextAudioIndex(new TextAudioIndexWithText(
-          val.id, val.samplingRate, val.textStartPos, val.textEndPos,
-          val.audioStartPos, val.audioEndPos, val.speakerKey,
-          1, val.correct + 1, val.wrong, val.transcriptFileId, val.text
-        )).subscribe(_ => {
-          this.apiService.createUserAndTextAudioIndex(new UserAndTextAudioIndex(-1, this.authService.loggedInUser.id, val.id)).subscribe(() => {
-          }, () => {
-          }, () => {
-            this.apiService.loadAudioBlob(val);
-          });
-        });
-      } else if (labeledType === 2) {
-        const val = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText;
-        this.apiService.updateTextAudioIndex(new TextAudioIndexWithText(
-          val.id, val.samplingRate, val.textStartPos, val.textEndPos,
-          val.audioStartPos, val.audioEndPos, val.speakerKey,
-          1, val.correct, val.wrong + 1, val.transcriptFileId, val.text
-        )).subscribe(_ => {
-          this.apiService.createUserAndTextAudioIndex(new UserAndTextAudioIndex(-1, this.authService.loggedInUser.id, val.id)).subscribe(() => {
-          }, () => {
-          }, () => {
-            this.apiService.loadAudioBlob(val);
-          });
-        });
-      }
     }
+  }
+
+  lastSlide(): void {
+    if (this.carousel.carousel.activeIndex === this.checkIndexArray.length) {
+      this.apiService.getTenNonLabeledTextAudioIndex(this.authService.loggedInUser.id).subscribe(r => r.forEach(labeledTextAudioIndex => {
+        labeledTextAudioIndex.text = labeledTextAudioIndex.text.slice(labeledTextAudioIndex.textStartPos, labeledTextAudioIndex.textEndPos);
+        this.checkIndexArray.push(new CheckIndex(this.carouselIndex, labeledTextAudioIndex));
+        this.carouselIndex++;
+      }), () => {
+      }, () => {
+        this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
+      });
+    }
+  }
+
+  initCarousel(): void {
+    this.apiService.getTenNonLabeledTextAudioIndex(this.authService.loggedInUser.id).subscribe(r => r.forEach(l => {
+      if (r.length !== 0) {
+        this.available = true;
+        l.text = l.text.slice(l.textStartPos, l.textEndPos);
+        this.checkIndexArray.push(new CheckIndex(this.carouselIndex, l));
+        this.carouselIndex++;
+      } else {
+        this.available = false;
+      }
+    }), () => {
+    }, () => {
+      if (this.checkIndexArray.length !== 0) {
+        this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
+      }
+    });
   }
 
   resetCarousel(): void {
@@ -239,5 +215,19 @@ export class CheckComponent implements OnInit {
     this.checkedTextAudioIndexWithTextArrayCorrect = [];
     this.initCarousel();
     this.carousel.carousel.activeIndex = 0;
+  }
+
+  openShortcutDialog(): void {
+    this.dialog.open(ShortcutComponent, {width: '500px', disableClose: false});
+  }
+
+  openSessionOverview(): void {
+    this.dialog.open(SessionOverviewComponent, {width: '500px', disableClose: false});
+  }
+
+  openCheckMoreDialog(): void {
+    this.dialog.open(CheckMoreComponent, {width: '500px', disableClose: true}).afterClosed().subscribe(() => {
+      this.resetCarousel();
+    });
   }
 }

@@ -1,22 +1,40 @@
-<form [formGroup]="registerForm" (ngSubmit)="register()">
-  <fieldset class="form-group">
-    <div><label class="control-label" for="firstName">First name</label></div>
-    <div><input class="form-control" id="firstName" type="text" formControlName="firstName" required></div>
-  </fieldset>
-  <fieldset class="form-group">
-    <div><label class="control-label" for="lastName">Last name</label></div>
-    <div><input class="form-control" id="lastName" type="text" formControlName="lastName" required></div>
-  </fieldset>
-  <fieldset class="form-group">
-    <div><label class="control-label" for="email">Email</label></div>
-    <div><input class="form-control" id="email" type="email" formControlName="email" required></div>
-  </fieldset>
-  <fieldset class="form-group">
-    <div><label class="control-label" for="password">Password</label></div>
-    <div><input class="form-control" id="password" type="password" formControlName="password" required></div>
-  </fieldset>
-  <fieldset class="form-group">
-    <button type="submit">Register</button>
-    <button type="button" (click)="cancel()">Cancel</button>
-  </fieldset>
-</form>
+<div style="display: flex; align-items: center; justify-content: center; height: calc(100% - 70px);">
+  <mat-card style="margin: 15px; width: 500px; height: 355px;">
+    <mat-card-header>
+      <mat-toolbar style="position: absolute; left: 0; top: 0;" color="primary">
+        Register
+      </mat-toolbar>
+    </mat-card-header>
+    <mat-card-content style="position: absolute; top: 100px; width: calc(100% - 30px); height: 200px;">
+      <form [formGroup]="registerForm" (ngSubmit)="register()">
+        <div>
+          <mat-form-field style="width: 100%;">
+            <input type="text" matInput placeholder="First Name" formControlName="firstName">
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field style="width: 100%;">
+            <input type="text" matInput placeholder="Last Name" formControlName="lastName">
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field style="width: 100%;">
+            <input type="text" matInput placeholder="Email" formControlName="email">
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field style="width: 100%;">
+            <input type="password" matInput placeholder="Password" formControlName="password">
+          </mat-form-field>
+        </div>
+        <div>
+          <button mat-button style="width: calc(50% - 5px); border: 1px solid lightgray; height: 50px; float: left;" type="submit">Register
+          </button>
+          <button mat-button style="width: calc(50% - 5px); border: 1px solid lightgray; height: 50px; float: right;" (click)="cancel()"
+                  type="button">Cancel
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

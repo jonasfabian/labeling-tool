@@ -55,13 +55,11 @@ const routes: Routes = [
       },
       {
         path: 'register',
-        component: RegisterComponent,
-        canActivate: [AuthGuardService]
+        component: RegisterComponent
       },
       {
         path: 'login',
-        component: LoginComponent,
-        canActivate: [AuthGuardService]
+        component: LoginComponent
       },
       {
         path: '**',

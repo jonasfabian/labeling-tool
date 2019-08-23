@@ -11,8 +11,8 @@ export class ThemeService {
 
   theme: BehaviorSubject<string> = new BehaviorSubject<string>(localStorage.getItem('theme'));
   themes: Array<string> = [
-    'alternate-theme',
-    'alternate-theme-2'
+    'dark-theme',
+    'light-theme'
   ];
 
   initTheme(): void {

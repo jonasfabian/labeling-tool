@@ -106,7 +106,7 @@ export class ApiService {
 
   logOut(): void {
     sessionStorage.clear();
-    this.router.navigate(['labeling-tool/home']);
+    this.router.navigate(['/labeling-tool/login']);
     this.authService.isAuthenticated = false;
     this.authService.loggedInUser = new UserPublicInfo(-1, '', '', '');
   }

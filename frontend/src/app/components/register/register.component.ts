@@ -47,6 +47,6 @@ export class RegisterComponent implements OnInit {
   }
 
   cancel(): void {
-    this.registerForm.reset();
+    this.router.navigate(['/labeling-tool/login']);
   }
 }

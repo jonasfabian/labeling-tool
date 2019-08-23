@@ -2,16 +2,22 @@
 
 @include mat-core();
 
-.alternate-theme {
-  $alternate-primary: mat-palette($mat-light-blue);
-  $alternate-accent:  mat-palette($mat-yellow, 400);
-  $alternate-theme: mat-light-theme($alternate-primary, $alternate-accent);
-  @include angular-material-theme($alternate-theme);
+.dark-theme {
+  $dark-primary: mat-palette($mat-blue-grey);
+  $dark-accent:  mat-palette($mat-amber, A200, A100, A400);
+  $dark-warn:    mat-palette($mat-deep-orange);
+
+  $dark-theme: mat-dark-theme($dark-primary, $dark-accent,$dark-warn);
+
+  @include angular-material-theme($dark-theme);
 }
 
-.alternate-theme-2 {
-  $alternate-2-primary: mat-palette($mat-blue-gray);
-  $alternate-2-accent:  mat-palette($mat-pink, 400);
-  $alternate-2-theme: mat-light-theme($alternate-2-primary, $alternate-2-accent);
-  @include angular-material-theme($alternate-2-theme);
+.light-theme {
+  $light-primary: mat-palette($mat-indigo, 700, 300, 900);
+  $light-accent:  mat-palette($mat-light-blue);
+  $light-warn:  mat-palette($mat-deep-orange, A200);
+
+  $light-theme: mat-light-theme($light-primary, $light-accent, $light-warn);
+
+  @include angular-material-theme($light-theme);
 }
