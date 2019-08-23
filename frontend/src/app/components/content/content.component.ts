@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, HostListener, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {AudioSnippet} from '../../models/audioSnippet';
 import {MatDialog} from '@angular/material';
 import {ApiService} from '../../services/api.service';
@@ -33,9 +33,8 @@ export class ContentComponent implements OnInit {
   selectedText = '';
   textEnd = '';
   loading = false;
-  edit = false;
 
-  yeet = false;
+  @ViewChild('hT', {static: true}) hT: ElementRef;
 
   ngOnInit() {
     this.textSetup();
@@ -54,15 +53,15 @@ export class ContentComponent implements OnInit {
   displayHighlightedText() {
     let highlightedTextLength = 0;
     if (window.getSelection) {
-      this.yeet = true;
+      this.hT.nativeElement.style.backgroundColor = 'white';
       this.selectedText = window.getSelection().toString();
-      highlightedTextLength = this.highlightedText.length;
+      highlightedTextLength = this.selectedText.length;
     }
     const tempStartPos = this.text.toString().indexOf(this.selectedText.toString());
     const tempEndPos = tempStartPos + highlightedTextLength;
     if (tempStartPos !== -1) {
-      this.highlightedTextStartPos = tempStartPos;
-      this.highlightedTextEndPos = tempEndPos;
+      this.dummyTextAudioIndex.textStartPos = tempStartPos;
+      this.dummyTextAudioIndex.textEndPos = tempEndPos;
     }
   }
 
@@ -79,6 +78,7 @@ export class ContentComponent implements OnInit {
       this.text = nonLabeledTextAudioI.text;
       this.textBegin = nonLabeledTextAudioI.text.slice(nonLabeledTextAudioI.textStartPos - 100, nonLabeledTextAudioI.textStartPos);
       this.selectedText = this.highlightedText = nonLabeledTextAudioI.text.slice(nonLabeledTextAudioI.textStartPos, nonLabeledTextAudioI.textEndPos);
+      this.hT.nativeElement.style.backgroundColor = 'steelblue';
       this.textEnd = nonLabeledTextAudioI.text.slice(nonLabeledTextAudioI.textEndPos, nonLabeledTextAudioI.textEndPos + 100);
       this.dummyTextAudioIndex.labeled = 1;
     });
@@ -95,16 +95,5 @@ export class ContentComponent implements OnInit {
     } else if (event.key === 's') {
       this.submitText();
     }
-  }
-
-  submitChangeText(): void {
-    this.yeet = false;
-    this.highlightedText = this.selectedText;
-    this.edit = false;
-  }
-
-  reset(): void {
-    this.yeet = false;
-    this.selectedText = this.highlightedText;
   }
 }
