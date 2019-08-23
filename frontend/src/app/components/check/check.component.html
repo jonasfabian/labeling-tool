@@ -8,7 +8,7 @@
 </div>
 <div style="position: absolute; right: 15px; width: 48px; height: calc(100% - 280px); z-index: 1;">
   <ng-container *ngFor="let cont of checkIndexArray; let i = index;">
-    <mat-card class="info-card">
+    <mat-card class="info-card" style="height: 48px;">
       <div>
         <mat-icon style="color: green;"
                   *ngIf="checkedTextAudioIndexWithTextArrayCorrect.includes(cont.textAudioIndexWithText)">check
@@ -37,7 +37,7 @@
             <div>{{te.textAudioIndexWithText.text}}</div>
           </mat-card>
           <mat-progress-bar *ngIf="te.id === carousel.carousel.activeIndex"
-                            style="margin-left: auto; margin-right: auto; border-radius: 10px; transition: none; height: 8px; border-top-left-radius: 0; border-top-right-radius: 0;"
+                            style="margin-left: auto; margin-right: auto; transition: none; height: 8px; border-radius: 0 0 10px 10px;"
                             mode="determinate" [value]="progress"></mat-progress-bar>
         </div>
       </carousel-component>
