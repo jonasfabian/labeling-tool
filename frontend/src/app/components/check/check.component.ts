@@ -42,6 +42,8 @@ export class CheckComponent implements OnInit {
   numberSkipped = 0;
   progress = 0;
 
+  audioFileId = 0;
+
   ngOnInit() {
     this.initCarousel();
     this.initSessionCheckData();
@@ -167,19 +169,22 @@ export class CheckComponent implements OnInit {
       this.apiService.createUserAndTextAudioIndex(new UserAndTextAudioIndex(-1, this.authService.loggedInUser.id, currentCheckIndex.id)).subscribe(() => {
       }, () => {
       }, () => {
-        this.apiService.loadAudioBlob(currentCheckIndex);
+        if (this.audioFileId !== currentCheckIndex.transcriptFileId) {
+          this.apiService.loadAudioBlob(currentCheckIndex);
+        }
+        this.audioFileId = currentCheckIndex.transcriptFileId;
       });
     });
   }
 
-  checkIfFinishedChunk(): void {
+checkIfFinishedChunk(): void {
     if (this.carousel.carousel.activeIndex === this.checkIndexArray.length - 1) {
       this.apiService.showTenMoreQuest = true;
       this.openCheckMoreDialog();
     }
   }
 
-  lastSlide(): void {
+lastSlide(): void {
     if (this.carousel.carousel.activeIndex === this.checkIndexArray.length) {
       this.apiService.getTenNonLabeledTextAudioIndex(this.authService.loggedInUser.id).subscribe(r => r.forEach(labeledTextAudioIndex => {
         labeledTextAudioIndex.text = labeledTextAudioIndex.text.slice(labeledTextAudioIndex.textStartPos, labeledTextAudioIndex.textEndPos);
@@ -192,7 +197,7 @@ export class CheckComponent implements OnInit {
     }
   }
 
-  initCarousel(): void {
+initCarousel(): void {
     this.apiService.getTenNonLabeledTextAudioIndex(this.authService.loggedInUser.id).subscribe(r => r.forEach(l => {
       if (r.length !== 0) {
         this.available = true;
@@ -210,22 +215,24 @@ export class CheckComponent implements OnInit {
     });
   }
 
-  resetCarousel(): void {
+resetCarousel(): void {
+    this.progress = 0;
+    this.carouselIndex = 0;
     this.checkIndexArray = [];
     this.checkedTextAudioIndexWithTextArrayCorrect = [];
     this.initCarousel();
     this.carousel.carousel.activeIndex = 0;
   }
 
-  openShortcutDialog(): void {
+openShortcutDialog(): void {
     this.dialog.open(ShortcutComponent, {width: '500px', disableClose: false});
   }
 
-  openSessionOverview(): void {
+openSessionOverview(): void {
     this.dialog.open(SessionOverviewComponent, {width: '500px', disableClose: false});
   }
 
-  openCheckMoreDialog(): void {
+openCheckMoreDialog(): void {
     this.dialog.open(CheckMoreComponent, {width: '500px', disableClose: true}).afterClosed().subscribe(() => {
       this.resetCarousel();
     });
