@@ -30,11 +30,14 @@
       <carousel-component id="carousel" (onSlideChange)="lastSlide()" [morePairSlides]="1" [lockSlides]="true"
                           [perspective]="4000" #carousel>
         <div class="item-carousel" *ngFor="let te of checkIndexArray">
-          <mat-card>
+          <mat-card *ngIf="te.id !== carousel.carousel.activeIndex" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0;">
+            <div>{{te.textAudioIndexWithText.text}}</div>
+          </mat-card>
+          <mat-card *ngIf="te.id === carousel.carousel.activeIndex" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0;">
             <div>{{te.textAudioIndexWithText.text}}</div>
           </mat-card>
           <mat-progress-bar *ngIf="te.id === carousel.carousel.activeIndex"
-                            style="margin-left: auto; margin-right: auto; border-radius: 50%; transition: none;"
+                            style="margin-left: auto; margin-right: auto; border-radius: 10px; transition: none; height: 8px; border-top-left-radius: 0; border-top-right-radius: 0;"
                             mode="determinate" [value]="progress"></mat-progress-bar>
         </div>
       </carousel-component>
