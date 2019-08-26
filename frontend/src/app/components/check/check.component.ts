@@ -42,6 +42,8 @@ export class CheckComponent implements OnInit {
 
   audioFileId = 0;
 
+  audioFiledId = 0;
+
   ngOnInit() {
     this.initCarousel();
     this.initSessionCheckData();
@@ -65,7 +67,9 @@ export class CheckComponent implements OnInit {
     this.addNumberOfCheckType(checkType);
     this.prepareNextSlide(checkType);
     this.carousel.slideNext();
-    this.loadNextAudioFile();
+    if (this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.transcriptFileId !== this.audioFileId) {
+      this.loadNextAudioFile();
+    }
   }
 
   addNumberOfCheckType(checkType: number): void {
@@ -171,14 +175,14 @@ export class CheckComponent implements OnInit {
     });
   }
 
-checkIfFinishedChunk(): void {
+  checkIfFinishedChunk(): void {
     if (this.carousel.carousel.activeIndex === this.checkIndexArray.length - 1) {
       this.apiService.showTenMoreQuest = true;
       this.openCheckMoreDialog();
     }
   }
 
-lastSlide(): void {
+  lastSlide(): void {
     if (this.carousel.carousel.activeIndex === this.checkIndexArray.length) {
       this.apiService.getTenNonLabeledTextAudioIndex(this.authService.loggedInUser.id).subscribe(r => r.forEach(labeledTextAudioIndex => {
         labeledTextAudioIndex.text = labeledTextAudioIndex.text.slice(labeledTextAudioIndex.textStartPos, labeledTextAudioIndex.textEndPos);
@@ -191,7 +195,7 @@ lastSlide(): void {
     }
   }
 
-initCarousel(): void {
+  initCarousel(): void {
     this.apiService.getTenNonLabeledTextAudioIndex(this.authService.loggedInUser.id).subscribe(r => r.forEach(l => {
       if (r.length !== 0) {
         this.available = true;
@@ -204,12 +208,13 @@ initCarousel(): void {
     }), () => {
     }, () => {
       if (this.checkIndexArray.length !== 0) {
+        this.audioFileId = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.transcriptFileId;
         this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
       }
     });
   }
 
-resetCarousel(): void {
+  resetCarousel(): void {
     this.progress = 0;
     this.carouselIndex = 0;
     this.checkIndexArray = [];
@@ -217,15 +222,15 @@ resetCarousel(): void {
     this.carousel.carousel.activeIndex = 0;
   }
 
-openShortcutDialog(): void {
+  openShortcutDialog(): void {
     this.dialog.open(ShortcutComponent, {width: '500px', disableClose: false});
   }
 
-openSessionOverview(): void {
+  openSessionOverview(): void {
     this.dialog.open(SessionOverviewComponent, {width: '500px', disableClose: false});
   }
 
-openCheckMoreDialog(): void {
+  openCheckMoreDialog(): void {
     this.dialog.open(CheckMoreComponent, {width: '500px', disableClose: true}).afterClosed().subscribe(() => {
       this.resetCarousel();
     });
