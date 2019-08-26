@@ -25,8 +25,6 @@ export class ContentComponent implements OnInit {
 
   snip = new AudioSnippet(null, null);
   text: string | ArrayBuffer = '';
-  highlightedTextStartPos = 0;
-  highlightedTextEndPos = 0;
   dummyTextAudioIndex = new TextAudioIndexWithText(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '');
   textBegin = '';
   highlightedText = '';

@@ -1,7 +1,6 @@
 import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {CarouselComponent} from 'ngx-carousel-lib';
 import {ApiService} from '../../services/api.service';
-import {TextAudioIndexWithText} from '../../models/textAudioIndexWithText';
 import {CheckIndex} from '../../models/checkIndex';
 import {MatDialog} from '@angular/material';
 import {ShortcutComponent} from '../shortcut/shortcut.component';
@@ -28,19 +27,18 @@ export class CheckComponent implements OnInit {
   @ViewChild('audioPlayer', {static: false}) audioPlayer: ElementRef;
 
   checkIndexArray: Array<CheckIndex> = [];
-  /*checkedTextAudioIndexWithTextArrayCorrect: Array<TextAudioIndexWithText> = [];
-  checkedTextAudioIndexWithTextArrayWrong: Array<TextAudioIndexWithText> = [];
-  checkedTextAudioIndexWithTextArraySkipped: Array<TextAudioIndexWithText> = [];*/
   available = false;
   isPlaying = false;
   carouselIndex = 0;
-  skip = 0;
+  skip = 3;
   correct = 1;
   wrong = 2;
   numberCorrect = 0;
   numberWrong = 0;
   numberSkipped = 0;
   progress = 0;
+
+  panelOpenState = false;
 
   audioFileId = 0;
 
@@ -63,9 +61,9 @@ export class CheckComponent implements OnInit {
   }
 
   setCheckedType(checkType: number): void {
+    console.log(this.checkIndexArray[this.carousel.carousel.activeIndex].checkedType = checkType);
     this.addNumberOfCheckType(checkType);
     this.prepareNextSlide(checkType);
-    /*this.checkedTextAudioIndexWithTextArrayCorrect.push(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);*/
     this.carousel.slideNext();
     this.loadNextAudioFile();
   }
@@ -184,7 +182,7 @@ lastSlide(): void {
     if (this.carousel.carousel.activeIndex === this.checkIndexArray.length) {
       this.apiService.getTenNonLabeledTextAudioIndex(this.authService.loggedInUser.id).subscribe(r => r.forEach(labeledTextAudioIndex => {
         labeledTextAudioIndex.text = labeledTextAudioIndex.text.slice(labeledTextAudioIndex.textStartPos, labeledTextAudioIndex.textEndPos);
-        this.checkIndexArray.push(new CheckIndex(this.carouselIndex, labeledTextAudioIndex));
+        this.checkIndexArray.push(new CheckIndex(this.carouselIndex, labeledTextAudioIndex, 0));
         this.carouselIndex++;
       }), () => {
       }, () => {
@@ -198,7 +196,7 @@ initCarousel(): void {
       if (r.length !== 0) {
         this.available = true;
         l.text = l.text.slice(l.textStartPos, l.textEndPos);
-        this.checkIndexArray.push(new CheckIndex(this.carouselIndex, l));
+        this.checkIndexArray.push(new CheckIndex(this.carouselIndex, l, 0));
         this.carouselIndex++;
       } else {
         this.available = false;
@@ -215,7 +213,6 @@ resetCarousel(): void {
     this.progress = 0;
     this.carouselIndex = 0;
     this.checkIndexArray = [];
-    /*this.checkedTextAudioIndexWithTextArrayCorrect = [];*/
     this.initCarousel();
     this.carousel.carousel.activeIndex = 0;
   }
