@@ -6,6 +6,9 @@
 <div id="content-container">
   <mat-card>
     <app-table [vale]="str"></app-table>
+    <div style="position: absolute; bottom: 15px;">
+      <mat-button-toggle (click)="generateTable()">Export as CSV</mat-button-toggle>
+    </div>
   </mat-card>
   <mat-card>
     <app-pie-chart (vale)="getVale($event)"></app-pie-chart>

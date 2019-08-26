@@ -25,8 +25,6 @@ export class ContentComponent implements OnInit {
 
   snip = new AudioSnippet(null, null);
   text: string | ArrayBuffer = '';
-  highlightedTextStartPos = 0;
-  highlightedTextEndPos = 0;
   dummyTextAudioIndex = new TextAudioIndexWithText(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '');
   textBegin = '';
   highlightedText = '';
@@ -82,6 +80,18 @@ export class ContentComponent implements OnInit {
       this.textEnd = nonLabeledTextAudioI.text.slice(nonLabeledTextAudioI.textEndPos, nonLabeledTextAudioI.textEndPos + 100);
       this.dummyTextAudioIndex.labeled = 1;
     });
+  }
+
+  showMoreBefore(): void {
+    const begin = this.text.toString().indexOf(this.textBegin);
+    const end = this.text.toString().indexOf(this.textBegin) + this.textBegin.length;
+    this.textBegin = this.text.slice(begin - 20, end).toString();
+  }
+
+  showMoreAfter(): void {
+    const begin = this.text.toString().indexOf(this.textEnd);
+    const end = this.text.toString().indexOf(this.textEnd) + this.textEnd.length;
+    this.textEnd = this.text.slice(begin, end + 20).toString();
   }
 
   openShortcutDialog(): void {

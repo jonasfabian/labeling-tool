@@ -6,23 +6,29 @@
 <div [hidden]="available" style="height: calc(100% - 100px)">
   <mat-spinner style="margin-left: auto; margin-right: auto; top: calc(50% - 150px);"></mat-spinner>
 </div>
-<div style="position: absolute; right: 15px; width: 48px; height: calc(100% - 280px); z-index: 1;">
-  <ng-container *ngFor="let cont of checkIndexArray; let i = index;">
-    <mat-card class="info-card" style="height: 48px;">
-      <div>
-        <mat-icon style="color: green;"
-                  *ngIf="checkedTextAudioIndexWithTextArrayCorrect.includes(cont.textAudioIndexWithText)">check
-        </mat-icon>
-        <mat-icon style="color: red;"
-                  *ngIf="checkedTextAudioIndexWithTextArrayWrong.includes(cont.textAudioIndexWithText)">clear
-        </mat-icon>
-        <mat-icon style="color: gray;"
-                  *ngIf="checkedTextAudioIndexWithTextArraySkipped.includes(cont.textAudioIndexWithText)">redo
-        </mat-icon>
-      </div>
-      <div>{{i + 1}}</div>
-    </mat-card>
-  </ng-container>
+<div style="position: absolute; right: 15px; height: calc(100% - 280px); z-index: 1;">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Checked set
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-list style="padding: 0;">
+      <ng-container *ngFor="let entry of checkIndexArray; let i = index;">
+        <mat-divider *ngIf="i > 0"></mat-divider>
+        <mat-list-item>
+          <mat-chip>
+            <mat-icon style="color: green; float: left;" *ngIf="entry.checkedType === 1">check</mat-icon>
+            <mat-icon style="color: red; float: left;" *ngIf="entry.checkedType === 2">clear</mat-icon>
+            <mat-icon style="color: gray; float: left;" *ngIf="entry.checkedType === 3">redo</mat-icon>
+            <span style="float: left;">{{entry.textAudioIndexWithText.id}}</span>
+          </mat-chip>
+        </mat-list-item>
+      </ng-container>
+    </mat-list>
+  </mat-expansion-panel>
+  <mat-expansion-panel (opened)="panelOpenState = true;" (closed)="panelOpenState = false">
+  </mat-expansion-panel>
 </div>
 <div [hidden]="!available">
   <div [hidden]="apiService.showTenMoreQuest">
@@ -30,11 +36,13 @@
       <carousel-component id="carousel" (onSlideChange)="lastSlide()" [morePairSlides]="1" [lockSlides]="true"
                           [perspective]="4000" #carousel>
         <div class="item-carousel" *ngFor="let te of checkIndexArray">
-          <mat-card *ngIf="te.id !== carousel.carousel.activeIndex" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0;">
-            <div>{{te.textAudioIndexWithText.text}}</div>
+          <mat-card *ngIf="te.id !== carousel.carousel.activeIndex"
+                    style="border-bottom-left-radius: 0; border-bottom-right-radius: 0;">
+            <div style="width: 100%;">{{te.textAudioIndexWithText.text}}</div>
           </mat-card>
-          <mat-card *ngIf="te.id === carousel.carousel.activeIndex" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0;">
-            <div>{{te.textAudioIndexWithText.text}}</div>
+          <mat-card *ngIf="te.id === carousel.carousel.activeIndex"
+                    style="border-bottom-left-radius: 0; border-bottom-right-radius: 0;">
+            <div style="width: 100%;">{{te.textAudioIndexWithText.text}}</div>
           </mat-card>
           <mat-progress-bar *ngIf="te.id === carousel.carousel.activeIndex"
                             style="margin-left: auto; margin-right: auto; transition: none; height: 8px; border-radius: 0 0 10px 10px;"
