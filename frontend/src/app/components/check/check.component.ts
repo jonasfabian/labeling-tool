@@ -42,8 +42,6 @@ export class CheckComponent implements OnInit {
 
   audioFileId = 0;
 
-  audioFiledId = 0;
-
   ngOnInit() {
     this.initCarousel();
     this.initSessionCheckData();
@@ -208,8 +206,10 @@ export class CheckComponent implements OnInit {
     }), () => {
     }, () => {
       if (this.checkIndexArray.length !== 0) {
-        this.audioFileId = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.transcriptFileId;
-        this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
+        if (this.audioFileId === 0) {
+          this.audioFileId = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.transcriptFileId;
+          this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
+        }
       }
     });
   }
