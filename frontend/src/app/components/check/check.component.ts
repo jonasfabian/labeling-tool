@@ -28,9 +28,9 @@ export class CheckComponent implements OnInit {
   @ViewChild('audioPlayer', {static: false}) audioPlayer: ElementRef;
 
   checkIndexArray: Array<CheckIndex> = [];
-  checkedTextAudioIndexWithTextArrayCorrect: Array<TextAudioIndexWithText> = [];
+  /*checkedTextAudioIndexWithTextArrayCorrect: Array<TextAudioIndexWithText> = [];
   checkedTextAudioIndexWithTextArrayWrong: Array<TextAudioIndexWithText> = [];
-  checkedTextAudioIndexWithTextArraySkipped: Array<TextAudioIndexWithText> = [];
+  checkedTextAudioIndexWithTextArraySkipped: Array<TextAudioIndexWithText> = [];*/
   available = false;
   isPlaying = false;
   carouselIndex = 0;
@@ -65,8 +65,8 @@ export class CheckComponent implements OnInit {
   setCheckedType(checkType: number): void {
     this.addNumberOfCheckType(checkType);
     this.prepareNextSlide(checkType);
-    this.checkedTextAudioIndexWithTextArrayCorrect.push(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
-    this.nextSlide();
+    /*this.checkedTextAudioIndexWithTextArrayCorrect.push(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);*/
+    this.carousel.slideNext();
     this.loadNextAudioFile();
   }
 
@@ -85,10 +85,6 @@ export class CheckComponent implements OnInit {
     // @ts-ignore
     this.audioPlayer.nativeElement.src = this.apiService.blobUrl.changingThisBreaksApplicationSecurity;
     this.audioPlayer.nativeElement.load();
-  }
-
-  nextSlide(): void {
-    this.carousel.slideNext();
   }
 
   initSessionCheckData(): void {
@@ -219,7 +215,7 @@ resetCarousel(): void {
     this.progress = 0;
     this.carouselIndex = 0;
     this.checkIndexArray = [];
-    this.checkedTextAudioIndexWithTextArrayCorrect = [];
+    /*this.checkedTextAudioIndexWithTextArrayCorrect = [];*/
     this.initCarousel();
     this.carousel.carousel.activeIndex = 0;
   }

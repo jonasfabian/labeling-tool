@@ -84,6 +84,18 @@ export class ContentComponent implements OnInit {
     });
   }
 
+  showMoreBefore(): void {
+    const begin = this.text.toString().indexOf(this.textBegin);
+    const end = this.text.toString().indexOf(this.textBegin) + this.textBegin.length;
+    this.textBegin = this.text.slice(begin - 20, end).toString();
+  }
+
+  showMoreAfter(): void {
+    const begin = this.text.toString().indexOf(this.textEnd);
+    const end = this.text.toString().indexOf(this.textEnd) + this.textEnd.length;
+    this.textEnd = this.text.slice(begin, end + 20).toString();
+  }
+
   openShortcutDialog(): void {
     this.dialog.open(ShortcutComponent, {width: '500px'});
   }
