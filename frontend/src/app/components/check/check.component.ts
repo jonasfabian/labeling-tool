@@ -207,6 +207,7 @@ export class CheckComponent implements OnInit {
     }, () => {
       if (this.checkIndexArray.length !== 0) {
         if (this.audioFileId === 0) {
+          this.progress = 0;
           this.audioFileId = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.transcriptFileId;
           this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
         }
