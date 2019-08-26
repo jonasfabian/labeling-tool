@@ -56,12 +56,12 @@ export class CheckComponent implements OnInit {
     } else if (event.key === 'w') {
       this.setCheckedType(2);
     } else if (event.key === 's') {
-      this.setCheckedType(0);
+      this.setCheckedType(3);
     }
   }
 
   setCheckedType(checkType: number): void {
-    console.log(this.checkIndexArray[this.carousel.carousel.activeIndex].checkedType = checkType);
+    this.checkIndexArray[this.carousel.carousel.activeIndex].checkedType = checkType;
     this.addNumberOfCheckType(checkType);
     this.prepareNextSlide(checkType);
     this.carousel.slideNext();

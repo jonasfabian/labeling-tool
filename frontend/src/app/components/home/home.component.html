@@ -1,40 +1,30 @@
-<mat-card class="title-card">
-  <h1>Home</h1>
-</mat-card>
-<mat-grid-list class="image-grid" [cols]="10" rowHeight="400px" gutterSize="15">
-  <mat-grid-tile class="landing-page-tiles" colspan="4" [routerLink]="['/labeling-tool/check']">
-    <mat-card>
-      <h3>Check audio and text files</h3>
-      <p>
-        Checking already labeled audio and text. Listen to the audio carefully and then select if the text matches it,
-        by clicking on the correct or wrong button.
-      </p>
-      <div>
-        <img src="../../../assets/images/check.png">
-      </div>
-    </mat-card>
-  </mat-grid-tile>
-  <mat-grid-tile class="landing-page-tiles" colspan="6" [routerLink]="['/labeling-tool/label']">
-    <mat-card>
-      <h3>Correct audio and text files</h3>
-      <p>
-        Checking already labeled audio and text. Listen to the audio carefully and then select if the text matches it,
-        by clicking on the correct or wrong button.
-      </p>
-      <div>
-        <img src="../../../assets/images/wave.png">
-      </div>
-    </mat-card>
-  </mat-grid-tile>
-</mat-grid-list>
-<mat-grid-list *ngIf="authService.loggedInUser.id === -1" class="image-grid" cols="10" rowHeight="300px"
-               gutterSize="15">
-  <mat-grid-tile colspan="7"></mat-grid-tile>
-  <mat-grid-tile class="landing-page-tiles" colspan="3">
-    <mat-card [routerLink]="['/labeling-tool/register']">
-      <div style="height: 100%; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-        <span>Register now!</span>
-      </div>
-    </mat-card>
-  </mat-grid-tile>
-</mat-grid-list>
+<div class="home-container">
+  <div id="home-title">
+    Labeling-Tool for Audio
+  </div>
+  <div>
+    <img id="home-image" src="../../../assets/images/home.png" height="121" width="601"/>
+  </div>
+</div>
+<div class="slider-container" style="margin-left: 355px;">
+  <mat-card class="info-card">
+    <h3>Label</h3>
+    <br>
+    <div>
+      Correct already labeled data by adjusting audio snippets and text passages.
+    </div>
+    <mat-button-toggle *ngIf="authService.isAuthenticated" [routerLink]="['/labeling-tool/label']">Go To
+    </mat-button-toggle>
+  </mat-card>
+</div>
+<div class="slider-container" style="margin-left: 15px;">
+  <mat-card class="info-card">
+    <h3>Check</h3>
+    <br>
+    <div>
+      Check whether already labeled data is aligned correctly.
+    </div>
+    <mat-button-toggle *ngIf="authService.isAuthenticated" [routerLink]="['/labeling-tool/check']">Go To
+    </mat-button-toggle>
+  </mat-card>
+</div>

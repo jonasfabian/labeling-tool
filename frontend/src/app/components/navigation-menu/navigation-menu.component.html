@@ -3,7 +3,6 @@
     <mat-icon style="cursor: pointer; margin-top: 4px; float: left;" (click)="toggleSidenav()">menu</mat-icon>
     <div style="margin-left: 35px;">
       <h1 style="float: left;">Labeling Tool</h1>
-      <app-breadcrumb></app-breadcrumb>
     </div>
     <span *ngIf="!authService.isAuthenticated && !router.url.includes('login')"
       style="position: absolute; right: 30px; top: 15px; cursor: pointer;" [routerLink]="['labeling-tool/login']">
@@ -55,7 +54,7 @@
       </mat-list>
     </div>
   </mat-sidenav>
-  <mat-sidenav-content>
+  <mat-sidenav-content style="overflow-y: hidden;">
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
