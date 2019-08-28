@@ -43,9 +43,9 @@ for element in lengthArray:
 
 # ---------------------
 
+# Get Audiofile
 audio = MP3('C:/Users/Jonas/Desktop/DeutschAndreaErzaehlt/87/audio.mp3')
 audioFileLength = audio.info.length
-print(audioFileLength)
 
 pos = 0
 
@@ -57,6 +57,7 @@ for u in lengthArray:
 
 # ----------------------
 
+# Setup DB-Connection
 mydb = mysql.connector.connect(
     host='localhost',
     user='root',
@@ -66,6 +67,7 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 
+# Insert values into DB
 for file in lengthArray:
     sql = 'insert into textAudioIndex (id, samplingRate, textStartPos, textEndPos, audioStartPos, audioEndPos, speakerKey, labeled, correct, wrong, transcript_file_id) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
     val = (file.id , '44100', file.startPos, file.endPos, file.aStartPos, file.aEndPos, 1, 0, 0, 0, 87)
