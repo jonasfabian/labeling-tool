@@ -10,9 +10,9 @@ class OB:
 files = []
 fileEndings = []
 
-entries = os.scandir("/home/jonas/Documents/DeutschAndreaErzaehlt/")
+entries = os.scandir('C:/Users/Jonas/Desktop/DeutschAndreaErzaehlt/')
 for entry in entries:
-    for file in os.listdir("/home/jonas/Documents/DeutschAndreaErzaehlt/" + entry.name):
+    for file in os.listdir('C:/Users/Jonas/Desktop/DeutschAndreaErzaehlt/' + entry.name):
         if file.endswith(".txt"):
             ob = OB()
             ob.fi = file
