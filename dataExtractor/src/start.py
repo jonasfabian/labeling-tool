@@ -9,7 +9,7 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 
-sql = 'insert into textAudioIndex (id, firstName, lastName, email, password) values (%s, %s, %s, %s, %s)'
+sql = 'insert into user (id, firstName, lastName, email, password) values (%s, %s, %s, %s, %s)'
 val = ('1', 'Roik', 'Smith', 'jiffy@snoff.ch', 'pwd')
 mycursor.execute(sql, val)
 
