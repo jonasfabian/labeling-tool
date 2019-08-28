@@ -1,4 +1,5 @@
 import nltk.data
+import mysql.connector
 from mutagen.mp3 import MP3
 
 #download the punkt package
@@ -53,5 +54,21 @@ for u in lengthArray:
     pos = pos + u.alength
     u.aStartPos = pos
     u.aEndPos = pos + u.alength
-print(pos)
+
+# ----------------------
+
+mydb = mysql.connector.connect(
+    host='localhost',
+    user='root',
+    passwd='password',
+    database='labeling-tool'
+)
+
+mycursor = mydb.cursor()
+
+for file in lengthArray:
+    sql = 'insert into textAudioIndex (id, samplingRate, textStartPos, textEndPos, audioStartPos, audioEndPos, speakerKey, labeled, correct, wrong, transcript_file_id) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
+    val = (file.id , '44100', file.startPos, file.endPos, file.aStartPos, file.aEndPos, 1, 0, 0, 0, 87)
+    mycursor.execute(sql, val)
+    mydb.commit()
 
