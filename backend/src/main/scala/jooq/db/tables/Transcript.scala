@@ -61,7 +61,7 @@ extends TableImpl[TranscriptRecord](
 
   val ID : TableField[TranscriptRecord, Integer] = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), "")
 
-  val TEXT : TableField[TranscriptRecord, String] = createField("text", org.jooq.impl.SQLDataType.CLOB.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.CLOB)), "")
+  val TEXT : TableField[TranscriptRecord, String] = createField("text", org.jooq.impl.SQLDataType.CLOB, "")
 
   val FILEID : TableField[TranscriptRecord, Integer] = createField("fileId", org.jooq.impl.SQLDataType.INTEGER.nullable(false), "")
 

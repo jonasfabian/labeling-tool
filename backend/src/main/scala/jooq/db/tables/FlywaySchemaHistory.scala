@@ -62,7 +62,7 @@ extends TableImpl[FlywaySchemaHistoryRecord](
 
   val INSTALLED_RANK : TableField[FlywaySchemaHistoryRecord, Integer] = createField("installed_rank", org.jooq.impl.SQLDataType.INTEGER.nullable(false), "")
 
-  val VERSION : TableField[FlywaySchemaHistoryRecord, String] = createField("version", org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), "")
+  val VERSION : TableField[FlywaySchemaHistoryRecord, String] = createField("version", org.jooq.impl.SQLDataType.VARCHAR(50), "")
 
   val DESCRIPTION : TableField[FlywaySchemaHistoryRecord, String] = createField("description", org.jooq.impl.SQLDataType.VARCHAR(200).nullable(false), "")
 
@@ -70,11 +70,11 @@ extends TableImpl[FlywaySchemaHistoryRecord](
 
   val SCRIPT : TableField[FlywaySchemaHistoryRecord, String] = createField("script", org.jooq.impl.SQLDataType.VARCHAR(1000).nullable(false), "")
 
-  val CHECKSUM : TableField[FlywaySchemaHistoryRecord, Integer] = createField("checksum", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.INTEGER)), "")
+  val CHECKSUM : TableField[FlywaySchemaHistoryRecord, Integer] = createField("checksum", org.jooq.impl.SQLDataType.INTEGER, "")
 
   val INSTALLED_BY : TableField[FlywaySchemaHistoryRecord, String] = createField("installed_by", org.jooq.impl.SQLDataType.VARCHAR(100).nullable(false), "")
 
-  val INSTALLED_ON : TableField[FlywaySchemaHistoryRecord, Timestamp] = createField("installed_on", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("current_timestamp()", org.jooq.impl.SQLDataType.TIMESTAMP)), "")
+  val INSTALLED_ON : TableField[FlywaySchemaHistoryRecord, Timestamp] = createField("installed_on", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), "")
 
   val EXECUTION_TIME : TableField[FlywaySchemaHistoryRecord, Integer] = createField("execution_time", org.jooq.impl.SQLDataType.INTEGER.nullable(false), "")
 

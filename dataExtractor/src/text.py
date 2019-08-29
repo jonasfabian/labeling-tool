@@ -1,12 +1,26 @@
 import nltk.data
 import mysql.connector
 from mutagen.mp3 import MP3
+import os
 
-#download the punkt package
-#nltk.download()
+# -------------------------
+
+fileEndings = []
+entries = os.scandir('/home/jonas/Documents/DeutschAndreaErzaehlt/')
+for entry in entries:
+    for file in os.listdir('/home/jonas/Documents/DeutschAndreaErzaehlt/' + entry.name):
+        if file.endswith(".txt"):
+            fileEndings.append(entry.name)
+            print(entry.name)
+
+# --------------------------
+
+# download the punkt package
+# nltk.download()
 tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
-file = open('C:/Users/Jonas/Desktop/DeutschAndreaErzaehlt/87/transcript.txt')
+file = open('/home/jonas/Documents/DeutschAndreaErzaehlt/36/transcript.txt')
 data = file.read()
+file.close()
 fileLength = len(data)
 
 
@@ -44,7 +58,7 @@ for element in lengthArray:
 # ---------------------
 
 # Get Audiofile
-audio = MP3('C:/Users/Jonas/Desktop/DeutschAndreaErzaehlt/87/audio.mp3')
+audio = MP3('/home/jonas/Documents/DeutschAndreaErzaehlt/36/audio.mp3')
 audioFileLength = audio.info.length
 
 pos = 0
