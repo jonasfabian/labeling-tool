@@ -1,5 +1,5 @@
-import nltk.data
 import mysql.connector
+import spacy
 from mutagen.mp3 import MP3
 import os
 
@@ -31,19 +31,19 @@ def searchDirectories():
 # --------------------------
 
 def extractDataToDB(folderNumber):
-    # download the punkt package
-    # nltk.download()
     global index
-    tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
+
     file = open('/home/jonas/Documents/DeutschAndreaErzaehlt/' + folderNumber + '/transcript.txt')
     data = file.read()
+    nlp = spacy.load("en_core_web_sm")
+    doc = nlp(data)
     file.close()
     fileLength = len(data)
 
     lengthArray = []
 
     # Add Snippet Object to LengthArray
-    for te in tokenizer.tokenize(data):
+    for te in [sent.text for sent in doc.sents]:
         index = index + 1
         snippet = Snippet()
 
