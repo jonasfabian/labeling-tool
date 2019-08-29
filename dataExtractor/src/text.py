@@ -5,6 +5,7 @@ import os
 
 index = 0
 
+
 class Snippet:
     id = 0
     length = 0
@@ -68,8 +69,8 @@ def extractDataToDB(folderNumber):
     for u in lengthArray:
         u.alength = u.result * audioFileLength
         pos = pos + u.alength
-        u.aStartPos = pos
-        u.aEndPos = pos + u.alength
+        u.aStartPos = round(pos * 44100)
+        u.aEndPos = round((pos + u.alength) * 44100)
 
     # ----------------------
 
@@ -85,7 +86,7 @@ def extractDataToDB(folderNumber):
 
     # Insert values into DB
     for file in lengthArray:
-        sql = 'insert into textAudioIndex (id, samplingRate, textStartPos, textEndPos, audioStartPos, audioEndPos, speakerKey, labeled, correct, wrong, transcript_file_id) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
+        sql = 'INSERT INTO textAudioIndex (id, samplingRate, textStartPos, textEndPos, audioStartPos, audioEndPos, speakerKey, labeled, correct, wrong, transcript_file_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
         val = (file.id, '44100', file.startPos, file.endPos, file.aStartPos, file.aEndPos, 1, 0, 0, 0, folderNumber)
         mycursor.execute(sql, val)
         mydb.commit()
