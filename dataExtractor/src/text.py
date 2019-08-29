@@ -3,26 +3,7 @@ import mysql.connector
 from mutagen.mp3 import MP3
 import os
 
-# -------------------------
-
-fileEndings = []
-entries = os.scandir('/home/jonas/Documents/DeutschAndreaErzaehlt/')
-for entry in entries:
-    for file in os.listdir('/home/jonas/Documents/DeutschAndreaErzaehlt/' + entry.name):
-        if file.endswith(".txt"):
-            fileEndings.append(entry.name)
-            print(entry.name)
-
-# --------------------------
-
-# download the punkt package
-# nltk.download()
-tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
-file = open('/home/jonas/Documents/DeutschAndreaErzaehlt/36/transcript.txt')
-data = file.read()
-file.close()
-fileLength = len(data)
-
+index = 0
 
 class Snippet:
     id = 0
@@ -36,55 +17,78 @@ class Snippet:
     aEndPos = 0
 
 
-lengthArray = []
-index = 0
+def searchDirectories():
+    fileEndings = []
+    entries = os.scandir('/home/jonas/Documents/DeutschAndreaErzaehlt/')
+    for entry in entries:
+        for fileData in os.listdir('/home/jonas/Documents/DeutschAndreaErzaehlt/' + entry.name):
+            if fileData.endswith(".txt"):
+                fileEndings.append(entry.name)
+                extractDataToDB(entry.name)
 
-# Add Snippet Object to LengthArray
-for te in tokenizer.tokenize(data):
-    index = index + 1
-    snippet = Snippet()
 
-    snippet.id = index
-    snippet.length = len(te)
-    snippet.sentence = te
-    snippet.result = snippet.length / fileLength
+# --------------------------
 
-    lengthArray.append(snippet)
+def extractDataToDB(folderNumber):
+    # download the punkt package
+    # nltk.download()
+    global index
+    tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
+    file = open('/home/jonas/Documents/DeutschAndreaErzaehlt/' + folderNumber + '/transcript.txt')
+    data = file.read()
+    file.close()
+    fileLength = len(data)
 
-for element in lengthArray:
-    element.startPos = data.find(element.sentence)
-    element.endPos = data.find(element.sentence) + len(element.sentence)
+    lengthArray = []
 
-# ---------------------
+    # Add Snippet Object to LengthArray
+    for te in tokenizer.tokenize(data):
+        index = index + 1
+        snippet = Snippet()
 
-# Get Audiofile
-audio = MP3('/home/jonas/Documents/DeutschAndreaErzaehlt/36/audio.mp3')
-audioFileLength = audio.info.length
+        snippet.id = index
+        snippet.length = len(te)
+        snippet.sentence = te
+        snippet.result = snippet.length / fileLength
 
-pos = 0
+        lengthArray.append(snippet)
 
-for u in lengthArray:
-    u.alength = u.result * audioFileLength
-    pos = pos + u.alength
-    u.aStartPos = pos
-    u.aEndPos = pos + u.alength
+    for element in lengthArray:
+        element.startPos = data.find(element.sentence)
+        element.endPos = data.find(element.sentence) + len(element.sentence)
 
-# ----------------------
+    # ---------------------
 
-# Setup DB-Connection
-mydb = mysql.connector.connect(
-    host='localhost',
-    user='root',
-    passwd='password',
-    database='labeling-tool'
-)
+    # Get Audiofile
+    audio = MP3('/home/jonas/Documents/DeutschAndreaErzaehlt/' + folderNumber + '/audio.mp3')
+    audioFileLength = audio.info.length
 
-mycursor = mydb.cursor()
+    pos = 0
 
-# Insert values into DB
-for file in lengthArray:
-    sql = 'insert into textAudioIndex (id, samplingRate, textStartPos, textEndPos, audioStartPos, audioEndPos, speakerKey, labeled, correct, wrong, transcript_file_id) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
-    val = (file.id , '44100', file.startPos, file.endPos, file.aStartPos, file.aEndPos, 1, 0, 0, 0, 87)
-    mycursor.execute(sql, val)
-    mydb.commit()
+    for u in lengthArray:
+        u.alength = u.result * audioFileLength
+        pos = pos + u.alength
+        u.aStartPos = pos
+        u.aEndPos = pos + u.alength
 
+    # ----------------------
+
+    # Setup DB-Connection
+    mydb = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        passwd='password',
+        database='labeling-tool'
+    )
+
+    mycursor = mydb.cursor()
+
+    # Insert values into DB
+    for file in lengthArray:
+        sql = 'insert into textAudioIndex (id, samplingRate, textStartPos, textEndPos, audioStartPos, audioEndPos, speakerKey, labeled, correct, wrong, transcript_file_id) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
+        val = (file.id, '44100', file.startPos, file.endPos, file.aStartPos, file.aEndPos, 1, 0, 0, 0, folderNumber)
+        mycursor.execute(sql, val)
+        mydb.commit()
+
+
+searchDirectories()
