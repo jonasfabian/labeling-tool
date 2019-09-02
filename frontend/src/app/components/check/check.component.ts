@@ -105,6 +105,7 @@ export class CheckComponent implements OnInit {
   }
 
   play(): void {
+    console.log(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
     this.resetAudioProgress();
     this.calculateAudioPlayerStatus();
     if (!this.isPlaying) {
@@ -123,7 +124,7 @@ export class CheckComponent implements OnInit {
   }
 
   setAudioPlayerStartTime(): void {
-    this.audioPlayer.nativeElement.currentTime = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioStartPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate;
+    this.audioPlayer.nativeElement.currentTime = Math.round(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioStartPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate);
   }
 
   setAudioPlayerEndTime(): void {
