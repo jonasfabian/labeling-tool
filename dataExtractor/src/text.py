@@ -1,24 +1,38 @@
 import mysql.connector
+import os
 import spacy
 from mutagen.mp3 import MP3
-import os
+
+# Setup DB-Connection
+dataBase = mysql.connector.connect(
+    host='localhost',
+    user='root',
+    passwd='password',
+    database='labeling-tool'
+)
+
+dataBaseCursor = dataBase.cursor()
+dataBaseCursor.execute("truncate table textAudioIndex")
+print("Cleared TextAudioIndex")
 
 index = 0
 
 
 class Snippet:
     id = 0
-    length = 0
-    sentence = ''
-    startPos = 0
-    endPos = 0
-    result = 0
-    alength = 0
-    aStartPos = 0
-    aEndPos = 0
+    samplingRate = 0
+    textLength = 0
+    text = ''
+    textStartPosition = 0
+    textEndPosition = 0
+    percentageTotal = 0
+    audioLength = 0
+    audioStartPosition = 0
+    audioEndPosition = 0
 
 
 def searchDirectories():
+    print('Loading...')
     fileEndings = []
     entries = os.scandir('/home/jonas/Documents/DeutschAndreaErzaehlt/')
     for entry in entries:
@@ -26,6 +40,7 @@ def searchDirectories():
             if fileData.endswith(".txt"):
                 fileEndings.append(entry.name)
                 extractDataToDB(entry.name)
+    print('Done!')
 
 
 # --------------------------
@@ -48,48 +63,41 @@ def extractDataToDB(folderNumber):
         snippet = Snippet()
 
         snippet.id = index
-        snippet.length = len(te)
-        snippet.sentence = te
-        snippet.result = snippet.length / fileLength
+        snippet.textLength = len(te)
+        snippet.text = te
+        snippet.percentageTotal = snippet.textLength / fileLength
 
         lengthArray.append(snippet)
 
     for element in lengthArray:
-        element.startPos = data.find(element.sentence)
-        element.endPos = data.find(element.sentence) + len(element.sentence)
+        element.textStartPosition = data.find(element.text)
+        element.textEndPosition = data.find(element.text) + len(element.text)
 
     # ---------------------
 
     # Get Audiofile
     audio = MP3('/home/jonas/Documents/DeutschAndreaErzaehlt/' + folderNumber + '/audio.mp3')
     audioFileLength = audio.info.length
+    samplingRate = audio.info.sample_rate
+
 
     pos = 0
 
     for u in lengthArray:
-        u.alength = u.result * audioFileLength
-        pos = pos + u.alength
-        u.aStartPos = round(pos * 44100)
-        u.aEndPos = round((pos + u.alength) * 44100)
+        u.samplingRate = samplingRate
+        u.audioLength = u.percentageTotal * audioFileLength
+        pos = pos + u.audioLength
+        u.audioStartPosition = round(pos * u.samplingRate)
+        u.audioEndPosition = round((pos + u.audioLength) * u.samplingRate)
 
     # ----------------------
-
-    # Setup DB-Connection
-    mydb = mysql.connector.connect(
-        host='localhost',
-        user='root',
-        passwd='password',
-        database='labeling-tool'
-    )
-
-    mycursor = mydb.cursor()
 
     # Insert values into DB
     for file in lengthArray:
         sql = 'INSERT INTO textAudioIndex (id, samplingRate, textStartPos, textEndPos, audioStartPos, audioEndPos, speakerKey, labeled, correct, wrong, transcript_file_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
-        val = (file.id, '44100', file.startPos, file.endPos, file.aStartPos, file.aEndPos, 1, 0, 0, 0, folderNumber)
-        mycursor.execute(sql, val)
-        mydb.commit()
+        val = (file.id, file.samplingRate, file.textStartPosition, file.textEndPosition, file.audioStartPosition, file.audioEndPosition, 1, 0, 0, 0, folderNumber)
+        dataBaseCursor.execute(sql, val)
+        dataBase.commit()
 
 
 searchDirectories()
