@@ -98,6 +98,13 @@ class LabelingToolService(config: Config) {
     dslContext.selectFrom(TRANSCRIPT).fetchArray().map(m => Transcript(m.getId, m.getText, m.getFileid))
   })
 
+  def getAvatar(userId: Integer): Avatar = withDslContext(dslContext => {
+    dslContext.select()
+      .from(AVATAR)
+      .where(AVATAR.USERID.eq(userId))
+      .fetchOne().map(m => Avatar(m.get(AVATAR.ID).toInt, m.get(AVATAR.USERID).toInt, m.get(AVATAR.AVATAR_)))
+  })
+
   def getNonLabeledDataIndexes(labeledType: Integer): TextAudioIndexWithText = withDslContext(dslContext => {
     dslContext.select(
       TEXTAUDIOINDEX.ID, TEXTAUDIOINDEX.SAMPLINGRATE, TEXTAUDIOINDEX.TEXTSTARTPOS, TEXTAUDIOINDEX.TEXTENDPOS, TEXTAUDIOINDEX.AUDIOSTARTPOS, TEXTAUDIOINDEX.AUDIOENDPOS,

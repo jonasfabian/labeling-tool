@@ -33,9 +33,7 @@ export class ProfileComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   selectedFile: Blob;
-
   fileByteArray: Array<number> = [];
-
   yeet: any;
 
   ngOnInit() {
@@ -60,9 +58,11 @@ export class ProfileComponent implements OnInit {
     reader.onloadend = () => {
       // @ts-ignore
       this.yeet = new Int8Array(reader.result);
-      this.yeet.map(l => {
-        this.fileByteArray.push(l);
-      });
+      if (this.yeet.length <= 65535) {
+        this.yeet.map(l => {
+          this.fileByteArray.push(l);
+        });
+      }
     };
   }
 

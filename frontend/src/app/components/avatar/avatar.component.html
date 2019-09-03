@@ -1,5 +1,10 @@
-<div id="avatar" [style.background-color]="color">
+<ng-container *ngIf="source === ''">
+  <div class="avatar" [style.background-color]="color">
   <span>
     {{initials}}
   </span>
-</div>
+  </div>
+</ng-container>
+<ng-container *ngIf="source !== ''">
+  <img class="avatar" [src]="source">
+</ng-container>
