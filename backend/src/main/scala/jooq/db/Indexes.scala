@@ -25,6 +25,7 @@ object Indexes {
 
   val AUDIO_PRIMARY = Indexes0.AUDIO_PRIMARY
   val AVATAR_PRIMARY = Indexes0.AVATAR_PRIMARY
+  val AVATAR_USERID = Indexes0.AVATAR_USERID
   val FLYWAY_SCHEMA_HISTORY_FLYWAY_SCHEMA_HISTORY_S_IDX = Indexes0.FLYWAY_SCHEMA_HISTORY_FLYWAY_SCHEMA_HISTORY_S_IDX
   val FLYWAY_SCHEMA_HISTORY_PRIMARY = Indexes0.FLYWAY_SCHEMA_HISTORY_PRIMARY
   val TEXTAUDIOINDEX_PRIMARY = Indexes0.TEXTAUDIOINDEX_PRIMARY
@@ -41,6 +42,7 @@ object Indexes {
   private object Indexes0 {
     val AUDIO_PRIMARY : Index = Internal.createIndex("PRIMARY", Audio.AUDIO, Array[OrderField [_] ](Audio.AUDIO.ID), true)
     val AVATAR_PRIMARY : Index = Internal.createIndex("PRIMARY", Avatar.AVATAR, Array[OrderField [_] ](Avatar.AVATAR.ID), true)
+    val AVATAR_USERID : Index = Internal.createIndex("userId", Avatar.AVATAR, Array[OrderField [_] ](Avatar.AVATAR.USERID), true)
     val FLYWAY_SCHEMA_HISTORY_FLYWAY_SCHEMA_HISTORY_S_IDX : Index = Internal.createIndex("flyway_schema_history_s_idx", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, Array[OrderField [_] ](FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.SUCCESS), false)
     val FLYWAY_SCHEMA_HISTORY_PRIMARY : Index = Internal.createIndex("PRIMARY", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, Array[OrderField [_] ](FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK), true)
     val TEXTAUDIOINDEX_PRIMARY : Index = Internal.createIndex("PRIMARY", Textaudioindex.TEXTAUDIOINDEX, Array[OrderField [_] ](Textaudioindex.TEXTAUDIOINDEX.ID), true)

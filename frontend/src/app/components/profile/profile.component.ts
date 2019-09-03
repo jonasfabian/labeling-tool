@@ -35,6 +35,8 @@ export class ProfileComponent implements OnInit {
   selectedFile: Blob;
   fileByteArray: Array<number> = [];
   yeet: any;
+  source = '';
+  editProfile = false;
 
   ngOnInit() {
     this.user = this.authService.loggedInUser;
@@ -49,6 +51,9 @@ export class ProfileComponent implements OnInit {
           return data.labeled.toString().toLowerCase().includes(filter);
         };
       });
+    this.apiService.getAvatar(this.user.id).subscribe(a => {
+      this.source = 'data:image/png;base64,' + btoa(String.fromCharCode.apply(null, new Uint8Array(a.avatar)));
+    });
   }
 
   onFileChanged(event): void {
@@ -62,12 +67,13 @@ export class ProfileComponent implements OnInit {
         this.yeet.map(l => {
           this.fileByteArray.push(l);
         });
+        this.http.post('http://localhost:8080/api/match/createAvatar', new Avatar(-1, this.user.id, this.fileByteArray)).subscribe(_ => {
+          this.apiService.getAvatar(this.user.id).subscribe(a => {
+            this.source = 'data:image/png;base64,' + btoa(String.fromCharCode.apply(null, new Uint8Array(a.avatar)));
+            this.editProfile = false;
+          });
+        });
       }
     };
-  }
-
-  onUpload(): void {
-    this.http.post('http://localhost:8080/api/match/createAvatar', new Avatar(-1, this.user.id, this.fileByteArray)).subscribe(_ => {
-    });
   }
 }

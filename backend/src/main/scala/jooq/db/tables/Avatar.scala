@@ -89,7 +89,7 @@ extends TableImpl[AvatarRecord](
   override def getSchema : Schema = LabelingTool.LABELING_TOOL
 
   override def getIndexes : List[ Index ] = {
-    return Arrays.asList[ Index ](Indexes.AVATAR_PRIMARY)
+    return Arrays.asList[ Index ](Indexes.AVATAR_PRIMARY, Indexes.AVATAR_USERID)
   }
 
   override def getIdentity : Identity[AvatarRecord, Integer] = {
@@ -101,7 +101,7 @@ extends TableImpl[AvatarRecord](
   }
 
   override def getKeys : List[ UniqueKey[AvatarRecord] ] = {
-    return Arrays.asList[ UniqueKey[AvatarRecord] ](Keys.KEY_AVATAR_PRIMARY)
+    return Arrays.asList[ UniqueKey[AvatarRecord] ](Keys.KEY_AVATAR_PRIMARY, Keys.KEY_AVATAR_USERID)
   }
 
   override def as(alias : String) : Avatar = {

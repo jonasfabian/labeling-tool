@@ -174,6 +174,9 @@ class LabelingToolService(config: Config) {
   })
 
   def createAvatar(avatar: Avatar): Unit = withDslContext(dslContext => {
+    dslContext.delete(AVATAR)
+      .where(AVATAR.USERID.eq(avatar.userId))
+      .execute()
     val rec = avatarToRecord(new Avatar(avatar.id, avatar.userId, avatar.avatar))
     dslContext.executeInsert(rec)
     ()

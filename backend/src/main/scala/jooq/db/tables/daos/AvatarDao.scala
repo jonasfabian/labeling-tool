@@ -39,6 +39,10 @@ class AvatarDao(configuration : Configuration) extends DAOImpl[AvatarRecord, joo
     fetch(Avatar.AVATAR.USERID, values:_*)
   }
 
+  def fetchOneByUserid(value : Integer) : jooq.db.tables.pojos.Avatar = {
+    fetchOne(Avatar.AVATAR.USERID, value)
+  }
+
   def fetchByAvatar(values : Array[Byte]*) : List[jooq.db.tables.pojos.Avatar] = {
     fetch(Avatar.AVATAR.AVATAR_, values:_*)
   }

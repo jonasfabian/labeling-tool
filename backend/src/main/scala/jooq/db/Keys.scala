@@ -45,6 +45,7 @@ object Keys {
 
   val KEY_AUDIO_PRIMARY = UniqueKeys0.KEY_AUDIO_PRIMARY
   val KEY_AVATAR_PRIMARY = UniqueKeys0.KEY_AVATAR_PRIMARY
+  val KEY_AVATAR_USERID = UniqueKeys0.KEY_AVATAR_USERID
   val KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY = UniqueKeys0.KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY
   val KEY_TEXTAUDIOINDEX_PRIMARY = UniqueKeys0.KEY_TEXTAUDIOINDEX_PRIMARY
   val KEY_TRANSCRIPT_PRIMARY = UniqueKeys0.KEY_TRANSCRIPT_PRIMARY
@@ -74,6 +75,7 @@ object Keys {
   private object UniqueKeys0 {
     val KEY_AUDIO_PRIMARY : UniqueKey[AudioRecord] = Internal.createUniqueKey(Audio.AUDIO, "KEY_audio_PRIMARY", Audio.AUDIO.ID)
     val KEY_AVATAR_PRIMARY : UniqueKey[AvatarRecord] = Internal.createUniqueKey(Avatar.AVATAR, "KEY_avatar_PRIMARY", Avatar.AVATAR.ID)
+    val KEY_AVATAR_USERID : UniqueKey[AvatarRecord] = Internal.createUniqueKey(Avatar.AVATAR, "KEY_avatar_userId", Avatar.AVATAR.USERID)
     val KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY : UniqueKey[FlywaySchemaHistoryRecord] = Internal.createUniqueKey(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, "KEY_flyway_schema_history_PRIMARY", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK)
     val KEY_TEXTAUDIOINDEX_PRIMARY : UniqueKey[TextaudioindexRecord] = Internal.createUniqueKey(Textaudioindex.TEXTAUDIOINDEX, "KEY_textAudioIndex_PRIMARY", Textaudioindex.TEXTAUDIOINDEX.ID)
     val KEY_TRANSCRIPT_PRIMARY : UniqueKey[TranscriptRecord] = Internal.createUniqueKey(Transcript.TRANSCRIPT, "KEY_transcript_PRIMARY", Transcript.TRANSCRIPT.ID)
