@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS `avatar` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `userId` INT,
+    `avatar` BLOB,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB;

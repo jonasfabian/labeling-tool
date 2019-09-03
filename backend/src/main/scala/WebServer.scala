@@ -7,7 +7,7 @@ import akka.http.scaladsl.server.{Directives, Route}
 import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.Source
 import akka.util.ByteString
-import models.{Audio, EmailPassword, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User, UserAndTextAudioIndex, UserPublicInfo}
+import models.{Audio, Avatar, EmailPassword, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User, UserAndTextAudioIndex, UserPublicInfo}
 import com.typesafe.config.{ConfigFactory, ConfigValueFactory}
 import de.heikoseeberger.akkahttpcirce.ErrorAccumulatingCirceSupport
 import io.swagger.annotations.{ApiImplicitParam, ApiImplicitParams, ApiOperation, ApiResponse, ApiResponses}
@@ -42,7 +42,7 @@ object WebServer extends App with CorsSupport {
 class LabelingToolRestApi(service: LabelingToolService) extends Directives with ErrorAccumulatingCirceSupport {
   val route = pathPrefix("api") {
     pathPrefix("match") {
-      getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudioIndex ~ getTranscript ~ getTranscripts ~ getAudio ~ getAudioFile ~ getNonLabeledDataIndexes ~ getTenNonLabeledDataIndexes ~ getTextAudioIndexesByLabeledType ~ getLabeledSums ~ getUser ~ createUser ~ checkLogin ~ createUserAndTextAudioIndex ~ getUserByEmail ~ getCheckedTextAudioIndexesByUser
+      getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudioIndex ~ getTranscript ~ getTranscripts ~ getAudio ~ getAudioFile ~ getNonLabeledDataIndexes ~ getTenNonLabeledDataIndexes ~ getTextAudioIndexesByLabeledType ~ getLabeledSums ~ getUser ~ createUser ~ checkLogin ~ createUserAndTextAudioIndex ~ getUserByEmail ~ getCheckedTextAudioIndexesByUser ~ createAvatar
     }
   }
 
@@ -214,6 +214,19 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
     post {
       entity(as[User]) { user =>
         service.createUser(user)
+        complete("OK")
+      }
+    }
+  }
+
+  @ApiOperation(value = "createAvatar", httpMethod = "POST")
+  @ApiImplicitParams(Array(new ApiImplicitParam(name = "body", required = true, dataTypeClass = classOf[Avatar], value = "", paramType = "body")))
+  @ApiResponses(Array(new ApiResponse(code = 200, message = "OK")))
+  @Path("createAvatar")
+  def createAvatar: Route = path("createAvatar") {
+    post {
+      entity(as[Avatar]) { avatar =>
+        service.createAvatar(avatar)
         complete("OK")
       }
     }

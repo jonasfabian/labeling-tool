@@ -11,6 +11,7 @@ import {UserPublicInfo} from '../models/UserPublicInfo';
 import {AuthService} from './auth.service';
 import {Router} from '@angular/router';
 import {TextAudioIndex} from '../models/textAudioIndex';
+import {Avatar} from "../models/avatar";
 
 @Injectable({
   providedIn: 'root'
@@ -49,6 +50,10 @@ export class ApiService {
 
   createUser(user: User): Observable<any> {
     return this.http.post(this.url + 'createUser', user);
+  }
+
+  createAvatar(avatar: Avatar): Observable<any> {
+    return this.http.post(this.url + 'createAvatar', avatar);
   }
 
   createUserAndTextAudioIndex(userAndTextAudioIndex: UserAndTextAudioIndex): Observable<any> {

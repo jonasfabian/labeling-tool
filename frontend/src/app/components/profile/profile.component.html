@@ -1,6 +1,9 @@
 <div style="margin: 15px;">
   <mat-card id="header-card">
     <h1>Your Profile</h1>
+    <input style="display: none;" type="file" (change)="onFileChanged($event)" accept=".png, .jpg" #fileInput>
+    <mat-button-toggle (click)="fileInput.click()">Upload Avatar</mat-button-toggle>
+    <mat-button-toggle (click)="onUpload()">Upload</mat-button-toggle>
   </mat-card>
 </div>
 <div style="height: calc(100% - 330px);">

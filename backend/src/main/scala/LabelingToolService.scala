@@ -2,12 +2,12 @@ import java.io.File
 
 import akka.http.scaladsl.marshalling.ToResponseMarshallable
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
-import models.{Audio, EmailPassword, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User, UserAndTextAudioIndex, UserPublicInfo}
+import models.{Audio, Avatar, EmailPassword, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User, UserAndTextAudioIndex, UserPublicInfo}
 import com.typesafe.config.Config
 import org.jooq.{DSLContext, Field}
 import org.jooq.impl.DSL
 import jooq.db.Tables._
-import jooq.db.tables.records.{AudioRecord, TextaudioindexRecord, TranscriptRecord, UserRecord, UserandtextaudioindexRecord}
+import jooq.db.tables.records.{AudioRecord, AvatarRecord, TextaudioindexRecord, TranscriptRecord, UserRecord, UserandtextaudioindexRecord}
 import org.mindrot.jbcrypt.BCrypt
 
 class LabelingToolService(config: Config) {
@@ -166,6 +166,12 @@ class LabelingToolService(config: Config) {
     ()
   })
 
+  def createAvatar(avatar: Avatar): Unit = withDslContext(dslContext => {
+    val rec = avatarToRecord(new Avatar(avatar.id, avatar.userId, avatar.avatar))
+    dslContext.executeInsert(rec)
+    ()
+  })
+
   def createUserAndTextAudioIndex(userAndTextAudioIndex: UserAndTextAudioIndex): Unit = withDslContext(dslContext => {
     val rec = userAndTextAudioIndexToRecord(new UserAndTextAudioIndex(userAndTextAudioIndex.id, userAndTextAudioIndex.userId, userAndTextAudioIndex.textAudioIndexId))
     dslContext.executeInsert(rec)
@@ -218,6 +224,13 @@ class LabelingToolService(config: Config) {
     val rec = new AudioRecord()
     rec.setPath(t.path)
     rec.setFileid(t.fileId)
+    rec
+  }
+
+  def avatarToRecord(avatar: Avatar): AvatarRecord = {
+    val rec = new AvatarRecord()
+    rec.setUserid(avatar.userId)
+    rec.setAvatar(avatar.avatar)
     rec
   }
 

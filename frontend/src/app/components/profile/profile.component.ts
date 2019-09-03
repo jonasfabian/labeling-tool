@@ -7,6 +7,8 @@ import {TextAudioIndex} from '../../models/textAudioIndex';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
+import {HttpClient} from '@angular/common/http';
+import {Avatar} from '../../models/avatar';
 
 @Component({
   selector: 'app-profile',
@@ -18,7 +20,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private http: HttpClient
   ) {
   }
 
@@ -28,6 +31,12 @@ export class ProfileComponent implements OnInit {
   dataSource = new MatTableDataSource<TextAudioIndex>();
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
+
+  selectedFile: Blob;
+
+  fileByteArray: Array<number> = [];
+
+  yeet: any;
 
   ngOnInit() {
     this.user = this.authService.loggedInUser;
@@ -42,5 +51,23 @@ export class ProfileComponent implements OnInit {
           return data.labeled.toString().toLowerCase().includes(filter);
         };
       });
+  }
+
+  onFileChanged(event): void {
+    const reader = new FileReader();
+    this.selectedFile = event.target.files[0];
+    reader.readAsArrayBuffer(this.selectedFile);
+    reader.onloadend = () => {
+      // @ts-ignore
+      this.yeet = new Int8Array(reader.result);
+      this.yeet.map(l => {
+        this.fileByteArray.push(l);
+      });
+    };
+  }
+
+  onUpload(): void {
+    this.http.post('http://localhost:8080/api/match/createAvatar', new Avatar(-1, this.user.id, this.fileByteArray)).subscribe(_ => {
+    });
   }
 }
