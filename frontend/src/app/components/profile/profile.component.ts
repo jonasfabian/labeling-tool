@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ApiService} from '../../services/api.service';
 import {UserPublicInfo} from '../../models/UserPublicInfo';
 import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {TextAudioIndex} from '../../models/textAudioIndex';
+import {MatTableDataSource} from '@angular/material/table';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
 
 @Component({
   selector: 'app-profile',
@@ -21,9 +24,23 @@ export class ProfileComponent implements OnInit {
 
   user = new UserPublicInfo(-1, '', '', '');
   textAudioIndexArray: Array<TextAudioIndex> = [];
+  displayedColumns = ['id', 'samplingRate', 'textStartPos', 'textEndPos', 'audioStartPos', 'audioEndPos', 'speakerKey', 'labeled', 'correct', 'wrong', 'transcriptFileId'];
+  dataSource = new MatTableDataSource<TextAudioIndex>();
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   ngOnInit() {
     this.user = this.authService.loggedInUser;
-    this.apiService.getCheckedTextAudioIndexesByUser(this.authService.loggedInUser.id).subscribe(l => this.textAudioIndexArray = l);
+    this.apiService.getCheckedTextAudioIndexesByUser(this.authService.loggedInUser.id).subscribe(l => {
+        this.textAudioIndexArray = l;
+        this.dataSource = new MatTableDataSource<TextAudioIndex>(l);
+        this.dataSource.sort = this.sort;
+      }, () => {
+      },
+      () => {
+        this.dataSource.filterPredicate = (data, filter: string): boolean => {
+          return data.labeled.toString().toLowerCase().includes(filter);
+        };
+      });
   }
 }
