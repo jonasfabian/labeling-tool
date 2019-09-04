@@ -2,12 +2,12 @@ import java.io.File
 
 import akka.http.scaladsl.marshalling.ToResponseMarshallable
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
-import models.{Audio, EmailPassword, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User, UserAndTextAudioIndex, UserPublicInfo}
+import models.{Audio, Avatar, EmailPassword, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User, UserAndTextAudioIndex, UserPublicInfo}
 import com.typesafe.config.Config
 import org.jooq.{DSLContext, Field}
 import org.jooq.impl.DSL
 import jooq.db.Tables._
-import jooq.db.tables.records.{AudioRecord, TextaudioindexRecord, TranscriptRecord, UserRecord, UserandtextaudioindexRecord}
+import jooq.db.tables.records.{AudioRecord, AvatarRecord, TextaudioindexRecord, TranscriptRecord, UserRecord, UserandtextaudioindexRecord}
 import org.mindrot.jbcrypt.BCrypt
 
 class LabelingToolService(config: Config) {
@@ -98,6 +98,13 @@ class LabelingToolService(config: Config) {
     dslContext.selectFrom(TRANSCRIPT).fetchArray().map(m => Transcript(m.getId, m.getText, m.getFileid))
   })
 
+  def getAvatar(userId: Integer): Avatar = withDslContext(dslContext => {
+    dslContext.select()
+      .from(AVATAR)
+      .where(AVATAR.USERID.eq(userId))
+      .fetchOne().map(m => Avatar(m.get(AVATAR.ID).toInt, m.get(AVATAR.USERID).toInt, m.get(AVATAR.AVATAR_)))
+  })
+
   def getNonLabeledDataIndexes(labeledType: Integer): TextAudioIndexWithText = withDslContext(dslContext => {
     dslContext.select(
       TEXTAUDIOINDEX.ID, TEXTAUDIOINDEX.SAMPLINGRATE, TEXTAUDIOINDEX.TEXTSTARTPOS, TEXTAUDIOINDEX.TEXTENDPOS, TEXTAUDIOINDEX.AUDIOSTARTPOS, TEXTAUDIOINDEX.AUDIOENDPOS,
@@ -166,6 +173,15 @@ class LabelingToolService(config: Config) {
     ()
   })
 
+  def createAvatar(avatar: Avatar): Unit = withDslContext(dslContext => {
+    dslContext.delete(AVATAR)
+      .where(AVATAR.USERID.eq(avatar.userId))
+      .execute()
+    val rec = avatarToRecord(new Avatar(avatar.id, avatar.userId, avatar.avatar))
+    dslContext.executeInsert(rec)
+    ()
+  })
+
   def createUserAndTextAudioIndex(userAndTextAudioIndex: UserAndTextAudioIndex): Unit = withDslContext(dslContext => {
     val rec = userAndTextAudioIndexToRecord(new UserAndTextAudioIndex(userAndTextAudioIndex.id, userAndTextAudioIndex.userId, userAndTextAudioIndex.textAudioIndexId))
     dslContext.executeInsert(rec)
@@ -218,6 +234,13 @@ class LabelingToolService(config: Config) {
     val rec = new AudioRecord()
     rec.setPath(t.path)
     rec.setFileid(t.fileId)
+    rec
+  }
+
+  def avatarToRecord(avatar: Avatar): AvatarRecord = {
+    val rec = new AvatarRecord()
+    rec.setUserid(avatar.userId)
+    rec.setAvatar(avatar.avatar)
     rec
   }
 

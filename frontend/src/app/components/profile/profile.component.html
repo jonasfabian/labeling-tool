@@ -1,27 +1,83 @@
 <div style="margin: 15px;">
   <mat-card id="header-card">
-    <h1>Your Profile</h1>
-  </mat-card>
-</div>
-<div>
-  <mat-card style="margin: 15px;">
-    <div>
-      First name:  {{user.firstName}}
-    </div>
-    <div>
-      Last name:  {{user.lastName}}
-    </div>
-    <div>
-      Email:  {{user.email}}
-    </div>
+    <ng-container *ngIf="source !== ''">
+      <img style="width: 260px; height: 260px;" [src]="source">
+    </ng-container>
+    <ng-container *ngIf="source === ''">
+      <app-avatar [user]="user"></app-avatar>
+    </ng-container>
+    <mat-tab-group style="width: calc(100% - 280px); float: right;">
+      <mat-tab label="Information">
+        <ng-container *ngIf="!editProfile">
+          <mat-list>
+            <mat-list-item>
+              <span>First name: {{user.firstName}}</span>
+              <mat-icon (click)="editProfile = true">edit</mat-icon>
+            </mat-list-item>
+            <mat-list-item>Last name: {{user.lastName}}</mat-list-item>
+            <mat-list-item>Email: {{user.email}}</mat-list-item>
+          </mat-list>
+        </ng-container>
+        <ng-container *ngIf="editProfile">
+          <input style="display: none;" type="file" (change)="onFileChanged($event)" accept=".png, .jpg" #fileInput>
+          <mat-button-toggle (click)="fileInput.click()">Upload Avatar</mat-button-toggle>
+        </ng-container>
+      </mat-tab>
+      <mat-tab label="Avatar"> Content 2</mat-tab>
+      <mat-tab label="Account Settings"> Content 3</mat-tab>
+    </mat-tab-group>
   </mat-card>
 </div>
 <div style="height: calc(100% - 330px);">
-  <mat-card style="margin: 15px; height: calc(100% - 40px);">
-    <ng-container *ngFor="let t of textAudioIndexArray">
-      <div>
-        <span>{{t.audioEndPos}}</span>
-      </div>
-    </ng-container>
+  <mat-card style="margin: 15px; height: calc(100% - 105px);">
+    <table mat-table [dataSource]="dataSource" matSort id="overview-table">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+        <td mat-cell *matCellDef="let element">{{element.id}}</td>
+      </ng-container>
+      <ng-container matColumnDef="samplingRate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Sampling Rate</th>
+        <td mat-cell *matCellDef="let element">{{element.samplingRate}}</td>
+      </ng-container>
+      <ng-container matColumnDef="textStartPos">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Text Starting Position</th>
+        <td mat-cell *matCellDef="let element">{{element.textStartPos}}</td>
+      </ng-container>
+      <ng-container matColumnDef="textEndPos">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Text Ending Position</th>
+        <td mat-cell *matCellDef="let element">{{element.textEndPos}}</td>
+      </ng-container>
+      <ng-container matColumnDef="audioStartPos">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Audio Starting Position</th>
+        <td mat-cell *matCellDef="let element">{{element.audioStartPos}}</td>
+      </ng-container>
+      <ng-container matColumnDef="audioEndPos">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Audio Ending Position</th>
+        <td mat-cell *matCellDef="let element">{{element.audioEndPos}}</td>
+      </ng-container>
+      <ng-container matColumnDef="speakerKey">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Speaker Key</th>
+        <td mat-cell *matCellDef="let element">{{element.speakerKey}}</td>
+      </ng-container>
+      <ng-container matColumnDef="labeled">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Labeled</th>
+        <td mat-cell *matCellDef="let element">{{element.labeled | IntToBooleanPipe}}</td>
+      </ng-container>
+      <ng-container matColumnDef="correct">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Correct</th>
+        <td mat-cell *matCellDef="let element">{{element.correct}}</td>
+      </ng-container>
+      <ng-container matColumnDef="wrong">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Wrong</th>
+        <td mat-cell *matCellDef="let element">{{element.wrong}}</td>
+      </ng-container>
+      <ng-container matColumnDef="transcriptFileId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Transcript File ID</th>
+        <td mat-cell *matCellDef="let element">{{element.transcriptFileId}}</td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons></mat-paginator>
   </mat-card>
 </div>

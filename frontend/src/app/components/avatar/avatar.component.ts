@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {UserPublicInfo} from '../../models/UserPublicInfo';
 import stringToColor from '../../calculations/stringToColor';
+import {ApiService} from '../../services/api.service';
 
 @Component({
   selector: 'app-avatar',
@@ -9,16 +10,22 @@ import stringToColor from '../../calculations/stringToColor';
 })
 export class AvatarComponent implements OnInit {
 
-  constructor() {
+  constructor(
+    private apiService: ApiService
+  ) {
   }
 
   @Input() user: UserPublicInfo;
   initials = '';
   color = '';
+  source = '';
 
   ngOnInit() {
     this.generateProfileImage();
     this.generateColor();
+    this.apiService.getAvatar(this.user.id).subscribe(a => {
+      this.source = 'data:image/png;base64,' + btoa(String.fromCharCode.apply(null, new Uint8Array(a.avatar)));
+    });
   }
 
   generateProfileImage(): void {
