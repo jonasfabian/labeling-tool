@@ -105,7 +105,6 @@ export class CheckComponent implements OnInit {
   }
 
   play(): void {
-    console.log(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
     this.resetAudioProgress();
     this.calculateAudioPlayerStatus();
     if (!this.isPlaying) {
