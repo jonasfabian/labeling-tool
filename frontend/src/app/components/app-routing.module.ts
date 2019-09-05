@@ -10,6 +10,7 @@ import {RegisterComponent} from './register/register.component';
 import {LoginComponent} from './login/login.component';
 import {AuthGuardService} from '../guards/auth-guard.service';
 import {ProfileComponent} from './profile/profile.component';
+import {ForumComponent} from "./forum/forum.component";
 
 const routes: Routes = [
   {
@@ -47,6 +48,11 @@ const routes: Routes = [
       {
         path: 'profile',
         component: ProfileComponent,
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: 'forum',
+        component: ForumComponent,
         canActivate: [AuthGuardService]
       },
       {

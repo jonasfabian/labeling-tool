@@ -12,6 +12,9 @@ import {AuthService} from './auth.service';
 import {Router} from '@angular/router';
 import {TextAudioIndex} from '../models/textAudioIndex';
 import {Avatar} from '../models/avatar';
+import {Chat} from '../models/Chat';
+import {ChatMessage} from '../models/ChatMessage';
+import {ChatMember} from '../models/ChatMember';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +34,7 @@ export class ApiService {
   BASE64_MARKER = ';base64,';
   blobUrl: SafeUrl | string = '';
   showTenMoreQuest = false;
+  userArray: Array<Chat> = [];
 
   getTextAudioIndexes(): Observable<Array<TextAudioIndexWithText>> {
     return this.http.get<Array<TextAudioIndexWithText>>(this.url + 'getTextAudioIndexes');
@@ -54,6 +58,30 @@ export class ApiService {
 
   createUser(user: User): Observable<any> {
     return this.http.post(this.url + 'createUser', user);
+  }
+
+  createChat(chat: Chat): Observable<any> {
+    return this.http.post(this.url + 'createChat', chat);
+  }
+
+  createChatMember(chatMember: ChatMember): Observable<any> {
+    return this.http.post(this.url + 'createChatMember', chatMember);
+  }
+
+  createChatMessage(chatMessage: ChatMessage): Observable<any> {
+    return this.http.post(this.url + 'createChatMessage', chatMessage);
+  }
+
+  getChats(): Observable<Array<Chat>> {
+    return this.http.get<Array<Chat>>(this.url + 'getChats');
+  }
+
+  getChatsFromUser(userId: number): Observable<Array<Chat>> {
+    return this.http.get<Array<Chat>>(this.url + 'getChatsPerUser?id=' + userId);
+  }
+
+  removeChatMember(chatMember: ChatMember): Observable<any> {
+    return this.http.post(this.url + 'removeChatMember', chatMember);
   }
 
   createAvatar(avatar: Avatar): Observable<any> {

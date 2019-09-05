@@ -2,12 +2,12 @@ import java.io.File
 
 import akka.http.scaladsl.marshalling.ToResponseMarshallable
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
-import models.{Audio, Avatar, EmailPassword, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User, UserAndTextAudioIndex, UserPublicInfo}
+import models.{Audio, Avatar, Chat, ChatMember, ChatMessage, EmailPassword, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User, UserAndTextAudioIndex, UserPublicInfo}
 import com.typesafe.config.Config
 import org.jooq.{DSLContext, Field}
 import org.jooq.impl.DSL
 import jooq.db.Tables._
-import jooq.db.tables.records.{AudioRecord, AvatarRecord, TextaudioindexRecord, TranscriptRecord, UserRecord, UserandtextaudioindexRecord}
+import jooq.db.tables.records.{AudioRecord, AvatarRecord, ChatRecord, ChatmemberRecord, ChatmessageRecord, TextaudioindexRecord, TranscriptRecord, UserRecord, UserandtextaudioindexRecord}
 import org.mindrot.jbcrypt.BCrypt
 
 class LabelingToolService(config: Config) {
@@ -32,6 +32,19 @@ class LabelingToolService(config: Config) {
   // get all
   def getTextAudioIndexes: Array[TextAudioIndex] = withDslContext(dslContext => {
     dslContext.selectFrom(TEXTAUDIOINDEX).fetchArray().map(m => TextAudioIndex(m.getId, m.getSamplingrate, m.getTextstartpos, m.getTextendpos, m.getAudiostartpos, m.getAudioendpos, m.getSpeakerkey, m.getLabeled, m.getCorrect, m.getWrong, m.getTranscriptFileId))
+  })
+
+  def getChats: Array[Chat] = withDslContext(dslContext => {
+    dslContext.selectFrom(CHAT).fetchArray().map(m => Chat(m.getId, m.getChatname))
+  })
+
+  def getChatsPerUser(userId: Int): Array[Chat] = withDslContext(dslContext => {
+    dslContext.select()
+      .from(CHAT)
+      .join(CHATMEMBER)
+      .on(CHAT.ID.eq(CHATMEMBER.CHATID))
+      .and(CHATMEMBER.USERID.eq(userId))
+      .fetchArray().map(m => Chat(m.get(CHAT.ID).toInt, m.get(CHAT.CHATNAME)))
   })
 
   // get one by id
@@ -166,6 +179,31 @@ class LabelingToolService(config: Config) {
     ()
   })
 
+  def createChat(chat: Chat): Unit = withDslContext(dslContext => {
+    val rec = chatToRecord(new Chat(chat.id, chat.chatName))
+    dslContext.executeInsert(rec)
+    ()
+  })
+
+  def createChatMember(chatMember: ChatMember): Unit = withDslContext(dslContext => {
+    val rec = chatMemberToRecord(new ChatMember(chatMember.id, chatMember.chatId, chatMember.userId))
+    dslContext.executeInsert(rec)
+    ()
+  })
+
+  def removeChatMember(chatMember: ChatMember): Unit = withDslContext(dslContext => {
+    dslContext.delete(CHATMEMBER)
+      .where(CHATMEMBER.USERID.eq(chatMember.userId))
+      .and(CHATMEMBER.CHATID.eq(chatMember.chatId))
+      .execute()
+  })
+
+  def createChatMessage(chatMessage: ChatMessage): Unit = withDslContext(dslContext => {
+    val rec = chatMessageToRecord(new ChatMessage(chatMessage.id, chatMessage.chatMemberId, chatMessage.message))
+    dslContext.executeInsert(rec)
+    ()
+  })
+
   def createUser(user: User): Unit = withDslContext(dslContext => {
     val hashedPw = BCrypt.hashpw(user.password, BCrypt.gensalt())
     val rec = userToRecord(new User(user.id, user.firstName, user.lastName, user.email, user.username, user.avatarVersion, hashedPw))
@@ -232,6 +270,26 @@ class LabelingToolService(config: Config) {
     val rec = new TranscriptRecord()
     rec.setText(t.text)
     rec.setFileid(t.fileId)
+    rec
+  }
+
+  def chatToRecord(c: Chat): ChatRecord = {
+    val rec = new ChatRecord()
+    rec.setChatname(c.chatName)
+    rec
+  }
+
+  def chatMemberToRecord(c: ChatMember): ChatmemberRecord = {
+    val rec = new ChatmemberRecord()
+    rec.setChatid(c.chatId)
+    rec.setUserid(c.userId)
+    rec
+  }
+
+  def chatMessageToRecord(c: ChatMessage): ChatmessageRecord = {
+    val rec = new ChatmessageRecord()
+    rec.setChatmemberid(c.chatMemberId)
+    rec.setMessage(c.message)
     rec
   }
 

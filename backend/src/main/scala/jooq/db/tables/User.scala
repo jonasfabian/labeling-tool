@@ -61,11 +61,11 @@ extends TableImpl[UserRecord](
 
   val ID : TableField[UserRecord, Integer] = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), "")
 
-  val FIRSTNAME : TableField[UserRecord, String] = createField("firstName", org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), "")
+  val FIRSTNAME : TableField[UserRecord, String] = createField("firstName", org.jooq.impl.SQLDataType.VARCHAR(100), "")
 
-  val LASTNAME : TableField[UserRecord, String] = createField("lastName", org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), "")
+  val LASTNAME : TableField[UserRecord, String] = createField("lastName", org.jooq.impl.SQLDataType.VARCHAR(100), "")
 
-  val EMAIL : TableField[UserRecord, String] = createField("email", org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), "")
+  val EMAIL : TableField[UserRecord, String] = createField("email", org.jooq.impl.SQLDataType.VARCHAR(100), "")
 
   val USERNAME : TableField[UserRecord, String] = createField("username", org.jooq.impl.SQLDataType.VARCHAR(100), "")
 

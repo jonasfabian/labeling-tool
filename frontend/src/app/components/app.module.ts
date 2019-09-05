@@ -28,6 +28,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { AvatarComponent } from './avatar/avatar.component';
 import { CheckMoreComponent } from './check-more/check-more.component';
 import { SessionOverviewComponent } from './session-overview/session-overview.component';
+import { ForumComponent } from './forum/forum.component';
+import { CreateChatComponent } from './create-chat/create-chat.component';
 
 
 @NgModule({
@@ -51,7 +53,9 @@ import { SessionOverviewComponent } from './session-overview/session-overview.co
     ProfileComponent,
     AvatarComponent,
     CheckMoreComponent,
-    SessionOverviewComponent
+    SessionOverviewComponent,
+    ForumComponent,
+    CreateChatComponent
   ],
   imports: [
     BrowserModule,
@@ -73,7 +77,8 @@ import { SessionOverviewComponent } from './session-overview/session-overview.co
   entryComponents: [
     ShortcutComponent,
     CheckMoreComponent,
-    SessionOverviewComponent
+    SessionOverviewComponent,
+    CreateChatComponent
   ]
 })
 export class AppModule {
