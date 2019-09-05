@@ -67,7 +67,11 @@ extends TableImpl[UserRecord](
 
   val EMAIL : TableField[UserRecord, String] = createField("email", org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), "")
 
-  val PASSWORD : TableField[UserRecord, String] = createField("password", org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), "")
+  val USERNAME : TableField[UserRecord, String] = createField("username", org.jooq.impl.SQLDataType.VARCHAR(100), "")
+
+  val AVATARVERSION : TableField[UserRecord, Integer] = createField("avatarVersion", org.jooq.impl.SQLDataType.INTEGER, "")
+
+  val PASSWORD : TableField[UserRecord, String] = createField("password", org.jooq.impl.SQLDataType.VARCHAR(100), "")
 
   def this() = {
     this(DSL.name("user"), null, null, null, null)

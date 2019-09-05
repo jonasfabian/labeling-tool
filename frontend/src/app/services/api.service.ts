@@ -11,7 +11,7 @@ import {UserPublicInfo} from '../models/UserPublicInfo';
 import {AuthService} from './auth.service';
 import {Router} from '@angular/router';
 import {TextAudioIndex} from '../models/textAudioIndex';
-import {Avatar} from "../models/avatar";
+import {Avatar} from '../models/avatar';
 
 @Injectable({
   providedIn: 'root'
@@ -72,6 +72,10 @@ export class ApiService {
     return this.http.post(this.url + 'updateTextAudioIndex', textAudioIndex);
   }
 
+  updateUser(user: UserPublicInfo): Observable<any> {
+    return this.http.post(this.url + 'updateUser', user);
+  }
+
   getAudioFile(fileId: number): Observable<any> {
     return this.http.get(this.url + 'getAudioFile?id=' + fileId, {responseType: 'blob'});
   }
@@ -117,6 +121,6 @@ export class ApiService {
     sessionStorage.clear();
     this.router.navigate(['/labeling-tool/login']);
     this.authService.isAuthenticated = false;
-    this.authService.loggedInUser = new UserPublicInfo(-1, '', '', '');
+    this.authService.loggedInUser = new UserPublicInfo(-1, '', '', '', '', 0);
   }
 }

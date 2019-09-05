@@ -49,6 +49,14 @@ class UserDao(configuration : Configuration) extends DAOImpl[UserRecord, jooq.db
     fetchOne(User.USER.EMAIL, value)
   }
 
+  def fetchByUsername(values : String*) : List[jooq.db.tables.pojos.User] = {
+    fetch(User.USER.USERNAME, values:_*)
+  }
+
+  def fetchByAvatarversion(values : Integer*) : List[jooq.db.tables.pojos.User] = {
+    fetch(User.USER.AVATARVERSION, values:_*)
+  }
+
   def fetchByPassword(values : String*) : List[jooq.db.tables.pojos.User] = {
     fetch(User.USER.PASSWORD, values:_*)
   }

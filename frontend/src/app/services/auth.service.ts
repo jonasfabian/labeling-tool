@@ -11,7 +11,7 @@ export class AuthService {
   }
 
   isAuthenticated = false;
-  loggedInUser = new UserPublicInfo(-1, '', '', '');
+  loggedInUser = new UserPublicInfo(-1, '', '', '', '', 0);
 
   checkAuthenticated(): void {
     if (sessionStorage.getItem('user')) {
@@ -22,7 +22,7 @@ export class AuthService {
           this.isAuthenticated = false;
           location.reload();
         }
-        this.loggedInUser = new UserPublicInfo(r.id, r.firstName, r.lastName, r.email);
+        this.loggedInUser = new UserPublicInfo(r.id, r.firstName, r.lastName, r.email, r.username, r.avatarVersion);
       });
       this.isAuthenticated = true;
     } else {
