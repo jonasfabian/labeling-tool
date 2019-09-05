@@ -11,7 +11,7 @@ import {UserPublicInfo} from '../models/UserPublicInfo';
 import {AuthService} from './auth.service';
 import {Router} from '@angular/router';
 import {TextAudioIndex} from '../models/textAudioIndex';
-import {Avatar} from "../models/avatar";
+import {Avatar} from '../models/avatar';
 
 @Injectable({
   providedIn: 'root'

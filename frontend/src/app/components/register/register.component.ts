@@ -19,7 +19,7 @@ export class RegisterComponent implements OnInit {
   }
 
   registerForm: FormGroup;
-  user: User = new User(-1, '', '', '', '');
+  user: User = new User(-1, '', '', '', '', 0, '');
 
   ngOnInit() {
     this.initForm();
@@ -30,6 +30,7 @@ export class RegisterComponent implements OnInit {
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       email: ['', [Validators.required]],
+      username: ['', [Validators.required]],
       password: ['', [Validators.required]]
     });
   }
@@ -38,6 +39,8 @@ export class RegisterComponent implements OnInit {
     this.user.firstName = this.registerForm.controls.firstName.value;
     this.user.lastName = this.registerForm.controls.lastName.value;
     this.user.email = this.registerForm.controls.email.value;
+    this.user.username = this.registerForm.controls.username.value;
+    this.user.avatarVersion = 0;
     this.user.password = this.registerForm.controls.password.value;
     if (this.registerForm.valid) {
       this.apiService.createUser(this.user).subscribe(_ => {

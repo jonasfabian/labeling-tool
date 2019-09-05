@@ -168,7 +168,7 @@ class LabelingToolService(config: Config) {
 
   def createUser(user: User): Unit = withDslContext(dslContext => {
     val hashedPw = BCrypt.hashpw(user.password, BCrypt.gensalt())
-    val rec = userToRecord(new User(user.id, user.firstName, user.lastName, user.email, hashedPw))
+    val rec = userToRecord(new User(user.id, user.firstName, user.lastName, user.email, user.username, user.avatarVersion, hashedPw))
     dslContext.executeInsert(rec)
     ()
   })
@@ -249,6 +249,8 @@ class LabelingToolService(config: Config) {
     rec.setFirstname(u.firstName)
     rec.setLastname(u.lastName)
     rec.setEmail(u.email)
+    rec.setUsername(u.username)
+    rec.setAvatarversion(u.avatarVersion)
     rec.setPassword(u.password)
     rec
   }

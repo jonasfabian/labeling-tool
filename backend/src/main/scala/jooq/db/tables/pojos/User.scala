@@ -15,6 +15,8 @@ case class User(
   , firstname : String
   , lastname : String
   , email : String
+  , username : String
+  , avatarversion : Integer
   , password : String
 ) extends Serializable {
 
@@ -24,6 +26,8 @@ case class User(
       , value.firstname
       , value.lastname
       , value.email
+      , value.username
+      , value.avatarversion
       , value.password
     )
   }
@@ -44,6 +48,14 @@ case class User(
     this.email
   }
 
+  def getUsername : String = {
+    this.username
+  }
+
+  def getAvatarversion : Integer = {
+    this.avatarversion
+  }
+
   def getPassword : String = {
     this.password
   }
@@ -55,6 +67,8 @@ case class User(
     sb.append(", ").append(firstname)
     sb.append(", ").append(lastname)
     sb.append(", ").append(email)
+    sb.append(", ").append(username)
+    sb.append(", ").append(avatarversion)
     sb.append(", ").append(password)
 
     sb.append(")")

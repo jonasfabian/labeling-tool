@@ -3,6 +3,8 @@ CREATE TABLE IF NOT EXISTS `user` (
     `firstName` VARCHAR (100),
     `lastName` VARCHAR (100),
     `email` VARCHAR (100),
+    `username` VARCHAR(100),
+    `avatarVersion` INT,
     `password` VARCHAR (100),
     PRIMARY KEY (`id`),
     UNIQUE KEY `email` (`email`)
