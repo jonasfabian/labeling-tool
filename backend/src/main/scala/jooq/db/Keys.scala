@@ -77,11 +77,11 @@ object Keys {
     val KEY_AVATAR_PRIMARY : UniqueKey[AvatarRecord] = Internal.createUniqueKey(Avatar.AVATAR, "KEY_avatar_PRIMARY", Avatar.AVATAR.ID)
     val KEY_AVATAR_USERID : UniqueKey[AvatarRecord] = Internal.createUniqueKey(Avatar.AVATAR, "KEY_avatar_userId", Avatar.AVATAR.USERID)
     val KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY : UniqueKey[FlywaySchemaHistoryRecord] = Internal.createUniqueKey(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, "KEY_flyway_schema_history_PRIMARY", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK)
-    val KEY_TEXTAUDIOINDEX_PRIMARY : UniqueKey[TextaudioindexRecord] = Internal.createUniqueKey(Textaudioindex.TEXTAUDIOINDEX, "KEY_textAudioIndex_PRIMARY", Textaudioindex.TEXTAUDIOINDEX.ID)
+    val KEY_TEXTAUDIOINDEX_PRIMARY : UniqueKey[TextaudioindexRecord] = Internal.createUniqueKey(Textaudioindex.TEXTAUDIOINDEX, "KEY_textaudioindex_PRIMARY", Textaudioindex.TEXTAUDIOINDEX.ID)
     val KEY_TRANSCRIPT_PRIMARY : UniqueKey[TranscriptRecord] = Internal.createUniqueKey(Transcript.TRANSCRIPT, "KEY_transcript_PRIMARY", Transcript.TRANSCRIPT.ID)
     val KEY_USER_PRIMARY : UniqueKey[UserRecord] = Internal.createUniqueKey(User.USER, "KEY_user_PRIMARY", User.USER.ID)
     val KEY_USER_EMAIL : UniqueKey[UserRecord] = Internal.createUniqueKey(User.USER, "KEY_user_email", User.USER.EMAIL)
-    val KEY_USERANDTEXTAUDIOINDEX_PRIMARY : UniqueKey[UserandtextaudioindexRecord] = Internal.createUniqueKey(Userandtextaudioindex.USERANDTEXTAUDIOINDEX, "KEY_userAndTextAudioIndex_PRIMARY", Userandtextaudioindex.USERANDTEXTAUDIOINDEX.ID)
-    val KEY_USERANDTEXTAUDIOINDEX_UNI : UniqueKey[UserandtextaudioindexRecord] = Internal.createUniqueKey(Userandtextaudioindex.USERANDTEXTAUDIOINDEX, "KEY_userAndTextAudioIndex_uni", Userandtextaudioindex.USERANDTEXTAUDIOINDEX.USERID, Userandtextaudioindex.USERANDTEXTAUDIOINDEX.TEXTAUDIOINDEXID)
+    val KEY_USERANDTEXTAUDIOINDEX_PRIMARY : UniqueKey[UserandtextaudioindexRecord] = Internal.createUniqueKey(Userandtextaudioindex.USERANDTEXTAUDIOINDEX, "KEY_userandtextaudioindex_PRIMARY", Userandtextaudioindex.USERANDTEXTAUDIOINDEX.ID)
+    val KEY_USERANDTEXTAUDIOINDEX_UNI : UniqueKey[UserandtextaudioindexRecord] = Internal.createUniqueKey(Userandtextaudioindex.USERANDTEXTAUDIOINDEX, "KEY_userandtextaudioindex_uni", Userandtextaudioindex.USERANDTEXTAUDIOINDEX.USERID, Userandtextaudioindex.USERANDTEXTAUDIOINDEX.TEXTAUDIOINDEXID)
   }
 }
