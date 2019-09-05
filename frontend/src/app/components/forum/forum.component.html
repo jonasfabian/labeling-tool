@@ -5,7 +5,7 @@
     <mat-button-toggle (click)="createChatMessage()">Send Message</mat-button-toggle>
   </div>
 </mat-card>
-<ng-container *ngFor="let chat of userChatArray">
+<ng-container *ngFor="let chat of apiService.userArray">
   <mat-card style="margin: 15px;">
     <strong>{{chat.chatName}}</strong>
     <mat-icon title="Leave this chat" style="margin-left: 15px; cursor: pointer; float: right;" (click)="removeChatMember(chat.id)">close</mat-icon>

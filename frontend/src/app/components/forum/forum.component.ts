@@ -27,16 +27,18 @@ export class ForumComponent implements OnInit {
   }
 
   allChatsArray: Array<Chat> = [];
-  userChatArray: Array<Chat> = [];
 
   ngOnInit() {
     this.apiService.getChatsFromUser(this.authService.loggedInUser.id).subscribe(c => {
-      this.userChatArray = c;
+      this.apiService.userArray = c;
     });
   }
 
   removeChatMember(chatId: number): void {
-    this.apiService.removeChatMember(new ChatMember(-1, chatId, this.authService.loggedInUser.id)).subscribe();
+    this.apiService.removeChatMember(new ChatMember(-1, chatId, this.authService.loggedInUser.id)).subscribe(l => {
+    }, () => {}, () => {
+      this.apiService.getChatsFromUser(this.authService.loggedInUser.id).subscribe(l => this.apiService.userArray = l);
+    });
   }
 
   openCreateChatDialog(): void {
@@ -62,6 +64,4 @@ export class ForumComponent implements OnInit {
   createChatMessage(): void {
     this.apiService.createChatMessage(new ChatMessage(-1, this.authService.loggedInUser.id, 'This is a test text. Yeet!!!')).subscribe();
   }
-
-
 }

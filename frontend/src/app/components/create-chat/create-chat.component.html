@@ -1,3 +1,6 @@
 <ng-container *ngFor="let or of data">
-  <div>{{or.chatName}}</div>
+  <div>
+    <strong>{{or.chatName}}</strong>
+    <mat-icon style="float: right; cursor: pointer;" (click)="joinChat(or.id)">add</mat-icon>
+  </div>
 </ng-container>

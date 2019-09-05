@@ -14,7 +14,7 @@ import {TextAudioIndex} from '../models/textAudioIndex';
 import {Avatar} from '../models/avatar';
 import {Chat} from '../models/Chat';
 import {ChatMessage} from '../models/ChatMessage';
-import {ChatMember} from "../models/ChatMember";
+import {ChatMember} from '../models/ChatMember';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +34,7 @@ export class ApiService {
   BASE64_MARKER = ';base64,';
   blobUrl: SafeUrl | string = '';
   showTenMoreQuest = false;
+  userArray: Array<Chat> = [];
 
   getTextAudioIndexes(): Observable<Array<TextAudioIndexWithText>> {
     return this.http.get<Array<TextAudioIndexWithText>>(this.url + 'getTextAudioIndexes');
