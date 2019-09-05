@@ -12,6 +12,7 @@ export class AuthService {
 
   isAuthenticated = false;
   loggedInUser = new UserPublicInfo(-1, '', '', '', '', 0);
+  source = '';
 
   checkAuthenticated(): void {
     if (sessionStorage.getItem('user')) {

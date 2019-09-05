@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {UserPublicInfo} from '../../models/UserPublicInfo';
 import stringToColor from '../../calculations/stringToColor';
 import {ApiService} from '../../services/api.service';
-import {AuthService} from "../../services/auth.service";
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-avatar',
@@ -23,7 +23,6 @@ export class AvatarComponent implements OnInit {
   @Input() borderRadius: number;
   initials = '';
   color = '';
-  source = '';
 
   ngOnInit() {
     this.generateProfileImage();
@@ -41,8 +40,12 @@ export class AvatarComponent implements OnInit {
         }]));
         this.authService.checkAuthenticated();
       });
-      this.apiService.getAvatar(this.user.id).subscribe(a => {
-        this.source = 'data:image/png;base64,' + btoa(String.fromCharCode.apply(null, new Uint8Array(a.avatar)));
+      JSON.parse(sessionStorage.getItem('user')).map(u => {
+        if (u.avatarVersion !== 0) {
+          this.apiService.getAvatar(this.user.id).subscribe(a => {
+            this.authService.source = 'data:image/png;base64,' + btoa(String.fromCharCode.apply(null, new Uint8Array(a.avatar)));
+          });
+        }
       });
     }
   }

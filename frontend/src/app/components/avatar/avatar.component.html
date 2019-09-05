@@ -6,5 +6,5 @@
   </div>
 </ng-container>
 <ng-container *ngIf="authService.loggedInUser.avatarVersion !== 0">
-  <img class="avatar" [style.width.px]="size" [style.height.px]="size" [src]="source">
+  <img class="avatar" [style.width.px]="size" [style.height.px]="size" [src]="authService.source">
 </ng-container>

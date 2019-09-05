@@ -1,7 +1,7 @@
 <div style="margin: 15px;">
   <mat-card id="header-card" style="height: 260px;">
     <ng-container *ngIf="authService.loggedInUser.avatarVersion !== 0">
-      <img style="width: 260px; height: 260px;" [src]="source">
+      <img style="width: 260px; height: 260px;" [src]="authService.source">
     </ng-container>
     <ng-container *ngIf="authService.loggedInUser.avatarVersion === 0">
       <app-avatar [size]="260" style="float: left;" [user]="user" [fontSize]="100" [borderRadius]="0"></app-avatar>
