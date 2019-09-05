@@ -11,6 +11,10 @@
         <ng-container *ngIf="!editProfile">
           <mat-list>
             <mat-list-item>
+              <span>Username:</span>&nbsp;
+              <span style="font-weight: bold;">{{user.username}}</span>
+            </mat-list-item>
+            <mat-list-item>
               <span>First name: {{user.firstName}}</span>
               <mat-icon (click)="editProfile = true" style="cursor: pointer; margin-left: 5px">edit</mat-icon>
             </mat-list-item>
@@ -24,8 +28,6 @@
           <mat-button-toggle (click)="editProfile = false">Cancel</mat-button-toggle>
         </ng-container>
       </mat-tab>
-      <mat-tab label="Avatar"> Content 2</mat-tab>
-      <mat-tab label="Account Settings"> Content 3</mat-tab>
     </mat-tab-group>
   </mat-card>
 </div>
