@@ -71,6 +71,14 @@ export class ApiService {
     return this.http.post(this.url + 'createChatMessage', chatMessage);
   }
 
+  getChats(): Observable<Array<Chat>> {
+    return this.http.get<Array<Chat>>(this.url + 'getChats');
+  }
+
+  getChatsFromUser(userId: number): Observable<Array<Chat>> {
+    return this.http.get<Array<Chat>>(this.url + 'getChatsPerUser?id=' + userId);
+  }
+
   createAvatar(avatar: Avatar): Observable<any> {
     return this.http.post(this.url + 'createAvatar', avatar);
   }

@@ -34,6 +34,19 @@ class LabelingToolService(config: Config) {
     dslContext.selectFrom(TEXTAUDIOINDEX).fetchArray().map(m => TextAudioIndex(m.getId, m.getSamplingrate, m.getTextstartpos, m.getTextendpos, m.getAudiostartpos, m.getAudioendpos, m.getSpeakerkey, m.getLabeled, m.getCorrect, m.getWrong, m.getTranscriptFileId))
   })
 
+  def getChats: Array[Chat] = withDslContext(dslContext => {
+    dslContext.selectFrom(CHAT).fetchArray().map(m => Chat(m.getId, m.getChatname))
+  })
+
+  def getChatsPerUser(userId: Int): Array[Chat] = withDslContext(dslContext => {
+    dslContext.select()
+      .from(CHAT)
+      .join(CHATMEMBER)
+      .on(CHAT.ID.eq(CHATMEMBER.CHATID))
+      .and(CHATMEMBER.USERID.eq(userId))
+      .fetchArray().map(m => Chat(m.get(CHAT.ID).toInt, m.get(CHAT.CHATNAME)))
+  })
+
   // get one by id
   def getTextAudioIndexById(id: Int): TextAudioIndex = withDslContext(dslContext => {
     dslContext.select()
