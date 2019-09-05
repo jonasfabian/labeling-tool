@@ -43,6 +43,7 @@ export class ProfileComponent implements OnInit {
     this.apiService.getCheckedTextAudioIndexesByUser(this.authService.loggedInUser.id).subscribe(l => {
         this.textAudioIndexArray = l;
         this.dataSource = new MatTableDataSource<TextAudioIndex>(l);
+        this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       }, () => {
       },

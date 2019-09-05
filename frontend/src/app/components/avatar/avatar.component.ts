@@ -16,6 +16,9 @@ export class AvatarComponent implements OnInit {
   }
 
   @Input() user: UserPublicInfo;
+  @Input() size: number;
+  @Input() fontSize: number;
+  @Input() borderRadius: number;
   initials = '';
   color = '';
   source = '';
