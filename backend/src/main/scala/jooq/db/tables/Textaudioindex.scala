@@ -62,17 +62,17 @@ extends TableImpl[TextaudioindexRecord](
 
   val ID : TableField[TextaudioindexRecord, Integer] = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), "")
 
-  val SAMPLINGRATE : TableField[TextaudioindexRecord, Integer] = createField("samplingRate", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.INTEGER)), "")
+  val SAMPLINGRATE : TableField[TextaudioindexRecord, Integer] = createField("samplingRate", org.jooq.impl.SQLDataType.INTEGER, "")
 
-  val TEXTSTARTPOS : TableField[TextaudioindexRecord, Integer] = createField("textStartPos", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.INTEGER)), "")
+  val TEXTSTARTPOS : TableField[TextaudioindexRecord, Integer] = createField("textStartPos", org.jooq.impl.SQLDataType.INTEGER, "")
 
-  val TEXTENDPOS : TableField[TextaudioindexRecord, Integer] = createField("textEndPos", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.INTEGER)), "")
+  val TEXTENDPOS : TableField[TextaudioindexRecord, Integer] = createField("textEndPos", org.jooq.impl.SQLDataType.INTEGER, "")
 
-  val AUDIOSTARTPOS : TableField[TextaudioindexRecord, Double] = createField("audioStartPos", org.jooq.impl.SQLDataType.DOUBLE.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.DOUBLE)), "")
+  val AUDIOSTARTPOS : TableField[TextaudioindexRecord, Double] = createField("audioStartPos", org.jooq.impl.SQLDataType.DOUBLE, "")
 
-  val AUDIOENDPOS : TableField[TextaudioindexRecord, Double] = createField("audioEndPos", org.jooq.impl.SQLDataType.DOUBLE.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.DOUBLE)), "")
+  val AUDIOENDPOS : TableField[TextaudioindexRecord, Double] = createField("audioEndPos", org.jooq.impl.SQLDataType.DOUBLE, "")
 
-  val SPEAKERKEY : TableField[TextaudioindexRecord, Integer] = createField("speakerKey", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.INTEGER)), "")
+  val SPEAKERKEY : TableField[TextaudioindexRecord, Integer] = createField("speakerKey", org.jooq.impl.SQLDataType.INTEGER, "")
 
   val LABELED : TableField[TextaudioindexRecord, Integer] = createField("labeled", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("0", org.jooq.impl.SQLDataType.INTEGER)), "")
 
@@ -80,10 +80,10 @@ extends TableImpl[TextaudioindexRecord](
 
   val WRONG : TableField[TextaudioindexRecord, Integer] = createField("wrong", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("0", org.jooq.impl.SQLDataType.INTEGER)), "")
 
-  val TRANSCRIPT_FILE_ID : TableField[TextaudioindexRecord, Integer] = createField("transcript_file_id", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.INTEGER)), "")
+  val TRANSCRIPT_FILE_ID : TableField[TextaudioindexRecord, Integer] = createField("transcript_file_id", org.jooq.impl.SQLDataType.INTEGER, "")
 
   def this() = {
-    this(DSL.name("textaudioindex"), null, null, null, null)
+    this(DSL.name("textAudioIndex"), null, null, null, null)
   }
 
   def this(alias : String) = {

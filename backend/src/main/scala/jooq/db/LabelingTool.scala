@@ -10,6 +10,9 @@ import java.util.List
 
 import jooq.db.tables.Audio
 import jooq.db.tables.Avatar
+import jooq.db.tables.Chat
+import jooq.db.tables.Chatmember
+import jooq.db.tables.Chatmessage
 import jooq.db.tables.FlywaySchemaHistory
 import jooq.db.tables.Textaudioindex
 import jooq.db.tables.Transcript
@@ -40,6 +43,9 @@ class LabelingTool extends SchemaImpl("labeling-tool", DefaultCatalog.DEFAULT_CA
     return Arrays.asList[Table[_]](
       Audio.AUDIO,
       Avatar.AVATAR,
+      Chat.CHAT,
+      Chatmember.CHATMEMBER,
+      Chatmessage.CHATMESSAGE,
       FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY,
       Textaudioindex.TEXTAUDIOINDEX,
       Transcript.TRANSCRIPT,

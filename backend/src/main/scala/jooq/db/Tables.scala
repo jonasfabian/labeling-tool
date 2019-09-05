@@ -11,6 +11,12 @@ object Tables {
 
   val AVATAR = jooq.db.tables.Avatar.AVATAR
 
+  val CHAT = jooq.db.tables.Chat.CHAT
+
+  val CHATMEMBER = jooq.db.tables.Chatmember.CHATMEMBER
+
+  val CHATMESSAGE = jooq.db.tables.Chatmessage.CHATMESSAGE
+
   val FLYWAY_SCHEMA_HISTORY = jooq.db.tables.FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY
 
   val TEXTAUDIOINDEX = jooq.db.tables.Textaudioindex.TEXTAUDIOINDEX

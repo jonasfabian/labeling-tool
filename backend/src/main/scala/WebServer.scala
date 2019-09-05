@@ -1,18 +1,14 @@
 import akka.actor.ActorSystem
-import akka.http.javadsl.model.MediaType
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.marshalling.ToResponseMarshallable
-import akka.http.scaladsl.model.{HttpEntity, HttpResponse, StatusCode}
+import akka.http.scaladsl.model.StatusCode
 import akka.http.scaladsl.server.{Directives, Route}
 import akka.stream.ActorMaterializer
-import akka.stream.scaladsl.Source
-import akka.util.ByteString
-import models.{Audio, Avatar, EmailPassword, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User, UserAndTextAudioIndex, UserPublicInfo}
+import models.{Audio, Avatar, Chat, ChatMember, ChatMessage, EmailPassword, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User, UserAndTextAudioIndex, UserPublicInfo}
 import com.typesafe.config.{ConfigFactory, ConfigValueFactory}
 import de.heikoseeberger.akkahttpcirce.ErrorAccumulatingCirceSupport
 import io.swagger.annotations.{ApiImplicitParam, ApiImplicitParams, ApiOperation, ApiResponse, ApiResponses}
 import javax.ws.rs.Path
-import jooq.db.tables.pojos.Userandtextaudioindex
 
 import scala.io.StdIn
 
@@ -42,7 +38,7 @@ object WebServer extends App with CorsSupport {
 class LabelingToolRestApi(service: LabelingToolService) extends Directives with ErrorAccumulatingCirceSupport {
   val route = pathPrefix("api") {
     pathPrefix("match") {
-      getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudioIndex ~ getTranscript ~ getTranscripts ~ getAudio ~ getAudioFile ~ getNonLabeledDataIndexes ~ getTenNonLabeledDataIndexes ~ getTextAudioIndexesByLabeledType ~ getLabeledSums ~ getUser ~ createUser ~ checkLogin ~ createUserAndTextAudioIndex ~ getUserByEmail ~ getCheckedTextAudioIndexesByUser ~ createAvatar ~ getAvatar ~ updateUser
+      getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudioIndex ~ getTranscript ~ getTranscripts ~ getAudio ~ getAudioFile ~ getNonLabeledDataIndexes ~ getTenNonLabeledDataIndexes ~ getTextAudioIndexesByLabeledType ~ getLabeledSums ~ getUser ~ createUser ~ checkLogin ~ createUserAndTextAudioIndex ~ getUserByEmail ~ getCheckedTextAudioIndexesByUser ~ createAvatar ~ getAvatar ~ updateUser ~ createChat ~ createChatMember ~ createChatMessage
     }
   }
 
@@ -233,6 +229,36 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
     post {
       entity(as[User]) { user =>
         service.createUser(user)
+        complete("OK")
+      }
+    }
+  }
+
+  @Path("createChat")
+  def createChat: Route = path("createChat") {
+    post {
+      entity(as[Chat]) { chat =>
+        service.createChat(chat)
+        complete("OK")
+      }
+    }
+  }
+
+  @Path("createChatMember")
+  def createChatMember: Route = path("createChatMember") {
+    post {
+      entity(as[ChatMember]) { chatMember =>
+        service.createChatMember(chatMember)
+        complete("OK")
+      }
+    }
+  }
+
+  @Path("createChatMessage")
+  def createChatMessage: Route = path("createChatMessage") {
+    post {
+      entity(as[ChatMessage]) { chatMessage =>
+        service.createChatMessage(chatMessage)
         complete("OK")
       }
     }

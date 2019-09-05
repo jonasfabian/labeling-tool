@@ -12,6 +12,9 @@ import {AuthService} from './auth.service';
 import {Router} from '@angular/router';
 import {TextAudioIndex} from '../models/textAudioIndex';
 import {Avatar} from '../models/avatar';
+import {Chat} from '../models/Chat';
+import {ChatMessage} from '../models/ChatMessage';
+import {ChatMember} from "../models/ChatMember";
 
 @Injectable({
   providedIn: 'root'
@@ -54,6 +57,18 @@ export class ApiService {
 
   createUser(user: User): Observable<any> {
     return this.http.post(this.url + 'createUser', user);
+  }
+
+  createChat(chat: Chat): Observable<any> {
+    return this.http.post(this.url + 'createChat', chat);
+  }
+
+  createChatMember(chatMember: ChatMember): Observable<any> {
+    return this.http.post(this.url + 'createChatMember', chatMember);
+  }
+
+  createChatMessage(chatMessage: ChatMessage): Observable<any> {
+    return this.http.post(this.url + 'createChatMessage', chatMessage);
   }
 
   createAvatar(avatar: Avatar): Observable<any> {

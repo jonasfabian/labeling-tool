@@ -61,12 +61,12 @@ extends TableImpl[UserandtextaudioindexRecord](
 
   val ID : TableField[UserandtextaudioindexRecord, Integer] = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), "")
 
-  val USERID : TableField[UserandtextaudioindexRecord, Integer] = createField("userId", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.INTEGER)), "")
+  val USERID : TableField[UserandtextaudioindexRecord, Integer] = createField("userId", org.jooq.impl.SQLDataType.INTEGER, "")
 
-  val TEXTAUDIOINDEXID : TableField[UserandtextaudioindexRecord, Integer] = createField("textAudioIndexId", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.INTEGER)), "")
+  val TEXTAUDIOINDEXID : TableField[UserandtextaudioindexRecord, Integer] = createField("textAudioIndexId", org.jooq.impl.SQLDataType.INTEGER, "")
 
   def this() = {
-    this(DSL.name("userandtextaudioindex"), null, null, null, null)
+    this(DSL.name("userAndTextAudioIndex"), null, null, null, null)
   }
 
   def this(alias : String) = {
