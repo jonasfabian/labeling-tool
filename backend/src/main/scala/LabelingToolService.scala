@@ -191,6 +191,13 @@ class LabelingToolService(config: Config) {
     ()
   })
 
+  def removeChatMember(chatMember: ChatMember): Unit = withDslContext(dslContext => {
+    dslContext.delete(CHATMEMBER)
+      .where(CHATMEMBER.USERID.eq(chatMember.userId))
+      .and(CHATMEMBER.CHATID.eq(chatMember.chatId))
+      .execute()
+  })
+
   def createChatMessage(chatMessage: ChatMessage): Unit = withDslContext(dslContext => {
     val rec = chatMessageToRecord(new ChatMessage(chatMessage.id, chatMessage.chatMemberId, chatMessage.message))
     dslContext.executeInsert(rec)

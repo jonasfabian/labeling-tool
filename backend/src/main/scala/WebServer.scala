@@ -38,7 +38,7 @@ object WebServer extends App with CorsSupport {
 class LabelingToolRestApi(service: LabelingToolService) extends Directives with ErrorAccumulatingCirceSupport {
   val route = pathPrefix("api") {
     pathPrefix("match") {
-      getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudioIndex ~ getTranscript ~ getTranscripts ~ getAudio ~ getAudioFile ~ getNonLabeledDataIndexes ~ getTenNonLabeledDataIndexes ~ getTextAudioIndexesByLabeledType ~ getLabeledSums ~ getUser ~ createUser ~ checkLogin ~ createUserAndTextAudioIndex ~ getUserByEmail ~ getCheckedTextAudioIndexesByUser ~ createAvatar ~ getAvatar ~ updateUser ~ createChat ~ createChatMember ~ createChatMessage ~ getChats ~ getChatsPerUser
+      getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudioIndex ~ getTranscript ~ getTranscripts ~ getAudio ~ getAudioFile ~ getNonLabeledDataIndexes ~ getTenNonLabeledDataIndexes ~ getTextAudioIndexesByLabeledType ~ getLabeledSums ~ getUser ~ createUser ~ checkLogin ~ createUserAndTextAudioIndex ~ getUserByEmail ~ getCheckedTextAudioIndexesByUser ~ createAvatar ~ getAvatar ~ updateUser ~ createChat ~ createChatMember ~ createChatMessage ~ getChats ~ getChatsPerUser ~ removeChatMember
     }
   }
 
@@ -87,6 +87,16 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
     get {
       parameters("email".as[String] ? "") { email =>
         complete(service.getUserByEmail(email))
+      }
+    }
+  }
+
+  @Path("removeChatMember")
+  def removeChatMember = path("removeChatMember") {
+    post {
+      entity(as[ChatMember]) { t =>
+        service.removeChatMember(t)
+        complete("OK")
       }
     }
   }

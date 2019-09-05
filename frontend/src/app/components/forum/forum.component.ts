@@ -35,6 +35,10 @@ export class ForumComponent implements OnInit {
     });
   }
 
+  removeChatMember(chatId: number): void {
+    this.apiService.removeChatMember(new ChatMember(-1, chatId, this.authService.loggedInUser.id)).subscribe();
+  }
+
   openCreateChatDialog(): void {
     this.apiService.getChats().subscribe(ca => {
       this.allChatsArray = ca;

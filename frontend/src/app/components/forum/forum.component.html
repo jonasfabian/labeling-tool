@@ -8,6 +8,6 @@
 <ng-container *ngFor="let chat of userChatArray">
   <mat-card style="margin: 15px;">
     <strong>{{chat.chatName}}</strong>
-    <mat-icon title="Leave this chat" style="margin-left: 15px; cursor: pointer; float: right;">close</mat-icon>
+    <mat-icon title="Leave this chat" style="margin-left: 15px; cursor: pointer; float: right;" (click)="removeChatMember(chat.id)">close</mat-icon>
   </mat-card>
 </ng-container>

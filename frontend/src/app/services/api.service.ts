@@ -79,6 +79,10 @@ export class ApiService {
     return this.http.get<Array<Chat>>(this.url + 'getChatsPerUser?id=' + userId);
   }
 
+  removeChatMember(chatMember: ChatMember): Observable<any> {
+    return this.http.post(this.url + 'removeChatMember', chatMember);
+  }
+
   createAvatar(avatar: Avatar): Observable<any> {
     return this.http.post(this.url + 'createAvatar', avatar);
   }
