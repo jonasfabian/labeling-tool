@@ -25,7 +25,7 @@ export class ProfileComponent implements OnInit {
   ) {
   }
 
-  user = new UserPublicInfo(-1, '', '', '');
+  user = new UserPublicInfo(-1, '', '', '', '', 0);
   textAudioIndexArray: Array<TextAudioIndex> = [];
   displayedColumns = ['id', 'samplingRate', 'textStartPos', 'textEndPos', 'audioStartPos', 'audioEndPos', 'speakerKey', 'labeled', 'correct', 'wrong', 'transcriptFileId'];
   dataSource = new MatTableDataSource<TextAudioIndex>();
@@ -52,9 +52,11 @@ export class ProfileComponent implements OnInit {
           return data.labeled.toString().toLowerCase().includes(filter);
         };
       });
-    this.apiService.getAvatar(this.user.id).subscribe(a => {
-      this.source = 'data:image/png;base64,' + btoa(String.fromCharCode.apply(null, new Uint8Array(a.avatar)));
-    });
+    if (this.authService.loggedInUser.avatarVersion !== 0) {
+      this.apiService.getAvatar(this.user.id).subscribe(a => {
+        this.source = 'data:image/png;base64,' + btoa(String.fromCharCode.apply(null, new Uint8Array(a.avatar)));
+      });
+    }
   }
 
   onFileChanged(event): void {
@@ -68,10 +70,21 @@ export class ProfileComponent implements OnInit {
         this.yeet.map(l => {
           this.fileByteArray.push(l);
         });
+        this.authService.loggedInUser.avatarVersion++;
         this.http.post('http://localhost:8080/api/match/createAvatar', new Avatar(-1, this.user.id, this.fileByteArray)).subscribe(_ => {
           this.apiService.getAvatar(this.user.id).subscribe(a => {
             this.source = 'data:image/png;base64,' + btoa(String.fromCharCode.apply(null, new Uint8Array(a.avatar)));
             this.editProfile = false;
+            this.apiService.updateUser(this.authService.loggedInUser).subscribe();
+            sessionStorage.setItem('user', JSON.stringify([{
+              id: this.authService.loggedInUser.id,
+              firstName: this.authService.loggedInUser.firstName,
+              lastName: this.authService.loggedInUser.lastName,
+              email: this.authService.loggedInUser.email,
+              username: this.authService.loggedInUser.username,
+              avatarVersion: this.authService.loggedInUser.avatarVersion,
+              time: new Date()
+            }]));
           });
         });
       }
