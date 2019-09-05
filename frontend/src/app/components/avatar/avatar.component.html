@@ -1,10 +1,10 @@
-<ng-container *ngIf="source === ''">
+<ng-container *ngIf="authService.loggedInUser.avatarVersion === 0">
   <div class="avatar" [style.background-color]="color" [style.height.px]="size" [style.width.px]="size" [style.font-size.px]="fontSize" [style.border-radius.%]="borderRadius">
   <span>
     {{initials}}
   </span>
   </div>
 </ng-container>
-<ng-container *ngIf="source !== ''">
+<ng-container *ngIf="authService.loggedInUser.avatarVersion !== 0">
   <img class="avatar" [style.width.px]="size" [style.height.px]="size" [src]="source">
 </ng-container>

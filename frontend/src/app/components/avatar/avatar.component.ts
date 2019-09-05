@@ -29,6 +29,18 @@ export class AvatarComponent implements OnInit {
     this.generateProfileImage();
     this.generateColor();
     if (this.authService.loggedInUser.avatarVersion !== 0) {
+      this.apiService.getUserByEmail(this.authService.loggedInUser.email).subscribe(u => {
+        sessionStorage.setItem('user', JSON.stringify([{
+          id: u.id,
+          firstName: u.firstName,
+          lastName: u.lastName,
+          email: u.email,
+          username: u.username,
+          avatarVersion: u.avatarVersion,
+          time: new Date() // TODO set already existing time not new one
+        }]));
+        this.authService.checkAuthenticated();
+      });
       this.apiService.getAvatar(this.user.id).subscribe(a => {
         this.source = 'data:image/png;base64,' + btoa(String.fromCharCode.apply(null, new Uint8Array(a.avatar)));
       });

@@ -39,6 +39,7 @@ export class ProfileComponent implements OnInit {
   editProfile = false;
 
   ngOnInit() {
+    this.authService.checkAuthenticated();
     this.user = this.authService.loggedInUser;
     this.apiService.getCheckedTextAudioIndexesByUser(this.authService.loggedInUser.id).subscribe(l => {
         this.textAudioIndexArray = l;
@@ -60,6 +61,7 @@ export class ProfileComponent implements OnInit {
   }
 
   onFileChanged(event): void {
+    this.fileByteArray = [];
     const reader = new FileReader();
     this.selectedFile = event.target.files[0];
     reader.readAsArrayBuffer(this.selectedFile);
