@@ -53,11 +53,13 @@ export class ProfileComponent implements OnInit {
           return data.labeled.toString().toLowerCase().includes(filter);
         };
       });
-    if (this.authService.loggedInUser.avatarVersion !== 0) {
-      this.apiService.getAvatar(this.user.id).subscribe(a => {
-        this.source = 'data:image/png;base64,' + btoa(String.fromCharCode.apply(null, new Uint8Array(a.avatar)));
-      });
-    }
+    JSON.parse(sessionStorage.getItem('user')).map(r => {
+      if (r.avatarVersion !== 0) {
+        this.apiService.getAvatar(this.user.id).subscribe(a => {
+          this.source = 'data:image/png;base64,' + btoa(String.fromCharCode.apply(null, new Uint8Array(a.avatar)));
+        });
+      }
+    });
   }
 
   onFileChanged(event): void {
