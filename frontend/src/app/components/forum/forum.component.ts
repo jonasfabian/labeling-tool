@@ -61,13 +61,16 @@ export class ForumComponent implements OnInit {
   seeChat(chat: Chat): void {
     this.currentChat = chat;
     this.apiService.getAllMessagesFromChat(chat.id).subscribe(l => this.chatMessages = l);
+    this.apiService.getAllChatMemberFromChat(chat.id).subscribe(m => this.allChatMembers = m);
   }
 
   createChatMessage(chat: Chat): void {
     this.allChatMembers.forEach(m => {
       if (m.userId === this.authService.loggedInUser.id) {
         this.apiService.createChatMessage(new ChatMessage(-1, m.id, this.chatInput.nativeElement.value)).subscribe(() => {
-        }, () => this.apiService.getAllMessagesFromChat(chat.id).subscribe(msg => this.chatMessages = msg));
+        }, () => {
+          this.apiService.getAllMessagesFromChat(chat.id).subscribe(msg => this.chatMessages = msg);
+        }, () => this.apiService.getAllMessagesFromChat(chat.id).subscribe(l => this.chatMessages = l));
       }
     });
   }
