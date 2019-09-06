@@ -49,6 +49,10 @@ export class ApiService {
     return this.http.get<UserPublicInfo>(this.url + 'getUser?id=' + id);
   }
 
+  getUserByUsername(username: string): Observable<UserPublicInfo> {
+    return this.http.get<UserPublicInfo>(this.url + 'getUserByUsername?username=' + username);
+  }
+
   getAllMessagesFromChat(chatId: number): Observable<Array<ChatMessageInfo>> {
     return this.http.get<Array<ChatMessageInfo>>(this.url + 'getAllMessagesFromChat?id=' + chatId);
   }

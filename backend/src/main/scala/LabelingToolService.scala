@@ -81,6 +81,13 @@ class LabelingToolService(config: Config) {
       .fetchOne().map(m => UserPublicInfo(m.get(USER.ID).toInt, m.get(USER.FIRSTNAME), m.get(USER.LASTNAME), m.get(USER.EMAIL), m.get(USER.USERNAME), m.get(USER.AVATARVERSION).toInt))
   })
 
+  def getUserByUsername(username: String): UserPublicInfo = withDslContext(dslContext => {
+    dslContext.select()
+      .from(USER)
+      .where(USER.USERNAME.eq(username))
+      .fetchOne().map(m => UserPublicInfo(m.get(USER.ID).toInt, m.get(USER.FIRSTNAME), m.get(USER.LASTNAME), m.get(USER.EMAIL), m.get(USER.USERNAME), m.get(USER.AVATARVERSION).toInt))
+  })
+
   def getUserByEmail(email: String): UserPublicInfo = withDslContext(dslContext => {
     dslContext.select()
       .from(USER)

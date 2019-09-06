@@ -8,8 +8,10 @@
   <ng-container *ngFor="let chat of apiService.chatArray">
     <mat-card style="width: 100%; margin-bottom: 5px;">
       <strong>{{chat.chatName}}</strong>
-      <mat-button-toggle style="margin-left: 15px; cursor: pointer; float: right;" (click)="joinChat(chat)">Join</mat-button-toggle>
-      <mat-button-toggle style="margin-left: 15px; cursor: pointer; float: right;" (click)="seeChat(chat)">See</mat-button-toggle>
+      <mat-button-toggle style="margin-left: 15px; cursor: pointer; float: right;" (click)="joinChat(chat)">Join
+      </mat-button-toggle>
+      <mat-button-toggle style="margin-left: 15px; cursor: pointer; float: right;" (click)="seeChat(chat)">See
+      </mat-button-toggle>
     </mat-card>
   </ng-container>
 </div>
@@ -19,7 +21,18 @@
       <ng-container *ngIf="currentChat.id != -1">
         <h2>{{currentChat.chatName}}</h2>
         <mat-divider style="width: calc(100% - 30px); margin: 0 15px 0 15px;"></mat-divider>
-        <div *ngFor="let message of chatMessages">{{message.message}}</div>
+        <div style="max-height: calc(100% - 110px); overflow-y: scroll;">
+          <ng-container *ngFor="let message of chatMessages">
+            <div class="chatMessage" *ngIf="message.username === authService.loggedInUser.username"
+                 style="text-align: right; background-color: cornflowerblue; color: black; padding: 5px; border: 1px solid black; border-radius: 10px 10px 0 10px;">
+              {{message.message}}
+            </div>
+            <div *ngIf="message.username !== authService.loggedInUser.username"
+                 style="text-align: left; background-color: darkseagreen; color: black; padding: 5px; border: 1px solid black; border-radius: 10px 10px 10px 0;">
+              {{message.message}}
+            </div>
+          </ng-container>
+        </div>
         <div>
           <label>
             <textarea #chatInput rows="4" cols="50"
