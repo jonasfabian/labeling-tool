@@ -2,7 +2,7 @@ import java.io.File
 
 import akka.http.scaladsl.marshalling.ToResponseMarshallable
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
-import models.{Audio, Avatar, Chat, ChatMember, ChatMessage, EmailPassword, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User, UserAndTextAudioIndex, UserPublicInfo}
+import models.{Audio, Avatar, Chat, ChatMember, ChatMessage, ChatMessageInfo, EmailPassword, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User, UserAndTextAudioIndex, UserPublicInfo}
 import com.typesafe.config.Config
 import org.jooq.{DSLContext, Field}
 import org.jooq.impl.DSL
@@ -47,6 +47,25 @@ class LabelingToolService(config: Config) {
       .fetchArray().map(m => Chat(m.get(CHAT.ID).toInt, m.get(CHAT.CHATNAME)))
   })
 
+  def getAllChatMemberFromChat(chatId: Int): Array[ChatMember] = withDslContext(dslContext => {
+    dslContext.select(CHATMEMBER.ID, CHATMEMBER.CHATID, CHATMEMBER.USERID)
+      .from(CHATMEMBER)
+      .join(CHAT).on(CHAT.ID.eq(CHATMEMBER.CHATID))
+      .and(CHAT.ID.eq(chatId))
+      .fetchArray().map(m => ChatMember(m.get(CHATMEMBER.ID).toInt, m.get(CHATMEMBER.CHATID).toInt, m.get(CHATMEMBER.USERID).toInt))
+  })
+
+  def getAllMessagesFromChat(chatId: Int): Array[ChatMessageInfo] = withDslContext(dslContext => {
+    dslContext.select(
+      CHAT.ID, USER.USERNAME, CHATMESSAGE.MESSAGE
+    ).from(CHATMESSAGE)
+      .join(CHATMEMBER).on(CHATMEMBER.ID.eq(CHATMESSAGE.CHATMEMBERID))
+      .join(CHAT).on(CHAT.ID.eq(CHATMEMBER.CHATID))
+      .and(CHAT.ID.eq(chatId))
+      .join(USER).on(CHATMEMBER.USERID.eq(USER.ID))
+      .fetchArray().map(m => ChatMessageInfo(m.get(CHAT.ID).toInt, m.get(USER.USERNAME), m.get(CHATMESSAGE.MESSAGE)))
+  })
+
   // get one by id
   def getTextAudioIndexById(id: Int): TextAudioIndex = withDslContext(dslContext => {
     dslContext.select()
@@ -59,6 +78,13 @@ class LabelingToolService(config: Config) {
     dslContext.select()
       .from(USER)
       .where(USER.ID.eq(id))
+      .fetchOne().map(m => UserPublicInfo(m.get(USER.ID).toInt, m.get(USER.FIRSTNAME), m.get(USER.LASTNAME), m.get(USER.EMAIL), m.get(USER.USERNAME), m.get(USER.AVATARVERSION).toInt))
+  })
+
+  def getUserByUsername(username: String): UserPublicInfo = withDslContext(dslContext => {
+    dslContext.select()
+      .from(USER)
+      .where(USER.USERNAME.eq(username))
       .fetchOne().map(m => UserPublicInfo(m.get(USER.ID).toInt, m.get(USER.FIRSTNAME), m.get(USER.LASTNAME), m.get(USER.EMAIL), m.get(USER.USERNAME), m.get(USER.AVATARVERSION).toInt))
   })
 

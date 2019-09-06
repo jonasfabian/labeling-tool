@@ -88,7 +88,7 @@ extends TableImpl[ChatmemberRecord](
   override def getSchema : Schema = LabelingTool.LABELING_TOOL
 
   override def getIndexes : List[ Index ] = {
-    return Arrays.asList[ Index ](Indexes.CHATMEMBER_PRIMARY)
+    return Arrays.asList[ Index ](Indexes.CHATMEMBER_PRIMARY, Indexes.CHATMEMBER_UNI)
   }
 
   override def getIdentity : Identity[ChatmemberRecord, Integer] = {
@@ -100,7 +100,7 @@ extends TableImpl[ChatmemberRecord](
   }
 
   override def getKeys : List[ UniqueKey[ChatmemberRecord] ] = {
-    return Arrays.asList[ UniqueKey[ChatmemberRecord] ](Keys.KEY_CHATMEMBER_PRIMARY)
+    return Arrays.asList[ UniqueKey[ChatmemberRecord] ](Keys.KEY_CHATMEMBER_PRIMARY, Keys.KEY_CHATMEMBER_UNI)
   }
 
   override def as(alias : String) : Chatmember = {

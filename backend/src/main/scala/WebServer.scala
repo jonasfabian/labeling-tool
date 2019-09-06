@@ -38,7 +38,7 @@ object WebServer extends App with CorsSupport {
 class LabelingToolRestApi(service: LabelingToolService) extends Directives with ErrorAccumulatingCirceSupport {
   val route = pathPrefix("api") {
     pathPrefix("match") {
-      getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudioIndex ~ getTranscript ~ getTranscripts ~ getAudio ~ getAudioFile ~ getNonLabeledDataIndexes ~ getTenNonLabeledDataIndexes ~ getTextAudioIndexesByLabeledType ~ getLabeledSums ~ getUser ~ createUser ~ checkLogin ~ createUserAndTextAudioIndex ~ getUserByEmail ~ getCheckedTextAudioIndexesByUser ~ createAvatar ~ getAvatar ~ updateUser ~ createChat ~ createChatMember ~ createChatMessage ~ getChats ~ getChatsPerUser ~ removeChatMember
+      getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudioIndex ~ getTranscript ~ getTranscripts ~ getAudio ~ getAudioFile ~ getNonLabeledDataIndexes ~ getTenNonLabeledDataIndexes ~ getTextAudioIndexesByLabeledType ~ getLabeledSums ~ getUser ~ createUser ~ checkLogin ~ createUserAndTextAudioIndex ~ getUserByEmail ~ getCheckedTextAudioIndexesByUser ~ createAvatar ~ getAvatar ~ updateUser ~ createChat ~ createChatMember ~ createChatMessage ~ getChats ~ getChatsPerUser ~ removeChatMember ~ getAllMessagesFromChat ~ getAllChatMemberFromChat ~ getUserByUsername
     }
   }
 
@@ -78,6 +78,33 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
     get {
       parameters("id".as[Int] ? 0) { id =>
         complete(service.getUserById(id))
+      }
+    }
+  }
+
+  @Path("getUserByUsername")
+  def getUserByUsername = path("getUserByUsername") {
+    get {
+      parameters("username".as[String] ? "") { username =>
+        complete(service.getUserByUsername(username))
+      }
+    }
+  }
+
+  @Path("getAllMessagesFromChat")
+  def getAllMessagesFromChat = path("getAllMessagesFromChat") {
+    get {
+      parameters("id".as[Int] ? 0) { chatId =>
+        complete(service.getAllMessagesFromChat(chatId))
+      }
+    }
+  }
+
+  @Path("getAllChatMemberFromChat")
+  def getAllChatMemberFromChat = path("getAllChatMemberFromChat") {
+    get {
+      parameters("id".as[Int] ? 0) { chatId =>
+        complete(service.getAllChatMemberFromChat(chatId))
       }
     }
   }

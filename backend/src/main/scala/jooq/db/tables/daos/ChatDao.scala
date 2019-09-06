@@ -36,4 +36,8 @@ class ChatDao(configuration : Configuration) extends DAOImpl[ChatRecord, jooq.db
   def fetchByChatname(values : String*) : List[jooq.db.tables.pojos.Chat] = {
     fetch(Chat.CHAT.CHATNAME, values:_*)
   }
+
+  def fetchOneByChatname(value : String) : jooq.db.tables.pojos.Chat = {
+    fetchOne(Chat.CHAT.CHATNAME, value)
+  }
 }
