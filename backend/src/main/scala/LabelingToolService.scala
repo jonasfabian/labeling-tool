@@ -47,6 +47,14 @@ class LabelingToolService(config: Config) {
       .fetchArray().map(m => Chat(m.get(CHAT.ID).toInt, m.get(CHAT.CHATNAME)))
   })
 
+  def getAllChatMemberFromChat(chatId: Int): Array[ChatMember] = withDslContext(dslContext => {
+    dslContext.select(CHATMEMBER.ID, CHATMEMBER.CHATID, CHATMEMBER.USERID)
+      .from(CHATMEMBER)
+      .join(CHAT).on(CHAT.ID.eq(CHATMEMBER.CHATID))
+      .and(CHAT.ID.eq(chatId))
+      .fetchArray().map(m => ChatMember(m.get(CHATMEMBER.ID).toInt, m.get(CHATMEMBER.CHATID).toInt, m.get(CHATMEMBER.USERID).toInt))
+  })
+
   def getAllMessagesFromChat(chatId: Int): Array[ChatMessageInfo] = withDslContext(dslContext => {
     dslContext.select(
       CHAT.ID, USER.USERNAME, CHATMESSAGE.MESSAGE

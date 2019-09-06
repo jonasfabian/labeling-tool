@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {Chat} from '../../models/Chat';
 import {ChatMember} from '../../models/ChatMember';
@@ -20,19 +20,19 @@ export class CreateChatComponent implements OnInit {
   ) {
   }
 
+  @ViewChild('chatNameInput', {static: false}) chatNameInput: ElementRef<HTMLInputElement>;
+
   ngOnInit() {
     // @ts-ignore
     this.data = this.data.chats;
   }
 
-  joinChat(chatId: number): void {
-    this.apiService.createChatMember(new ChatMember(-1, chatId, this.authService.loggedInUser.id)).subscribe(l => {
+  createChat(): void {
+    this.apiService.createChat(new Chat(-1, this.chatNameInput.nativeElement.value)).subscribe(() => {
+      this.close();
     }, () => {
     }, () => {
-      this.apiService.getChatsFromUser(this.authService.loggedInUser.id).subscribe(l => {
-        this.apiService.userArray = l;
-        this.close();
-      });
+      this.apiService.getChats().subscribe(c => this.apiService.chatArray = c);
     });
   }
 

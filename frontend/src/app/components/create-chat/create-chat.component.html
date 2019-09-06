@@ -1,6 +1,4 @@
-<ng-container *ngFor="let or of data">
-  <div>
-    <strong>{{or.chatName}}</strong>
-    <mat-icon style="float: right; cursor: pointer;" (click)="joinChat(or.id)">add</mat-icon>
-  </div>
-</ng-container>
+<div>
+  <input type="text" placeholder="Chat name" #chatNameInput>
+  <mat-button-toggle [disabled]="chatNameInput.value.length < 3" (click)="createChat()">Create</mat-button-toggle>
+</div>

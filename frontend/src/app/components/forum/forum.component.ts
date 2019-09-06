@@ -28,21 +28,13 @@ export class ForumComponent implements OnInit {
   }
 
   allChatsArray: Array<Chat> = [];
+  allChatMembers: Array<ChatMember> = [];
   chatMessages: Array<ChatMessageInfo> = [];
   currentChat = new Chat(-1, '');
   @ViewChild('chatInput', {static: false}) chatInput: ElementRef<HTMLInputElement>;
 
   ngOnInit() {
-    this.apiService.getChatsFromUser(this.authService.loggedInUser.id).subscribe(c => {
-      this.apiService.userArray = c;
-    });
-  }
-
-  removeChatMember(chatId: number): void {
-    this.apiService.removeChatMember(new ChatMember(-1, chatId, this.authService.loggedInUser.id)).subscribe(l => {
-    }, () => {}, () => {
-      this.apiService.getChatsFromUser(this.authService.loggedInUser.id).subscribe(l => this.apiService.userArray = l);
-    });
+    this.apiService.getChats().subscribe(c => this.apiService.chatArray = c);
   }
 
   openCreateChatDialog(): void {
@@ -57,23 +49,21 @@ export class ForumComponent implements OnInit {
     });
   }
 
-  createChat(): void {
-    this.apiService.createChat(new Chat(-1, 'Stein')).subscribe();
-  }
-
-  createChatMember(chat: Chat): void {
-    this.chatMessages = [];
+  joinChat(chat: Chat): void {
     this.apiService.createChatMember(new ChatMember(-1, chat.id, this.authService.loggedInUser.id)).subscribe(() => {
       this.currentChat = chat;
-    }, () => {}, () => {
-      this.apiService.getAllMessagesFromChat(chat.id).subscribe(l => this.chatMessages = l);
-    });
+    }, () => {
+      this.currentChat = chat;
+      this.apiService.getAllChatMemberFromChat(chat.id).subscribe(l => this.allChatMembers = l)
+    }, () => this.apiService.getAllChatMemberFromChat(chat.id).subscribe(l => this.allChatMembers = l));
   }
 
-  createChatMessage(): void {
+  createChatMessage(chat: Chat): void {
     this.apiService.createChatMessage(new ChatMessage(-1, this.authService.loggedInUser.id, this.chatInput.nativeElement.value)).subscribe(() => {
-    }, () => {}, () => {
+    }, () => {
+    }, () => {
       this.apiService.getAllMessagesFromChat(chat.id).subscribe(l => this.chatMessages = l);
+      this.apiService.getAllChatMemberFromChat(chat.id).subscribe(l => this.allChatMembers = l);
     });
   }
 }

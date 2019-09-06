@@ -35,7 +35,7 @@ export class ApiService {
   BASE64_MARKER = ';base64,';
   blobUrl: SafeUrl | string = '';
   showTenMoreQuest = false;
-  userArray: Array<Chat> = [];
+  chatArray: Array<Chat> = [];
 
   getTextAudioIndexes(): Observable<Array<TextAudioIndexWithText>> {
     return this.http.get<Array<TextAudioIndexWithText>>(this.url + 'getTextAudioIndexes');
@@ -51,6 +51,10 @@ export class ApiService {
 
   getAllMessagesFromChat(chatId: number): Observable<Array<ChatMessageInfo>> {
     return this.http.get<Array<ChatMessageInfo>>(this.url + 'getAllMessagesFromChat?id=' + chatId);
+  }
+
+  getAllChatMemberFromChat(chatId: number): Observable<Array<ChatMember>> {
+    return this.http.get<Array<ChatMember>>(this.url + 'getAllChatMemberFromChat?id=' + chatId);
   }
 
   getAvatar(id: number): Observable<Avatar> {
