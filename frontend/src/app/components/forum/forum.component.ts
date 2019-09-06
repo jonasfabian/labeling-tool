@@ -50,20 +50,25 @@ export class ForumComponent implements OnInit {
   }
 
   joinChat(chat: Chat): void {
+    this.chatMessages = [];
     this.apiService.createChatMember(new ChatMember(-1, chat.id, this.authService.loggedInUser.id)).subscribe(() => {
       this.currentChat = chat;
     }, () => {
-      this.currentChat = chat;
-      this.apiService.getAllChatMemberFromChat(chat.id).subscribe(l => this.allChatMembers = l)
+      alert('You already joined this chat');
     }, () => this.apiService.getAllChatMemberFromChat(chat.id).subscribe(l => this.allChatMembers = l));
   }
 
+  seeChat(chat: Chat): void {
+    this.currentChat = chat;
+    this.apiService.getAllMessagesFromChat(chat.id).subscribe(l => this.chatMessages = l);
+  }
+
   createChatMessage(chat: Chat): void {
-    this.apiService.createChatMessage(new ChatMessage(-1, this.authService.loggedInUser.id, this.chatInput.nativeElement.value)).subscribe(() => {
-    }, () => {
-    }, () => {
-      this.apiService.getAllMessagesFromChat(chat.id).subscribe(l => this.chatMessages = l);
-      this.apiService.getAllChatMemberFromChat(chat.id).subscribe(l => this.allChatMembers = l);
+    this.allChatMembers.forEach(m => {
+      if (m.userId === this.authService.loggedInUser.id) {
+        this.apiService.createChatMessage(new ChatMessage(-1, m.id, this.chatInput.nativeElement.value)).subscribe(() => {
+        }, () => this.apiService.getAllMessagesFromChat(chat.id).subscribe(msg => this.chatMessages = msg));
+      }
     });
   }
 }
