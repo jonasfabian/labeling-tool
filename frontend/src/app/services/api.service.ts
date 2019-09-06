@@ -15,6 +15,7 @@ import {Avatar} from '../models/avatar';
 import {Chat} from '../models/Chat';
 import {ChatMessage} from '../models/ChatMessage';
 import {ChatMember} from '../models/ChatMember';
+import {ChatMessageInfo} from "../models/ChatMessageInfo";
 
 @Injectable({
   providedIn: 'root'
@@ -46,6 +47,10 @@ export class ApiService {
 
   getUser(id: number): Observable<UserPublicInfo> {
     return this.http.get<UserPublicInfo>(this.url + 'getUser?id=' + id);
+  }
+
+  getAllMessagesFromChat(chatId: number): Observable<Array<ChatMessageInfo>> {
+    return this.http.get<Array<ChatMessageInfo>>(this.url + 'getAllMessagesFromChat?id=' + chatId);
   }
 
   getAvatar(id: number): Observable<Avatar> {

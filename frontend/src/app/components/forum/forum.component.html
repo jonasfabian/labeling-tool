@@ -2,12 +2,35 @@
   <h2>Forum</h2>
   <div>
     <mat-button-toggle (click)="openCreateChatDialog()">Create Chat</mat-button-toggle>
-    <mat-button-toggle (click)="createChatMessage()">Send Message</mat-button-toggle>
   </div>
 </mat-card>
-<ng-container *ngFor="let chat of apiService.userArray">
-  <mat-card style="margin: 15px;">
-    <strong>{{chat.chatName}}</strong>
-    <mat-icon title="Leave this chat" style="margin-left: 15px; cursor: pointer; float: right;" (click)="removeChatMember(chat.id)">close</mat-icon>
-  </mat-card>
+<div style="margin: 0 0 15px 15px; width: calc(50% - 600px); float: left;">
+  <ng-container *ngFor="let chat of apiService.userArray">
+    <mat-card style="width: 100%; margin-bottom: 5px;">
+      <strong>{{chat.chatName}}</strong>
+      <mat-icon title="Leave this chat" style="margin-left: 15px; cursor: pointer; float: right; font-size: 20px;"
+                (click)="removeChatMember(chat.id)">close
+      </mat-icon>
+      <mat-icon style="margin-left: 15px; cursor: pointer; float: right;" (click)="createChatMember(chat)">chat</mat-icon>
+    </mat-card>
+  </ng-container>
+</div>
+<ng-container>
+  <div style="margin: 0 46px 15px 0; float: right; width: calc(50% + 492px); height: calc(100% - 270px);">
+    <mat-card style="width: 100%; height: 100%;">
+      <ng-container *ngIf="currentChat.id != -1">
+        <h2>{{currentChat.chatName}}</h2>
+        <mat-divider style="width: calc(100% - 30px); margin: 0 15px 0 15px;"></mat-divider>
+        <ng-container *ngFor="let message of chatMessages">
+          <div>{{message.message}}</div>
+        </ng-container>
+        <div>
+          <label>
+            <textarea #chatInput rows="4" cols="50" style="margin: 0px; height: 44px; width: calc(100% - 180px); border-radius: 10px; position: absolute; bottom: 15px; resize: none;"></textarea>
+          </label>
+          <mat-button-toggle style="position: absolute; right: 15px; bottom: 15px;" (click)="createChatMessage()">Send Message</mat-button-toggle>
+        </div>
+      </ng-container>
+    </mat-card>
+  </div>
 </ng-container>

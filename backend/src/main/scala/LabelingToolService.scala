@@ -2,7 +2,7 @@ import java.io.File
 
 import akka.http.scaladsl.marshalling.ToResponseMarshallable
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
-import models.{Audio, Avatar, Chat, ChatMember, ChatMessage, EmailPassword, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User, UserAndTextAudioIndex, UserPublicInfo}
+import models.{Audio, Avatar, Chat, ChatMember, ChatMessage, ChatMessageInfo, EmailPassword, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User, UserAndTextAudioIndex, UserPublicInfo}
 import com.typesafe.config.Config
 import org.jooq.{DSLContext, Field}
 import org.jooq.impl.DSL
@@ -45,6 +45,17 @@ class LabelingToolService(config: Config) {
       .on(CHAT.ID.eq(CHATMEMBER.CHATID))
       .and(CHATMEMBER.USERID.eq(userId))
       .fetchArray().map(m => Chat(m.get(CHAT.ID).toInt, m.get(CHAT.CHATNAME)))
+  })
+
+  def getAllMessagesFromChat(chatId: Int): Array[ChatMessageInfo] = withDslContext(dslContext => {
+    dslContext.select(
+      CHAT.ID, USER.USERNAME, CHATMESSAGE.MESSAGE
+    ).from(CHATMESSAGE)
+      .join(CHATMEMBER).on(CHATMEMBER.ID.eq(CHATMESSAGE.CHATMEMBERID))
+      .join(CHAT).on(CHAT.ID.eq(CHATMEMBER.CHATID))
+      .and(CHAT.ID.eq(chatId))
+      .join(USER).on(CHATMEMBER.USERID.eq(USER.ID))
+      .fetchArray().map(m => ChatMessageInfo(m.get(CHAT.ID).toInt, m.get(USER.USERNAME), m.get(CHATMESSAGE.MESSAGE)))
   })
 
   // get one by id
