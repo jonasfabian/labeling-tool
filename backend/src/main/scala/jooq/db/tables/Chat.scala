@@ -61,7 +61,7 @@ extends TableImpl[ChatRecord](
 
   val ID : TableField[ChatRecord, Integer] = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), "")
 
-  val CHATNAME : TableField[ChatRecord, String] = createField("chatName", org.jooq.impl.SQLDataType.VARCHAR(100), "")
+  val CHATNAME : TableField[ChatRecord, String] = createField("chatName", org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), "")
 
   def this() = {
     this(DSL.name("chat"), null, null, null, null)
