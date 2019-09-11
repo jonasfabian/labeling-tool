@@ -23,6 +23,7 @@ export class ContentComponent implements OnInit {
   ) {
   }
 
+  @ViewChild('hT', {static: true}) hT: ElementRef;
   snip = new AudioSnippet(null, null);
   text: string | ArrayBuffer = '';
   dummyTextAudioIndex = new TextAudioIndexWithText(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '');
@@ -31,8 +32,6 @@ export class ContentComponent implements OnInit {
   selectedText = '';
   textEnd = '';
   loading = false;
-
-  @ViewChild('hT', {static: true}) hT: ElementRef;
 
   ngOnInit() {
     this.textSetup();
@@ -82,13 +81,13 @@ export class ContentComponent implements OnInit {
     });
   }
 
-  showMoreBefore(): void {
+  showMoreTextBefore(): void {
     const begin = this.text.toString().indexOf(this.textBegin);
     const end = this.text.toString().indexOf(this.textBegin) + this.textBegin.length;
     this.textBegin = this.text.slice(begin - 20, end).toString();
   }
 
-  showMoreAfter(): void {
+  showMoreTextAfter(): void {
     const begin = this.text.toString().indexOf(this.textEnd);
     const end = this.text.toString().indexOf(this.textEnd) + this.textEnd.length;
     this.textEnd = this.text.slice(begin, end + 20).toString();

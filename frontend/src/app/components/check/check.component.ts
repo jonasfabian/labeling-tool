@@ -25,7 +25,6 @@ export class CheckComponent implements OnInit {
 
   @ViewChild('carousel', {static: false}) carousel: CarouselComponent;
   @ViewChild('audioPlayer', {static: false}) audioPlayer: ElementRef;
-
   checkIndexArray: Array<CheckIndex> = [];
   available = false;
   isPlaying = false;
@@ -37,9 +36,7 @@ export class CheckComponent implements OnInit {
   numberWrong = 0;
   numberSkipped = 0;
   progress = 0;
-
   panelOpenState = false;
-
   audioFileId = 0;
 
   ngOnInit() {
