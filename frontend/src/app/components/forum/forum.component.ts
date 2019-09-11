@@ -7,8 +7,6 @@ import {ChatMessage} from '../../models/ChatMessage';
 import {CreateChatComponent} from '../create-chat/create-chat.component';
 import {MatDialog} from '@angular/material/dialog';
 import {ChatMessageInfo} from '../../models/ChatMessageInfo';
-import {Observable} from "rxjs";
-import {UserPublicInfo} from "../../models/UserPublicInfo";
 
 export interface Chat {
   id: number;
@@ -39,6 +37,14 @@ export class ForumComponent implements OnInit {
     this.apiService.getChats().subscribe(c => this.apiService.chatArray = c);
   }
 
+  joinChat(chat: Chat): void {
+    this.apiService.createChatMember(new ChatMember(-1, chat.id, this.authService.loggedInUser.id)).subscribe(() => {
+      this.currentChat = chat;
+    }, () => {
+      alert('You already joined this chat');
+    }, () => this.setAllChatMembersFromChat(chat));
+  }
+
   openCreateChatDialog(): void {
     this.apiService.getChats().subscribe(ca => {
       this.allChatsArray = ca;
@@ -51,22 +57,10 @@ export class ForumComponent implements OnInit {
     });
   }
 
-  joinChat(chat: Chat): void {
-    this.apiService.createChatMember(new ChatMember(-1, chat.id, this.authService.loggedInUser.id)).subscribe(() => {
-      this.currentChat = chat;
-    }, () => {
-      alert('You already joined this chat');
-    }, () => this.apiService.getAllChatMemberFromChat(chat.id).subscribe(l => this.allChatMembers = l));
-  }
-
   seeChat(chat: Chat): void {
-    this.currentChat = chat;
-    this.apiService.getAllMessagesFromChat(chat.id).subscribe(l => this.chatMessages = l);
-    this.apiService.getAllChatMemberFromChat(chat.id).subscribe(m => this.allChatMembers = m);
-  }
-
-  returnUser(username: string): Observable<UserPublicInfo> {
-    return this.apiService.getUserByUsername(username);
+    this.setCurrentChat(chat);
+    this.setChatMessages(chat.id);
+    this.setAllChatMembersFromChat(chat);
   }
 
   createChatMessage(chat: Chat): void {
@@ -74,12 +68,28 @@ export class ForumComponent implements OnInit {
       if (m.userId === this.authService.loggedInUser.id) {
         this.apiService.createChatMessage(new ChatMessage(-1, m.id, this.chatInput.nativeElement.value)).subscribe(() => {
         }, () => {
-          this.apiService.getAllMessagesFromChat(chat.id).subscribe(msg => this.chatMessages = msg);
+          this.setChatMessages(chat.id);
         }, () => {
-          this.apiService.getAllMessagesFromChat(chat.id).subscribe(l => this.chatMessages = l)
-          this.chatInput.nativeElement.value = '';
+          this.setChatMessages(chat.id);
+          this.clearChatInputField();
         });
       }
     });
+  }
+
+  setCurrentChat(chat: Chat): void {
+    this.currentChat = chat;
+  }
+
+  setAllChatMembersFromChat(chat): void {
+    this.apiService.getAllChatMemberFromChat(chat.id).subscribe(m => this.allChatMembers = m);
+  }
+
+  setChatMessages(chatId: number): void {
+    this.apiService.getAllMessagesFromChat(chatId).subscribe(msg => this.chatMessages = msg);
+  }
+
+  clearChatInputField(): void {
+    this.chatInput.nativeElement.value = '';
   }
 }
