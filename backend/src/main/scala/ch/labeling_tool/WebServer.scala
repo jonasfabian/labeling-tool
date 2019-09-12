@@ -58,7 +58,8 @@ class LabelingToolRestApi(service: LabelingToolService, profile: String)(implici
   val logger = LoggerFactory.getLogger(getClass)
 
   val sessionConfig = SessionConfig.default(
-    "c05ll3lesrinf39t7mc5h6un6r0c69lgfno69dsak3vabeqamouq4328cuaekros401ajdpkh60rrtpd8ro24rbuqmgtnd1ebag6ljnb65i8a55d482ok7o0nch0bfbe")
+    "c05ll3lesrinf39t7mc5h6un6r0c69lgfno69dsak3vabeqamouq4328cuaekros401ajdpkh60rrtpd8ro24rbuqmgtnd1ebag6ljnb65i8a55d482ok7o0nch0bfbe"
+  )
   implicit val sessionManager = new SessionManager[MyScalaSession](sessionConfig)
   implicit val refreshTokenStorage = new InMemoryRefreshTokenStorage[MyScalaSession] {
     def log(msg: String) = logger.info(msg)
@@ -69,38 +70,47 @@ class LabelingToolRestApi(service: LabelingToolService, profile: String)(implici
   val myRequiredSession = requiredSession(refreshable, usingCookies)
   val myInvalidateSession = invalidateSession(refreshable, usingCookies)
   val route3 = pathPrefix("api") {
-    path("checkLogin") {
-      post {
-        entity(as[EmailPassword]) { body =>
-          if (service.checkLogin(body)) {
-            logger.info(s"Logging in ${body.email}")
-            mySetSession(MyScalaSession(body.email)) {
-              setNewCsrfToken(checkHeader) { ctx =>
-                ctx.complete("ok")
-              }
-            }
-          } else {
-            complete(StatusCode.int2StatusCode(401))
-          }
-        }
-      }
-    } ~
-      // This should be protected and accessible only when logged in
-      path("do_logout") {
+    pathPrefix("match") {
+      path("checkLogin") {
+        println("yeet")
         post {
-          myRequiredSession { session =>
-            myInvalidateSession { ctx =>
-              logger.info(s"Logging out $session")
-              ctx.complete("ok")
+          entity(as[EmailPassword]) { body =>
+            if (service.checkLogin(body)) {
+              logger.info(s"Logging in ${body.email}")
+              mySetSession(MyScalaSession(body.email)) {
+                setNewCsrfToken(checkHeader) { ctx =>
+                  ctx.complete("ok")
+                }
+              }
+            } else {
+              complete(StatusCode.int2StatusCode(401))
             }
           }
         }
       } ~
-      pathPrefix("match") {
-        getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudioIndex ~ getTranscript ~ getTranscripts ~ getAudio ~ getAudioFile ~ getNonLabeledDataIndexes ~ getTenNonLabeledDataIndexes ~ getTextAudioIndexesByLabeledType ~ getLabeledSums ~ getUser ~ createUser ~ checkLogin ~ createUserAndTextAudioIndex ~ getUserByEmail ~ getCheckedTextAudioIndexesByUser ~ createAvatar ~ getAvatar ~ updateUser ~ createChat ~ createChatMember ~ createChatMessage ~ getChats ~ getChatsPerUser ~ removeChatMember ~ getAllMessagesFromChat ~ getAllChatMemberFromChat ~ getUserByUsername
-      }
+        // This should be protected and accessible only when logged in
+        path("do_logout") {
+          post {
+            myRequiredSession { session =>
+              myInvalidateSession { ctx =>
+                logger.info(s"Logging out $session")
+                ctx.complete("ok")
+              }
+            }
+          }
+        }
+    } ~ pathPrefix("match") {
+      println("text")
+      /*myRequiredSession { session =>
+        logger.info("Current session: " + session)*/
+      getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudioIndex ~ getTranscript ~ getTranscripts ~ getAudio ~ getAudioFile ~ getNonLabeledDataIndexes ~ getTenNonLabeledDataIndexes ~ getTextAudioIndexesByLabeledType ~ getLabeledSums ~ getUser ~ createUser ~ checkLogin ~ createUserAndTextAudioIndex ~ getUserByEmail ~ getCheckedTextAudioIndexesByUser ~ createAvatar ~ getAvatar ~ updateUser ~ createChat ~ createChatMember ~ createChatMessage ~ getChats ~ getChatsPerUser ~ removeChatMember ~ getAllMessagesFromChat ~ getAllChatMemberFromChat ~ getUserByUsername
+      /*}*/
+    }
   }
-  val route2 = if (profile == "dev") route3 else randomTokenCsrfProtection(checkHeader) {
+  val route2 = if (profile == "dev") {
+    println("yote")
+    route3
+  } else randomTokenCsrfProtection(checkHeader) {
     route3
   }
   val route =
@@ -167,8 +177,11 @@ class LabelingToolRestApi(service: LabelingToolService, profile: String)(implici
 
   def getUserByEmail = path("getUserByEmail") {
     get {
-      parameters("email".as[String] ? "") { email =>
-        complete(service.getUserByEmail(email))
+      myRequiredSession { session =>
+        logger.info("Current session: " + session)
+        parameters("email".as[String] ? "") { email =>
+          complete(service.getUserByEmail(email))
+        }
       }
     }
   }
