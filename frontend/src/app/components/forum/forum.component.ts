@@ -92,4 +92,12 @@ export class ForumComponent implements OnInit {
   clearChatInputField(): void {
     this.chatInput.nativeElement.value = '';
   }
+
+  setMargin(index: number): number {
+    if (index !== 0) {
+      return 5;
+    } else {
+      return 0;
+    }
+  }
 }
