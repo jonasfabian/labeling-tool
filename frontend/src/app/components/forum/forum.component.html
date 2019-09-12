@@ -28,9 +28,9 @@
   <div style="margin: 0 46px 15px 0; float: right; width: calc(50% + 492px); height: calc(100% - 210px);">
     <mat-card style="width: 100%; height: 100%;">
       <ng-container *ngIf="currentChat.id != -1">
-        <h2>{{currentChat.chatName}}</h2>
+        <h2 style="margin-bottom: 10px;">{{currentChat.chatName}}</h2>
         <mat-divider style="width: calc(100% - 30px); margin: 0 15px 0 15px;"></mat-divider>
-        <div style="max-height: calc(100% - 110px);">
+        <div style="max-height: calc(100% - 110px); margin-top: 30px;">
           <ng-container *ngFor="let message of chatMessages; let i = index;">
             <div [style.margin-top.px]="setMargin(i)" class="chatMessage"
                  *ngIf="message.username === authService.loggedInUser.username"

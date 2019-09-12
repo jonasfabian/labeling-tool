@@ -1,4 +1,10 @@
 <div>
-  <input type="text" placeholder="Chat name" #chatNameInput>
-  <mat-button-toggle [disabled]="chatNameInput.value.length < 3" (click)="createChat()">Create</mat-button-toggle>
+  <h2 style="margin: 0 0 15px 0;">Create a new chat</h2>
+  <div>
+    <input style="width: calc(100% - 100px); border-radius: 5px; height: 30px; float: left;" type="text"
+           placeholder="Chat name" #chatNameInput>
+    <mat-button-toggle [disabled]="chatNameInput.value.length < 3" (click)="createChat()" style="height: 30px;
+    float: right;
+    width: calc(50% - 350px);">Create</mat-button-toggle>
+  </div>
 </div>
