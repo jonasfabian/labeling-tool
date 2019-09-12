@@ -61,12 +61,12 @@ extends TableImpl[ChatmemberRecord](
 
   val ID : TableField[ChatmemberRecord, Integer] = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), "")
 
-  val CHATID : TableField[ChatmemberRecord, Integer] = createField("chatId", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.INTEGER)), "")
+  val CHATID : TableField[ChatmemberRecord, Integer] = createField("chatId", org.jooq.impl.SQLDataType.INTEGER, "")
 
-  val USERID : TableField[ChatmemberRecord, Integer] = createField("userId", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.INTEGER)), "")
+  val USERID : TableField[ChatmemberRecord, Integer] = createField("userId", org.jooq.impl.SQLDataType.INTEGER, "")
 
   def this() = {
-    this(DSL.name("chatmember"), null, null, null, null)
+    this(DSL.name("chatMember"), null, null, null, null)
   }
 
   def this(alias : String) = {

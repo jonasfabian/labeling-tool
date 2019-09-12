@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ApiService} from '../../services/api.service';
 import {Chat} from '../../models/Chat';
 import {ChatMember} from '../../models/ChatMember';

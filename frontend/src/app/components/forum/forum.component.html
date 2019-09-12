@@ -1,22 +1,27 @@
 <mat-card style="margin: 15px;">
-  <h2>Forum</h2>
-  <div>
-    <mat-button-toggle (click)="openCreateChatDialog()">Create Chat</mat-button-toggle>
-  </div>
+  <h1 style="margin-bottom: 0;">Forum</h1>
 </mat-card>
-<div style="margin: 0 0 15px 15px; width: calc(50% - 600px); float: left;">
-  <ng-container *ngFor="let chat of apiService.chatArray">
-    <mat-card style="width: 100%; margin-bottom: 5px;">
-      <strong>{{chat.chatName}}</strong>
-      <mat-button-toggle style="margin-left: 15px; cursor: pointer; float: right;" (click)="joinChat(chat)">Join
-      </mat-button-toggle>
-      <mat-button-toggle style="margin-left: 15px; cursor: pointer; float: right;" (click)="seeChat(chat)">See
-      </mat-button-toggle>
-    </mat-card>
-  </ng-container>
+<div style="margin: 0 0 15px 15px; width: calc(50% - 565px); float: left; height: calc(100% - 210px);">
+  <mat-card style="height: 100%;">
+    <h2 style="margin-bottom: 10px;">Chats</h2>
+    <mat-icon style="cursor: pointer; position: absolute; right: 15px; top: 17px;" (click)="openCreateChatDialog()"
+              title="Create a new Chat">add
+    </mat-icon>
+    <mat-divider></mat-divider>
+    <mat-list>
+      <ng-container *ngFor="let chat of apiService.chatArray; let i = index;">
+        <mat-divider style="margin: 0 15px 0 15px; width: calc(100% - 30px);" *ngIf="i !== 0"></mat-divider>
+        <mat-list-item style="width: 100%; margin-bottom: 5px;">
+          <strong>{{chat.chatName}}</strong>
+          <mat-icon style="margin-left: 15px; cursor: pointer; position: absolute; right: 0;" (click)="joinChat(chat)">exit_to_app</mat-icon>
+          <mat-icon style="margin-left: 15px; cursor: pointer; position: absolute; right: 30px;" (click)="seeChat(chat)">remove_red_eye</mat-icon>
+        </mat-list-item>
+      </ng-container>
+    </mat-list>
+  </mat-card>
 </div>
 <ng-container>
-  <div style="margin: 0 46px 15px 0; float: right; width: calc(50% + 492px); height: calc(100% - 270px);">
+  <div style="margin: 0 46px 15px 0; float: right; width: calc(50% + 492px); height: calc(100% - 210px);">
     <mat-card style="width: 100%; height: 100%;">
       <ng-container *ngIf="currentChat.id != -1">
         <h2>{{currentChat.chatName}}</h2>
