@@ -1,7 +1,7 @@
 import {RouterModule, Routes} from '@angular/router';
 import {ContentComponent} from './content/content.component';
 import {CheckComponent} from './check/check.component';
-import {MatchOverviewComponent} from './match-overview/match-overview.component';
+import {OverviewComponent} from './overview/overview.component';
 import {NgModule} from '@angular/core';
 import {HomeComponent} from './home/home.component';
 import {ErrorComponent} from './error/error.component';
@@ -37,7 +37,7 @@ const routes: Routes = [
       },
       {
         path: 'overview',
-        component: MatchOverviewComponent,
+        component: OverviewComponent,
         canActivate: [AuthGuardService]
       },
       {

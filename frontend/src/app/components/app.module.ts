@@ -3,7 +3,7 @@ import {AppComponent} from './app.component';
 import {NavigationMenuComponent} from './navigation-menu/navigation-menu.component';
 import {ContentComponent} from './content/content.component';
 import {AudioPlayerComponent} from './audio-player/audio-player.component';
-import {MatchOverviewComponent} from './match-overview/match-overview.component';
+import {OverviewComponent} from './overview/overview.component';
 import {ShortcutComponent} from './shortcut/shortcut.component';
 import {IntToBooleanPipe} from '../pipes/int-to-boolean.pipe';
 import {PieChartComponent} from './pie-chart/pie-chart.component';
@@ -38,7 +38,7 @@ import { CreateChatComponent } from './create-chat/create-chat.component';
     NavigationMenuComponent,
     ContentComponent,
     AudioPlayerComponent,
-    MatchOverviewComponent,
+    OverviewComponent,
     ShortcutComponent,
     IntToBooleanPipe,
     PieChartComponent,

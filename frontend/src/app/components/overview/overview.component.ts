@@ -3,11 +3,11 @@ import {ExportToCsv} from 'export-to-csv';
 import {ApiService} from '../../services/api.service';
 
 @Component({
-  selector: 'app-match-overview',
-  templateUrl: './match-overview.component.html',
-  styleUrls: ['./match-overview.component.scss']
+  selector: 'app-overview',
+  templateUrl: './overview.component.html',
+  styleUrls: ['./overview.component.scss']
 })
-export class MatchOverviewComponent implements OnInit {
+export class OverviewComponent implements OnInit {
 
   constructor(
     private apiService: ApiService
