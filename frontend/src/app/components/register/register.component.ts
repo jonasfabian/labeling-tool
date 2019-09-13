@@ -44,7 +44,7 @@ export class RegisterComponent implements OnInit {
     this.user.password = this.registerForm.controls.password.value;
     if (this.registerForm.valid) {
       this.apiService.createUser(this.user).subscribe(_ => {
-        this.router.navigate(['labeling-tool/home']);
+        this.router.navigate(['labeling-tool/login']);
       });
     }
   }
