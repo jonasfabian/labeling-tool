@@ -2,27 +2,11 @@
   margin: 15px;
 }
 
-#content-container {
-  width: calc(100% - 30px);
+#content {
   margin: 15px;
-  height: calc(100% - 180px);
+  height: calc(100% - 210px);
 }
 
-#content-container mat-card:first-child {
-  float: left;
-  width: calc(100% - 480px);
-  height: calc(100% - 30px);
-}
-
-#content-container mat-card:nth-child(2) {
-  float: right;
-  width: 400px;
-  height: calc(50% - 37px);
-}
-
-#content-container mat-card:nth-child(3) {
-  float: right;
-  width: 400px;
-  margin-top: 15px;
-  height: calc(50% - 40px);
+#graph-list mat-grid-tile {
+  background: lightskyblue;
 }

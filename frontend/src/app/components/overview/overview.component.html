@@ -3,8 +3,21 @@
     <h1>Overview</h1>
   </mat-card>
 </div>
-<div id="content-container">
-  <mat-card>
+<div id="content">
+  <mat-card style="height: 100%;">
+    <mat-grid-list id="graph-list" gutterSize="15" cols="3" rowHeight="fit" style="height: 100%;">
+      <mat-grid-tile>1</mat-grid-tile>
+      <mat-grid-tile>2</mat-grid-tile>
+      <mat-grid-tile>3</mat-grid-tile>
+      <mat-grid-tile>4</mat-grid-tile>
+      <mat-grid-tile>5</mat-grid-tile>
+      <mat-grid-tile>6</mat-grid-tile>
+      <mat-grid-tile>7</mat-grid-tile>
+      <mat-grid-tile>8</mat-grid-tile>
+      <mat-grid-tile>9</mat-grid-tile>
+    </mat-grid-list>
+  </mat-card>
+  <!--<mat-card>
     <app-table [vale]="str"></app-table>
     <div style="position: absolute; bottom: 15px;">
       <mat-button-toggle (click)="generateTable()">Export as CSV</mat-button-toggle>
@@ -15,5 +28,5 @@
   </mat-card>
   <mat-card>
     <app-bar-chart></app-bar-chart>
-  </mat-card>
+  </mat-card>-->
 </div>
