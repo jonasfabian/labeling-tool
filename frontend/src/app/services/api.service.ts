@@ -15,7 +15,10 @@ import {Avatar} from '../models/avatar';
 import {Chat} from '../models/Chat';
 import {ChatMessage} from '../models/ChatMessage';
 import {ChatMember} from '../models/ChatMember';
-import {ChatMessageInfo} from "../models/ChatMessageInfo";
+import {ChatMessageInfo} from '../models/ChatMessageInfo';
+import {SnackBarLogOutComponent} from '../components/snack-bar-log-out/snack-bar-log-out.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {ThemeService} from './theme.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +30,9 @@ export class ApiService {
     private http: HttpClient,
     private sanitizer: DomSanitizer,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private snackBar: MatSnackBar,
+    private themeService: ThemeService
   ) {
   }
 
@@ -163,5 +168,17 @@ export class ApiService {
     this.router.navigate(['/labeling-tool/login']);
     this.authService.isAuthenticated = false;
     this.authService.loggedInUser = new UserPublicInfo(-1, '', '', '', '', 0);
+    if (this.themeService.getTheme() !== 'dark-theme') {
+      this.openSnackBar('light-snackbar');
+    } else {
+      this.openSnackBar('dark-snackbar');
+    }
+  }
+
+  openSnackBar(snackbarColor: string) {
+    this.snackBar.openFromComponent(SnackBarLogOutComponent,  {
+      duration: 5000,
+      panelClass: [snackbarColor]
+    });
   }
 }
