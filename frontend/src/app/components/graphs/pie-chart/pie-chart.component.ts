@@ -14,7 +14,6 @@ export class PieChartComponent implements OnInit {
   ) {
   }
 
-  showLegend = true;
   @Output() vale = new EventEmitter<string>();
   @ViewChild('pie', {static: false}) pie: BaseChartComponent;
 

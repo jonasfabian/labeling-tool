@@ -2,11 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {ApiService} from '../../../services/api.service';
 
 @Component({
-  selector: 'app-bar-chart',
-  templateUrl: './bar-chart.component.html',
-  styleUrls: ['./bar-chart.component.scss']
+  selector: 'app-number-cards',
+  templateUrl: './number-cards.component.html',
+  styleUrls: ['./number-cards.component.scss']
 })
-export class BarChartComponent implements OnInit {
+export class NumberCardsComponent implements OnInit {
 
   constructor(
     private apiService: ApiService

@@ -13,7 +13,6 @@ export class HorizontalNormalizedBarChartComponent implements OnInit {
   ) {
   }
 
-  showLegend = true;
   single = [];
   view = [];
   colorScheme = {
@@ -50,5 +49,4 @@ export class HorizontalNormalizedBarChartComponent implements OnInit {
   onResize(event) {
     this.view = [event.target.innerWidth / 3.5, event.target.innerHeight / 6];
   }
-
 }

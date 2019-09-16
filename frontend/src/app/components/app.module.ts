@@ -31,6 +31,8 @@ import { SessionOverviewComponent } from './session-overview/session-overview.co
 import { ForumComponent } from './forum/forum.component';
 import { CreateChatComponent } from './create-chat/create-chat.component';
 import { HorizontalNormalizedBarChartComponent } from './graphs/horizontal-normalized-bar-chart/horizontal-normalized-bar-chart.component';
+import { HorizontalBarChartComponent } from './graphs/horizontal-bar-chart/horizontal-bar-chart.component';
+import { NumberCardsComponent } from './graphs/number-cards/number-cards.component';
 
 
 @NgModule({
@@ -57,7 +59,9 @@ import { HorizontalNormalizedBarChartComponent } from './graphs/horizontal-norma
     SessionOverviewComponent,
     ForumComponent,
     CreateChatComponent,
-    HorizontalNormalizedBarChartComponent
+    HorizontalNormalizedBarChartComponent,
+    HorizontalBarChartComponent,
+    NumberCardsComponent
   ],
   imports: [
     BrowserModule,

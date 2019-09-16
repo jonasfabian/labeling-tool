@@ -1,17 +1,16 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {ApiService} from '../../../services/api.service';
 
 @Component({
-  selector: 'app-bar-chart',
-  templateUrl: './bar-chart.component.html',
-  styleUrls: ['./bar-chart.component.scss']
+  selector: 'app-horizontal-bar-chart',
+  templateUrl: './horizontal-bar-chart.component.html',
+  styleUrls: ['./horizontal-bar-chart.component.scss']
 })
-export class BarChartComponent implements OnInit {
+export class HorizontalBarChartComponent implements OnInit {
 
   constructor(
     private apiService: ApiService
-  ) {
-  }
+  ) { }
 
   single = [];
   view = [];
