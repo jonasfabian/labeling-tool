@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
-import {ApiService} from '../../services/api.service';
+import {ApiService} from '../../../services/api.service';
 import {BaseChartComponent} from '@swimlane/ngx-charts';
 
 @Component({
@@ -19,11 +19,13 @@ export class PieChartComponent implements OnInit {
   @ViewChild('pie', {static: false}) pie: BaseChartComponent;
 
   single = [];
+  view = [];
   colorScheme = {
     domain: ['#3f51b5', '#7482cf']
   };
 
   ngOnInit() {
+    this.view = [innerWidth / 3.5, innerHeight / 6];
     this.apiService.getLabeledSums().subscribe(l => l.forEach(s => this.single = [{name: 'Not-Labeled', value: s.nonLabeled}, {name: 'Labeled', value: s.correct + s.wrong + s.skipped}]));
   }
 
@@ -33,5 +35,9 @@ export class PieChartComponent implements OnInit {
     } else if (event.name === 'Not-Labeled') {
       this.vale.emit('0');
     }
+  }
+
+  onResize(event) {
+    this.view = [event.target.innerWidth / 3.5, event.target.innerHeight / 6];
   }
 }

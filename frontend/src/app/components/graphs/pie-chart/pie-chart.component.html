@@ -1,0 +1,11 @@
+<ngx-charts-pie-chart #pie
+                      (window:resize)="onResize($event)"
+                      [view]="view"
+                      [scheme]="colorScheme"
+                      [results]="single"
+                      [legend]="showLegend"
+                      [legendPosition]="'below'"
+                      [animations]="true"
+                      (select)="filterLabeled($event)"
+>
+</ngx-charts-pie-chart>
