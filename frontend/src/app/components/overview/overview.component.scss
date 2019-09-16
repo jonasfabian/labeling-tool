@@ -16,7 +16,7 @@
   height: 100%;
 }
 
-#graph-list mat-card app-bar-chart {
+#graph-list mat-card > :first-child {
   position: absolute;
   top: 50%;
   left: 50%;
