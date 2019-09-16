@@ -19,7 +19,7 @@ export class HorizontalBarChartComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.view = [innerWidth / 3.5, innerHeight / 6];
+    this.view = [innerWidth / 4, innerHeight / 6];
     this.apiService.getLabeledSums().subscribe(l => l.forEach(s => {
       this.single = [
         {name: 'Not-Labeled', value: s.nonLabeled},
@@ -30,6 +30,6 @@ export class HorizontalBarChartComponent implements OnInit {
   }
 
   onResize(event) {
-    this.view = [event.target.innerWidth / 3.5, event.target.innerHeight / 6];
+    this.view = [event.target.innerWidth / 4, event.target.innerHeight / 6];
   }
 }

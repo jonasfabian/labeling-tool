@@ -15,6 +15,7 @@ export class OverviewComponent implements OnInit {
   }
 
   str = '';
+  data = [];
   options = {
     fieldSeparator: ',',
     quoteStrings: '"',
@@ -27,7 +28,6 @@ export class OverviewComponent implements OnInit {
   csvExporter = new ExportToCsv(
     this.options
   );
-  data = [];
 
   ngOnInit() {
   }
