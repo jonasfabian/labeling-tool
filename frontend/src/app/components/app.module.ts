@@ -30,6 +30,7 @@ import { CheckMoreComponent } from './check-more/check-more.component';
 import { SessionOverviewComponent } from './session-overview/session-overview.component';
 import { ForumComponent } from './forum/forum.component';
 import { CreateChatComponent } from './create-chat/create-chat.component';
+import { SnackBarLogOutComponent } from './snack-bar-log-out/snack-bar-log-out.component';
 
 
 @NgModule({
@@ -55,7 +56,8 @@ import { CreateChatComponent } from './create-chat/create-chat.component';
     CheckMoreComponent,
     SessionOverviewComponent,
     ForumComponent,
-    CreateChatComponent
+    CreateChatComponent,
+    SnackBarLogOutComponent
   ],
   imports: [
     BrowserModule,
@@ -78,7 +80,8 @@ import { CreateChatComponent } from './create-chat/create-chat.component';
     ShortcutComponent,
     CheckMoreComponent,
     SessionOverviewComponent,
-    CreateChatComponent
+    CreateChatComponent,
+    SnackBarLogOutComponent
   ]
 })
 export class AppModule {

@@ -39,3 +39,15 @@ body {
 .search-button {
   margin-left: 15px;
 }
+
+.light-snackbar {
+  background: white;
+  color: black;
+  text-align: center;
+}
+
+.dark-snackbar {
+  background: #424242;
+  color: white;
+  text-align: center;
+}
