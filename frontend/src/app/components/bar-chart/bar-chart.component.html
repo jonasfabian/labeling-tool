@@ -1,5 +1,6 @@
 <ngx-charts-bar-vertical
-  [view]="[400, 200]"
+  (window:resize)="onResize($event)"
+  [view]="view"
   [yAxis]="true"
   [scheme]="colorScheme"
   [results]="single"

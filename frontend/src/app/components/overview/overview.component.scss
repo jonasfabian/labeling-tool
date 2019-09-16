@@ -4,10 +4,21 @@
 
 #content {
   margin: 15px;
-  height: calc(100% - 210px);
+  height: calc(100% - 180px);
 }
 
 #graph-list mat-grid-tile {
-  background: lightskyblue;
   border-radius: 10px;
+}
+
+#graph-list mat-card {
+  width: 100%;
+  height: 100%;
+}
+
+#graph-list mat-card app-bar-chart {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
