@@ -3,12 +3,12 @@ import {AppComponent} from './app.component';
 import {NavigationMenuComponent} from './navigation-menu/navigation-menu.component';
 import {ContentComponent} from './content/content.component';
 import {AudioPlayerComponent} from './audio-player/audio-player.component';
-import {MatchOverviewComponent} from './match-overview/match-overview.component';
+import {OverviewComponent} from './overview/overview.component';
 import {ShortcutComponent} from './shortcut/shortcut.component';
 import {IntToBooleanPipe} from '../pipes/int-to-boolean.pipe';
-import {PieChartComponent} from './pie-chart/pie-chart.component';
+import {PieChartComponent} from './graphs/pie-chart/pie-chart.component';
 import {CheckComponent} from './check/check.component';
-import {BarChartComponent} from './bar-chart/bar-chart.component';
+import {BarChartComponent} from './graphs/bar-chart/bar-chart.component';
 import {TableComponent} from './table/table.component';
 import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
@@ -30,6 +30,9 @@ import { CheckMoreComponent } from './check-more/check-more.component';
 import { SessionOverviewComponent } from './session-overview/session-overview.component';
 import { ForumComponent } from './forum/forum.component';
 import { CreateChatComponent } from './create-chat/create-chat.component';
+import { HorizontalNormalizedBarChartComponent } from './graphs/horizontal-normalized-bar-chart/horizontal-normalized-bar-chart.component';
+import { HorizontalBarChartComponent } from './graphs/horizontal-bar-chart/horizontal-bar-chart.component';
+import { NumberCardsComponent } from './graphs/number-cards/number-cards.component';
 import { SnackBarLogOutComponent } from './snack-bar-log-out/snack-bar-log-out.component';
 
 
@@ -39,7 +42,7 @@ import { SnackBarLogOutComponent } from './snack-bar-log-out/snack-bar-log-out.c
     NavigationMenuComponent,
     ContentComponent,
     AudioPlayerComponent,
-    MatchOverviewComponent,
+    OverviewComponent,
     ShortcutComponent,
     IntToBooleanPipe,
     PieChartComponent,
@@ -57,6 +60,9 @@ import { SnackBarLogOutComponent } from './snack-bar-log-out/snack-bar-log-out.c
     SessionOverviewComponent,
     ForumComponent,
     CreateChatComponent,
+    HorizontalNormalizedBarChartComponent,
+    HorizontalBarChartComponent,
+    NumberCardsComponent
     SnackBarLogOutComponent
   ],
   imports: [
