@@ -62,7 +62,7 @@ import { SnackBarLogOutComponent } from './snack-bar-log-out/snack-bar-log-out.c
     CreateChatComponent,
     HorizontalNormalizedBarChartComponent,
     HorizontalBarChartComponent,
-    NumberCardsComponent
+    NumberCardsComponent,
     SnackBarLogOutComponent
   ],
   imports: [
