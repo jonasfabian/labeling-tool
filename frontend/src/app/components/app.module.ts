@@ -33,6 +33,7 @@ import { CreateChatComponent } from './create-chat/create-chat.component';
 import { HorizontalNormalizedBarChartComponent } from './graphs/horizontal-normalized-bar-chart/horizontal-normalized-bar-chart.component';
 import { HorizontalBarChartComponent } from './graphs/horizontal-bar-chart/horizontal-bar-chart.component';
 import { NumberCardsComponent } from './graphs/number-cards/number-cards.component';
+import { SnackBarLogOutComponent } from './snack-bar-log-out/snack-bar-log-out.component';
 
 
 @NgModule({
@@ -62,6 +63,7 @@ import { NumberCardsComponent } from './graphs/number-cards/number-cards.compone
     HorizontalNormalizedBarChartComponent,
     HorizontalBarChartComponent,
     NumberCardsComponent
+    SnackBarLogOutComponent
   ],
   imports: [
     BrowserModule,
@@ -84,7 +86,8 @@ import { NumberCardsComponent } from './graphs/number-cards/number-cards.compone
     ShortcutComponent,
     CheckMoreComponent,
     SessionOverviewComponent,
-    CreateChatComponent
+    CreateChatComponent,
+    SnackBarLogOutComponent
   ]
 })
 export class AppModule {
