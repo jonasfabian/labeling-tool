@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ApiService} from '../../../services/api.service';
 
 @Component({
@@ -10,7 +10,8 @@ export class HorizontalBarChartComponent implements OnInit {
 
   constructor(
     private apiService: ApiService
-  ) { }
+  ) {
+  }
 
   single = [];
   view = [];
@@ -19,14 +20,12 @@ export class HorizontalBarChartComponent implements OnInit {
   };
 
   ngOnInit() {
+    const test = [];
     this.view = [innerWidth / 4, innerHeight / 6];
-    this.apiService.getLabeledSums().subscribe(l => l.forEach(s => {
-      this.single = [
-        {name: 'Not-Labeled', value: s.nonLabeled},
-        {name: 'Correct', value: s.correct},
-        {name: 'Wrong', value: s.wrong},
-        {name: 'Skipped', value: s.skipped}];
-    }));
+    this.apiService.getTopFiveUsersLabeledCount().subscribe(l => l.forEach(s => {
+          test.push({name: s.username, value: s.labelCount});
+      }
+    ), () => {}, () => this.single = test);
   }
 
   onResize(event) {

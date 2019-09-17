@@ -19,6 +19,7 @@ import {ChatMessageInfo} from '../models/ChatMessageInfo';
 import {SnackBarLogOutComponent} from '../components/snack-bar-log-out/snack-bar-log-out.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ThemeService} from './theme.service';
+import {UserLabeledData} from "../models/UserLabeledData";
 
 @Injectable({
   providedIn: 'root'
@@ -136,6 +137,10 @@ export class ApiService {
 
   getLabeledSums(): Observable<Array<Sums>> {
     return this.http.get<Array<Sums>>(this.url + 'getLabeledSums');
+  }
+
+  getTopFiveUsersLabeledCount(): Observable<Array<UserLabeledData>> {
+    return this.http.get<Array<UserLabeledData>>(this.url + 'getTopFiveUsersLabeledCount');
   }
 
   convertDataURIToBinary(dataURI): Uint8Array {

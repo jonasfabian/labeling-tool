@@ -1,7 +1,8 @@
 import java.io.File
+
 import akka.http.scaladsl.marshalling.ToResponseMarshallable
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
-import models.{Audio, Avatar, Chat, ChatMember, ChatMessage, ChatMessageInfo, EmailPassword, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User, UserAndTextAudioIndex, UserPublicInfo}
+import models.{Audio, Avatar, Chat, ChatMember, ChatMessage, ChatMessageInfo, EmailPassword, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User, UserAndTextAudioIndex, UserLabeledData, UserPublicInfo}
 import com.typesafe.config.Config
 import org.jooq.{DSLContext, Field}
 import org.jooq.impl.DSL
@@ -52,6 +53,11 @@ class LabelingToolService(config: Config) {
       .join(CHAT).on(CHAT.ID.eq(CHATMEMBER.CHATID))
       .and(CHAT.ID.eq(chatId))
       .fetchArray().map(m => ChatMember(m.get(CHATMEMBER.ID).toInt, m.get(CHATMEMBER.CHATID).toInt, m.get(CHATMEMBER.USERID).toInt))
+  })
+
+  def getTopFiveUsersLabeledCount: (Array[UserLabeledData]) = withDslContext(dslContext => {
+    dslContext.select(USER.ID, USER.USERNAME, DSL.count()).from(USERANDTEXTAUDIOINDEX).join(USER).on(USER.ID.eq(USERANDTEXTAUDIOINDEX.USERID)).groupBy(USER.ID)
+      .fetchArray().map(m => UserLabeledData(m.get(USER.ID).asInstanceOf[Int], m.get(USER.USERNAME), m.get(2).asInstanceOf[Int]))
   })
 
   def getAllMessagesFromChat(chatId: Int): Array[ChatMessageInfo] = withDslContext(dslContext => {
