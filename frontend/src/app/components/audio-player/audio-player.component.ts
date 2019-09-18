@@ -9,9 +9,9 @@ import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
 import CursorPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
-import {AudioSnippet} from '../../models/audioSnippet';
+import {AudioSnippet} from '../../models/AudioSnippet';
 import {ApiService} from '../../services/api.service';
-import {TextAudioIndexWithText} from '../../models/textAudioIndexWithText';
+import {TextAudioIndexWithText} from '../../models/TextAudioIndexWithText';
 
 @Component({
   selector: 'app-audio-player',

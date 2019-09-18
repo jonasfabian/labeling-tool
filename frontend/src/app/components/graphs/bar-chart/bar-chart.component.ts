@@ -23,10 +23,9 @@ export class BarChartComponent implements OnInit {
     this.view = [innerWidth / 4, innerHeight / 6];
     this.apiService.getLabeledSums().subscribe(l => l.forEach(s => {
       this.single = [
-        {name: 'Not-Labeled', value: s.nonLabeled},
         {name: 'Correct', value: s.correct},
-        {name: 'Wrong', value: s.wrong},
-        {name: 'Skipped', value: s.skipped}];
+        {name: 'Wrong', value: s.wrong}
+      ];
     }));
   }
 

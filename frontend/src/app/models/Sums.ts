@@ -1,13 +1,11 @@
 export class Sums {
-  nonLabeled: number;
   correct: number;
   wrong: number;
-  skipped: number;
+  totalTextAudioIndexes: number;
 
-  constructor(nonLabeled: number, correct: number, wrong: number, skipped: number) {
-    this.nonLabeled = nonLabeled;
+  constructor(correct: number, wrong: number, totalTextAudioIndexes: number) {
     this.correct = correct;
     this.wrong = wrong;
-    this.skipped = skipped;
+    this.totalTextAudioIndexes = totalTextAudioIndexes;
   }
 }

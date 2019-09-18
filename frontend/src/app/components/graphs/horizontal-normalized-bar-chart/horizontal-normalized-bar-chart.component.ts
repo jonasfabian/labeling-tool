@@ -26,21 +26,13 @@ export class HorizontalNormalizedBarChartComponent implements OnInit {
         {
           name: 'Test', series: [
             {
-              name: 'Not-Labeled',
-              value: s.nonLabeled
+              name: 'Non-Checked',
+              value: s.totalTextAudioIndexes - (s.correct + s.wrong)
             },
             {
-              name: 'Correct',
-              value: s.correct
-            },
-            {
-              name: 'Wrong',
-              value: s.wrong
-            },
-            {
-              name: 'Skipped',
-              value: s.skipped
-            },
+              name: 'Checked',
+              value: s.correct + s.wrong
+            }
           ]
         }];
     }));

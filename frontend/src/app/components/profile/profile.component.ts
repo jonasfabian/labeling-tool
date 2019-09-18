@@ -3,12 +3,12 @@ import {ApiService} from '../../services/api.service';
 import {UserPublicInfo} from '../../models/UserPublicInfo';
 import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
-import {TextAudioIndex} from '../../models/textAudioIndex';
+import {TextAudioIndex} from '../../models/TextAudioIndex';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {HttpClient} from '@angular/common/http';
-import {Avatar} from '../../models/avatar';
+import {Avatar} from '../../models/Avatar';
 
 @Component({
   selector: 'app-profile',

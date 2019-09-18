@@ -1,3 +1,5 @@
+import java.time.LocalDateTime
+
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.marshalling.ToResponseMarshallable
@@ -38,7 +40,7 @@ object WebServer extends App with CorsSupport {
 class LabelingToolRestApi(service: LabelingToolService) extends Directives with ErrorAccumulatingCirceSupport {
   val route = pathPrefix("api") {
     pathPrefix("match") {
-      getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudioIndex ~ getTranscript ~ getTranscripts ~ getAudio ~ getAudioFile ~ getNonLabeledDataIndexes ~ getTenNonLabeledDataIndexes ~ getTextAudioIndexesByLabeledType ~ getLabeledSums ~ getUser ~ createUser ~ checkLogin ~ createUserAndTextAudioIndex ~ getUserByEmail ~ getCheckedTextAudioIndexesByUser ~ createAvatar ~ getAvatar ~ updateUser ~ createChat ~ createChatMember ~ createChatMessage ~ getChats ~ getChatsPerUser ~ removeChatMember ~ getAllMessagesFromChat ~ getAllChatMemberFromChat ~ getUserByUsername
+      getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudioIndex ~ getTranscript ~ getTranscripts ~ getAudio ~ getAudioFile ~ getNonLabeledDataIndexes ~ getTenNonLabeledDataIndexes ~ getTextAudioIndexesByLabeledType ~ getLabeledSums ~ getUser ~ createUser ~ checkLogin ~ createUserAndTextAudioIndex ~ getUserByEmail ~ getCheckedTextAudioIndexesByUser ~ createAvatar ~ getAvatar ~ updateUser ~ createChat ~ createChatMember ~ createChatMessage ~ getChats ~ getChatsPerUser ~ removeChatMember ~ getAllMessagesFromChat ~ getAllChatMemberFromChat ~ getUserByUsername ~ getTopFiveUsersLabeledCount
     }
   }
 
@@ -58,6 +60,13 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
   def getChats = path("getChats") {
     get {
       complete(service.getChats)
+    }
+  }
+
+  @Path("getTopFiveUsersLabeledCount")
+  def getTopFiveUsersLabeledCount = path("getTopFiveUsersLabeledCount") {
+    get {
+      complete(service.getTopFiveUsersLabeledCount)
     }
   }
 
@@ -330,13 +339,10 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
     }
   }
 
-  @ApiOperation(value = "createUserAndTextAudioIndex", httpMethod = "POST")
-  @ApiImplicitParams(Array(new ApiImplicitParam(name = "body", required = true, dataTypeClass = classOf[UserAndTextAudioIndex], value = "", paramType = "body")))
-  @ApiResponses(Array(new ApiResponse(code = 200, message = "OK")))
-  @Path("createUserAndTextAudioIndex")
   def createUserAndTextAudioIndex: Route = path("createUserAndTextAudioIndex") {
     post {
       entity(as[UserAndTextAudioIndex]) { userAndTextAudioIndex =>
+        println(LocalDateTime.now())
         service.createUserAndTextAudioIndex(userAndTextAudioIndex)
         complete("OK")
       }

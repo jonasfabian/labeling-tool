@@ -13,7 +13,7 @@ import {TableComponent} from './table/table.component';
 import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MaterialModule} from '../models/material.module';
+import {MaterialModule} from './material.module';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {CarouselModule} from 'ngx-carousel-lib';

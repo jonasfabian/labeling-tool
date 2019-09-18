@@ -5,6 +5,7 @@ package jooq.db.tables.daos
 
 
 import java.lang.Integer
+import java.time.LocalDateTime
 import java.util.List
 
 import jooq.db.tables.Userandtextaudioindex
@@ -38,5 +39,9 @@ class UserandtextaudioindexDao(configuration : Configuration) extends DAOImpl[Us
 
   def fetchByTextaudioindexid(values : Integer*) : List[jooq.db.tables.pojos.Userandtextaudioindex] = {
     fetch(Userandtextaudioindex.USERANDTEXTAUDIOINDEX.TEXTAUDIOINDEXID, values:_*)
+  }
+
+  def fetchByTime(values : LocalDateTime*) : List[jooq.db.tables.pojos.Userandtextaudioindex] = {
+    fetch(Userandtextaudioindex.USERANDTEXTAUDIOINDEX.TIME, values:_*)
   }
 }
