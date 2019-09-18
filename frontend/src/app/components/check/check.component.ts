@@ -1,7 +1,7 @@
 import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {CarouselComponent} from 'ngx-carousel-lib';
 import {ApiService} from '../../services/api.service';
-import {CheckIndex} from '../../models/checkIndex';
+import {CheckIndex} from '../../models/CheckIndex';
 import {MatDialog} from '@angular/material';
 import {ShortcutComponent} from '../shortcut/shortcut.component';
 import {UserAndTextAudioIndex} from '../../models/UserAndTextAudioIndex';

@@ -1,4 +1,4 @@
-import {TextAudioIndexWithText} from './textAudioIndexWithText';
+import {TextAudioIndexWithText} from './TextAudioIndexWithText';
 
 export class CheckIndex {
   id: number;

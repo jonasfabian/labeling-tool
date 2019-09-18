@@ -1,6 +1,6 @@
 import {Component, Input, OnChanges, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
-import {TextAudioIndexWithText} from '../../models/textAudioIndexWithText';
+import {TextAudioIndexWithText} from '../../models/TextAudioIndexWithText';
 import {ApiService} from '../../services/api.service';
 
 @Component({

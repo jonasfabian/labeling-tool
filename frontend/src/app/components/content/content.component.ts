@@ -1,9 +1,9 @@
 import {ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
-import {AudioSnippet} from '../../models/audioSnippet';
+import {AudioSnippet} from '../../models/AudioSnippet';
 import {MatDialog} from '@angular/material';
 import {ApiService} from '../../services/api.service';
 import {DomSanitizer} from '@angular/platform-browser';
-import {TextAudioIndexWithText} from '../../models/textAudioIndexWithText';
+import {TextAudioIndexWithText} from '../../models/TextAudioIndexWithText';
 import {ShortcutComponent} from '../shortcut/shortcut.component';
 import {AuthService} from '../../services/auth.service';
 
