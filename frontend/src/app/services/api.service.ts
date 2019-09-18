@@ -19,7 +19,7 @@ import {ChatMessageInfo} from '../models/ChatMessageInfo';
 import {SnackBarLogOutComponent} from '../components/snack-bar-log-out/snack-bar-log-out.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ThemeService} from './theme.service';
-import {UserLabeledData} from "../models/UserLabeledData";
+import {UserLabeledData} from '../models/UserLabeledData';
 
 @Injectable({
   providedIn: 'root'
@@ -49,14 +49,6 @@ export class ApiService {
 
   getCheckedTextAudioIndexesByUser(userId: number): Observable<Array<TextAudioIndex>> {
     return this.http.get<Array<TextAudioIndex>>(this.url + 'getCheckedTextAudioIndexesByUser?id=' + userId);
-  }
-
-  getUser(id: number): Observable<UserPublicInfo> {
-    return this.http.get<UserPublicInfo>(this.url + 'getUser?id=' + id);
-  }
-
-  getUserByUsername(username: string): Observable<UserPublicInfo> {
-    return this.http.get<UserPublicInfo>(this.url + 'getUserByUsername?username=' + username);
   }
 
   getAllMessagesFromChat(chatId: number): Observable<Array<ChatMessageInfo>> {
@@ -93,18 +85,6 @@ export class ApiService {
 
   getChats(): Observable<Array<Chat>> {
     return this.http.get<Array<Chat>>(this.url + 'getChats');
-  }
-
-  getChatsFromUser(userId: number): Observable<Array<Chat>> {
-    return this.http.get<Array<Chat>>(this.url + 'getChatsPerUser?id=' + userId);
-  }
-
-  removeChatMember(chatMember: ChatMember): Observable<any> {
-    return this.http.post(this.url + 'removeChatMember', chatMember);
-  }
-
-  createAvatar(avatar: Avatar): Observable<any> {
-    return this.http.post(this.url + 'createAvatar', avatar);
   }
 
   createUserAndTextAudioIndex(userAndTextAudioIndex: UserAndTextAudioIndex): Observable<any> {

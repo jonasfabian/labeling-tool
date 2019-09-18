@@ -112,9 +112,10 @@ class LabelingToolService(config: Config) {
   def getLabeledSums: Array[Sums] = withDslContext(dslContext => {
     val correct: Field[Integer] = dslContext.selectCount().from(TEXTAUDIOINDEX).where(TEXTAUDIOINDEX.CORRECT.ne(0)).asField("correct")
     val wrong: Field[Integer] = dslContext.selectCount().from(TEXTAUDIOINDEX).where(TEXTAUDIOINDEX.WRONG.ne(0)).asField("wrong")
+    val totalTextAudioIndexes: Field[Integer] = dslContext.selectCount().from(TEXTAUDIOINDEX).asField("totalTextAudioIndexes")
     dslContext.select(
-      correct, wrong
-    ).from(TEXTAUDIOINDEX).limit(1).fetchArray().map(m => Sums(m.get(correct).asInstanceOf[Int], m.get(wrong).asInstanceOf[Int]))
+      correct, wrong, totalTextAudioIndexes
+    ).from(TEXTAUDIOINDEX).limit(1).fetchArray().map(m => Sums(m.get(correct).asInstanceOf[Int], m.get(wrong).asInstanceOf[Int], m.get(totalTextAudioIndexes).asInstanceOf[Int]))
   })
 
   def getTranscript(id: Int): Transcript = withDslContext(dslContext => {
