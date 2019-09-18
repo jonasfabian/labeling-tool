@@ -8,7 +8,7 @@ import java.lang.Byte
 import java.lang.Class
 import java.lang.Integer
 import java.lang.String
-import java.sql.Timestamp
+import java.time.LocalDateTime
 import java.util.Arrays
 import java.util.List
 
@@ -74,7 +74,7 @@ extends TableImpl[FlywaySchemaHistoryRecord](
 
   val INSTALLED_BY : TableField[FlywaySchemaHistoryRecord, String] = createField("installed_by", org.jooq.impl.SQLDataType.VARCHAR(100).nullable(false), "")
 
-  val INSTALLED_ON : TableField[FlywaySchemaHistoryRecord, Timestamp] = createField("installed_on", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), "")
+  val INSTALLED_ON : TableField[FlywaySchemaHistoryRecord, LocalDateTime] = createField("installed_on", org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.LOCALDATETIME)), "")
 
   val EXECUTION_TIME : TableField[FlywaySchemaHistoryRecord, Integer] = createField("execution_time", org.jooq.impl.SQLDataType.INTEGER.nullable(false), "")
 

@@ -1,3 +1,5 @@
+import java.time.LocalDateTime
+
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.marshalling.ToResponseMarshallable
@@ -337,13 +339,10 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
     }
   }
 
-  @ApiOperation(value = "createUserAndTextAudioIndex", httpMethod = "POST")
-  @ApiImplicitParams(Array(new ApiImplicitParam(name = "body", required = true, dataTypeClass = classOf[UserAndTextAudioIndex], value = "", paramType = "body")))
-  @ApiResponses(Array(new ApiResponse(code = 200, message = "OK")))
-  @Path("createUserAndTextAudioIndex")
   def createUserAndTextAudioIndex: Route = path("createUserAndTextAudioIndex") {
     post {
       entity(as[UserAndTextAudioIndex]) { userAndTextAudioIndex =>
+        println(LocalDateTime.now())
         service.createUserAndTextAudioIndex(userAndTextAudioIndex)
         complete("OK")
       }

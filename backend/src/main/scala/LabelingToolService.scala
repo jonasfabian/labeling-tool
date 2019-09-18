@@ -1,4 +1,5 @@
 import java.io.File
+import java.time.LocalDateTime
 
 import akka.http.scaladsl.marshalling.ToResponseMarshallable
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
@@ -263,7 +264,8 @@ class LabelingToolService(config: Config) {
   })
 
   def createUserAndTextAudioIndex(userAndTextAudioIndex: UserAndTextAudioIndex): Unit = withDslContext(dslContext => {
-    val rec = userAndTextAudioIndexToRecord(new UserAndTextAudioIndex(userAndTextAudioIndex.id, userAndTextAudioIndex.userId, userAndTextAudioIndex.textAudioIndexId))
+    println(LocalDateTime.now())
+    val rec = userAndTextAudioIndexToRecord(new UserAndTextAudioIndex(userAndTextAudioIndex.id, userAndTextAudioIndex.userId, userAndTextAudioIndex.textAudioIndexId, Some(LocalDateTime.now())))
     dslContext.executeInsert(rec)
     ()
   })
