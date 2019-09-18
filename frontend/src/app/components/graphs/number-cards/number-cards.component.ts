@@ -23,13 +23,10 @@ export class NumberCardsComponent implements OnInit {
     this.view = [innerWidth / 1.6, innerHeight / 2.2];
     this.apiService.getLabeledSums().subscribe(l => l.forEach(s => {
       this.single = [
-        {name: 'Not-Labeled', value: s.nonLabeled},
         {name: 'Correct', value: s.correct},
         {name: 'Wrong', value: s.wrong},
-        {name: 'Not-Labeled', value: s.nonLabeled},
         {name: 'Correct', value: s.correct},
         {name: 'Wrong', value: s.wrong},
-        {name: 'Not-Labeled', value: s.nonLabeled},
         {name: 'Correct', value: s.correct}
       ];
     }));

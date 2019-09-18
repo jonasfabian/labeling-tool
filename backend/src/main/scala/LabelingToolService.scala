@@ -110,13 +110,11 @@ class LabelingToolService(config: Config) {
 
   // get sums of labeled
   def getLabeledSums: Array[Sums] = withDslContext(dslContext => {
-    val nonLabeled: Field[Integer] = dslContext.selectCount().from(TEXTAUDIOINDEX).where(TEXTAUDIOINDEX.LABELED.eq(0)).asField("books")
-    val correct: Field[Integer] = dslContext.selectCount().from(TEXTAUDIOINDEX).where(TEXTAUDIOINDEX.LABELED.eq(1)).asField("correct")
-    val wrong: Field[Integer] = dslContext.selectCount().from(TEXTAUDIOINDEX).where(TEXTAUDIOINDEX.LABELED.eq(2)).asField("wrong")
-    val skipped: Field[Integer] = dslContext.selectCount().from(TEXTAUDIOINDEX).where(TEXTAUDIOINDEX.LABELED.eq(3)).asField("skipped")
+    val correct: Field[Integer] = dslContext.selectCount().from(TEXTAUDIOINDEX).where(TEXTAUDIOINDEX.CORRECT.ne(0)).asField("correct")
+    val wrong: Field[Integer] = dslContext.selectCount().from(TEXTAUDIOINDEX).where(TEXTAUDIOINDEX.WRONG.ne(0)).asField("wrong")
     dslContext.select(
-      nonLabeled, correct, wrong, skipped
-    ).from(TEXTAUDIOINDEX).limit(1).fetchArray().map(m => Sums(m.get(nonLabeled).toString.toInt, m.get(correct).toString.toInt, m.get(wrong).toString.toInt, m.get(skipped).toString.toInt))
+      correct, wrong
+    ).from(TEXTAUDIOINDEX).limit(1).fetchArray().map(m => Sums(m.get(correct).asInstanceOf[Int], m.get(wrong).asInstanceOf[Int]))
   })
 
   def getTranscript(id: Int): Transcript = withDslContext(dslContext => {
