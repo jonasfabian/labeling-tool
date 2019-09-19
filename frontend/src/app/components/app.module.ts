@@ -35,7 +35,6 @@ import {SettingsComponent} from './Settings/settings/settings.component';
 import {LoginComponent} from './Login/login/login.component';
 import {ForumComponent} from './Forum/forum/forum.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
