@@ -16,7 +16,7 @@ import {Chat} from '../models/Chat';
 import {ChatMessage} from '../models/ChatMessage';
 import {ChatMember} from '../models/ChatMember';
 import {ChatMessageInfo} from '../models/ChatMessageInfo';
-import {SnackBarLogOutComponent} from '../components/snack-bar-log-out/snack-bar-log-out.component';
+import {SnackBarLogOutComponent} from '../components/Login/snack-bar-log-out/snack-bar-log-out.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ThemeService} from './theme.service';
 import {UserLabeledData} from '../models/UserLabeledData';
