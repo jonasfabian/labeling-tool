@@ -1,3 +1,6 @@
+<mat-card style="margin: 15px;">
+  <h1 style="margin-bottom: 0;">Profile</h1>
+</mat-card>
 <div style="margin: 15px;">
   <mat-card id="header-card" style="height: 260px;">
     <ng-container *ngIf="authService.loggedInUser.avatarVersion !== 0">
@@ -32,8 +35,8 @@
   </mat-card>
 </div>
 <div style="height: calc(100% - 330px);">
-  <mat-card style="margin: 15px; height: calc(100% - 105px);">
-    <table style="height: calc(100% - 50px);" mat-table [dataSource]="dataSource" matSort id="overview-table">
+  <mat-card style="margin: 15px; height: calc(100% - 190px);">
+    <table style="height: calc(100% - 50px); width: 100%;" mat-table [dataSource]="dataSource" matSort id="overview-table">
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
         <td mat-cell *matCellDef="let element">{{element.id}}</td>
