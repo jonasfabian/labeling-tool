@@ -1,25 +1,28 @@
 <mat-toolbar color="primary" id="navigation-toolbar">
-  <div>
-    <mat-icon style="cursor: pointer; margin-top: 4px; float: left;" (click)="toggleSidenav()">menu</mat-icon>
-    <div style="margin-left: 35px;">
-      <h1 style="float: left;">Labeling Tool</h1>
-    </div>
-    <span *ngIf="!authService.isAuthenticated && !router.url.includes('login')"
-      style="position: absolute; right: 30px; top: 15px; cursor: pointer;" [routerLink]="['labeling-tool/login']">
-      Login
-    </span>
-    <ng-container *ngIf="authService.isAuthenticated">
-      <app-avatar [size]="50" [matMenuTriggerFor]="menu" [user]="authService.loggedInUser" [fontSize]="20" [borderRadius]="50"
-        style="position: absolute; right: 15px; top: 5px;"></app-avatar>
-      <mat-menu #menu>
-        <mat-list style="padding: 0;">
-          <mat-list-item [routerLink]="['/labeling-tool/profile']">Profile</mat-list-item>
-          <mat-divider></mat-divider>
-          <mat-list-item (click)="apiService.logOut()">Log Out</mat-list-item>
-        </mat-list>
-      </mat-menu>
-    </ng-container>
+  <mat-button-toggle title="Navigation menu"
+                     style="position: absolute; height: 32px; border-radius: 50%; width: 32px; top: 8px; background: none; border: none;" (click)="toggleSidenav()">
+    <mat-icon style="position: absolute; top: -19px; left: 0; color: white;">
+      menu
+    </mat-icon>
+  </mat-button-toggle>
+  <div style="margin-left: 45px;">
+    <h1 style="float: left;">Labeling Tool</h1>
   </div>
+  <span *ngIf="!authService.isAuthenticated && !router.url.includes('login')"
+    style="position: absolute; right: 30px; cursor: pointer;" [routerLink]="['labeling-tool/login']">
+    Login
+  </span>
+  <ng-container *ngIf="authService.isAuthenticated">
+    <app-avatar [size]="32" [matMenuTriggerFor]="menu" [user]="authService.loggedInUser" [fontSize]="15" [borderRadius]="50"
+      style="float: right;"></app-avatar>
+    <mat-menu #menu>
+      <mat-list style="padding: 0;">
+        <mat-list-item [routerLink]="['/labeling-tool/profile']">Profile</mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item (click)="apiService.logOut()">Log Out</mat-list-item>
+      </mat-list>
+    </mat-menu>
+  </ng-container>
 </mat-toolbar>
 <mat-sidenav-container id="sidenav-container">
   <mat-sidenav fixedInViewport #sidenav mode="side">

@@ -1,5 +1,5 @@
 <ng-container *ngIf="authService.loggedInUser.avatarVersion === 0">
-  <div class="avatar" [style.background-color]="color" [style.height.px]="size" [style.width.px]="size" [style.font-size.px]="fontSize" [style.border-radius.%]="borderRadius">
+  <div [title]="(user.username | titlecase) + ' ' + (user.lastName | titlecase) + ' (' + user.email + ')'" class="avatar" [style.background-color]="color" [style.height.px]="size" [style.width.px]="size" [style.font-size.px]="fontSize" [style.border-radius.%]="borderRadius">
   <span>
     {{initials}}
   </span>
