@@ -32,4 +32,9 @@ export class NavigationMenuComponent implements OnInit {
     this.sidenav.toggle();
     sessionStorage.setItem('sidenav', JSON.stringify({open: this.sidenav.opened}));
   }
+
+  redirectToPage(route: string): void {
+    this.router.navigate(['/labeling-tool/' + route]);
+    this.toggleSidenav();
+  }
 }

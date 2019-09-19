@@ -25,36 +25,36 @@
   </ng-container>
 </mat-toolbar>
 <mat-sidenav-container id="sidenav-container">
-  <mat-sidenav fixedInViewport #sidenav mode="side">
+  <mat-sidenav fixedInViewport #sidenav mode="over">
     <div>
       <mat-list>
-        <mat-list-item [routerLink]="['labeling-tool/home']">
+        <mat-list-item (click)="redirectToPage('home')">
           <mat-icon>home</mat-icon>
           <span>Home</span>
         </mat-list-item>
         <ng-container *ngIf="authService.isAuthenticated">
           <mat-divider></mat-divider>
-          <mat-list-item [routerLink]="['labeling-tool/check']">
+          <mat-list-item (click)="redirectToPage('check')">
             <mat-icon>check</mat-icon>
             <span>Check</span>
           </mat-list-item>
           <mat-divider></mat-divider>
-          <mat-list-item [routerLink]="['labeling-tool/label']">
+          <mat-list-item (click)="redirectToPage('label')">
             <mat-icon>label</mat-icon>
             <span>Label</span>
           </mat-list-item>
           <mat-divider></mat-divider>
-          <mat-list-item [routerLink]="['labeling-tool/overview']">
+          <mat-list-item (click)="redirectToPage('overview')">
             <mat-icon>view_list</mat-icon>
             <span>Overview</span>
           </mat-list-item>
           <mat-divider></mat-divider>
-          <mat-list-item [routerLink]="['labeling-tool/forum']">
+          <mat-list-item (click)="redirectToPage('forum')">
             <mat-icon>forum</mat-icon>
             <span>Forum</span>
           </mat-list-item>
           <mat-divider></mat-divider>
-          <mat-list-item [routerLink]="['labeling-tool/settings']">
+          <mat-list-item (click)="redirectToPage('settings')">
             <mat-icon>settings</mat-icon>
             <span>Settings</span>
           </mat-list-item>
