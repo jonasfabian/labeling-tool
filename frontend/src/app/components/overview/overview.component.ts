@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ExportToCsv} from 'export-to-csv';
 import {ApiService} from '../../services/api.service';
+import {Sums} from '../../models/Sums';
+import {UserLabeledData} from '../../models/UserLabeledData';
 
 @Component({
   selector: 'app-overview',
@@ -14,7 +16,9 @@ export class OverviewComponent implements OnInit {
   ) {
   }
 
-  str = '';
+  inputData: Array<Sums> = [];
+  userInputData: Array<UserLabeledData> = [];
+
   data = [];
   options = {
     fieldSeparator: ',',
@@ -30,10 +34,8 @@ export class OverviewComponent implements OnInit {
   );
 
   ngOnInit() {
-  }
-
-  getVale(input: string): void {
-    this.str = input;
+    this.apiService.getLabeledSums().subscribe(l => this.inputData = l);
+    this.apiService.getTopFiveUsersLabeledCount().subscribe(l => this.userInputData = l);
   }
 
   generateTable(): void {

@@ -21,7 +21,7 @@ export class NumberCardsComponent implements OnInit {
 
   ngOnInit() {
     this.view = [innerWidth / 1.6, innerHeight / 2.2];
-    this.apiService.getLabeledSums().subscribe(l => l.forEach(s => {
+    /*this.apiService.getLabeledSums().subscribe(l => l.forEach(s => {
       this.single = [
         {name: 'Correct', value: s.correct},
         {name: 'Wrong', value: s.wrong},
@@ -29,7 +29,7 @@ export class NumberCardsComponent implements OnInit {
         {name: 'Wrong', value: s.wrong},
         {name: 'Correct', value: s.correct}
       ];
-    }));
+    }));*/
   }
 
   onResize(event) {

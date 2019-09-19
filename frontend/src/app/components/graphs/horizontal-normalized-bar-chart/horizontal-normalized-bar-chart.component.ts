@@ -1,41 +1,38 @@
-import {Component, OnInit} from '@angular/core';
-import {ApiService} from '../../../services/api.service';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {Sums} from '../../../models/Sums';
 
 @Component({
   selector: 'app-horizontal-normalized-bar-chart',
   templateUrl: './horizontal-normalized-bar-chart.component.html',
   styleUrls: ['./horizontal-normalized-bar-chart.component.scss']
 })
-export class HorizontalNormalizedBarChartComponent implements OnInit {
+export class HorizontalNormalizedBarChartComponent implements OnInit, OnChanges {
 
-  constructor(
-    private apiService: ApiService
-  ) {
+  constructor() {
   }
 
+  @Input() inputData: Array<Sums>;
   single = [];
   view = [];
-  colorScheme = {
-    domain: ['#3f51b5', '#7482cf', 'blue', 'darkblue']
-  };
+  colorScheme = {domain: ['#3f51b5', '#7482cf', 'blue', 'darkblue']};
 
   ngOnInit() {
     this.view = [innerWidth / 4, innerHeight / 6];
-    this.apiService.getLabeledSums().subscribe(l => l.forEach(s => {
-      this.single = [
-        {
-          name: 'Test', series: [
-            {
-              name: 'Non-Checked',
-              value: s.totalTextAudioIndexes - (s.correct + s.wrong)
-            },
-            {
-              name: 'Checked',
-              value: s.correct + s.wrong
-            }
+  }
+
+  ngOnChanges(): void {
+    const test = [];
+    if (this.inputData.length !== 0) {
+      this.inputData.forEach(l => {
+        test.push({
+          name: '', series: [
+            {name: 'Checked', value: l.correct + l.wrong},
+            {name: 'Not-Checked', value: l.totalTextAudioIndexes - (l.correct + l.wrong)}
           ]
-        }];
-    }));
+        });
+      });
+      this.single = test;
+    }
   }
 
   onResize(event) {

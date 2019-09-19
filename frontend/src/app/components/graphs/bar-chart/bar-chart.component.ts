@@ -1,32 +1,34 @@
-import {Component, OnInit} from '@angular/core';
-import {ApiService} from '../../../services/api.service';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {Sums} from '../../../models/Sums';
 
 @Component({
   selector: 'app-bar-chart',
   templateUrl: './bar-chart.component.html',
   styleUrls: ['./bar-chart.component.scss']
 })
-export class BarChartComponent implements OnInit {
+export class BarChartComponent implements OnInit, OnChanges {
 
-  constructor(
-    private apiService: ApiService
-  ) {
+  constructor() {
   }
 
+  @Input() inputData: Array<Sums>;
   single = [];
   view = [];
-  colorScheme = {
-    domain: ['#3f51b5', '#7482cf', 'blue', 'darkblue']
-  };
+  colorScheme = {domain: ['#3f51b5', '#7482cf', 'blue', 'darkblue']};
 
   ngOnInit() {
     this.view = [innerWidth / 4, innerHeight / 6];
-    this.apiService.getLabeledSums().subscribe(l => l.forEach(s => {
-      this.single = [
-        {name: 'Correct', value: s.correct},
-        {name: 'Wrong', value: s.wrong}
-      ];
-    }));
+  }
+
+  ngOnChanges() {
+    const test = [];
+    if (this.inputData.length !== 0) {
+      this.inputData.forEach(l => {
+        test.push({name: 'Correct', value: l.correct});
+        test.push({name: 'Wrong', value: l.wrong});
+      });
+      this.single = test;
+    }
   }
 
   onResize(event) {
