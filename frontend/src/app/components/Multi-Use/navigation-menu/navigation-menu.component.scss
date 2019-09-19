@@ -46,24 +46,19 @@ mat-sidenav-content {
   margin-top: 65px;
 }
 
-.non-bookmark {
-  position: absolute;
-  right: 15px;
-  opacity: .1;
-  transition: opacity .2s;
-}
-
-.non-bookmark:hover {
-  opacity: .5;
-}
-
 .bookmark {
   position: absolute;
   right: 15px;
-  opacity: .5;
+  opacity: .1;
   transition: opacity .2s;
 }
 
-.non-bookmark:hover {
-  opacity: .1;
+.bookmark:hover {
+  opacity: .5;
+}
+
+.unbookmark {
+  position: absolute;
+  right: 15px;
+  opacity: .5;
 }

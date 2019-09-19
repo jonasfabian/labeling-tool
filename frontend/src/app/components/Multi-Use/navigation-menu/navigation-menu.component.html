@@ -36,7 +36,7 @@
           <mat-list-item *ngIf="bookmarksContainer.includes(bookmark)" (click)="redirectToPage(bookmark.title.toLocaleLowerCase())">
             <mat-icon>{{bookmark.matIcon}}</mat-icon>
             <span>{{bookmark.title}}</span>
-            <mat-icon (click)="unmarkAsBookmark(bookmark)" title="Remove as bookmark" class="bookmark">bookmark
+            <mat-icon (click)="unmarkAsBookmark(bookmark)" title="Remove as bookmark" class="unbookmark">bookmark
             </mat-icon>
           </mat-list-item>
         </ng-container>
@@ -46,7 +46,7 @@
             <mat-list-item *ngIf="navigationContainer.includes(naviItem)" (click)="redirectToPage(naviItem.title.toLocaleLowerCase())">
               <mat-icon>{{naviItem.matIcon}}</mat-icon>
               <span>{{naviItem.title}}</span>
-              <mat-icon (click)="markAsBookmark(naviItem)" title="Add as bookmark" class="non-bookmark">bookmark
+              <mat-icon (click)="markAsBookmark(naviItem)" title="Add as bookmark" class="bookmark">bookmark
               </mat-icon>
             </mat-list-item>
           </ng-container>
