@@ -5,7 +5,6 @@ import {MatSidenav} from '@angular/material';
 import {MatMenu} from '@angular/material/menu';
 import {Router} from '@angular/router';
 import {NavigationItem} from '../../../models/NavigationItem';
-import {id} from "@swimlane/ngx-charts/release/utils";
 
 @Component({
   selector: 'app-navigation-menu',
@@ -27,7 +26,6 @@ export class NavigationMenuComponent implements OnInit {
     new NavigationItem(0, 'Check', 'check'),
     new NavigationItem(1, 'Label', 'label'),
     new NavigationItem(2, 'Overview', 'view_list'),
-    new NavigationItem(3, 'Forum', 'forum'),
     new NavigationItem(4, 'Settings', 'settings'),
   ];
   bookmarksContainer: Array<NavigationItem> = [];
