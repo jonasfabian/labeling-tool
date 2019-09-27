@@ -12,10 +12,6 @@ import {AuthService} from './auth.service';
 import {Router} from '@angular/router';
 import {TextAudioIndex} from '../models/TextAudioIndex';
 import {Avatar} from '../models/Avatar';
-import {Chat} from '../models/Chat';
-import {ChatMessage} from '../models/ChatMessage';
-import {ChatMember} from '../models/ChatMember';
-import {ChatMessageInfo} from '../models/ChatMessageInfo';
 import {SnackBarLogOutComponent} from '../components/Login/snack-bar-log-out/snack-bar-log-out.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ThemeService} from './theme.service';
@@ -41,7 +37,6 @@ export class ApiService {
   BASE64_MARKER = ';base64,';
   blobUrl: SafeUrl | string = '';
   showTenMoreQuest = false;
-  chatArray: Array<Chat> = [];
 
   getTextAudioIndexes(): Observable<Array<TextAudioIndexWithText>> {
     return this.http.get<Array<TextAudioIndexWithText>>(this.url + 'getTextAudioIndexes');
@@ -49,14 +44,6 @@ export class ApiService {
 
   getCheckedTextAudioIndexesByUser(userId: number): Observable<Array<TextAudioIndex>> {
     return this.http.get<Array<TextAudioIndex>>(this.url + 'getCheckedTextAudioIndexesByUser?id=' + userId);
-  }
-
-  getAllMessagesFromChat(chatId: number): Observable<Array<ChatMessageInfo>> {
-    return this.http.get<Array<ChatMessageInfo>>(this.url + 'getAllMessagesFromChat?id=' + chatId);
-  }
-
-  getAllChatMemberFromChat(chatId: number): Observable<Array<ChatMember>> {
-    return this.http.get<Array<ChatMember>>(this.url + 'getAllChatMemberFromChat?id=' + chatId);
   }
 
   getAvatar(id: number): Observable<Avatar> {
@@ -69,22 +56,6 @@ export class ApiService {
 
   createUser(user: User): Observable<any> {
     return this.http.post(this.url + 'createUser', user);
-  }
-
-  createChat(chat: Chat): Observable<any> {
-    return this.http.post(this.url + 'createChat', chat);
-  }
-
-  createChatMember(chatMember: ChatMember): Observable<any> {
-    return this.http.post(this.url + 'createChatMember', chatMember);
-  }
-
-  createChatMessage(chatMessage: ChatMessage): Observable<any> {
-    return this.http.post(this.url + 'createChatMessage', chatMessage);
-  }
-
-  getChats(): Observable<Array<Chat>> {
-    return this.http.get<Array<Chat>>(this.url + 'getChats');
   }
 
   createUserAndTextAudioIndex(userAndTextAudioIndex: UserAndTextAudioIndex): Observable<any> {

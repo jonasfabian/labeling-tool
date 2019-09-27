@@ -51,9 +51,7 @@ export class AvatarComponent implements OnInit {
   }
 
   generateProfileImage(): void {
-    const first = this.user.firstName.charAt(0).toLocaleUpperCase();
-    const last = this.user.lastName.charAt(0).toLocaleUpperCase();
-    this.initials = first.concat(last);
+    this.initials = this.user.firstName.charAt(0).toLocaleUpperCase();
   }
 
   generateColor() {

@@ -24,7 +24,6 @@ import {ProfileComponent} from './Multi-Use/profile/profile.component';
 import {AvatarComponent} from './Multi-Use/avatar/avatar.component';
 import {CheckMoreComponent} from './Check/check-more/check-more.component';
 import {SessionOverviewComponent} from './Check/session-overview/session-overview.component';
-import {CreateChatComponent} from './Forum/create-chat/create-chat.component';
 import {HorizontalNormalizedBarChartComponent} from './Overview/graphs/horizontal-normalized-bar-chart/horizontal-normalized-bar-chart.component';
 import {HorizontalBarChartComponent} from './Overview/graphs/horizontal-bar-chart/horizontal-bar-chart.component';
 import {NumberCardsComponent} from './Overview/graphs/number-cards/number-cards.component';
@@ -33,7 +32,7 @@ import {OverviewComponent} from './Overview/overview/overview.component';
 import {CheckComponent} from './Check/check/check.component';
 import {SettingsComponent} from './Settings/settings/settings.component';
 import {LoginComponent} from './Login/login/login.component';
-import {ForumComponent} from './Forum/forum/forum.component';
+import {RecordComponent} from './record/record.component';
 
 @NgModule({
   declarations: [
@@ -57,12 +56,11 @@ import {ForumComponent} from './Forum/forum/forum.component';
     AvatarComponent,
     CheckMoreComponent,
     SessionOverviewComponent,
-    ForumComponent,
-    CreateChatComponent,
     HorizontalNormalizedBarChartComponent,
     HorizontalBarChartComponent,
     NumberCardsComponent,
-    SnackBarLogOutComponent
+    SnackBarLogOutComponent,
+    RecordComponent
   ],
   imports: [
     BrowserModule,
@@ -85,7 +83,6 @@ import {ForumComponent} from './Forum/forum/forum.component';
     ShortcutComponent,
     CheckMoreComponent,
     SessionOverviewComponent,
-    CreateChatComponent,
     SnackBarLogOutComponent
   ]
 })

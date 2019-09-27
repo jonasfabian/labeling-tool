@@ -9,8 +9,8 @@ import {ProfileComponent} from './Multi-Use/profile/profile.component';
 import {OverviewComponent} from './Overview/overview/overview.component';
 import {CheckComponent} from './Check/check/check.component';
 import {SettingsComponent} from './Settings/settings/settings.component';
-import {ForumComponent} from './Forum/forum/forum.component';
 import {LoginComponent} from './Login/login/login.component';
+import {RecordComponent} from "./record/record.component";
 
 const routes: Routes = [
   {
@@ -36,6 +36,11 @@ const routes: Routes = [
         canActivate: [AuthGuardService]
       },
       {
+        path: 'record',
+        component: RecordComponent,
+        canActivate: [AuthGuardService]
+      },
+      {
         path: 'overview',
         component: OverviewComponent,
         canActivate: [AuthGuardService]
@@ -48,11 +53,6 @@ const routes: Routes = [
       {
         path: 'profile',
         component: ProfileComponent,
-        canActivate: [AuthGuardService]
-      },
-      {
-        path: 'forum',
-        component: ForumComponent,
         canActivate: [AuthGuardService]
       },
       {
