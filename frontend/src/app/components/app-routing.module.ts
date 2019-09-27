@@ -10,6 +10,7 @@ import {OverviewComponent} from './Overview/overview/overview.component';
 import {CheckComponent} from './Check/check/check.component';
 import {SettingsComponent} from './Settings/settings/settings.component';
 import {LoginComponent} from './Login/login/login.component';
+import {RecordComponent} from "./record/record.component";
 
 const routes: Routes = [
   {
@@ -32,6 +33,11 @@ const routes: Routes = [
       {
         path: 'check',
         component: CheckComponent,
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: 'record',
+        component: RecordComponent,
         canActivate: [AuthGuardService]
       },
       {
