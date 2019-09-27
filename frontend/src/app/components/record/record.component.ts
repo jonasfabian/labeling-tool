@@ -10,6 +10,9 @@ export class RecordComponent implements OnInit {
   constructor() {
   }
 
+  audio = new Audio();
+  audioUrl = '';
+
   ngOnInit() {
   }
 
@@ -23,17 +26,24 @@ export class RecordComponent implements OnInit {
         audioChunks.push(event.data);
       });
 
-      mediaRecorder.addEventListener('stop', () => {
-        const audioBlob = new Blob(audioChunks);
-        const audioUrl = URL.createObjectURL(audioBlob);
-        const audio = new Audio(audioUrl);
-        audio.play();
-      });
-
       setTimeout(() => {
         mediaRecorder.stop();
       }, 3000);
+
+      mediaRecorder.addEventListener('stop', () => {
+        const audioBlob = new Blob(audioChunks);
+        this.setAudioUrl(audioBlob);
+      });
     });
+  }
+
+  setAudioUrl(audioBlob: Blob): void {
+    this.audioUrl = URL.createObjectURL(audioBlob);
+  }
+
+  playRecording(): void {
+    this.audio = new Audio(this.audioUrl);
+    this.audio.play();
   }
 
 }

@@ -1,9 +1,11 @@
 <div>
-  <mat-card style="margin: 15px;">
+  <mat-card style="margin: 15px 15px 0 15px;">
     <h1>Record</h1>
   </mat-card>
 </div>
 <div>
-  <mat-card style="margin: 15px;">Hello</mat-card>
-  <button (click)="record()">Record</button>
+  <mat-button-toggle style="margin: 15px;" (click)="record()">Record</mat-button-toggle>
+  <mat-button-toggle title="Play" [disabled]="audioUrl === ''" style="margin: 15px;" (click)="playRecording()">
+    <mat-icon>play_arrow</mat-icon>
+  </mat-button-toggle>
 </div>
