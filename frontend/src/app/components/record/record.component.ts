@@ -12,29 +12,42 @@ export class RecordComponent implements OnInit {
 
   audio = new Audio();
   audioUrl = '';
+  recording = false;
+  playing = false;
+  // @ts-ignore
+  mediaRecorder: MediaRecorder;
+
+  fileToUploay: File = null;
 
   ngOnInit() {
   }
 
   record(): void {
+    this.recording = true;
     navigator.mediaDevices.getUserMedia({audio: true}).then(stream => {
       // @ts-ignore
-      const mediaRecorder = new MediaRecorder(stream);
-      mediaRecorder.start();
+      this.setMediaRecorder(stream);
+      this.mediaRecorder.start();
       const audioChunks = [];
-      mediaRecorder.addEventListener('dataavailable', event => {
+      this.mediaRecorder.addEventListener('dataavailable', event => {
         audioChunks.push(event.data);
       });
 
-      setTimeout(() => {
-        mediaRecorder.stop();
-      }, 3000);
-
-      mediaRecorder.addEventListener('stop', () => {
+      this.mediaRecorder.addEventListener('stop', () => {
         const audioBlob = new Blob(audioChunks);
         this.setAudioUrl(audioBlob);
       });
     });
+  }
+
+  stopRecording(): void {
+    this.recording = false;
+    this.mediaRecorder.stop();
+  }
+
+  setMediaRecorder(stream: MediaStream): void {
+    // @ts-ignore
+    this.mediaRecorder = new MediaRecorder(stream);
   }
 
   setAudioUrl(audioBlob: Blob): void {
@@ -42,8 +55,21 @@ export class RecordComponent implements OnInit {
   }
 
   playRecording(): void {
+    this.togglePlay();
     this.audio = new Audio(this.audioUrl);
     this.audio.play();
   }
 
+  stopPlayRecording(): void {
+    this.togglePlay();
+    this.audio.pause();
+  }
+
+  togglePlay(): void {
+    this.playing = !this.playing;
+  }
+
+  handleFileInput(files: FileList): void {
+    this.fileToUploay = files.item(0);
+  }
 }
