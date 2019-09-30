@@ -22,8 +22,9 @@ export class RecordComponent implements OnInit {
   playing = false;
   // @ts-ignore
   mediaRecorder: MediaRecorder;
-  byteArray: Uint8Array;
+  fileByteArray: Array<number> = [];
   arArray: Array<number> = [];
+  yeet: any;
 
   ngOnInit() {
   }
@@ -42,16 +43,17 @@ export class RecordComponent implements OnInit {
       this.mediaRecorder.addEventListener('stop', () => {
         const audioBlob = new Blob(audioChunks);
         this.setAudioUrl(audioBlob);
-        let arrayBuffer;
         const fileReader = new FileReader();
-        fileReader.onload = () => {
-          arrayBuffer = audioBlob;
-        };
         fileReader.readAsArrayBuffer(audioBlob);
-        this.byteArray = new Uint8Array(arrayBuffer);
-        for (let i = 0; i < this.byteArray.byteLength; i++) {
-          this.arArray.push(this.byteArray[i]);
-        }
+        fileReader.onloadend = () => {
+          // @ts-ignore
+          this.yeet = new Int8Array(fileReader.result);
+          if (this.yeet.length <= 65535) {
+            this.yeet.map(l => {
+              this.fileByteArray.push(l);
+            });
+          }
+        };
       });
     });
   }
@@ -86,7 +88,7 @@ export class RecordComponent implements OnInit {
   }
 
   createRecording(): void {
-    const rec =  new Recording(-1, 'hgllodafasdf', this.authService.loggedInUser.id, this.arArray);
+    const rec =  new Recording(-1, 'hgllodafasdf', this.authService.loggedInUser.id, this.fileByteArray);
     this.apiService.createRecording(rec).subscribe();
   }
 }
