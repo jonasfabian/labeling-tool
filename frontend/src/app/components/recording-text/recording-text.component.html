@@ -1,6 +1,6 @@
 <mat-card class="content-card">
-  <input type="file" id="file" (change)="handleFileInput($event.target.files)">
+  <input #uploadTranscript type="file" id="file" (change)="handleFileInput($event.target.files)">
 </mat-card>
-<mat-card class="content-card">
-  <div style="white-space: pre-wrap">{{fileContent}}</div>
+<mat-card class="content-card" style="height: 100%; overflow-y: scroll;">
+  <div style="white-space: pre-wrap;">{{fileContent}}</div>
 </mat-card>

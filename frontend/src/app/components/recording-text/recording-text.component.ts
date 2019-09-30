@@ -22,4 +22,8 @@ export class RecordingTextComponent implements OnInit {
     };
     fileReader.readAsText(file);
   }
+
+  logThis(input: any): void {
+    console.log(input);
+  }
 }
