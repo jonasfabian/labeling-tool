@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {UserPublicInfo} from '../models/UserPublicInfo';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +8,7 @@ import {UserPublicInfo} from '../models/UserPublicInfo';
 export class AuthService {
 
   constructor(
+    private router: Router
   ) {
   }
 
@@ -22,6 +24,7 @@ export class AuthService {
           sessionStorage.clear();
           this.isAuthenticated = false;
           location.reload();
+          this.router.navigate(['/labeling-tool/login']);
         }
         this.loggedInUser = new UserPublicInfo(r.id, r.firstName, r.lastName, r.email, r.username, r.avatarVersion);
       });

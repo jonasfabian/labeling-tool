@@ -1,16 +1,16 @@
 import {RouterModule, Routes} from '@angular/router';
-import {ContentComponent} from './content/content.component';
-import {CheckComponent} from './check/check.component';
-import {OverviewComponent} from './overview/overview.component';
+import {ContentComponent} from './Edit/content/content.component';
 import {NgModule} from '@angular/core';
-import {HomeComponent} from './home/home.component';
-import {ErrorComponent} from './error/error.component';
-import {SettingsComponent} from './settings/settings.component';
-import {RegisterComponent} from './register/register.component';
-import {LoginComponent} from './login/login.component';
+import {HomeComponent} from './Multi-Use/home/home.component';
+import {ErrorComponent} from './Multi-Use/error/error.component';
+import {RegisterComponent} from './Login/register/register.component';
 import {AuthGuardService} from '../guards/auth-guard.service';
-import {ProfileComponent} from './profile/profile.component';
-import {ForumComponent} from "./forum/forum.component";
+import {ProfileComponent} from './Multi-Use/profile/profile.component';
+import {OverviewComponent} from './Overview/overview/overview.component';
+import {CheckComponent} from './Check/check/check.component';
+import {SettingsComponent} from './Settings/settings/settings.component';
+import {LoginComponent} from './Login/login/login.component';
+import {RecordComponent} from './record/record.component';
 
 const routes: Routes = [
   {
@@ -36,6 +36,11 @@ const routes: Routes = [
         canActivate: [AuthGuardService]
       },
       {
+        path: 'record',
+        component: RecordComponent,
+        canActivate: [AuthGuardService]
+      },
+      {
         path: 'overview',
         component: OverviewComponent,
         canActivate: [AuthGuardService]
@@ -48,11 +53,6 @@ const routes: Routes = [
       {
         path: 'profile',
         component: ProfileComponent,
-        canActivate: [AuthGuardService]
-      },
-      {
-        path: 'forum',
-        component: ForumComponent,
         canActivate: [AuthGuardService]
       },
       {

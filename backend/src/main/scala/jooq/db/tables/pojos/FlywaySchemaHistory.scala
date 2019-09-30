@@ -9,7 +9,7 @@ import java.lang.Byte
 import java.lang.Integer
 import java.lang.String
 import java.lang.StringBuilder
-import java.sql.Timestamp
+import java.time.LocalDateTime
 
 
 case class FlywaySchemaHistory(
@@ -20,7 +20,7 @@ case class FlywaySchemaHistory(
   , script : String
   , checksum : Integer
   , installedBy : String
-  , installedOn : Timestamp
+  , installedOn : LocalDateTime
   , executionTime : Integer
   , success : Byte
 ) extends Serializable {
@@ -68,7 +68,7 @@ case class FlywaySchemaHistory(
     this.installedBy
   }
 
-  def getInstalledOn : Timestamp = {
+  def getInstalledOn : LocalDateTime = {
     this.installedOn
   }
 

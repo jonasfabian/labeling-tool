@@ -40,6 +40,7 @@ object SetupDB extends App {
         .withName("org.jooq.codegen.ScalaGenerator")
         .withGenerate(new Generate()
           .withDaos(true)
+          .withJavaTimeTypes(true)
           .withImmutablePojos(true)
           .withGeneratedAnnotation(false)
           .withComments(false)

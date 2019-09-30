@@ -1,0 +1,61 @@
+#carousel {
+  margin-top: 15px;
+  height: calc(100% - 15px);
+}
+
+#carousel div {
+  border: 0;
+  height: 300px;
+  width: 500px;
+  top: 220px;
+}
+
+.item-carousel mat-card {
+  height: 100%;
+}
+
+.item-carousel mat-card div {
+  margin-top: 130px;
+}
+
+#navigation-button-container {
+  position: absolute;
+  bottom: calc(100% - 725px);
+  left: 0;
+  margin-left: auto;
+  margin-right: auto;
+  right: 0;
+  width: 336px;
+}
+
+.check-navigation-button {
+  margin-left: 5px;
+}
+
+#shortcut-button {
+  position: absolute;
+  bottom: 58px;
+  right: 15px;
+}
+
+#session-overview-button {
+  position: absolute;
+  bottom: 58px;
+  left: 15px;
+}
+
+#header-card {
+  margin: 15px;
+}
+
+.info-card {
+  height: calc(10% - 4.5px);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-card:not(:first-child) {
+  margin-top: 5px;
+}

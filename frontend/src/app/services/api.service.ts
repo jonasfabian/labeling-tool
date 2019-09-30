@@ -1,24 +1,21 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {TextAudioIndexWithText} from '../models/textAudioIndexWithText';
+import {TextAudioIndexWithText} from '../models/TextAudioIndexWithText';
 import {Sums} from '../models/Sums';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
-import {User} from '../models/user';
+import {User} from '../models/User';
 import {EmailPassword} from '../models/EmailPassword';
 import {UserAndTextAudioIndex} from '../models/UserAndTextAudioIndex';
 import {UserPublicInfo} from '../models/UserPublicInfo';
 import {AuthService} from './auth.service';
 import {Router} from '@angular/router';
-import {TextAudioIndex} from '../models/textAudioIndex';
-import {Avatar} from '../models/avatar';
-import {Chat} from '../models/Chat';
-import {ChatMessage} from '../models/ChatMessage';
-import {ChatMember} from '../models/ChatMember';
-import {ChatMessageInfo} from '../models/ChatMessageInfo';
-import {SnackBarLogOutComponent} from '../components/snack-bar-log-out/snack-bar-log-out.component';
+import {TextAudioIndex} from '../models/TextAudioIndex';
+import {Avatar} from '../models/Avatar';
+import {SnackBarLogOutComponent} from '../components/Login/snack-bar-log-out/snack-bar-log-out.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ThemeService} from './theme.service';
+import {UserLabeledData} from '../models/UserLabeledData';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +37,6 @@ export class ApiService {
   BASE64_MARKER = ';base64,';
   blobUrl: SafeUrl | string = '';
   showTenMoreQuest = false;
-  chatArray: Array<Chat> = [];
 
   getTextAudioIndexes(): Observable<Array<TextAudioIndexWithText>> {
     return this.http.get<Array<TextAudioIndexWithText>>(this.url + 'getTextAudioIndexes');
@@ -48,22 +44,6 @@ export class ApiService {
 
   getCheckedTextAudioIndexesByUser(userId: number): Observable<Array<TextAudioIndex>> {
     return this.http.get<Array<TextAudioIndex>>(this.url + 'getCheckedTextAudioIndexesByUser?id=' + userId);
-  }
-
-  getUser(id: number): Observable<UserPublicInfo> {
-    return this.http.get<UserPublicInfo>(this.url + 'getUser?id=' + id);
-  }
-
-  getUserByUsername(username: string): Observable<UserPublicInfo> {
-    return this.http.get<UserPublicInfo>(this.url + 'getUserByUsername?username=' + username);
-  }
-
-  getAllMessagesFromChat(chatId: number): Observable<Array<ChatMessageInfo>> {
-    return this.http.get<Array<ChatMessageInfo>>(this.url + 'getAllMessagesFromChat?id=' + chatId);
-  }
-
-  getAllChatMemberFromChat(chatId: number): Observable<Array<ChatMember>> {
-    return this.http.get<Array<ChatMember>>(this.url + 'getAllChatMemberFromChat?id=' + chatId);
   }
 
   getAvatar(id: number): Observable<Avatar> {
@@ -76,34 +56,6 @@ export class ApiService {
 
   createUser(user: User): Observable<any> {
     return this.http.post(this.url + 'createUser', user);
-  }
-
-  createChat(chat: Chat): Observable<any> {
-    return this.http.post(this.url + 'createChat', chat);
-  }
-
-  createChatMember(chatMember: ChatMember): Observable<any> {
-    return this.http.post(this.url + 'createChatMember', chatMember);
-  }
-
-  createChatMessage(chatMessage: ChatMessage): Observable<any> {
-    return this.http.post(this.url + 'createChatMessage', chatMessage);
-  }
-
-  getChats(): Observable<Array<Chat>> {
-    return this.http.get<Array<Chat>>(this.url + 'getChats');
-  }
-
-  getChatsFromUser(userId: number): Observable<Array<Chat>> {
-    return this.http.get<Array<Chat>>(this.url + 'getChatsPerUser?id=' + userId);
-  }
-
-  removeChatMember(chatMember: ChatMember): Observable<any> {
-    return this.http.post(this.url + 'removeChatMember', chatMember);
-  }
-
-  createAvatar(avatar: Avatar): Observable<any> {
-    return this.http.post(this.url + 'createAvatar', avatar);
   }
 
   createUserAndTextAudioIndex(userAndTextAudioIndex: UserAndTextAudioIndex): Observable<any> {
@@ -136,6 +88,10 @@ export class ApiService {
 
   getLabeledSums(): Observable<Array<Sums>> {
     return this.http.get<Array<Sums>>(this.url + 'getLabeledSums');
+  }
+
+  getTopFiveUsersLabeledCount(): Observable<Array<UserLabeledData>> {
+    return this.http.get<Array<UserLabeledData>>(this.url + 'getTopFiveUsersLabeledCount');
   }
 
   convertDataURIToBinary(dataURI): Uint8Array {

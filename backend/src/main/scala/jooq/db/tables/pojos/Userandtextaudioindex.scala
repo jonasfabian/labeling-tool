@@ -7,12 +7,14 @@ package jooq.db.tables.pojos
 import java.io.Serializable
 import java.lang.Integer
 import java.lang.StringBuilder
+import java.time.LocalDateTime
 
 
 case class Userandtextaudioindex(
     id : Integer
   , userid : Integer
   , textaudioindexid : Integer
+  , time : LocalDateTime
 ) extends Serializable {
 
   def this (value : Userandtextaudioindex) = {
@@ -20,6 +22,7 @@ case class Userandtextaudioindex(
         value.id
       , value.userid
       , value.textaudioindexid
+      , value.time
     )
   }
 
@@ -35,12 +38,17 @@ case class Userandtextaudioindex(
     this.textaudioindexid
   }
 
+  def getTime : LocalDateTime = {
+    this.time
+  }
+
   override def toString : String = {
     val sb = new StringBuilder("Userandtextaudioindex (")
 
     sb.append(id)
     sb.append(", ").append(userid)
     sb.append(", ").append(textaudioindexid)
+    sb.append(", ").append(time)
 
     sb.append(")")
     return sb.toString

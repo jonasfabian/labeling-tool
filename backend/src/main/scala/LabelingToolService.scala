@@ -1,7 +1,9 @@
 import java.io.File
+import java.time.LocalDateTime
+
 import akka.http.scaladsl.marshalling.ToResponseMarshallable
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
-import models.{Audio, Avatar, Chat, ChatMember, ChatMessage, ChatMessageInfo, EmailPassword, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User, UserAndTextAudioIndex, UserPublicInfo}
+import models.{Audio, Avatar, Chat, ChatMember, ChatMessage, ChatMessageInfo, EmailPassword, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User, UserAndTextAudioIndex, UserLabeledData, UserPublicInfo}
 import com.typesafe.config.Config
 import org.jooq.{DSLContext, Field}
 import org.jooq.impl.DSL
@@ -54,6 +56,11 @@ class LabelingToolService(config: Config) {
       .fetchArray().map(m => ChatMember(m.get(CHATMEMBER.ID).toInt, m.get(CHATMEMBER.CHATID).toInt, m.get(CHATMEMBER.USERID).toInt))
   })
 
+  def getTopFiveUsersLabeledCount: (Array[UserLabeledData]) = withDslContext(dslContext => {
+    dslContext.select(USER.ID, USER.USERNAME, DSL.count()).from(USERANDTEXTAUDIOINDEX).join(USER).on(USER.ID.eq(USERANDTEXTAUDIOINDEX.USERID)).groupBy(USER.ID)
+      .fetchArray().map(m => UserLabeledData(m.get(USER.ID).asInstanceOf[Int], m.get(USER.USERNAME), m.get(2).asInstanceOf[Int]))
+  })
+
   def getAllMessagesFromChat(chatId: Int): Array[ChatMessageInfo] = withDslContext(dslContext => {
     dslContext.select(
       CHAT.ID, USER.USERNAME, CHATMESSAGE.MESSAGE
@@ -104,13 +111,12 @@ class LabelingToolService(config: Config) {
 
   // get sums of labeled
   def getLabeledSums: Array[Sums] = withDslContext(dslContext => {
-    val nonLabeled: Field[Integer] = dslContext.selectCount().from(TEXTAUDIOINDEX).where(TEXTAUDIOINDEX.LABELED.eq(0)).asField("books")
-    val correct: Field[Integer] = dslContext.selectCount().from(TEXTAUDIOINDEX).where(TEXTAUDIOINDEX.LABELED.eq(1)).asField("correct")
-    val wrong: Field[Integer] = dslContext.selectCount().from(TEXTAUDIOINDEX).where(TEXTAUDIOINDEX.LABELED.eq(2)).asField("wrong")
-    val skipped: Field[Integer] = dslContext.selectCount().from(TEXTAUDIOINDEX).where(TEXTAUDIOINDEX.LABELED.eq(3)).asField("skipped")
+    val correct: Field[Integer] = dslContext.selectCount().from(TEXTAUDIOINDEX).where(TEXTAUDIOINDEX.CORRECT.ne(0)).asField("correct")
+    val wrong: Field[Integer] = dslContext.selectCount().from(TEXTAUDIOINDEX).where(TEXTAUDIOINDEX.WRONG.ne(0)).asField("wrong")
+    val totalTextAudioIndexes: Field[Integer] = dslContext.selectCount().from(TEXTAUDIOINDEX).asField("totalTextAudioIndexes")
     dslContext.select(
-      nonLabeled, correct, wrong, skipped
-    ).from(TEXTAUDIOINDEX).limit(1).fetchArray().map(m => Sums(m.get(nonLabeled).toString.toInt, m.get(correct).toString.toInt, m.get(wrong).toString.toInt, m.get(skipped).toString.toInt))
+      correct, wrong, totalTextAudioIndexes
+    ).from(TEXTAUDIOINDEX).limit(1).fetchArray().map(m => Sums(m.get(correct).asInstanceOf[Int], m.get(wrong).asInstanceOf[Int], m.get(totalTextAudioIndexes).asInstanceOf[Int]))
   })
 
   def getTranscript(id: Int): Transcript = withDslContext(dslContext => {
@@ -258,7 +264,8 @@ class LabelingToolService(config: Config) {
   })
 
   def createUserAndTextAudioIndex(userAndTextAudioIndex: UserAndTextAudioIndex): Unit = withDslContext(dslContext => {
-    val rec = userAndTextAudioIndexToRecord(new UserAndTextAudioIndex(userAndTextAudioIndex.id, userAndTextAudioIndex.userId, userAndTextAudioIndex.textAudioIndexId))
+    println(LocalDateTime.now())
+    val rec = userAndTextAudioIndexToRecord(new UserAndTextAudioIndex(userAndTextAudioIndex.id, userAndTextAudioIndex.userId, userAndTextAudioIndex.textAudioIndexId, Some(LocalDateTime.now())))
     dslContext.executeInsert(rec)
     ()
   })

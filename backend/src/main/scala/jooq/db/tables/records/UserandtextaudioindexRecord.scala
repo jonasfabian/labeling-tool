@@ -5,17 +5,18 @@ package jooq.db.tables.records
 
 
 import java.lang.Integer
+import java.time.LocalDateTime
 
 import jooq.db.tables.Userandtextaudioindex
 
 import org.jooq.Field
 import org.jooq.Record1
-import org.jooq.Record3
-import org.jooq.Row3
+import org.jooq.Record4
+import org.jooq.Row4
 import org.jooq.impl.UpdatableRecordImpl
 
 
-class UserandtextaudioindexRecord extends UpdatableRecordImpl[UserandtextaudioindexRecord](Userandtextaudioindex.USERANDTEXTAUDIOINDEX) with Record3[Integer, Integer, Integer] {
+class UserandtextaudioindexRecord extends UpdatableRecordImpl[UserandtextaudioindexRecord](Userandtextaudioindex.USERANDTEXTAUDIOINDEX) with Record4[Integer, Integer, Integer, LocalDateTime] {
 
   def setId(value : Integer) : Unit = {
     set(0, value)
@@ -44,6 +45,15 @@ class UserandtextaudioindexRecord extends UpdatableRecordImpl[Userandtextaudioin
     if (r == null) null else r.asInstanceOf[Integer]
   }
 
+  def setTime(value : LocalDateTime) : Unit = {
+    set(3, value)
+  }
+
+  def getTime : LocalDateTime = {
+    val r = get(3)
+    if (r == null) null else r.asInstanceOf[LocalDateTime]
+  }
+
   // -------------------------------------------------------------------------
   // Primary key information
   // -------------------------------------------------------------------------
@@ -52,25 +62,28 @@ class UserandtextaudioindexRecord extends UpdatableRecordImpl[Userandtextaudioin
   }
 
   // -------------------------------------------------------------------------
-  // Record3 type implementation
+  // Record4 type implementation
   // -------------------------------------------------------------------------
 
-  override def fieldsRow : Row3[Integer, Integer, Integer] = {
-    super.fieldsRow.asInstanceOf[ Row3[Integer, Integer, Integer] ]
+  override def fieldsRow : Row4[Integer, Integer, Integer, LocalDateTime] = {
+    super.fieldsRow.asInstanceOf[ Row4[Integer, Integer, Integer, LocalDateTime] ]
   }
 
-  override def valuesRow : Row3[Integer, Integer, Integer] = {
-    super.valuesRow.asInstanceOf[ Row3[Integer, Integer, Integer] ]
+  override def valuesRow : Row4[Integer, Integer, Integer, LocalDateTime] = {
+    super.valuesRow.asInstanceOf[ Row4[Integer, Integer, Integer, LocalDateTime] ]
   }
   override def field1 : Field[Integer] = Userandtextaudioindex.USERANDTEXTAUDIOINDEX.ID
   override def field2 : Field[Integer] = Userandtextaudioindex.USERANDTEXTAUDIOINDEX.USERID
   override def field3 : Field[Integer] = Userandtextaudioindex.USERANDTEXTAUDIOINDEX.TEXTAUDIOINDEXID
+  override def field4 : Field[LocalDateTime] = Userandtextaudioindex.USERANDTEXTAUDIOINDEX.TIME
   override def component1 : Integer = getId
   override def component2 : Integer = getUserid
   override def component3 : Integer = getTextaudioindexid
+  override def component4 : LocalDateTime = getTime
   override def value1 : Integer = getId
   override def value2 : Integer = getUserid
   override def value3 : Integer = getTextaudioindexid
+  override def value4 : LocalDateTime = getTime
 
   override def value1(value : Integer) : UserandtextaudioindexRecord = {
     setId(value)
@@ -87,18 +100,25 @@ class UserandtextaudioindexRecord extends UpdatableRecordImpl[Userandtextaudioin
     this
   }
 
-  override def values(value1 : Integer, value2 : Integer, value3 : Integer) : UserandtextaudioindexRecord = {
-    this.value1(value1)
-    this.value2(value2)
-    this.value3(value3)
+  override def value4(value : LocalDateTime) : UserandtextaudioindexRecord = {
+    setTime(value)
     this
   }
 
-  def this(id : Integer, userid : Integer, textaudioindexid : Integer) = {
+  override def values(value1 : Integer, value2 : Integer, value3 : Integer, value4 : LocalDateTime) : UserandtextaudioindexRecord = {
+    this.value1(value1)
+    this.value2(value2)
+    this.value3(value3)
+    this.value4(value4)
+    this
+  }
+
+  def this(id : Integer, userid : Integer, textaudioindexid : Integer, time : LocalDateTime) = {
     this()
 
     set(0, id)
     set(1, userid)
     set(2, textaudioindexid)
+    set(3, time)
   }
 }
