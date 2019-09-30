@@ -16,8 +16,7 @@ export class RecordComponent implements OnInit {
   playing = false;
   // @ts-ignore
   mediaRecorder: MediaRecorder;
-
-  fileToUploay: File = null;
+  fileContent: string | ArrayBuffer = '';
 
   ngOnInit() {
   }
@@ -69,7 +68,12 @@ export class RecordComponent implements OnInit {
     this.playing = !this.playing;
   }
 
-  handleFileInput(files: FileList): void {
-    this.fileToUploay = files.item(0);
+  handleFileInput(fileList: FileList): void {
+    const file = fileList[0];
+    const fileReader: FileReader = new FileReader();
+    fileReader.onloadend = () => {
+      this.fileContent = fileReader.result;
+    };
+    fileReader.readAsText(file);
   }
 }

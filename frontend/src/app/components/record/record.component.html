@@ -9,7 +9,8 @@
       <mat-button-toggle title="Record your voice" (click)="record()">
         <mat-icon>fiber_manual_record</mat-icon>
       </mat-button-toggle>
-      <mat-button-toggle *ngIf="!playing" title="Listen to your recording" [disabled]="audioUrl === ''" (click)="playRecording()">
+      <mat-button-toggle *ngIf="!playing" title="Listen to your recording" [disabled]="audioUrl === ''"
+                         (click)="playRecording()">
         <mat-icon>play_arrow</mat-icon>
       </mat-button-toggle>
       <mat-button-toggle *ngIf="playing" title="Stop listen to your recording" (click)="stopPlayRecording()">
@@ -27,5 +28,6 @@
 <div>
   <mat-card style="margin: 15px;">
     <input type="file" id="file" (change)="handleFileInput($event.target.files)">
+    <div>{{fileContent}}</div>
   </mat-card>
 </div>
