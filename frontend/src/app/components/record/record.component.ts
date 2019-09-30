@@ -1,4 +1,7 @@
 import {Component, OnInit} from '@angular/core';
+import {ApiService} from '../../services/api.service';
+import {Recording} from '../../models/Recording';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-record',
@@ -7,7 +10,10 @@ import {Component, OnInit} from '@angular/core';
 })
 export class RecordComponent implements OnInit {
 
-  constructor() {
+  constructor(
+    private apiService: ApiService,
+    private authService: AuthService
+  ) {
   }
 
   audio = new Audio();
@@ -16,6 +22,8 @@ export class RecordComponent implements OnInit {
   playing = false;
   // @ts-ignore
   mediaRecorder: MediaRecorder;
+  byteArray: Uint8Array;
+  arArray: Array<number> = [];
 
   ngOnInit() {
   }
@@ -34,6 +42,16 @@ export class RecordComponent implements OnInit {
       this.mediaRecorder.addEventListener('stop', () => {
         const audioBlob = new Blob(audioChunks);
         this.setAudioUrl(audioBlob);
+        let arrayBuffer;
+        const fileReader = new FileReader();
+        fileReader.onload = () => {
+          arrayBuffer = audioBlob;
+        };
+        fileReader.readAsArrayBuffer(audioBlob);
+        this.byteArray = new Uint8Array(arrayBuffer);
+        for (let i = 0; i < this.byteArray.byteLength; i++) {
+          this.arArray.push(this.byteArray[i]);
+        }
       });
     });
   }
@@ -65,5 +83,10 @@ export class RecordComponent implements OnInit {
 
   togglePlay(): void {
     this.playing = !this.playing;
+  }
+
+  createRecording(): void {
+    const rec =  new Recording(-1, 'hgllodafasdf', this.authService.loggedInUser.id, this.arArray);
+    this.apiService.createRecording(rec).subscribe();
   }
 }

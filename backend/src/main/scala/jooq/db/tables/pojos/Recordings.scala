@@ -6,20 +6,26 @@ package jooq.db.tables.pojos
 
 import java.io.Serializable
 import java.lang.Integer
+import java.lang.String
 import java.lang.StringBuilder
 
+import scala.Array
+import scala.Byte
 
-case class Chatmember(
+
+case class Recordings(
     id : Integer
-  , chatid : Integer
+  , text : String
   , userid : Integer
+  , audio : Array[Byte]
 ) extends Serializable {
 
-  def this (value : Chatmember) = {
+  def this (value : Recordings) = {
     this(
         value.id
-      , value.chatid
+      , value.text
       , value.userid
+      , value.audio
     )
   }
 
@@ -27,20 +33,25 @@ case class Chatmember(
     this.id
   }
 
-  def getChatid : Integer = {
-    this.chatid
+  def getText : String = {
+    this.text
   }
 
   def getUserid : Integer = {
     this.userid
   }
 
+  def getAudio : Array[Byte] = {
+    this.audio
+  }
+
   override def toString : String = {
-    val sb = new StringBuilder("Chatmember (")
+    val sb = new StringBuilder("Recordings (")
 
     sb.append(id)
-    sb.append(", ").append(chatid)
+    sb.append(", ").append(text)
     sb.append(", ").append(userid)
+    sb.append(", ").append("[binary...]")
 
     sb.append(")")
     return sb.toString

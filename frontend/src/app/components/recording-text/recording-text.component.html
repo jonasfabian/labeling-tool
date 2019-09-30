@@ -1,5 +1,5 @@
 <mat-card class="content-card">
   <input #uploadTranscript type="file" id="file" hidden (change)="handleFileInput($event.target.files)">
   <mat-button-toggle (click)="uploadTranscript.click()">Upload Transcript</mat-button-toggle>
-  <mat-button-toggle (click)="openTranscriptPreviewDialog()">Show full Transcript</mat-button-toggle>
+  <mat-button-toggle style="margin-left: 15px;" (click)="openTranscriptPreviewDialog()" [disabled]="fileContent === ''">Show full Transcript</mat-button-toggle>
 </mat-card>

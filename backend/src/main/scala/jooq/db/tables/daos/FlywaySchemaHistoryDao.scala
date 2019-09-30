@@ -5,11 +5,14 @@ package jooq.db.tables.daos
 
 
 import java.lang.Byte
+import java.lang.Integer
+import java.lang.String
 import java.time.LocalDateTime
 import java.util.List
 
 import jooq.db.tables.FlywaySchemaHistory
 import jooq.db.tables.records.FlywaySchemaHistoryRecord
+
 import org.jooq.Configuration
 import org.jooq.impl.DAOImpl
 
