@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {TranscriptPreviewComponent} from '../transcript-preview/transcript-preview.component';
 
 @Component({
   selector: 'app-recording-text',
@@ -7,7 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RecordingTextComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public dialog: MatDialog
+  ) {
+  }
 
   fileContent: string | ArrayBuffer = '';
 
@@ -23,7 +28,14 @@ export class RecordingTextComponent implements OnInit {
     fileReader.readAsText(file);
   }
 
-  logThis(input: any): void {
-    console.log(input);
+  openTranscriptPreviewDialog(): void {
+    this.dialog.open(TranscriptPreviewComponent, {
+      width: 'calc(100% - 1px)',
+      height: 'calc(100% - 200px)',
+      disableClose: false,
+      data: {
+        transcript: this.fileContent
+      }
+    });
   }
 }

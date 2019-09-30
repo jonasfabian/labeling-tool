@@ -34,6 +34,7 @@ import {SettingsComponent} from './Settings/settings/settings.component';
 import {LoginComponent} from './Login/login/login.component';
 import {RecordComponent} from './record/record.component';
 import {RecordingTextComponent} from './recording-text/recording-text.component';
+import {TranscriptPreviewComponent} from "./transcript-preview/transcript-preview.component";
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import {RecordingTextComponent} from './recording-text/recording-text.component'
     NumberCardsComponent,
     SnackBarLogOutComponent,
     RecordComponent,
-    RecordingTextComponent
+    RecordingTextComponent,
+    TranscriptPreviewComponent
   ],
   imports: [
     BrowserModule,
@@ -85,7 +87,8 @@ import {RecordingTextComponent} from './recording-text/recording-text.component'
     ShortcutComponent,
     CheckMoreComponent,
     SessionOverviewComponent,
-    SnackBarLogOutComponent
+    SnackBarLogOutComponent,
+    TranscriptPreviewComponent
   ]
 })
 export class AppModule {
