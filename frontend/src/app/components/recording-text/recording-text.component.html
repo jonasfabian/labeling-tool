@@ -1,2 +1,6 @@
-<input type="file" id="file" (change)="handleFileInput($event.target.files)">
-<div>{{fileContent}}</div>
+<mat-card class="content-card">
+  <input type="file" id="file" (change)="handleFileInput($event.target.files)">
+</mat-card>
+<mat-card class="content-card">
+  <div style="white-space: pre-wrap">{{fileContent}}</div>
+</mat-card>
