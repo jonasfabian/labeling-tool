@@ -10,30 +10,70 @@ export class RecordComponent implements OnInit {
   constructor() {
   }
 
+  audio = new Audio();
+  audioUrl = '';
+  recording = false;
+  playing = false;
+  // @ts-ignore
+  mediaRecorder: MediaRecorder;
+  fileContent: string | ArrayBuffer = '';
+
   ngOnInit() {
   }
 
   record(): void {
+    this.recording = true;
     navigator.mediaDevices.getUserMedia({audio: true}).then(stream => {
       // @ts-ignore
-      const mediaRecorder = new MediaRecorder(stream);
-      mediaRecorder.start();
+      this.setMediaRecorder(stream);
+      this.mediaRecorder.start();
       const audioChunks = [];
-      mediaRecorder.addEventListener('dataavailable', event => {
+      this.mediaRecorder.addEventListener('dataavailable', event => {
         audioChunks.push(event.data);
       });
 
-      mediaRecorder.addEventListener('stop', () => {
+      this.mediaRecorder.addEventListener('stop', () => {
         const audioBlob = new Blob(audioChunks);
-        const audioUrl = URL.createObjectURL(audioBlob);
-        const audio = new Audio(audioUrl);
-        audio.play();
+        this.setAudioUrl(audioBlob);
       });
-
-      setTimeout(() => {
-        mediaRecorder.stop();
-      }, 3000);
     });
   }
 
+  stopRecording(): void {
+    this.recording = false;
+    this.mediaRecorder.stop();
+  }
+
+  setMediaRecorder(stream: MediaStream): void {
+    // @ts-ignore
+    this.mediaRecorder = new MediaRecorder(stream);
+  }
+
+  setAudioUrl(audioBlob: Blob): void {
+    this.audioUrl = URL.createObjectURL(audioBlob);
+  }
+
+  playRecording(): void {
+    this.togglePlay();
+    this.audio = new Audio(this.audioUrl);
+    this.audio.play();
+  }
+
+  stopPlayRecording(): void {
+    this.togglePlay();
+    this.audio.pause();
+  }
+
+  togglePlay(): void {
+    this.playing = !this.playing;
+  }
+
+  handleFileInput(fileList: FileList): void {
+    const file = fileList[0];
+    const fileReader: FileReader = new FileReader();
+    fileReader.onloadend = () => {
+      this.fileContent = fileReader.result;
+    };
+    fileReader.readAsText(file);
+  }
 }

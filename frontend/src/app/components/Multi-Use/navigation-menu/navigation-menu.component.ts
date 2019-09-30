@@ -32,9 +32,6 @@ export class NavigationMenuComponent implements OnInit {
   bookmarksContainer: Array<NavigationItem> = [];
 
   ngOnInit() {
-    if (sessionStorage.getItem('sidenav')) {
-      this.sidenav.toggle(JSON.parse(sessionStorage.getItem('sidenav')).open);
-    }
     if (localStorage.getItem('bookmark')) {
       JSON.parse(localStorage.getItem('bookmark')).forEach(l => {
         this.navigationContainer.splice(this.navigationContainer.indexOf(l), 1);
@@ -45,7 +42,6 @@ export class NavigationMenuComponent implements OnInit {
 
   toggleSidenav(): void {
     this.sidenav.toggle();
-    sessionStorage.setItem('sidenav', JSON.stringify({open: this.sidenav.opened}));
   }
 
   redirectToPage(route: string): void {
