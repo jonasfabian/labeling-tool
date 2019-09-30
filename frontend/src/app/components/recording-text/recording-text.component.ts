@@ -9,7 +9,17 @@ export class RecordingTextComponent implements OnInit {
 
   constructor() { }
 
+  fileContent: string | ArrayBuffer = '';
+
   ngOnInit() {
   }
 
+  handleFileInput(fileList: FileList): void {
+    const file = fileList[0];
+    const fileReader: FileReader = new FileReader();
+    fileReader.onloadend = () => {
+      this.fileContent = fileReader.result;
+    };
+    fileReader.readAsText(file);
+  }
 }
