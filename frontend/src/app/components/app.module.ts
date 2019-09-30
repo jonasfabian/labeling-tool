@@ -33,6 +33,7 @@ import {CheckComponent} from './Check/check/check.component';
 import {SettingsComponent} from './Settings/settings/settings.component';
 import {LoginComponent} from './Login/login/login.component';
 import {RecordComponent} from './record/record.component';
+import {RecordingTextComponent} from './recording-text/recording-text.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import {RecordComponent} from './record/record.component';
     HorizontalBarChartComponent,
     NumberCardsComponent,
     SnackBarLogOutComponent,
-    RecordComponent
+    RecordComponent,
+    RecordingTextComponent
   ],
   imports: [
     BrowserModule,
