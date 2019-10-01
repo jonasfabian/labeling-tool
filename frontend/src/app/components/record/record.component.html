@@ -25,9 +25,10 @@
     </div>
   </mat-card>
 </div>
+<div style="height: calc(100% - 390px);">
+  <app-recording-text></app-recording-text>
+</div>
+
 <div>
-  <mat-card style="margin: 15px;">
-    <input type="file" id="file" (change)="handleFileInput($event.target.files)">
-    <div>{{fileContent}}</div>
-  </mat-card>
+  <mat-button-toggle (click)="createRecording()">Create</mat-button-toggle>
 </div>

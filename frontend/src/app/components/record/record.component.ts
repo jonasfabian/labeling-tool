@@ -1,4 +1,7 @@
 import {Component, OnInit} from '@angular/core';
+import {ApiService} from '../../services/api.service';
+import {Recording} from '../../models/Recording';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-record',
@@ -7,7 +10,10 @@ import {Component, OnInit} from '@angular/core';
 })
 export class RecordComponent implements OnInit {
 
-  constructor() {
+  constructor(
+    private apiService: ApiService,
+    private authService: AuthService
+  ) {
   }
 
   audio = new Audio();
@@ -16,7 +22,9 @@ export class RecordComponent implements OnInit {
   playing = false;
   // @ts-ignore
   mediaRecorder: MediaRecorder;
-  fileContent: string | ArrayBuffer = '';
+  fileByteArray: Array<number> = [];
+  arArray: Array<number> = [];
+  yeet: any;
 
   ngOnInit() {
   }
@@ -35,6 +43,17 @@ export class RecordComponent implements OnInit {
       this.mediaRecorder.addEventListener('stop', () => {
         const audioBlob = new Blob(audioChunks);
         this.setAudioUrl(audioBlob);
+        const fileReader = new FileReader();
+        fileReader.readAsArrayBuffer(audioBlob);
+        fileReader.onloadend = () => {
+          // @ts-ignore
+          this.yeet = new Int8Array(fileReader.result);
+          if (this.yeet.length <= 65535) {
+            this.yeet.map(l => {
+              this.fileByteArray.push(l);
+            });
+          }
+        };
       });
     });
   }
@@ -68,12 +87,8 @@ export class RecordComponent implements OnInit {
     this.playing = !this.playing;
   }
 
-  handleFileInput(fileList: FileList): void {
-    const file = fileList[0];
-    const fileReader: FileReader = new FileReader();
-    fileReader.onloadend = () => {
-      this.fileContent = fileReader.result;
-    };
-    fileReader.readAsText(file);
+  createRecording(): void {
+    const rec =  new Recording(-1, 'hgllodafasdf', this.authService.loggedInUser.id, this.fileByteArray);
+    this.apiService.createRecording(rec).subscribe();
   }
 }
