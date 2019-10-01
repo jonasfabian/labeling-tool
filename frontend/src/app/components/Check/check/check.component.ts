@@ -9,6 +9,8 @@ import {AuthService} from '../../../services/auth.service';
 import {CheckMoreComponent} from '../check-more/check-more.component';
 import {SessionOverviewComponent} from '../session-overview/session-overview.component';
 import WaveSurfer from 'wavesurfer.js';
+import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
+import {AudioSnippet} from "../../../models/AudioSnippet";
 
 @Component({
   selector: 'app-check',
@@ -41,7 +43,9 @@ export class CheckComponent implements OnInit {
   audioFileId = 0;
   BASE64_MARKER = ';base64,';
   blobUrl = '';
-
+  reg = new AudioSnippet(null, null);
+  test: any;
+  isReady = false;
   waveSurfer: WaveSurfer = null;
 
   ngOnInit() {
@@ -60,9 +64,32 @@ export class CheckComponent implements OnInit {
         partialRender: false,
         normalize: false,
         responsive: true,
-        plugins: []
+        plugins: [
+          RegionsPlugin.create({
+            regions: []
+          })
+        ]
       });
       this.loadAudioBlob(39);
+      this.waveSurfer.on('ready', () => {
+        this.isReady = true;
+        this.waveSurfer.seekTo(0.5);
+        this.addRegion();
+      });
+    });
+  }
+
+  playRegion(): void {
+    this.test.playLoop();
+  }
+
+  addRegion(): void {
+    this.waveSurfer.clearRegions();
+    this.test = this.waveSurfer.addRegion({
+      start: 10,
+      end: 100,
+      resize: true,
+      color: 'hsla(200, 50%, 70%, 0.4)'
     });
   }
 
@@ -79,9 +106,6 @@ export class CheckComponent implements OnInit {
         const blob = new Blob([binary], {type: `application/octet-stream`});
         this.blobUrl = URL.createObjectURL(blob);
         this.waveSurfer.load(this.blobUrl);
-        this.waveSurfer.on('ready', () => {
-          this.waveSurfer.seekTo(this.waveSurfer.getCurrentTime() / this.waveSurfer.getDuration());
-        });
       });
     });
   }

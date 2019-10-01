@@ -3,11 +3,11 @@
     <h1>Check</h1>
   </mat-card>
 </div>
-<div id="wave">
+<div id="wave" hidden>
   <div id="waveform"></div>
 </div>
 <div>
-  <mat-button-toggle (click)="playWave();">Play</mat-button-toggle>
+  <mat-button-toggle (click)="playRegion();" [disabled]="!isReady">Play</mat-button-toggle>
 </div>
 <div [hidden]="available" style="height: calc(100% - 100px)">
   <mat-spinner style="margin-left: auto; margin-right: auto; top: calc(50% - 150px);"></mat-spinner>
