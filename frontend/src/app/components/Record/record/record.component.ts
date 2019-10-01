@@ -32,6 +32,14 @@ export class RecordComponent implements OnInit {
   ngOnInit() {
   }
 
+  disableCreateButton(): boolean {
+    if (this.fileByteArray.length !== 0 && this.fileContent !== '') {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   record(): void {
     this.recording = true;
     navigator.mediaDevices.getUserMedia({audio: true}).then(stream => {
@@ -91,7 +99,7 @@ export class RecordComponent implements OnInit {
   }
 
   createRecording(): void {
-    const rec =  new Recording(-1, 'hgllodafasdf', this.authService.loggedInUser.id, this.fileByteArray);
+    const rec =  new Recording(-1, this.fileContent.toString(), this.authService.loggedInUser.id, this.fileByteArray);
     this.apiService.createRecording(rec).subscribe();
   }
 

@@ -20,6 +20,7 @@
         <mat-icon>stop</mat-icon>
       </mat-button-toggle>
     </mat-button-toggle-group>
+    <mat-button-toggle (click)="createRecording()" style="float: right;" [disabled]="disableCreateButton()">Create</mat-button-toggle>
     <div id="recording" *ngIf="recording">
       Recording
     </div>
@@ -31,8 +32,4 @@
     <mat-button-toggle (click)="uploadTranscript.click()">Upload Transcript</mat-button-toggle>
     <mat-button-toggle style="margin-left: 15px;" (click)="openTranscriptPreviewDialog()" [disabled]="fileContent === ''">Show full Transcript</mat-button-toggle>
   </mat-card>
-</div>
-
-<div>
-  <mat-button-toggle (click)="createRecording()">Create</mat-button-toggle>
 </div>
