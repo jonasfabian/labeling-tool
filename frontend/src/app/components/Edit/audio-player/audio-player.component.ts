@@ -36,10 +36,7 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   fileId = 0;
   waveSurfer: WaveSurfer = null;
   paused = false;
-  zoomLvl = 0;
   toggleVolume = false;
-  skipSound = 5;
-  replaySound = -5;
 
   ngOnInit() {
     this.onPreviewPressed();
@@ -145,22 +142,6 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
     this.waveSurfer.pause();
   }
 
-  reset(): void {
-    this.waveSurfer.stop();
-  }
-
-  skip(): void {
-    this.waveSurfer.skip(this.skipSound);
-  }
-
-  playBackSpeed(speed: number): void {
-    this.waveSurfer.setPlaybackRate(speed);
-  }
-
-  replay(): void {
-    this.waveSurfer.skip(this.replaySound);
-  }
-
   addRegion(snip: AudioSnippet): void {
     this.waveSurfer.clearRegions();
     this.reg = new AudioSnippet(snip.startTime, snip.endTime);
@@ -177,17 +158,5 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
 
   setVolume(volume: any): void {
     this.waveSurfer.setVolume(volume.value / 100);
-  }
-
-  zoomLevel(zoomLevel: number): void {
-    if (zoomLevel <= 200 && zoomLevel >= 1) {
-      this.waveSurfer.zoom(zoomLevel);
-      this.zoomLvl = zoomLevel;
-    }
-  }
-
-  seekInAudio(seconds: any) {
-    const totalTime = this.waveSurfer.getDuration();
-    this.waveSurfer.seekTo(seconds / totalTime);
   }
 }

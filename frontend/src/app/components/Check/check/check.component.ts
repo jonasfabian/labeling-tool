@@ -8,6 +8,7 @@ import {UserAndTextAudioIndex} from '../../../models/UserAndTextAudioIndex';
 import {AuthService} from '../../../services/auth.service';
 import {CheckMoreComponent} from '../check-more/check-more.component';
 import {SessionOverviewComponent} from '../session-overview/session-overview.component';
+import WaveSurfer from 'wavesurfer.js';
 
 @Component({
   selector: 'app-check',
@@ -38,10 +39,64 @@ export class CheckComponent implements OnInit {
   progress = 0;
   panelOpenState = false;
   audioFileId = 0;
+  BASE64_MARKER = ';base64,';
+  blobUrl = '';
+
+  waveSurfer: WaveSurfer = null;
 
   ngOnInit() {
     this.initCarousel();
     this.initSessionCheckData();
+    if (!this.waveSurfer) {
+      this.generateWaveform();
+    }
+  }
+
+  generateWaveform(): void {
+    Promise.resolve(null).then(() => {
+      this.waveSurfer = WaveSurfer.create({
+        container: '#waveform',
+        backend: 'MediaElement',
+        partialRender: false,
+        normalize: false,
+        responsive: true,
+        plugins: []
+      });
+      this.loadAudioBlob(39);
+    });
+  }
+
+  playWave(): void {
+    this.waveSurfer.play();
+  }
+
+  loadAudioBlob(fileId: number): void {
+    this.apiService.getAudioFile(fileId).subscribe(resp => {
+      const reader = new FileReader();
+      reader.readAsDataURL(resp);
+      reader.addEventListener('loadend', () => {
+        const binary = this.convertDataURIToBinary(reader.result);
+        const blob = new Blob([binary], {type: `application/octet-stream`});
+        this.blobUrl = URL.createObjectURL(blob);
+        this.waveSurfer.load(this.blobUrl);
+        this.waveSurfer.on('ready', () => {
+          this.waveSurfer.seekTo(this.waveSurfer.getCurrentTime() / this.waveSurfer.getDuration());
+        });
+      });
+    });
+  }
+
+  convertDataURIToBinary(dataURI) {
+    const base64Index = dataURI.indexOf(this.BASE64_MARKER) + this.BASE64_MARKER.length;
+    const base64 = dataURI.substring(base64Index);
+    const raw = window.atob(base64);
+    const rawLength = raw.length;
+    const array = new Uint8Array(new ArrayBuffer(rawLength));
+
+    for (let i = 0; i < rawLength; i++) {
+      array[i] = raw.charCodeAt(i);
+    }
+    return array;
   }
 
   @HostListener('window:keyup', ['$event'])
