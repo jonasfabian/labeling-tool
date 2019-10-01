@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {TextAudioIndexWithText} from '../models/TextAudioIndexWithText';
 import {Sums} from '../models/Sums';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
@@ -17,6 +17,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {ThemeService} from './theme.service';
 import {UserLabeledData} from '../models/UserLabeledData';
 import {Recording} from "../models/Recording";
+import {AudioSnippet} from "../models/AudioSnippet";
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +38,9 @@ export class ApiService {
   url = 'http://localhost:8080/api/match/';
   BASE64_MARKER = ';base64,';
   blobUrl: SafeUrl | string = '';
+  uri: BehaviorSubject<SafeUrl> = new BehaviorSubject<SafeUrl>('');
   showTenMoreQuest = false;
+  snippet = new AudioSnippet(null, null);
 
   getTextAudioIndexes(): Observable<Array<TextAudioIndexWithText>> {
     return this.http.get<Array<TextAudioIndexWithText>>(this.url + 'getTextAudioIndexes');
@@ -121,6 +124,8 @@ export class ApiService {
         const blob = new Blob([binary], {type: `application/octet-stream`});
         this.blobUrl = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(blob));
       });
+    }, () => {}, () => {
+      this.uri.next(this.blobUrl);
     });
   }
 
