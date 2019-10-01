@@ -43,7 +43,6 @@ export class CheckComponent implements OnInit {
   audioFileId = 0;
   BASE64_MARKER = ';base64,';
   blobUrl = '';
-  reg = new AudioSnippet(null, null);
   test: any;
   isReady = false;
   waveSurfer: WaveSurfer = null;
@@ -167,31 +166,16 @@ export class CheckComponent implements OnInit {
     this.progress = 0;
   }
 
-  setAudioPlayerStartTime(): void {
-    this.audioPlayer.nativeElement.currentTime = Math.round(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioStartPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate);
-  }
-
-  setAudioPlayerEndTime(): void {
-    this.audioPlayer.nativeElement.addEventListener('timeupdate', () => {
-      if (this.audioPlayer.nativeElement.currentTime > this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioEndPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate) {
-        this.audioPlayer.nativeElement.pause();
-        this.isPlaying = false;
+  calculateAudioPlayerStatus(): void {
+    const start = this.test.start;
+    const end = this.test.end;
+    const length = end - start;
+    this.waveSurfer.on('audioprocess', () => {
+      const diff = end - this.waveSurfer.getCurrentTime();
+      if (diff > 0) {
+        this.progress = 100 - Math.round(diff / length * 100);
       }
     });
-  }
-
-  calculateAudioPlayerStatus(): void {
-    this.resetAudioProgress();
-    const startTime = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioStartPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate;
-    const endTime = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioEndPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate;
-    const totalTime = endTime - startTime;
-    const timer = setInterval(() => {
-      if (this.audioPlayer.nativeElement.currentTime <= endTime) {
-        this.progress = 100 - Math.round((endTime - this.audioPlayer.nativeElement.currentTime) / totalTime * 100);
-      } else {
-        clearInterval(timer);
-      }
-    }, 16);
   }
 
   prepareNextSlide(labeledType: number): void {
