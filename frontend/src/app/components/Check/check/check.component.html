@@ -6,9 +6,6 @@
 <div id="wave" hidden>
   <div id="waveform"></div>
 </div>
-<div>
-  <mat-button-toggle (click)="playRegion();" [disabled]="!isReady">Play</mat-button-toggle>
-</div>
 <div [hidden]="available" style="height: calc(100% - 100px)">
   <mat-spinner style="margin-left: auto; margin-right: auto; top: calc(50% - 150px);"></mat-spinner>
 </div>
@@ -65,9 +62,11 @@
           <mat-icon>thumb_up</mat-icon>
           <span>&nbsp;Correct</span>
         </mat-button-toggle>
-        <mat-button-toggle class="check-navigation-button" (click)="play()">
-          <mat-icon *ngIf="!isPlaying">play_arrow</mat-icon>
-          <mat-icon *ngIf="isPlaying">pause</mat-icon>
+        <mat-button-toggle *ngIf="!isPlaying" class="check-navigation-button" (click)="playRegion();" [disabled]="!isReady">
+          <mat-icon>play_arrow</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle *ngIf="isPlaying" class="check-navigation-button" (click)="playRegion();" [disabled]="!isReady">
+          <mat-icon>pause</mat-icon>
         </mat-button-toggle>
         <mat-button-toggle class="check-navigation-button" (click)="setCheckedType(this.wrong)">
           <mat-icon>thumb_down</mat-icon>

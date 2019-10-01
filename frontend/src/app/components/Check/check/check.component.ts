@@ -10,7 +10,7 @@ import {CheckMoreComponent} from '../check-more/check-more.component';
 import {SessionOverviewComponent} from '../session-overview/session-overview.component';
 import WaveSurfer from 'wavesurfer.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
-import {AudioSnippet} from "../../../models/AudioSnippet";
+import {AudioSnippet} from '../../../models/AudioSnippet';
 
 @Component({
   selector: 'app-check',
@@ -52,7 +52,8 @@ export class CheckComponent implements OnInit {
     let fileId = 0;
     this.apiService.getTenNonLabeledTextAudioIndex(this.authService.loggedInUser.id).subscribe(r => {
       fileId = r[0].transcriptFileId;
-    }, () => {}, () => {
+    }, () => {
+    }, () => {
       this.initCarousel();
       this.initSessionCheckData();
       if (!this.waveSurfer) {
@@ -111,7 +112,7 @@ export class CheckComponent implements OnInit {
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
     if (event.key === 'p') {
-      this.play();
+      this.playRegion();
     } else if (event.key === 'c') {
       this.setCheckedType(1);
     } else if (event.key === 'w') {
@@ -142,10 +143,7 @@ export class CheckComponent implements OnInit {
   }
 
   loadNextAudioFile(): void {
-    this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
-    // @ts-ignore
-    this.audioPlayer.nativeElement.src = this.apiService.blobUrl.changingThisBreaksApplicationSecurity;
-    this.audioPlayer.nativeElement.load();
+    this.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.transcriptFileId);
   }
 
   initSessionCheckData(): void {
@@ -163,20 +161,6 @@ export class CheckComponent implements OnInit {
       wrong: this.numberWrong,
       skipped: this.numberSkipped
     }]));
-  }
-
-  play(): void {
-    this.resetAudioProgress();
-    this.calculateAudioPlayerStatus();
-    if (!this.isPlaying) {
-      this.isPlaying = !this.isPlaying;
-      this.setAudioPlayerStartTime();
-      this.setAudioPlayerEndTime();
-      this.audioPlayer.nativeElement.play();
-    } else {
-      this.audioPlayer.nativeElement.pause();
-      this.isPlaying = !this.isPlaying;
-    }
   }
 
   resetAudioProgress(): void {
@@ -227,7 +211,7 @@ export class CheckComponent implements OnInit {
       }, () => {
       }, () => {
         if (this.audioFileId !== currentCheckIndex.transcriptFileId) {
-          this.apiService.loadAudioBlob(currentCheckIndex);
+          this.loadNextAudioFile();
         }
         this.audioFileId = currentCheckIndex.transcriptFileId;
         this.addRegion(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioStartPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate, this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioEndPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate);
@@ -268,19 +252,27 @@ export class CheckComponent implements OnInit {
     }), () => {
     }, () => {
       if (this.checkIndexArray.length !== 0) {
-        if (this.audioFileId === 0) {
-          this.progress = 0;
-          this.audioFileId = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.transcriptFileId;
-          this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
-          console.log(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
-          this.addRegion(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioStartPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate, this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioEndPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate);
-        }
+        this.progress = 0;
+        this.audioFileId = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.transcriptFileId;
+        this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
+        this.addRegion(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioStartPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate, this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioEndPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate);
+
       }
     });
   }
 
   playRegion(): void {
+    this.waveSurfer.on('audioprocess', () => {
+      if (this.waveSurfer.getCurrentTime() < this.test.end) {
+        this.isPlaying = true;
+      } else {
+        this.isPlaying = false;
+      }
+    });
+    this.isPlaying = false;
     this.test.playLoop();
+    this.resetAudioProgress();
+    this.calculateAudioPlayerStatus();
   }
 
   addRegion(startPos: number, endPos: number): void {
