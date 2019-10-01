@@ -16,8 +16,8 @@ import {SnackBarLogOutComponent} from '../components/Login/snack-bar-log-out/sna
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ThemeService} from './theme.service';
 import {UserLabeledData} from '../models/UserLabeledData';
-import {Recording} from "../models/Recording";
-import {AudioSnippet} from "../models/AudioSnippet";
+import {Recording} from '../models/Recording';
+import {AudioSnippet} from '../models/AudioSnippet';
 
 @Injectable({
   providedIn: 'root'
@@ -124,7 +124,8 @@ export class ApiService {
         const blob = new Blob([binary], {type: `application/octet-stream`});
         this.blobUrl = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(blob));
       });
-    }, () => {}, () => {
+    }, () => {
+    }, () => {
       this.uri.next(this.blobUrl);
     });
   }
@@ -142,7 +143,7 @@ export class ApiService {
   }
 
   openSnackBar(snackbarColor: string) {
-    this.snackBar.openFromComponent(SnackBarLogOutComponent,  {
+    this.snackBar.openFromComponent(SnackBarLogOutComponent, {
       duration: 5000,
       panelClass: [snackbarColor]
     });
