@@ -49,14 +49,19 @@ export class CheckComponent implements OnInit {
   waveSurfer: WaveSurfer = null;
 
   ngOnInit() {
-    this.initCarousel();
-    this.initSessionCheckData();
-    if (!this.waveSurfer) {
-      this.generateWaveform();
-    }
+    let fileId = 0;
+    this.apiService.getTenNonLabeledTextAudioIndex(this.authService.loggedInUser.id).subscribe(r => {
+      fileId = r[0].transcriptFileId;
+    }, () => {}, () => {
+      this.initCarousel();
+      this.initSessionCheckData();
+      if (!this.waveSurfer) {
+        this.generateWaveform(fileId);
+      }
+    });
   }
 
-  generateWaveform(): void {
+  generateWaveform(fileId: number): void {
     Promise.resolve(null).then(() => {
       this.waveSurfer = WaveSurfer.create({
         container: '#waveform',
@@ -70,31 +75,11 @@ export class CheckComponent implements OnInit {
           })
         ]
       });
-      this.loadAudioBlob(39);
+      this.loadAudioBlob(fileId);
       this.waveSurfer.on('ready', () => {
         this.isReady = true;
-        this.waveSurfer.seekTo(0.5);
-        this.addRegion();
       });
     });
-  }
-
-  playRegion(): void {
-    this.test.playLoop();
-  }
-
-  addRegion(): void {
-    this.waveSurfer.clearRegions();
-    this.test = this.waveSurfer.addRegion({
-      start: 10,
-      end: 100,
-      resize: true,
-      color: 'hsla(200, 50%, 70%, 0.4)'
-    });
-  }
-
-  playWave(): void {
-    this.waveSurfer.play();
   }
 
   loadAudioBlob(fileId: number): void {
@@ -245,6 +230,7 @@ export class CheckComponent implements OnInit {
           this.apiService.loadAudioBlob(currentCheckIndex);
         }
         this.audioFileId = currentCheckIndex.transcriptFileId;
+        this.addRegion(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioStartPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate, this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioEndPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate);
       });
     });
   }
@@ -286,8 +272,24 @@ export class CheckComponent implements OnInit {
           this.progress = 0;
           this.audioFileId = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.transcriptFileId;
           this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
+          console.log(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
+          this.addRegion(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioStartPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate, this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioEndPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate);
         }
       }
+    });
+  }
+
+  playRegion(): void {
+    this.test.playLoop();
+  }
+
+  addRegion(startPos: number, endPos: number): void {
+    this.waveSurfer.clearRegions();
+    this.test = this.waveSurfer.addRegion({
+      start: startPos,
+      end: endPos,
+      resize: true,
+      color: 'hsla(200, 50%, 70%, 0.4)'
     });
   }
 
