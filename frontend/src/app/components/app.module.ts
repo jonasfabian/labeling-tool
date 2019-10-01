@@ -32,9 +32,8 @@ import {OverviewComponent} from './Overview/overview/overview.component';
 import {CheckComponent} from './Check/check/check.component';
 import {SettingsComponent} from './Settings/settings/settings.component';
 import {LoginComponent} from './Login/login/login.component';
-import {RecordComponent} from './record/record.component';
-import {RecordingTextComponent} from './recording-text/recording-text.component';
-import {TranscriptPreviewComponent} from "./transcript-preview/transcript-preview.component";
+import {TranscriptPreviewComponent} from './Record/transcript-preview/transcript-preview.component';
+import {RecordComponent} from './Record/record/record.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +62,6 @@ import {TranscriptPreviewComponent} from "./transcript-preview/transcript-previe
     NumberCardsComponent,
     SnackBarLogOutComponent,
     RecordComponent,
-    RecordingTextComponent,
     TranscriptPreviewComponent
   ],
   imports: [
