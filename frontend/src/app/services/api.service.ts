@@ -16,6 +16,7 @@ import {SnackBarLogOutComponent} from '../components/Login/snack-bar-log-out/sna
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ThemeService} from './theme.service';
 import {UserLabeledData} from '../models/UserLabeledData';
+import {Recording} from "../models/Recording";
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +41,10 @@ export class ApiService {
 
   getTextAudioIndexes(): Observable<Array<TextAudioIndexWithText>> {
     return this.http.get<Array<TextAudioIndexWithText>>(this.url + 'getTextAudioIndexes');
+  }
+
+  createRecording(recording: Recording): Observable<any> {
+    return this.http.post(this.url + 'createRecording', recording);
   }
 
   getCheckedTextAudioIndexesByUser(userId: number): Observable<Array<TextAudioIndex>> {
