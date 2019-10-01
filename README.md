@@ -1,7 +1,7 @@
 # Setup Backend
 **1.** Start your MySQL server on default port `3306`. Use `root` as username and `password` as password. 
 
-**2.** Open backend directory and start `SetupDB`. This will create all tables and clear its data.
+**2.** Open backend directory and start `SetupDB`. This will create all tables and clear its data if there's already some.
 
 **3.** Insert data into the database by running `MigrateDB`.
 
