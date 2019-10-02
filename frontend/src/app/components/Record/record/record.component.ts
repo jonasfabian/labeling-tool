@@ -28,6 +28,7 @@ export class RecordComponent implements OnInit {
   fileByteArray: Array<number> = [];
   yeet: any;
   fileContent: string | ArrayBuffer = '';
+  showTextArea = false;
 
   ngOnInit() {
   }
@@ -38,6 +39,10 @@ export class RecordComponent implements OnInit {
     } else {
       return true;
     }
+  }
+
+  toggle(): void {
+    this.showTextArea = !this.showTextArea;
   }
 
   record(): void {

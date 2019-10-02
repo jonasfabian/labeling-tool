@@ -18,7 +18,7 @@ import {CarouselModule} from 'ngx-carousel-lib';
 import {HomeComponent} from './Multi-Use/home/home.component';
 import {ErrorComponent} from './Multi-Use/error/error.component';
 import {RegisterComponent} from './Login/register/register.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AuthGuardService} from '../guards/auth-guard.service';
 import {ProfileComponent} from './Multi-Use/profile/profile.component';
 import {AvatarComponent} from './Multi-Use/avatar/avatar.component';
@@ -72,7 +72,8 @@ import {RecordComponent} from './Record/record/record.component';
     HttpClientModule,
     NgxChartsModule,
     CarouselModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [
     HttpClient,
