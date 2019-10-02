@@ -14,28 +14,29 @@ Note: Other versions might work, but have not been tested yet
 * IntelliJ Idea (Webstorm / PyCharm)
 
 # Setup Backend
-**1.**  Go to `MigrateDB.scala` and change the path variables to your the desired directory. Do the same thing in the `LabelingToolService.scala` file.
+1. Go to `MigrateDB.scala` and change the path variables to your the desired directory. Do the same thing in the `LabelingToolService.scala` file.
 
 Your directory should look like the following example:
-```
+```bash
 ├── your directory
-├─────36
-├────────audio.mp3
-├────────transcript.txt
-├────────transcript_indexes.xml
-├─────37
-├────────audio.mp3
-├────────transcript.txt
-├────────transcript_indexes.xml
-├─────38
-├────────audio.mp3
-├────────transcript.txt
-├────────transcript_indexes.xml
+│   ├── 36
+│   │   ├── audio.mp3
+│   │   ├── transcript.txt
+│   │   ├── transcript_indexes.xml
+│   ├── 37
+│   │   ├── audio.mp3
+│   │   ├── transcript.txt
+│   │   ├── transcript_indexes.xml
+│   ├── 38
+│   │   ├── audio.mp3
+│   │   ├── transcript.txt
+│   │   ├── transcript_indexes.xml
+│   ├── ...
 ```
 
 The `transcript_indexes.xml` should look like this:
 
-```
+```xml
 <XMLIndexFile>
     <Version>2.0.0</Version>
     <SamplingRate>44100</SamplingRate>
@@ -63,25 +64,18 @@ The `transcript_indexes.xml` should look like this:
     </TextAudioIndex>
 ```
 
-**2.** Start your MariaDB server on default port `3306`. Use `root` as username and `password` as password. 
-
-**3.** Open backend directory and start `SetupDB`. This will create all tables and clear its data if there's already some.
-
-**4.** Insert data into the database by running `MigrateDB`.
-
-**5.** To start the RestAPI run the `WebServer` file.
+1. Start your MariaDB server on default port `3306`. Use `root` as username and `password` as password. 
+1. Open backend directory and start `SetupDB`. This will create all tables and clear its data if there's already some.
+1. Insert data into the database by running `MigrateDB`.
+1. To start the RestAPI run the `WebServer` file.
 
 
 # Setup Frontend
-**1.** Install the Angular CLI (https://angular.io/cli)
 
-**2.** Clone the Github Project (https://github.com/jonasfabian/labeling-tool.git)
-
-**3.** Open the project in your favorite IDE (IntelliJ Idea recommended)
-
-**4.** Open the console and move to the frontend folder of the project
-
-**5.** Type: `ng serve -o` (Your browser should open a new tab with the app started)
+1. Clone the Github Project (https://github.com/jonasfabian/labeling-tool.git)
+1. Open the console and move to the frontend folder of the project
+1. Type: `ng serve` or `npm start`
+1. Go to http://localhost:4200
 
 # Create an Account
 To start labeling, you first have to register yourself. Click on `Login` in the top right corner. You should be redirected to the login-page, in which you have to click on register at the bottom of the login-form. You should now register yourself.
