@@ -4,7 +4,6 @@
 * MySQL Ver 14.14 Distrib 5.7.27
 * Node.js 12.10.0
 * Scala 2.12.8
-* Python 3.7.3
 
 Note: Other versions might work, but have not been tested yet
 
