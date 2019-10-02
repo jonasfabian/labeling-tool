@@ -1,3 +1,18 @@
+# Requirements
+**Required**
+* Java 8
+* MySQL Ver 14.14 Distrib 5.7.27
+* Node.js 12.10.0
+* Scala 2.12.8
+* Python 3.7.3
+
+Note: Other versions might work, but have not been tested yet
+
+**Optional**
+* Node.js
+  * Angular-CLI
+* IntelliJ Idea (Webstorm / PyCharm)
+
 # Setup Backend
 **1.**  Go to `MigrateDB.scala` and change the path variables to your the desired directory. Do the same thing in the `LabelingToolService.scala` file.
 
@@ -17,9 +32,8 @@ Your directory should look like the following example:
 ├────────transcript.txt
 ├────────transcript_indexes.xml
 ```
-Of course you can change the file names, you have to change them in the code aswell. Otherwise the migration wont work anymore.
 
-The xml-data-structure should look like this:
+The `transcript_indexes.xml` should look like this:
 
 ```
 <XMLIndexFile>
@@ -49,7 +63,7 @@ The xml-data-structure should look like this:
     </TextAudioIndex>
 ```
 
-**2.** Start your MySQL server on default port `3306`. Use `root` as username and `password` as password. 
+**2.** Start your MariaDB server on default port `3306`. Use `root` as username and `password` as password. 
 
 **3.** Open backend directory and start `SetupDB`. This will create all tables and clear its data if there's already some.
 
