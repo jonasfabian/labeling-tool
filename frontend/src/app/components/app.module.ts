@@ -18,7 +18,7 @@ import {CarouselModule} from 'ngx-carousel-lib';
 import {HomeComponent} from './Multi-Use/home/home.component';
 import {ErrorComponent} from './Multi-Use/error/error.component';
 import {RegisterComponent} from './Login/register/register.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AuthGuardService} from '../guards/auth-guard.service';
 import {ProfileComponent} from './Multi-Use/profile/profile.component';
 import {AvatarComponent} from './Multi-Use/avatar/avatar.component';
@@ -32,9 +32,8 @@ import {OverviewComponent} from './Overview/overview/overview.component';
 import {CheckComponent} from './Check/check/check.component';
 import {SettingsComponent} from './Settings/settings/settings.component';
 import {LoginComponent} from './Login/login/login.component';
-import {RecordComponent} from './record/record.component';
-import {RecordingTextComponent} from './recording-text/recording-text.component';
-import {TranscriptPreviewComponent} from "./transcript-preview/transcript-preview.component";
+import {TranscriptPreviewComponent} from './Record/transcript-preview/transcript-preview.component';
+import {RecordComponent} from './Record/record/record.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +62,6 @@ import {TranscriptPreviewComponent} from "./transcript-preview/transcript-previe
     NumberCardsComponent,
     SnackBarLogOutComponent,
     RecordComponent,
-    RecordingTextComponent,
     TranscriptPreviewComponent
   ],
   imports: [
@@ -74,7 +72,8 @@ import {TranscriptPreviewComponent} from "./transcript-preview/transcript-previe
     HttpClientModule,
     NgxChartsModule,
     CarouselModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [
     HttpClient,

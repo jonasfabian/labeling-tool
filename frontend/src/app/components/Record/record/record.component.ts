@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {ApiService} from '../../services/api.service';
-import {Recording} from '../../models/Recording';
-import {AuthService} from '../../services/auth.service';
+import {ApiService} from '../../../services/api.service';
+import {Recording} from '../../../models/Recording';
+import {AuthService} from '../../../services/auth.service';
+import {TranscriptPreviewComponent} from '../transcript-preview/transcript-preview.component';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-record',
@@ -12,7 +14,8 @@ export class RecordComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private authService: AuthService
+    private authService: AuthService,
+    public dialog: MatDialog
   ) {
   }
 
@@ -23,10 +26,23 @@ export class RecordComponent implements OnInit {
   // @ts-ignore
   mediaRecorder: MediaRecorder;
   fileByteArray: Array<number> = [];
-  arArray: Array<number> = [];
   yeet: any;
+  fileContent: string | ArrayBuffer = '';
+  showTextArea = false;
 
   ngOnInit() {
+  }
+
+  disableCreateButton(): boolean {
+    if (this.fileByteArray.length !== 0 && this.fileContent !== '') {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  toggle(): void {
+    this.showTextArea = !this.showTextArea;
   }
 
   record(): void {
@@ -88,7 +104,27 @@ export class RecordComponent implements OnInit {
   }
 
   createRecording(): void {
-    const rec =  new Recording(-1, 'hgllodafasdf', this.authService.loggedInUser.id, this.fileByteArray);
+    const rec =  new Recording(-1, this.fileContent.toString(), this.authService.loggedInUser.id, this.fileByteArray);
     this.apiService.createRecording(rec).subscribe();
+  }
+
+  handleFileInput(fileList: FileList): void {
+    const file = fileList[0];
+    const fileReader: FileReader = new FileReader();
+    fileReader.onloadend = () => {
+      this.fileContent = fileReader.result;
+    };
+    fileReader.readAsText(file);
+  }
+
+  openTranscriptPreviewDialog(): void {
+    this.dialog.open(TranscriptPreviewComponent, {
+      width: 'calc(100% - 1px)',
+      height: 'calc(100% - 200px)',
+      disableClose: false,
+      data: {
+        transcript: this.fileContent
+      }
+    });
   }
 }
