@@ -73,6 +73,8 @@ extends TableImpl[UserRecord](
 
   val PASSWORD : TableField[UserRecord, String] = createField("password", org.jooq.impl.SQLDataType.VARCHAR(100), "")
 
+  val CANTON : TableField[UserRecord, String] = createField("canton", org.jooq.impl.SQLDataType.VARCHAR(45), "")
+
   def this() = {
     this(DSL.name("user"), null, null, null, null)
   }

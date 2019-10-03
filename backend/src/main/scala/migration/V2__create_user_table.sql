@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS `user` (
     `username` VARCHAR(100),
     `avatarVersion` INT,
     `password` VARCHAR (100),
+    `canton` VARCHAR(45),
     PRIMARY KEY (`id`),
     UNIQUE KEY `email` (`email`)
 ) ENGINE = InnoDB;

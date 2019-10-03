@@ -60,4 +60,8 @@ class UserDao(configuration : Configuration) extends DAOImpl[UserRecord, jooq.db
   def fetchByPassword(values : String*) : List[jooq.db.tables.pojos.User] = {
     fetch(User.USER.PASSWORD, values:_*)
   }
+
+  def fetchByCanton(values : String*) : List[jooq.db.tables.pojos.User] = {
+    fetch(User.USER.CANTON, values:_*)
+  }
 }
