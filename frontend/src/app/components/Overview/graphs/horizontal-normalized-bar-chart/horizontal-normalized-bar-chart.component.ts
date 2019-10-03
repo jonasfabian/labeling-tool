@@ -21,17 +21,17 @@ export class HorizontalNormalizedBarChartComponent implements OnInit, OnChanges 
   }
 
   ngOnChanges(): void {
-    const test = [];
+    const singleData = [];
     if (this.inputData.length !== 0) {
       this.inputData.forEach(l => {
-        test.push({
+        singleData.push({
           name: '', series: [
             {name: 'Checked', value: l.correct + l.wrong},
             {name: 'Not-Checked', value: l.totalTextAudioIndexes - (l.correct + l.wrong)}
           ]
         });
       });
-      this.single = test;
+      this.single = singleData;
     }
   }
 

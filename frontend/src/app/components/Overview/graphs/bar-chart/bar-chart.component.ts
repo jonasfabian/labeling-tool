@@ -21,13 +21,13 @@ export class BarChartComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    const test = [];
+    const singleData = [];
     if (this.inputData.length !== 0) {
       this.inputData.forEach(l => {
-        test.push({name: 'Correct', value: l.correct});
-        test.push({name: 'Wrong', value: l.wrong});
+        singleData.push({name: 'Correct', value: l.correct});
+        singleData.push({name: 'Wrong', value: l.wrong});
       });
-      this.single = test;
+      this.single = singleData;
     }
   }
 

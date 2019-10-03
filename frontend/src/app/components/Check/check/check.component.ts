@@ -43,7 +43,7 @@ export class CheckComponent implements OnInit {
   audioFileId = 0;
   BASE64_MARKER = ';base64,';
   blobUrl = '';
-  test: any;
+  snippet: any;
   isReady = false;
   waveSurfer: WaveSurfer = null;
 
@@ -167,8 +167,8 @@ export class CheckComponent implements OnInit {
   }
 
   calculateAudioPlayerStatus(): void {
-    const start = this.test.start;
-    const end = this.test.end;
+    const start = this.snippet.start;
+    const end = this.snippet.end;
     const length = end - start;
     this.waveSurfer.on('audioprocess', () => {
       const diff = end - this.waveSurfer.getCurrentTime();
@@ -247,21 +247,21 @@ export class CheckComponent implements OnInit {
 
   playRegion(): void {
     this.waveSurfer.on('audioprocess', () => {
-      if (this.waveSurfer.getCurrentTime() < this.test.end) {
+      if (this.waveSurfer.getCurrentTime() < this.snippet.end) {
         this.isPlaying = true;
       } else {
         this.isPlaying = false;
       }
     });
     this.isPlaying = false;
-    this.test.playLoop();
+    this.snippet.playLoop();
     this.resetAudioProgress();
     this.calculateAudioPlayerStatus();
   }
 
   addRegion(startPos: number, endPos: number): void {
     this.waveSurfer.clearRegions();
-    this.test = this.waveSurfer.addRegion({
+    this.snippet = this.waveSurfer.addRegion({
       start: startPos,
       end: endPos,
       resize: true,

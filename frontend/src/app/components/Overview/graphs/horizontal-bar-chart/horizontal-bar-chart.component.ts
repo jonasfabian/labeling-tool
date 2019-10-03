@@ -21,12 +21,12 @@ export class HorizontalBarChartComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    const test = [];
+    const singleData = [];
     if (this.inputData.length !== 0) {
       this.inputData.forEach(l => {
-        test.push({name: l.username, value: l.labelCount});
+        singleData.push({name: l.username, value: l.labelCount});
       });
-      this.single = test;
+      this.single = singleData;
     }
   }
 
