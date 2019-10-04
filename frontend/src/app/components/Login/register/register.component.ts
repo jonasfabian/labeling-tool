@@ -61,7 +61,7 @@ export class RegisterComponent implements OnInit {
       email: ['', [Validators.required]],
       username: ['', [Validators.required]],
       password: ['', [Validators.required]],
-      canton: ['']
+      canton: ['', [Validators.required]]
     });
   }
 
@@ -76,7 +76,6 @@ export class RegisterComponent implements OnInit {
     if (this.registerForm.valid) {
       this.apiService.createUser(this.user).subscribe(_ => {
         this.router.navigate(['labeling-tool/login']);
-        console.log(this.user);
       });
     }
   }

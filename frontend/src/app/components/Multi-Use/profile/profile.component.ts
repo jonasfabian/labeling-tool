@@ -9,6 +9,7 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {HttpClient} from '@angular/common/http';
 import {Avatar} from '../../../models/Avatar';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-profile',
@@ -21,10 +22,12 @@ export class ProfileComponent implements OnInit {
     private apiService: ApiService,
     private router: Router,
     private authService: AuthService,
-    private http: HttpClient
+    private http: HttpClient,
+    private fb: FormBuilder
   ) {
   }
 
+  changeProfileForm: FormGroup;
   user = new UserPublicInfo(-1, '', '', '', '', 0);
   textAudioIndexArray: Array<TextAudioIndex> = [];
   displayedColumns = ['id', 'samplingRate', 'textStartPos', 'textEndPos', 'audioStartPos', 'audioEndPos', 'speakerKey', 'labeled', 'correct', 'wrong', 'transcriptFileId'];
@@ -51,7 +54,33 @@ export class ProfileComponent implements OnInit {
         this.dataSource.filterPredicate = (data, filter: string): boolean => {
           return data.labeled.toString().toLowerCase().includes(filter);
         };
+        this.initForm();
       });
+  }
+
+  initForm(): void {
+    this.changeProfileForm = this.fb.group({
+      username: ['', [Validators.required]],
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      email: ['', [Validators.required]]
+    });
+  }
+
+  changeProfile(): void {
+    this.user.username = this.changeProfileForm.controls.username.value;
+    this.user.firstName = this.changeProfileForm.controls.firstName.value;
+    this.user.lastName = this.changeProfileForm.controls.lastName.value;
+    this.user.email = this.changeProfileForm.controls.email.value;
+    if (this.changeProfileForm.valid) {
+      this.apiService.updateUser(this.user).subscribe(_ => {
+        this.editProfile = false;
+      });
+    }
+  }
+
+  cancel(): void {
+    this.router.navigate(['/labeling-tool/login']);
   }
 
   onFileChanged(event): void {
