@@ -21,11 +21,11 @@
         <mat-list-item>Last name: {{user.lastName}}</mat-list-item>
         <mat-list-item>Email: {{user.email}}</mat-list-item>
       </mat-list>
-      <mat-button-toggle (click)="editProfile = true" style="cursor: pointer; margin-left: 5px">Edit Profile</mat-button-toggle>
+      <mat-button-toggle (click)="editProfile = true" style="cursor: pointer; margin-left: 5px">Edit Profile
+      </mat-button-toggle>
     </ng-container>
     <ng-container *ngIf="editProfile">
-
-      <form [formGroup]="changeProfileForm" (ngSubmit)="changeProfile()">
+      <form style="float: left;" [formGroup]="changeProfileForm" (ngSubmit)="changeProfile()">
         <div>
           <mat-form-field style="width: 100%;">
             <input type="text" matInput placeholder="Username" formControlName="username">
@@ -47,14 +47,15 @@
           </mat-form-field>
         </div>
         <div>
-          <button mat-button style="width: calc(50% - 5px); border: 1px solid lightgray; height: 50px; float: left;" type="submit">Change
+          <button mat-button style="width: calc(50% - 5px); border: 1px solid lightgray; height: 50px; float: left;"
+                  type="submit">Change
           </button>
-          <button mat-button style="width: calc(50% - 5px); border: 1px solid lightgray; height: 50px; float: right;" (click)="cancel()"
+          <button mat-button style="width: calc(50% - 5px); border: 1px solid lightgray; height: 50px; float: right;"
+                  (click)="cancel()"
                   type="button">Cancel
           </button>
         </div>
       </form>
-
       <input style="display: none;" type="file" (change)="onFileChanged($event)" accept=".png, .jpg" #fileInput>
       <mat-button-toggle (click)="fileInput.click()">Upload Avatar</mat-button-toggle>
       <mat-button-toggle (click)="editProfile = false">Cancel</mat-button-toggle>
