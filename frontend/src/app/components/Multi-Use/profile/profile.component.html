@@ -50,10 +50,6 @@
           <button mat-button style="width: calc(50% - 5px); border: 1px solid lightgray; height: 50px; float: left;"
                   type="submit">Change
           </button>
-          <button mat-button style="width: calc(50% - 5px); border: 1px solid lightgray; height: 50px; float: right;"
-                  (click)="cancel()"
-                  type="button">Cancel
-          </button>
         </div>
       </form>
       <input style="display: none;" type="file" (change)="onFileChanged($event)" accept=".png, .jpg" #fileInput>
