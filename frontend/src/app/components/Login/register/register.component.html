@@ -37,7 +37,7 @@
             <mat-label>Canton</mat-label>
             <mat-select formControlName="canton">
               <mat-option>None</mat-option>
-              <mat-option *ngFor="let canton of cantons" [value]="canton.cantonId">{{canton.cantonName}}</mat-option>
+              <mat-option *ngFor="let canton of apiService.cantons" [value]="canton.cantonId">{{canton.cantonName}}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>

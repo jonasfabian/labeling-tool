@@ -2,7 +2,7 @@
   <h1 style="margin-bottom: 0;">Profile</h1>
 </mat-card>
 <div style="margin: 15px;">
-  <mat-card id="header-card" style="height: 260px;">
+  <mat-card [style.height]="editProfile ? '326px' : '260px'" id="header-card">
     <ng-container *ngIf="authService.loggedInUser.avatarVersion !== 0">
       <img style="width: 260px; height: 260px;" [src]="authService.source">
     </ng-container>
