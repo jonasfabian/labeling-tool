@@ -21,7 +21,7 @@
         </mat-list-item>
         <mat-list-item>Last name: {{user.lastName}}</mat-list-item>
         <mat-list-item>Email: {{user.email}}</mat-list-item>
-        <mat-list-item>Canton: {{user.canton}}</mat-list-item>
+        <mat-list-item>Canton: {{user.canton | CantonIdToCanton}}</mat-list-item>
       </mat-list>
       <mat-button-toggle (click)="editProfile = true"
                          style="cursor: pointer; margin-left: 5px; position: absolute; right: 15px; top: 15px;">Edit
