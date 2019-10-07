@@ -134,7 +134,7 @@ export class ApiService {
     sessionStorage.clear();
     this.router.navigate(['/labeling-tool/login']);
     this.authService.isAuthenticated = false;
-    this.authService.loggedInUser = new UserPublicInfo(-1, '', '', '', '', 0);
+    this.authService.loggedInUser = new UserPublicInfo(-1, '', '', '', '', 0, '');
     if (this.themeService.getTheme() !== 'dark-theme') {
       this.openSnackBar('light-snackbar');
     } else {

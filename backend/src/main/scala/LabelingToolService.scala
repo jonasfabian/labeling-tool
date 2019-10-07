@@ -52,21 +52,21 @@ class LabelingToolService(config: Config) {
     dslContext.select()
       .from(USER)
       .where(USER.ID.eq(id))
-      .fetchOne().map(m => UserPublicInfo(m.get(USER.ID).toInt, m.get(USER.FIRSTNAME), m.get(USER.LASTNAME), m.get(USER.EMAIL), m.get(USER.USERNAME), m.get(USER.AVATARVERSION).toInt))
+      .fetchOne().map(m => UserPublicInfo(m.get(USER.ID).toInt, m.get(USER.FIRSTNAME), m.get(USER.LASTNAME), m.get(USER.EMAIL), m.get(USER.USERNAME), m.get(USER.AVATARVERSION).toInt, m.get(USER.CANTON)))
   })
 
   def getUserByUsername(username: String): UserPublicInfo = withDslContext(dslContext => {
     dslContext.select()
       .from(USER)
       .where(USER.USERNAME.eq(username))
-      .fetchOne().map(m => UserPublicInfo(m.get(USER.ID).toInt, m.get(USER.FIRSTNAME), m.get(USER.LASTNAME), m.get(USER.EMAIL), m.get(USER.USERNAME), m.get(USER.AVATARVERSION).toInt))
+      .fetchOne().map(m => UserPublicInfo(m.get(USER.ID).toInt, m.get(USER.FIRSTNAME), m.get(USER.LASTNAME), m.get(USER.EMAIL), m.get(USER.USERNAME), m.get(USER.AVATARVERSION).toInt, m.get(USER.CANTON)))
   })
 
   def getUserByEmail(email: String): UserPublicInfo = withDslContext(dslContext => {
     dslContext.select()
       .from(USER)
       .where(USER.EMAIL.eq(email))
-      .fetchOne().map(m => UserPublicInfo(m.get(USER.ID).toInt, m.get(USER.FIRSTNAME), m.get(USER.LASTNAME), m.get(USER.EMAIL), m.get(USER.USERNAME), m.get(USER.AVATARVERSION).toInt))
+      .fetchOne().map(m => UserPublicInfo(m.get(USER.ID).toInt, m.get(USER.FIRSTNAME), m.get(USER.LASTNAME), m.get(USER.EMAIL), m.get(USER.USERNAME), m.get(USER.AVATARVERSION).toInt, m.get(USER.CANTON)))
   })
 
   // get all of labeled-type
@@ -198,6 +198,7 @@ class LabelingToolService(config: Config) {
       .set(USER.EMAIL, user.email)
       .set(USER.USERNAME, user.username)
       .set(USER.AVATARVERSION, Integer.valueOf(user.avatarVersion))
+      .set(USER.CANTON, user.canton)
       .where(USER.ID.eq(user.id))
       .execute()
     ()

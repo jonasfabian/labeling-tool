@@ -28,7 +28,7 @@ export class ProfileComponent implements OnInit {
   }
 
   changeProfileForm: FormGroup;
-  user = new UserPublicInfo(-1, '', '', '', '', 0);
+  user = new UserPublicInfo(-1, '', '', '', '', 0, '');
   textAudioIndexArray: Array<TextAudioIndex> = [];
   displayedColumns = ['id', 'samplingRate', 'textStartPos', 'textEndPos', 'audioStartPos', 'audioEndPos', 'speakerKey', 'labeled', 'correct', 'wrong', 'transcriptFileId'];
   dataSource = new MatTableDataSource<TextAudioIndex>();
@@ -77,7 +77,16 @@ export class ProfileComponent implements OnInit {
         this.editProfile = false;
       }, () => {
       }, () => {
-        sessionStorage.setItem('user', JSON.stringify([{id: this.user.id, firstName: this.user.firstName, lastName: this.user.lastName, email: this.user.email, username: this.user.username, avatarVersion: this.user.avatarVersion, time: new Date()}]));
+        sessionStorage.setItem('user', JSON.stringify([{
+          id: this.user.id,
+          firstName: this.user.firstName,
+          lastName: this.user.lastName,
+          email: this.user.email,
+          username: this.user.username,
+          avatarVersion: this.user.avatarVersion,
+          canton: this.user.canton,
+          time: new Date()
+        }]));
       });
     }
   }
@@ -98,7 +107,6 @@ export class ProfileComponent implements OnInit {
         this.http.post('http://localhost:8080/api/match/createAvatar', new Avatar(-1, this.user.id, this.fileByteArray)).subscribe(_ => {
           this.apiService.getAvatar(this.user.id).subscribe(a => {
             this.authService.source = 'data:image/png;base64,' + btoa(String.fromCharCode.apply(null, new Uint8Array(a.avatar)));
-            this.editProfile = false;
             this.apiService.updateUser(this.authService.loggedInUser).subscribe();
             sessionStorage.setItem('user', JSON.stringify([{
               id: this.authService.loggedInUser.id,
@@ -107,6 +115,7 @@ export class ProfileComponent implements OnInit {
               email: this.authService.loggedInUser.email,
               username: this.authService.loggedInUser.username,
               avatarVersion: this.authService.loggedInUser.avatarVersion,
+              canton: this.authService.loggedInUser.canton,
               time: new Date()
             }]));
           });
