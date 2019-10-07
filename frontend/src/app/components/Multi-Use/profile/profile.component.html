@@ -48,7 +48,7 @@
         </div>
         <div>
           <mat-form-field style="width: 100%;">
-            <input type="text" matInput placeholder="Email" formControlName="email">
+            <input [errorStateMatcher]="matcher" type="email" matInput placeholder="Email" formControlName="email">
           </mat-form-field>
         </div>
         <div>

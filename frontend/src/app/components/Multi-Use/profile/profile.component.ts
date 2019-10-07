@@ -9,13 +9,15 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {HttpClient} from '@angular/common/http';
 import {Avatar} from '../../../models/Avatar';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
+import {ErrorStateMatcher} from '@angular/material';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
+
 export class ProfileComponent implements OnInit {
 
   constructor(
@@ -39,6 +41,7 @@ export class ProfileComponent implements OnInit {
   fileByteArray: Array<number> = [];
   yeet: any;
   editProfile = false;
+  matcher = new MyErrorStateMatcher();
 
   ngOnInit() {
     this.authService.checkAuthenticated();
@@ -63,7 +66,7 @@ export class ProfileComponent implements OnInit {
       username: [this.user.username, [Validators.required]],
       firstName: [this.user.firstName, [Validators.required]],
       lastName: [this.user.lastName, [Validators.required]],
-      email: [this.user.email, [Validators.required]],
+      email: [this.user.email, [Validators.required, Validators.email]],
       canton: [this.user.canton, [Validators.required]]
     });
   }
@@ -124,5 +127,13 @@ export class ProfileComponent implements OnInit {
         });
       }
     };
+  }
+}
+
+// tslint:disable-next-line:component-class-suffix
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
   }
 }
