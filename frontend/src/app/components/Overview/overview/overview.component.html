@@ -1,0 +1,46 @@
+<div>
+  <mat-card id="header-card">
+    <h1>Overview</h1>
+  </mat-card>
+</div>
+<div id="content">
+  <div style="height: 100%;">
+    <mat-grid-list id="graph-list" gutterSize="15" cols="3" rowHeight="fit" style="height: 100%;">
+      <mat-grid-tile>
+        <mat-card>
+          <mat-card-title>
+            <strong>Check results</strong>
+          </mat-card-title>
+          <app-bar-chart [inputData]="inputData"></app-bar-chart>
+        </mat-card>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-card>
+          <mat-card-title>
+            <strong>Amount of checked</strong>
+          </mat-card-title>
+          <app-horizontal-normalized-bar-chart [inputData]="inputData"></app-horizontal-normalized-bar-chart>
+        </mat-card>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-card>
+          <mat-card-title>
+            <strong>Who labels the most?</strong>
+          </mat-card-title>
+          <app-horizontal-bar-chart [inputData]="userInputData"></app-horizontal-bar-chart>
+        </mat-card>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="3" rowspan="2">
+        <mat-card>
+          <mat-card-title>
+            <strong>Interesting numbers</strong>
+          </mat-card-title>
+          <app-table></app-table>
+          <div style="position: absolute; top: 15px; right: 15px;">
+            <mat-button-toggle (click)="generateTable()">Export as CSV</mat-button-toggle>
+          </div>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+</div>

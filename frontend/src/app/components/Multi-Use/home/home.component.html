@@ -1,0 +1,30 @@
+<div class="home-container">
+  <div id="home-title">
+    Labeling-Tool for Audio
+  </div>
+  <div>
+    <img id="home-image" src="../../../../assets/images/home.png" height="121" width="601"/>
+  </div>
+</div>
+<div class="slider-container" style="margin-left: 355px;">
+  <mat-card class="info-card">
+    <h3>Label</h3>
+    <br>
+    <div>
+      Correct already labeled data by adjusting audio snippets and text passages.
+    </div>
+    <mat-button-toggle *ngIf="authService.isAuthenticated" [routerLink]="['/labeling-tool/label']">Go To
+    </mat-button-toggle>
+  </mat-card>
+</div>
+<div class="slider-container" style="margin-left: 15px;">
+  <mat-card class="info-card">
+    <h3>Check</h3>
+    <br>
+    <div>
+      Check whether already labeled data is aligned correctly.
+    </div>
+    <mat-button-toggle *ngIf="authService.isAuthenticated" [routerLink]="['/labeling-tool/check']">Go To
+    </mat-button-toggle>
+  </mat-card>
+</div>

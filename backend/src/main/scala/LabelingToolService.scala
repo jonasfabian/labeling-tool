@@ -1,13 +1,14 @@
 import java.io.File
+import java.time.LocalDateTime
 
 import akka.http.scaladsl.marshalling.ToResponseMarshallable
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
-import models.{Audio, EmailPassword, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User, UserAndTextAudioIndex, UserPublicInfo}
+import models.{Audio, Avatar, EmailPassword, Recording, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User, UserAndTextAudioIndex, UserLabeledData, UserPublicInfo}
 import com.typesafe.config.Config
 import org.jooq.{DSLContext, Field}
 import org.jooq.impl.DSL
 import jooq.db.Tables._
-import jooq.db.tables.records.{AudioRecord, TextaudioindexRecord, TranscriptRecord, UserRecord, UserandtextaudioindexRecord}
+import jooq.db.tables.records.{AudioRecord, AvatarRecord, RecordingsRecord, TextaudioindexRecord, TranscriptRecord, UserRecord, UserandtextaudioindexRecord}
 import org.mindrot.jbcrypt.BCrypt
 
 class LabelingToolService(config: Config) {
@@ -34,6 +35,11 @@ class LabelingToolService(config: Config) {
     dslContext.selectFrom(TEXTAUDIOINDEX).fetchArray().map(m => TextAudioIndex(m.getId, m.getSamplingrate, m.getTextstartpos, m.getTextendpos, m.getAudiostartpos, m.getAudioendpos, m.getSpeakerkey, m.getLabeled, m.getCorrect, m.getWrong, m.getTranscriptFileId))
   })
 
+  def getTopFiveUsersLabeledCount: (Array[UserLabeledData]) = withDslContext(dslContext => {
+    dslContext.select(USER.ID, USER.USERNAME, DSL.count()).from(USERANDTEXTAUDIOINDEX).join(USER).on(USER.ID.eq(USERANDTEXTAUDIOINDEX.USERID)).groupBy(USER.ID)
+      .fetchArray().map(m => UserLabeledData(m.get(USER.ID).asInstanceOf[Int], m.get(USER.USERNAME), m.get(2).asInstanceOf[Int]))
+  })
+
   // get one by id
   def getTextAudioIndexById(id: Int): TextAudioIndex = withDslContext(dslContext => {
     dslContext.select()
@@ -46,14 +52,21 @@ class LabelingToolService(config: Config) {
     dslContext.select()
       .from(USER)
       .where(USER.ID.eq(id))
-      .fetchOne().map(m => UserPublicInfo(m.get(USER.ID).toInt, m.get(USER.FIRSTNAME), m.get(USER.LASTNAME), m.get(USER.EMAIL)))
+      .fetchOne().map(m => UserPublicInfo(m.get(USER.ID).toInt, m.get(USER.FIRSTNAME), m.get(USER.LASTNAME), m.get(USER.EMAIL), m.get(USER.USERNAME), m.get(USER.AVATARVERSION).toInt))
+  })
+
+  def getUserByUsername(username: String): UserPublicInfo = withDslContext(dslContext => {
+    dslContext.select()
+      .from(USER)
+      .where(USER.USERNAME.eq(username))
+      .fetchOne().map(m => UserPublicInfo(m.get(USER.ID).toInt, m.get(USER.FIRSTNAME), m.get(USER.LASTNAME), m.get(USER.EMAIL), m.get(USER.USERNAME), m.get(USER.AVATARVERSION).toInt))
   })
 
   def getUserByEmail(email: String): UserPublicInfo = withDslContext(dslContext => {
     dslContext.select()
       .from(USER)
       .where(USER.EMAIL.eq(email))
-      .fetchOne().map(m => UserPublicInfo(m.get(USER.ID).toInt, m.get(USER.FIRSTNAME), m.get(USER.LASTNAME), m.get(USER.EMAIL)))
+      .fetchOne().map(m => UserPublicInfo(m.get(USER.ID).toInt, m.get(USER.FIRSTNAME), m.get(USER.LASTNAME), m.get(USER.EMAIL), m.get(USER.USERNAME), m.get(USER.AVATARVERSION).toInt))
   })
 
   // get all of labeled-type
@@ -66,13 +79,12 @@ class LabelingToolService(config: Config) {
 
   // get sums of labeled
   def getLabeledSums: Array[Sums] = withDslContext(dslContext => {
-    val nonLabeled: Field[Integer] = dslContext.selectCount().from(TEXTAUDIOINDEX).where(TEXTAUDIOINDEX.LABELED.eq(0)).asField("books")
-    val correct: Field[Integer] = dslContext.selectCount().from(TEXTAUDIOINDEX).where(TEXTAUDIOINDEX.LABELED.eq(1)).asField("correct")
-    val wrong: Field[Integer] = dslContext.selectCount().from(TEXTAUDIOINDEX).where(TEXTAUDIOINDEX.LABELED.eq(2)).asField("wrong")
-    val skipped: Field[Integer] = dslContext.selectCount().from(TEXTAUDIOINDEX).where(TEXTAUDIOINDEX.LABELED.eq(3)).asField("skipped")
+    val correct: Field[Integer] = dslContext.selectCount().from(TEXTAUDIOINDEX).where(TEXTAUDIOINDEX.CORRECT.ne(0)).asField("correct")
+    val wrong: Field[Integer] = dslContext.selectCount().from(TEXTAUDIOINDEX).where(TEXTAUDIOINDEX.WRONG.ne(0)).asField("wrong")
+    val totalTextAudioIndexes: Field[Integer] = dslContext.selectCount().from(TEXTAUDIOINDEX).asField("totalTextAudioIndexes")
     dslContext.select(
-      nonLabeled, correct, wrong, skipped
-    ).from(TEXTAUDIOINDEX).limit(1).fetchArray().map(m => Sums(m.get(nonLabeled).toString.toInt, m.get(correct).toString.toInt, m.get(wrong).toString.toInt, m.get(skipped).toString.toInt))
+      correct, wrong, totalTextAudioIndexes
+    ).from(TEXTAUDIOINDEX).limit(1).fetchArray().map(m => Sums(m.get(correct).asInstanceOf[Int], m.get(wrong).asInstanceOf[Int], m.get(totalTextAudioIndexes).asInstanceOf[Int]))
   })
 
   def getTranscript(id: Int): Transcript = withDslContext(dslContext => {
@@ -96,6 +108,13 @@ class LabelingToolService(config: Config) {
 
   def getTranscripts: Array[Transcript] = withDslContext(dslContext => {
     dslContext.selectFrom(TRANSCRIPT).fetchArray().map(m => Transcript(m.getId, m.getText, m.getFileid))
+  })
+
+  def getAvatar(userId: Integer): Avatar = withDslContext(dslContext => {
+    dslContext.select()
+      .from(AVATAR)
+      .where(AVATAR.USERID.eq(userId))
+      .fetchOne().map(m => Avatar(m.get(AVATAR.ID).toInt, m.get(AVATAR.USERID).toInt, m.get(AVATAR.AVATAR_)))
   })
 
   def getNonLabeledDataIndexes(labeledType: Integer): TextAudioIndexWithText = withDslContext(dslContext => {
@@ -161,13 +180,41 @@ class LabelingToolService(config: Config) {
 
   def createUser(user: User): Unit = withDslContext(dslContext => {
     val hashedPw = BCrypt.hashpw(user.password, BCrypt.gensalt())
-    val rec = userToRecord(new User(user.id, user.firstName, user.lastName, user.email, hashedPw))
+    val rec = userToRecord(new User(user.id, user.firstName, user.lastName, user.email, user.username, user.avatarVersion, hashedPw))
+    dslContext.executeInsert(rec)
+    ()
+  })
+
+  def createRecording(recording: Recording): Unit = withDslContext(dslContext => {
+    val rec = recordingToRecord(new Recording(recording.id, recording.text, recording.userId, recording.audio))
+    dslContext.executeInsert(rec)
+    ()
+  })
+
+  def updateUser(user: UserPublicInfo): Unit = withDslContext(dslContext => {
+    dslContext.update(USER)
+      .set(USER.FIRSTNAME, user.firstName)
+      .set(USER.LASTNAME, user.lastName)
+      .set(USER.EMAIL, user.email)
+      .set(USER.USERNAME, user.username)
+      .set(USER.AVATARVERSION, Integer.valueOf(user.avatarVersion))
+      .where(USER.ID.eq(user.id))
+      .execute()
+    ()
+  })
+
+  def createAvatar(avatar: Avatar): Unit = withDslContext(dslContext => {
+    dslContext.delete(AVATAR)
+      .where(AVATAR.USERID.eq(avatar.userId))
+      .execute()
+    val rec = avatarToRecord(new Avatar(avatar.id, avatar.userId, avatar.avatar))
     dslContext.executeInsert(rec)
     ()
   })
 
   def createUserAndTextAudioIndex(userAndTextAudioIndex: UserAndTextAudioIndex): Unit = withDslContext(dslContext => {
-    val rec = userAndTextAudioIndexToRecord(new UserAndTextAudioIndex(userAndTextAudioIndex.id, userAndTextAudioIndex.userId, userAndTextAudioIndex.textAudioIndexId))
+    println(LocalDateTime.now())
+    val rec = userAndTextAudioIndexToRecord(new UserAndTextAudioIndex(userAndTextAudioIndex.id, userAndTextAudioIndex.userId, userAndTextAudioIndex.textAudioIndexId, Some(LocalDateTime.now())))
     dslContext.executeInsert(rec)
     ()
   })
@@ -221,11 +268,28 @@ class LabelingToolService(config: Config) {
     rec
   }
 
+  def avatarToRecord(avatar: Avatar): AvatarRecord = {
+    val rec = new AvatarRecord()
+    rec.setUserid(avatar.userId)
+    rec.setAvatar(avatar.avatar)
+    rec
+  }
+
+  def recordingToRecord(recording: Recording): RecordingsRecord = {
+    val rec = new RecordingsRecord()
+    rec.setText(recording.text)
+    rec.setUserid(recording.userId)
+    rec.setAudio(recording.audio)
+    rec
+  }
+
   def userToRecord(u: User): UserRecord = {
     val rec = new UserRecord()
     rec.setFirstname(u.firstName)
     rec.setLastname(u.lastName)
     rec.setEmail(u.email)
+    rec.setUsername(u.username)
+    rec.setAvatarversion(u.avatarVersion)
     rec.setPassword(u.password)
     rec
   }

@@ -7,7 +7,7 @@ package jooq.db.tables.daos
 import java.lang.Byte
 import java.lang.Integer
 import java.lang.String
-import java.sql.Timestamp
+import java.time.LocalDateTime
 import java.util.List
 
 import jooq.db.tables.FlywaySchemaHistory
@@ -59,7 +59,7 @@ class FlywaySchemaHistoryDao(configuration : Configuration) extends DAOImpl[Flyw
     fetch(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_BY, values:_*)
   }
 
-  def fetchByInstalledOn(values : Timestamp*) : List[jooq.db.tables.pojos.FlywaySchemaHistory] = {
+  def fetchByInstalledOn(values : LocalDateTime*) : List[jooq.db.tables.pojos.FlywaySchemaHistory] = {
     fetch(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_ON, values:_*)
   }
 

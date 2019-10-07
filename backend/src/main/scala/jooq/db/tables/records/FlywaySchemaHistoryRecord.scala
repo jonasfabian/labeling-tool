@@ -7,7 +7,7 @@ package jooq.db.tables.records
 import java.lang.Byte
 import java.lang.Integer
 import java.lang.String
-import java.sql.Timestamp
+import java.time.LocalDateTime
 
 import jooq.db.tables.FlywaySchemaHistory
 
@@ -18,7 +18,7 @@ import org.jooq.Row10
 import org.jooq.impl.UpdatableRecordImpl
 
 
-class FlywaySchemaHistoryRecord extends UpdatableRecordImpl[FlywaySchemaHistoryRecord](FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY) with Record10[Integer, String, String, String, String, Integer, String, Timestamp, Integer, Byte] {
+class FlywaySchemaHistoryRecord extends UpdatableRecordImpl[FlywaySchemaHistoryRecord](FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY) with Record10[Integer, String, String, String, String, Integer, String, LocalDateTime, Integer, Byte] {
 
   def setInstalledRank(value : Integer) : Unit = {
     set(0, value)
@@ -83,13 +83,13 @@ class FlywaySchemaHistoryRecord extends UpdatableRecordImpl[FlywaySchemaHistoryR
     if (r == null) null else r.asInstanceOf[String]
   }
 
-  def setInstalledOn(value : Timestamp) : Unit = {
+  def setInstalledOn(value : LocalDateTime) : Unit = {
     set(7, value)
   }
 
-  def getInstalledOn : Timestamp = {
+  def getInstalledOn : LocalDateTime = {
     val r = get(7)
-    if (r == null) null else r.asInstanceOf[Timestamp]
+    if (r == null) null else r.asInstanceOf[LocalDateTime]
   }
 
   def setExecutionTime(value : Integer) : Unit = {
@@ -121,12 +121,12 @@ class FlywaySchemaHistoryRecord extends UpdatableRecordImpl[FlywaySchemaHistoryR
   // Record10 type implementation
   // -------------------------------------------------------------------------
 
-  override def fieldsRow : Row10[Integer, String, String, String, String, Integer, String, Timestamp, Integer, Byte] = {
-    super.fieldsRow.asInstanceOf[ Row10[Integer, String, String, String, String, Integer, String, Timestamp, Integer, Byte] ]
+  override def fieldsRow : Row10[Integer, String, String, String, String, Integer, String, LocalDateTime, Integer, Byte] = {
+    super.fieldsRow.asInstanceOf[ Row10[Integer, String, String, String, String, Integer, String, LocalDateTime, Integer, Byte] ]
   }
 
-  override def valuesRow : Row10[Integer, String, String, String, String, Integer, String, Timestamp, Integer, Byte] = {
-    super.valuesRow.asInstanceOf[ Row10[Integer, String, String, String, String, Integer, String, Timestamp, Integer, Byte] ]
+  override def valuesRow : Row10[Integer, String, String, String, String, Integer, String, LocalDateTime, Integer, Byte] = {
+    super.valuesRow.asInstanceOf[ Row10[Integer, String, String, String, String, Integer, String, LocalDateTime, Integer, Byte] ]
   }
   override def field1 : Field[Integer] = FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK
   override def field2 : Field[String] = FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.VERSION
@@ -135,7 +135,7 @@ class FlywaySchemaHistoryRecord extends UpdatableRecordImpl[FlywaySchemaHistoryR
   override def field5 : Field[String] = FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.SCRIPT
   override def field6 : Field[Integer] = FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.CHECKSUM
   override def field7 : Field[String] = FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_BY
-  override def field8 : Field[Timestamp] = FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_ON
+  override def field8 : Field[LocalDateTime] = FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_ON
   override def field9 : Field[Integer] = FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.EXECUTION_TIME
   override def field10 : Field[Byte] = FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.SUCCESS
   override def component1 : Integer = getInstalledRank
@@ -145,7 +145,7 @@ class FlywaySchemaHistoryRecord extends UpdatableRecordImpl[FlywaySchemaHistoryR
   override def component5 : String = getScript
   override def component6 : Integer = getChecksum
   override def component7 : String = getInstalledBy
-  override def component8 : Timestamp = getInstalledOn
+  override def component8 : LocalDateTime = getInstalledOn
   override def component9 : Integer = getExecutionTime
   override def component10 : Byte = getSuccess
   override def value1 : Integer = getInstalledRank
@@ -155,7 +155,7 @@ class FlywaySchemaHistoryRecord extends UpdatableRecordImpl[FlywaySchemaHistoryR
   override def value5 : String = getScript
   override def value6 : Integer = getChecksum
   override def value7 : String = getInstalledBy
-  override def value8 : Timestamp = getInstalledOn
+  override def value8 : LocalDateTime = getInstalledOn
   override def value9 : Integer = getExecutionTime
   override def value10 : Byte = getSuccess
 
@@ -194,7 +194,7 @@ class FlywaySchemaHistoryRecord extends UpdatableRecordImpl[FlywaySchemaHistoryR
     this
   }
 
-  override def value8(value : Timestamp) : FlywaySchemaHistoryRecord = {
+  override def value8(value : LocalDateTime) : FlywaySchemaHistoryRecord = {
     setInstalledOn(value)
     this
   }
@@ -209,7 +209,7 @@ class FlywaySchemaHistoryRecord extends UpdatableRecordImpl[FlywaySchemaHistoryR
     this
   }
 
-  override def values(value1 : Integer, value2 : String, value3 : String, value4 : String, value5 : String, value6 : Integer, value7 : String, value8 : Timestamp, value9 : Integer, value10 : Byte) : FlywaySchemaHistoryRecord = {
+  override def values(value1 : Integer, value2 : String, value3 : String, value4 : String, value5 : String, value6 : Integer, value7 : String, value8 : LocalDateTime, value9 : Integer, value10 : Byte) : FlywaySchemaHistoryRecord = {
     this.value1(value1)
     this.value2(value2)
     this.value3(value3)
@@ -223,7 +223,7 @@ class FlywaySchemaHistoryRecord extends UpdatableRecordImpl[FlywaySchemaHistoryR
     this
   }
 
-  def this(installedRank : Integer, version : String, description : String, `type` : String, script : String, checksum : Integer, installedBy : String, installedOn : Timestamp, executionTime : Integer, success : Byte) = {
+  def this(installedRank : Integer, version : String, description : String, `type` : String, script : String, checksum : Integer, installedBy : String, installedOn : LocalDateTime, executionTime : Integer, success : Byte) = {
     this()
 
     set(0, installedRank)

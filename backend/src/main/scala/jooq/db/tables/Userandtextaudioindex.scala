@@ -7,6 +7,7 @@ package jooq.db.tables
 import java.lang.Class
 import java.lang.Integer
 import java.lang.String
+import java.time.LocalDateTime
 import java.util.Arrays
 import java.util.List
 
@@ -64,6 +65,8 @@ extends TableImpl[UserandtextaudioindexRecord](
   val USERID : TableField[UserandtextaudioindexRecord, Integer] = createField("userId", org.jooq.impl.SQLDataType.INTEGER, "")
 
   val TEXTAUDIOINDEXID : TableField[UserandtextaudioindexRecord, Integer] = createField("textAudioIndexId", org.jooq.impl.SQLDataType.INTEGER, "")
+
+  val TIME : TableField[UserandtextaudioindexRecord, LocalDateTime] = createField("time", org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.LOCALDATETIME)), "")
 
   def this() = {
     this(DSL.name("userAndTextAudioIndex"), null, null, null, null)

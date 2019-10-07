@@ -1,0 +1,30 @@
+#header-card {
+  margin: 15px;
+}
+
+#content {
+  margin: 15px;
+  height: calc(100% - 165px);
+}
+
+#graph-list mat-grid-tile {
+  border-radius: 10px;
+}
+
+#graph-list mat-card {
+  width: calc(100% - 40px);
+  height: calc(100% - 40px);
+  margin: 0;
+}
+
+#graph-list mat-card > :first-child {
+  text-align: center;
+  padding: 15px;
+}
+
+#graph-list mat-card > :nth-child(2) :not(:first-child) {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

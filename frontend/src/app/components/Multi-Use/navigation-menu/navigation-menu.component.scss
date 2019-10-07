@@ -1,0 +1,64 @@
+#navigation-toolbar {
+  height: 48px;
+  position: fixed;
+  z-index: 2;
+}
+
+#navigation-toolbar div {
+  width: 100%;
+}
+
+#navigation-toolbar div div:first-child {
+  float: left;
+  margin-top: 4px;
+}
+
+#navigation-toolbar div div:first-child mat-icon {
+  cursor: pointer;
+}
+
+#sidenav-container {
+  position: fixed;
+  height: 100%;
+  min-height: 100%;
+  width: 100%;
+  min-width: 100%;
+}
+
+#sidenav-container mat-sidenav {
+  width: 200px;
+  margin-top: 48px;
+}
+
+#sidenav-container mat-sidenav div {
+  padding: 0 5px 0 5px;
+}
+
+mat-list-item {
+  cursor: pointer;
+}
+
+mat-list-item span {
+  margin-left: 15px;
+}
+
+mat-sidenav-content {
+  margin-top: 65px;
+}
+
+.bookmark {
+  position: absolute;
+  right: 15px;
+  opacity: .1;
+  transition: opacity .2s;
+}
+
+.bookmark:hover {
+  opacity: .5;
+}
+
+.unbookmark {
+  position: absolute;
+  right: 15px;
+  opacity: .5;
+}
