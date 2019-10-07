@@ -102,7 +102,7 @@ class LabelingToolService(config: Config) {
   })
 
   def getAudioFile(fileId: Int): ToResponseMarshallable = {
-    val path = "/home/jonas/Documents/DeutschAndreaErzaehlt/"
+    val path = "C:\\Users\\Jonas\\Documents\\DeutschAndreaErzaehlt\\"
     HttpEntity.fromFile(ContentTypes.`application/octet-stream`, new File(path + fileId + "/audio.mp3"))
   }
 
