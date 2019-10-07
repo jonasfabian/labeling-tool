@@ -62,14 +62,14 @@ extends TableImpl[UserandtextaudioindexRecord](
 
   val ID : TableField[UserandtextaudioindexRecord, Integer] = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), "")
 
-  val USERID : TableField[UserandtextaudioindexRecord, Integer] = createField("userId", org.jooq.impl.SQLDataType.INTEGER, "")
+  val USERID : TableField[UserandtextaudioindexRecord, Integer] = createField("userId", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.INTEGER)), "")
 
-  val TEXTAUDIOINDEXID : TableField[UserandtextaudioindexRecord, Integer] = createField("textAudioIndexId", org.jooq.impl.SQLDataType.INTEGER, "")
+  val TEXTAUDIOINDEXID : TableField[UserandtextaudioindexRecord, Integer] = createField("textAudioIndexId", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.INTEGER)), "")
 
-  val TIME : TableField[UserandtextaudioindexRecord, LocalDateTime] = createField("time", org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.LOCALDATETIME)), "")
+  val TIME : TableField[UserandtextaudioindexRecord, LocalDateTime] = createField("time", org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false).defaultValue(org.jooq.impl.DSL.field("current_timestamp()", org.jooq.impl.SQLDataType.LOCALDATETIME)), "")
 
   def this() = {
-    this(DSL.name("userAndTextAudioIndex"), null, null, null, null)
+    this(DSL.name("userandtextaudioindex"), null, null, null, null)
   }
 
   def this(alias : String) = {

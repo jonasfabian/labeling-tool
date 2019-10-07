@@ -9,7 +9,7 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {HttpClient} from '@angular/common/http';
 import {Avatar} from '../../../models/Avatar';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-profile',
@@ -60,10 +60,10 @@ export class ProfileComponent implements OnInit {
 
   initForm(): void {
     this.changeProfileForm = this.fb.group({
-      username: ['', [Validators.required]],
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      email: ['', [Validators.required]]
+      username: [this.user.username, [Validators.required]],
+      firstName: [this.user.firstName, [Validators.required]],
+      lastName: [this.user.lastName, [Validators.required]],
+      email: [this.user.email, [Validators.required]]
     });
   }
 
@@ -75,12 +75,11 @@ export class ProfileComponent implements OnInit {
     if (this.changeProfileForm.valid) {
       this.apiService.updateUser(this.user).subscribe(_ => {
         this.editProfile = false;
+      }, () => {
+      }, () => {
+        sessionStorage.setItem('user', JSON.stringify([{id: this.user.id, firstName: this.user.firstName, lastName: this.user.lastName, email: this.user.email, username: this.user.username, avatarVersion: this.user.avatarVersion, time: new Date()}]));
       });
     }
-  }
-
-  cancel(): void {
-    this.router.navigate(['/labeling-tool/login']);
   }
 
   onFileChanged(event): void {

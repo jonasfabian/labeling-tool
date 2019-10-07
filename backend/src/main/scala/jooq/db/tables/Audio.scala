@@ -61,7 +61,7 @@ extends TableImpl[AudioRecord](
 
   val ID : TableField[AudioRecord, Integer] = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), "")
 
-  val PATH : TableField[AudioRecord, String] = createField("path", org.jooq.impl.SQLDataType.VARCHAR(200), "")
+  val PATH : TableField[AudioRecord, String] = createField("path", org.jooq.impl.SQLDataType.VARCHAR(200).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), "")
 
   val FILEID : TableField[AudioRecord, Integer] = createField("fileId", org.jooq.impl.SQLDataType.INTEGER.nullable(false), "")
 

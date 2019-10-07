@@ -62,11 +62,11 @@ extends TableImpl[RecordingsRecord](
 
   val ID : TableField[RecordingsRecord, Integer] = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), "")
 
-  val TEXT : TableField[RecordingsRecord, String] = createField("text", org.jooq.impl.SQLDataType.CLOB, "")
+  val TEXT : TableField[RecordingsRecord, String] = createField("text", org.jooq.impl.SQLDataType.CLOB.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.CLOB)), "")
 
   val USERID : TableField[RecordingsRecord, Integer] = createField("userId", org.jooq.impl.SQLDataType.INTEGER.nullable(false), "")
 
-  val AUDIO : TableField[RecordingsRecord, Array[Byte]] = createField("audio", org.jooq.impl.SQLDataType.BLOB, "")
+  val AUDIO : TableField[RecordingsRecord, Array[Byte]] = createField("audio", org.jooq.impl.SQLDataType.BLOB.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.BLOB)), "")
 
   def this() = {
     this(DSL.name("recordings"), null, null, null, null)
