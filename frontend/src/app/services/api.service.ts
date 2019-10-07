@@ -18,6 +18,7 @@ import {ThemeService} from './theme.service';
 import {UserLabeledData} from '../models/UserLabeledData';
 import {Recording} from '../models/Recording';
 import {AudioSnippet} from '../models/AudioSnippet';
+import {Canton} from '../models/Canton';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +42,35 @@ export class ApiService {
   uri: BehaviorSubject<SafeUrl> = new BehaviorSubject<SafeUrl>('');
   showTenMoreQuest = false;
   snippet = new AudioSnippet(null, null);
+
+  cantons: Canton[] = [
+    {cantonId: 'ag', cantonName: 'Aargau'},
+    {cantonId: 'ai', cantonName: 'Appenzell Innerrhoden'},
+    {cantonId: 'ar', cantonName: 'Appenzell Ausserrhoden'},
+    {cantonId: 'be', cantonName: 'Bern'},
+    {cantonId: 'bl', cantonName: 'Basel-Landschaft'},
+    {cantonId: 'bs', cantonName: 'Basel-Stadt'},
+    {cantonId: 'fr', cantonName: 'Freiburg'},
+    {cantonId: 'ge', cantonName: 'Genf'},
+    {cantonId: 'gl', cantonName: 'Glarus'},
+    {cantonId: 'gr', cantonName: 'Graubünden'},
+    {cantonId: 'ju', cantonName: 'Jura'},
+    {cantonId: 'lu', cantonName: 'Luzern'},
+    {cantonId: 'ne', cantonName: 'Neuenburg'},
+    {cantonId: 'nw', cantonName: 'Nidwalden'},
+    {cantonId: 'ow', cantonName: 'Obwalden'},
+    {cantonId: 'sg', cantonName: 'St. Gallen'},
+    {cantonId: 'sh', cantonName: 'Schaffhausen'},
+    {cantonId: 'so', cantonName: 'Solothurn'},
+    {cantonId: 'sz', cantonName: 'Schwyz'},
+    {cantonId: 'tg', cantonName: 'Thurgau'},
+    {cantonId: 'ti', cantonName: 'Tessin'},
+    {cantonId: 'ur', cantonName: 'Uri'},
+    {cantonId: 'vd', cantonName: 'Waadt'},
+    {cantonId: 'vs', cantonName: 'Wallis'},
+    {cantonId: 'zg', cantonName: 'Zug'},
+    {cantonId: 'zh', cantonName: 'Zürich'}
+  ];
 
   getTextAudioIndexes(): Observable<Array<TextAudioIndexWithText>> {
     return this.http.get<Array<TextAudioIndexWithText>>(this.url + 'getTextAudioIndexes');

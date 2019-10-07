@@ -63,7 +63,8 @@ export class ProfileComponent implements OnInit {
       username: [this.user.username, [Validators.required]],
       firstName: [this.user.firstName, [Validators.required]],
       lastName: [this.user.lastName, [Validators.required]],
-      email: [this.user.email, [Validators.required]]
+      email: [this.user.email, [Validators.required]],
+      canton: [this.user.canton, [Validators.required]]
     });
   }
 
@@ -72,6 +73,7 @@ export class ProfileComponent implements OnInit {
     this.user.firstName = this.changeProfileForm.controls.firstName.value;
     this.user.lastName = this.changeProfileForm.controls.lastName.value;
     this.user.email = this.changeProfileForm.controls.email.value;
+    this.user.canton = this.changeProfileForm.controls.canton.value;
     if (this.changeProfileForm.valid) {
       this.apiService.updateUser(this.user).subscribe(_ => {
         this.editProfile = false;

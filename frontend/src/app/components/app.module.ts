@@ -34,6 +34,7 @@ import {SettingsComponent} from './Settings/settings/settings.component';
 import {LoginComponent} from './Login/login/login.component';
 import {TranscriptPreviewComponent} from './Record/transcript-preview/transcript-preview.component';
 import {RecordComponent} from './Record/record/record.component';
+import {CantonIdToCantonPipe} from '../pipes/canton-id-to-canton.pipe';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import {RecordComponent} from './Record/record/record.component';
     OverviewComponent,
     ShortcutComponent,
     IntToBooleanPipe,
+    CantonIdToCantonPipe,
     PieChartComponent,
     CheckComponent,
     BarChartComponent,
