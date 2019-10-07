@@ -25,7 +25,7 @@ object MigrateDB extends App with CorsSupport {
     else Stream.empty)
 
   def extractFromXml(): Unit = {
-    val path = "/home/jonas/Documents/DeutschAndreaErzaehlt/"
+    val path = "C:\\Users\\Jonas\\Documents\\DeutschAndreaErzaehlt\\"
     getFileTree(new File(path)).filter(_.getName.endsWith(".xml")).zipWithIndex.foreach {
       case (file, count) => {
         val f = XML.loadFile(file.getAbsolutePath)
@@ -40,7 +40,7 @@ object MigrateDB extends App with CorsSupport {
   }
 
   def extractFromTxt(): Unit = labelingToolService.withDslContext(dslContext => {
-    val path = "/home/jonas/Documents/DeutschAndreaErzaehlt/"
+    val path = "C:\\Users\\Jonas\\Documents\\DeutschAndreaErzaehlt\\"
     getFileTree(new File(path)).filter(_.getName.endsWith(".txt")).zipWithIndex.foreach {
       case (file, count) => {
         val text = Source.fromFile(file.getAbsolutePath, "utf-8").mkString
@@ -52,7 +52,7 @@ object MigrateDB extends App with CorsSupport {
   })
 
   def extractFromAudio(): Unit = labelingToolService.withDslContext(dslContext => {
-    val path = "/home/jonas/Documents/DeutschAndreaErzaehlt/"
+    val path = "C:\\Users\\Jonas\\Documents\\DeutschAndreaErzaehlt\\"
     getFileTree(new File(path)).filter(_.getName.endsWith(".mp3")).zipWithIndex.foreach {
       case (file, count) => {
         val rec = labelingToolService.audioToRecord(new Audio(count, file.getAbsolutePath, file.getParentFile.getName.toInt))
