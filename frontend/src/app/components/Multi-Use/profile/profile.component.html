@@ -9,34 +9,74 @@
     <ng-container *ngIf="authService.loggedInUser.avatarVersion === 0">
       <app-avatar [size]="260" style="float: left;" [user]="user" [fontSize]="100" [borderRadius]="0"></app-avatar>
     </ng-container>
-    <mat-tab-group style="width: calc(100% - 280px); float: right;">
-      <mat-tab label="Information">
-        <ng-container *ngIf="!editProfile">
-          <mat-list>
-            <mat-list-item>
-              <span>Username:</span>&nbsp;
-              <span style="font-weight: bold;">{{user.username}}</span>
-            </mat-list-item>
-            <mat-list-item>
-              <span>First name: {{user.firstName}}</span>
-              <mat-icon (click)="editProfile = true" style="cursor: pointer; margin-left: 5px">edit</mat-icon>
-            </mat-list-item>
-            <mat-list-item>Last name: {{user.lastName}}</mat-list-item>
-            <mat-list-item>Email: {{user.email}}</mat-list-item>
-          </mat-list>
-        </ng-container>
-        <ng-container *ngIf="editProfile">
-          <input style="display: none;" type="file" (change)="onFileChanged($event)" accept=".png, .jpg" #fileInput>
-          <mat-button-toggle (click)="fileInput.click()">Upload Avatar</mat-button-toggle>
-          <mat-button-toggle (click)="editProfile = false">Cancel</mat-button-toggle>
-        </ng-container>
-      </mat-tab>
-    </mat-tab-group>
+
+    <ng-container *ngIf="!editProfile">
+      <mat-list style="position: absolute; left: 300px; top: 16px;">
+        <mat-list-item>
+          <span>Username:</span>&nbsp;
+          <span style="font-weight: bold;">{{user.username}}</span>
+        </mat-list-item>
+        <mat-list-item>
+          <span>First name: {{user.firstName}}</span>
+        </mat-list-item>
+        <mat-list-item>Last name: {{user.lastName}}</mat-list-item>
+        <mat-list-item>Email: {{user.email}}</mat-list-item>
+        <mat-list-item>Canton: {{user.canton | CantonIdToCanton}}</mat-list-item>
+      </mat-list>
+      <mat-button-toggle (click)="editProfile = true"
+                         style="cursor: pointer; margin-left: 5px; position: absolute; right: 15px; top: 15px;">Edit
+        Profile
+      </mat-button-toggle>
+    </ng-container>
+
+    <ng-container *ngIf="editProfile">
+      <form style="position: absolute; left: 300px; top: 16px;" [formGroup]="changeProfileForm" (ngSubmit)="changeProfile()">
+        <div>
+          <mat-form-field style="width: 100%;">
+            <input type="text" matInput placeholder="Username" formControlName="username">
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field style="width: 100%;">
+            <input type="text" matInput placeholder="First Name" formControlName="firstName">
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field style="width: 100%;">
+            <input type="text" matInput placeholder="Last Name" formControlName="lastName">
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field style="width: 100%;">
+            <input type="text" matInput placeholder="Email" formControlName="email">
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field style="width: 100%;">
+            <mat-label>Canton</mat-label>
+            <mat-select formControlName="canton">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let canton of apiService.cantons" [value]="canton.cantonId">{{canton.cantonName}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div>
+          <button mat-button style="position: absolute; left: 200px; border: lightgray 1px solid; padding: 0 12px; line-height: 48px; bottom: 0;" type="submit">Change</button>
+        </div>
+      </form>
+      <input style="display: none;" type="file" (change)="onFileChanged($event)" accept=".png, .jpg" #fileInput>
+      <mat-button-toggle style="left: 500px; position: absolute;" (click)="fileInput.click()">Upload Avatar
+      </mat-button-toggle>
+      <mat-button-toggle style="position: absolute; left: 585px; bottom: 14px;" (click)="editProfile = false">Cancel
+      </mat-button-toggle>
+    </ng-container>
+
   </mat-card>
 </div>
-<div style="height: calc(100% - 330px);">
+<div *ngIf="!editProfile" style="height: calc(100% - 330px);">
   <mat-card style="margin: 15px; height: calc(100% - 170px);">
-    <table style="height: calc(100% - 50px); width: 100%;" mat-table [dataSource]="dataSource" matSort id="overview-table">
+    <table style="height: calc(100% - 50px); width: 100%;" mat-table [dataSource]="dataSource" matSort
+           id="overview-table">
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
         <td mat-cell *matCellDef="let element">{{element.id}}</td>

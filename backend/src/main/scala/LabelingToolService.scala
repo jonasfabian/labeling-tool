@@ -52,21 +52,21 @@ class LabelingToolService(config: Config) {
     dslContext.select()
       .from(USER)
       .where(USER.ID.eq(id))
-      .fetchOne().map(m => UserPublicInfo(m.get(USER.ID).toInt, m.get(USER.FIRSTNAME), m.get(USER.LASTNAME), m.get(USER.EMAIL), m.get(USER.USERNAME), m.get(USER.AVATARVERSION).toInt))
+      .fetchOne().map(m => UserPublicInfo(m.get(USER.ID).toInt, m.get(USER.FIRSTNAME), m.get(USER.LASTNAME), m.get(USER.EMAIL), m.get(USER.USERNAME), m.get(USER.AVATARVERSION).toInt, m.get(USER.CANTON)))
   })
 
   def getUserByUsername(username: String): UserPublicInfo = withDslContext(dslContext => {
     dslContext.select()
       .from(USER)
       .where(USER.USERNAME.eq(username))
-      .fetchOne().map(m => UserPublicInfo(m.get(USER.ID).toInt, m.get(USER.FIRSTNAME), m.get(USER.LASTNAME), m.get(USER.EMAIL), m.get(USER.USERNAME), m.get(USER.AVATARVERSION).toInt))
+      .fetchOne().map(m => UserPublicInfo(m.get(USER.ID).toInt, m.get(USER.FIRSTNAME), m.get(USER.LASTNAME), m.get(USER.EMAIL), m.get(USER.USERNAME), m.get(USER.AVATARVERSION).toInt, m.get(USER.CANTON)))
   })
 
   def getUserByEmail(email: String): UserPublicInfo = withDslContext(dslContext => {
     dslContext.select()
       .from(USER)
       .where(USER.EMAIL.eq(email))
-      .fetchOne().map(m => UserPublicInfo(m.get(USER.ID).toInt, m.get(USER.FIRSTNAME), m.get(USER.LASTNAME), m.get(USER.EMAIL), m.get(USER.USERNAME), m.get(USER.AVATARVERSION).toInt))
+      .fetchOne().map(m => UserPublicInfo(m.get(USER.ID).toInt, m.get(USER.FIRSTNAME), m.get(USER.LASTNAME), m.get(USER.EMAIL), m.get(USER.USERNAME), m.get(USER.AVATARVERSION).toInt, m.get(USER.CANTON)))
   })
 
   // get all of labeled-type
@@ -180,7 +180,7 @@ class LabelingToolService(config: Config) {
 
   def createUser(user: User): Unit = withDslContext(dslContext => {
     val hashedPw = BCrypt.hashpw(user.password, BCrypt.gensalt())
-    val rec = userToRecord(new User(user.id, user.firstName, user.lastName, user.email, user.username, user.avatarVersion, hashedPw))
+    val rec = userToRecord(new User(user.id, user.firstName, user.lastName, user.email, user.username, user.avatarVersion, hashedPw, user.canton))
     dslContext.executeInsert(rec)
     ()
   })
@@ -198,6 +198,7 @@ class LabelingToolService(config: Config) {
       .set(USER.EMAIL, user.email)
       .set(USER.USERNAME, user.username)
       .set(USER.AVATARVERSION, Integer.valueOf(user.avatarVersion))
+      .set(USER.CANTON, user.canton)
       .where(USER.ID.eq(user.id))
       .execute()
     ()
@@ -291,6 +292,7 @@ class LabelingToolService(config: Config) {
     rec.setUsername(u.username)
     rec.setAvatarversion(u.avatarVersion)
     rec.setPassword(u.password)
+    rec.setCanton(u.canton)
     rec
   }
 

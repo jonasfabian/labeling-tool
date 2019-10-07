@@ -36,6 +36,7 @@ export class AvatarComponent implements OnInit {
           email: u.email,
           username: u.username,
           avatarVersion: u.avatarVersion,
+          canton: u.canton,
           time: new Date() // TODO set already existing time not new one
         }]));
         this.authService.checkAuthenticated();

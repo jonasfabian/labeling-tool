@@ -11,12 +11,12 @@ import jooq.db.tables.User
 
 import org.jooq.Field
 import org.jooq.Record1
-import org.jooq.Record7
-import org.jooq.Row7
+import org.jooq.Record8
+import org.jooq.Row8
 import org.jooq.impl.UpdatableRecordImpl
 
 
-class UserRecord extends UpdatableRecordImpl[UserRecord](User.USER) with Record7[Integer, String, String, String, String, Integer, String] {
+class UserRecord extends UpdatableRecordImpl[UserRecord](User.USER) with Record8[Integer, String, String, String, String, Integer, String, String] {
 
   def setId(value : Integer) : Unit = {
     set(0, value)
@@ -81,6 +81,15 @@ class UserRecord extends UpdatableRecordImpl[UserRecord](User.USER) with Record7
     if (r == null) null else r.asInstanceOf[String]
   }
 
+  def setCanton(value : String) : Unit = {
+    set(7, value)
+  }
+
+  def getCanton : String = {
+    val r = get(7)
+    if (r == null) null else r.asInstanceOf[String]
+  }
+
   // -------------------------------------------------------------------------
   // Primary key information
   // -------------------------------------------------------------------------
@@ -89,15 +98,15 @@ class UserRecord extends UpdatableRecordImpl[UserRecord](User.USER) with Record7
   }
 
   // -------------------------------------------------------------------------
-  // Record7 type implementation
+  // Record8 type implementation
   // -------------------------------------------------------------------------
 
-  override def fieldsRow : Row7[Integer, String, String, String, String, Integer, String] = {
-    super.fieldsRow.asInstanceOf[ Row7[Integer, String, String, String, String, Integer, String] ]
+  override def fieldsRow : Row8[Integer, String, String, String, String, Integer, String, String] = {
+    super.fieldsRow.asInstanceOf[ Row8[Integer, String, String, String, String, Integer, String, String] ]
   }
 
-  override def valuesRow : Row7[Integer, String, String, String, String, Integer, String] = {
-    super.valuesRow.asInstanceOf[ Row7[Integer, String, String, String, String, Integer, String] ]
+  override def valuesRow : Row8[Integer, String, String, String, String, Integer, String, String] = {
+    super.valuesRow.asInstanceOf[ Row8[Integer, String, String, String, String, Integer, String, String] ]
   }
   override def field1 : Field[Integer] = User.USER.ID
   override def field2 : Field[String] = User.USER.FIRSTNAME
@@ -106,6 +115,7 @@ class UserRecord extends UpdatableRecordImpl[UserRecord](User.USER) with Record7
   override def field5 : Field[String] = User.USER.USERNAME
   override def field6 : Field[Integer] = User.USER.AVATARVERSION
   override def field7 : Field[String] = User.USER.PASSWORD
+  override def field8 : Field[String] = User.USER.CANTON
   override def component1 : Integer = getId
   override def component2 : String = getFirstname
   override def component3 : String = getLastname
@@ -113,6 +123,7 @@ class UserRecord extends UpdatableRecordImpl[UserRecord](User.USER) with Record7
   override def component5 : String = getUsername
   override def component6 : Integer = getAvatarversion
   override def component7 : String = getPassword
+  override def component8 : String = getCanton
   override def value1 : Integer = getId
   override def value2 : String = getFirstname
   override def value3 : String = getLastname
@@ -120,6 +131,7 @@ class UserRecord extends UpdatableRecordImpl[UserRecord](User.USER) with Record7
   override def value5 : String = getUsername
   override def value6 : Integer = getAvatarversion
   override def value7 : String = getPassword
+  override def value8 : String = getCanton
 
   override def value1(value : Integer) : UserRecord = {
     setId(value)
@@ -156,7 +168,12 @@ class UserRecord extends UpdatableRecordImpl[UserRecord](User.USER) with Record7
     this
   }
 
-  override def values(value1 : Integer, value2 : String, value3 : String, value4 : String, value5 : String, value6 : Integer, value7 : String) : UserRecord = {
+  override def value8(value : String) : UserRecord = {
+    setCanton(value)
+    this
+  }
+
+  override def values(value1 : Integer, value2 : String, value3 : String, value4 : String, value5 : String, value6 : Integer, value7 : String, value8 : String) : UserRecord = {
     this.value1(value1)
     this.value2(value2)
     this.value3(value3)
@@ -164,10 +181,11 @@ class UserRecord extends UpdatableRecordImpl[UserRecord](User.USER) with Record7
     this.value5(value5)
     this.value6(value6)
     this.value7(value7)
+    this.value8(value8)
     this
   }
 
-  def this(id : Integer, firstname : String, lastname : String, email : String, username : String, avatarversion : Integer, password : String) = {
+  def this(id : Integer, firstname : String, lastname : String, email : String, username : String, avatarversion : Integer, password : String, canton : String) = {
     this()
 
     set(0, id)
@@ -177,5 +195,6 @@ class UserRecord extends UpdatableRecordImpl[UserRecord](User.USER) with Record7
     set(4, username)
     set(5, avatarversion)
     set(6, password)
+    set(7, canton)
   }
 }

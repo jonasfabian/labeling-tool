@@ -13,7 +13,7 @@ export class AuthService {
   }
 
   isAuthenticated = false;
-  loggedInUser = new UserPublicInfo(-1, '', '', '', '', 0);
+  loggedInUser = new UserPublicInfo(-1, '', '', '', '', 0, '');
   source = '';
 
   checkAuthenticated(): void {
@@ -26,7 +26,7 @@ export class AuthService {
           location.reload();
           this.router.navigate(['/labeling-tool/login']);
         }
-        this.loggedInUser = new UserPublicInfo(r.id, r.firstName, r.lastName, r.email, r.username, r.avatarVersion);
+        this.loggedInUser = new UserPublicInfo(r.id, r.firstName, r.lastName, r.email, r.username, r.avatarVersion, r.canton);
       });
       this.isAuthenticated = true;
     } else {

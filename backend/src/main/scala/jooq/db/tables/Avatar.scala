@@ -62,9 +62,9 @@ extends TableImpl[AvatarRecord](
 
   val ID : TableField[AvatarRecord, Integer] = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), "")
 
-  val USERID : TableField[AvatarRecord, Integer] = createField("userId", org.jooq.impl.SQLDataType.INTEGER, "")
+  val USERID : TableField[AvatarRecord, Integer] = createField("userId", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.INTEGER)), "")
 
-  val AVATAR_ : TableField[AvatarRecord, Array[Byte]] = createField("avatar", org.jooq.impl.SQLDataType.BLOB, "")
+  val AVATAR_ : TableField[AvatarRecord, Array[Byte]] = createField("avatar", org.jooq.impl.SQLDataType.BLOB.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.BLOB)), "")
 
   def this() = {
     this(DSL.name("avatar"), null, null, null, null)

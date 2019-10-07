@@ -9,6 +9,7 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {HttpClient} from '@angular/common/http';
 import {Avatar} from '../../../models/Avatar';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-profile',
@@ -21,11 +22,13 @@ export class ProfileComponent implements OnInit {
     private apiService: ApiService,
     private router: Router,
     private authService: AuthService,
-    private http: HttpClient
+    private http: HttpClient,
+    private fb: FormBuilder
   ) {
   }
 
-  user = new UserPublicInfo(-1, '', '', '', '', 0);
+  changeProfileForm: FormGroup;
+  user = new UserPublicInfo(-1, '', '', '', '', 0, '');
   textAudioIndexArray: Array<TextAudioIndex> = [];
   displayedColumns = ['id', 'samplingRate', 'textStartPos', 'textEndPos', 'audioStartPos', 'audioEndPos', 'speakerKey', 'labeled', 'correct', 'wrong', 'transcriptFileId'];
   dataSource = new MatTableDataSource<TextAudioIndex>();
@@ -51,7 +54,43 @@ export class ProfileComponent implements OnInit {
         this.dataSource.filterPredicate = (data, filter: string): boolean => {
           return data.labeled.toString().toLowerCase().includes(filter);
         };
+        this.initForm();
       });
+  }
+
+  initForm(): void {
+    this.changeProfileForm = this.fb.group({
+      username: [this.user.username, [Validators.required]],
+      firstName: [this.user.firstName, [Validators.required]],
+      lastName: [this.user.lastName, [Validators.required]],
+      email: [this.user.email, [Validators.required]],
+      canton: [this.user.canton, [Validators.required]]
+    });
+  }
+
+  changeProfile(): void {
+    this.user.username = this.changeProfileForm.controls.username.value;
+    this.user.firstName = this.changeProfileForm.controls.firstName.value;
+    this.user.lastName = this.changeProfileForm.controls.lastName.value;
+    this.user.email = this.changeProfileForm.controls.email.value;
+    this.user.canton = this.changeProfileForm.controls.canton.value;
+    if (this.changeProfileForm.valid) {
+      this.apiService.updateUser(this.user).subscribe(_ => {
+        this.editProfile = false;
+      }, () => {
+      }, () => {
+        sessionStorage.setItem('user', JSON.stringify([{
+          id: this.user.id,
+          firstName: this.user.firstName,
+          lastName: this.user.lastName,
+          email: this.user.email,
+          username: this.user.username,
+          avatarVersion: this.user.avatarVersion,
+          canton: this.user.canton,
+          time: new Date()
+        }]));
+      });
+    }
   }
 
   onFileChanged(event): void {
@@ -70,7 +109,6 @@ export class ProfileComponent implements OnInit {
         this.http.post('http://localhost:8080/api/match/createAvatar', new Avatar(-1, this.user.id, this.fileByteArray)).subscribe(_ => {
           this.apiService.getAvatar(this.user.id).subscribe(a => {
             this.authService.source = 'data:image/png;base64,' + btoa(String.fromCharCode.apply(null, new Uint8Array(a.avatar)));
-            this.editProfile = false;
             this.apiService.updateUser(this.authService.loggedInUser).subscribe();
             sessionStorage.setItem('user', JSON.stringify([{
               id: this.authService.loggedInUser.id,
@@ -79,6 +117,7 @@ export class ProfileComponent implements OnInit {
               email: this.authService.loggedInUser.email,
               username: this.authService.loggedInUser.username,
               avatarVersion: this.authService.loggedInUser.avatarVersion,
+              canton: this.authService.loggedInUser.canton,
               time: new Date()
             }]));
           });

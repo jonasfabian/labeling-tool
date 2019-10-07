@@ -6,8 +6,9 @@ export class User {
   username: string;
   avatarVersion: number;
   password: string;
+  canton: string;
 
-  constructor(id: number, firstName: string, lastName: string, email: string, username: string, avatarVersion: number, password: string) {
+  constructor(id: number, firstName: string, lastName: string, email: string, username: string, avatarVersion: number, password: string, canton: string) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
@@ -15,5 +16,6 @@ export class User {
     this.username = username;
     this.avatarVersion = avatarVersion;
     this.password = password;
+    this.canton = canton;
   }
 }

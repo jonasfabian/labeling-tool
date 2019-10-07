@@ -18,6 +18,7 @@ case class User(
   , username : String
   , avatarversion : Integer
   , password : String
+  , canton : String
 ) extends Serializable {
 
   def this (value : User) = {
@@ -29,6 +30,7 @@ case class User(
       , value.username
       , value.avatarversion
       , value.password
+      , value.canton
     )
   }
 
@@ -60,6 +62,10 @@ case class User(
     this.password
   }
 
+  def getCanton : String = {
+    this.canton
+  }
+
   override def toString : String = {
     val sb = new StringBuilder("User (")
 
@@ -70,6 +76,7 @@ case class User(
     sb.append(", ").append(username)
     sb.append(", ").append(avatarversion)
     sb.append(", ").append(password)
+    sb.append(", ").append(canton)
 
     sb.append(")")
     return sb.toString
