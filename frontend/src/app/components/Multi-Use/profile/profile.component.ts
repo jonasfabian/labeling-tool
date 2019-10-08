@@ -145,7 +145,12 @@ export class ProfileComponent implements OnInit {
         this.authService.loggedInUser.id,
         this.changePasswordForm.controls.password.value,
         this.changePasswordForm.controls.newPassword.value)
-    ).subscribe();
+    ).subscribe(() => {
+    }, err => {
+      if (err.status === 401) {
+        alert('Wrong password');
+      }
+    });
     this.isChangePassword = false;
   }
 }

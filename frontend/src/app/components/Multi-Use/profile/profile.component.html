@@ -2,7 +2,7 @@
   <h1 style="margin-bottom: 0;">Profile</h1>
 </mat-card>
 <div style="margin: 15px;">
-  <mat-card [style.height]="editProfile ? '326px' : '260px'" id="header-card">
+  <mat-card [style.height]="editProfile ? '500px' : '260px'" id="header-card">
     <ng-container *ngIf="authService.loggedInUser.avatarVersion !== 0">
       <img style="width: 260px; height: 260px;" [src]="authService.source">
     </ng-container>
@@ -70,37 +70,40 @@
         </div>
       </form>
       <input style="display: none;" type="file" (change)="onFileChanged($event)" accept=".png, .jpg" #fileInput>
-      <mat-button-toggle style="left: 500px; position: absolute;" (click)="fileInput.click()">Upload Avatar
-      </mat-button-toggle>
-      <mat-button-toggle style="position: absolute; left: 585px; bottom: 14px;" (click)="editProfile = false">Cancel
+      <mat-button-toggle style="left: 500px; position: absolute;" (click)="fileInput.click()">Change Avatar
       </mat-button-toggle>
       <mat-button-toggle style="position: absolute; top: 16px; left: 630px;" *ngIf="editProfile"
-                         (click)="changePassword()">Change Password
+                         (click)="isChangePassword = true">Change Password
       </mat-button-toggle>
-      <form [formGroup]="changePasswordForm" (ngSubmit)="changePassword()">
-        <div>
+      <mat-button-toggle style="position: absolute; right: 15px; bottom: 15px;" (click)="editProfile = false">Back to
+        Profile
+      </mat-button-toggle>
+      <div style="margin-top: 50px;" *ngIf="isChangePassword">
+        <form [formGroup]="changePasswordForm" (ngSubmit)="changePassword()">
           <div>
-            <mat-form-field style="width: 100%;">
-              <input type="password" matInput placeholder="Password" formControlName="password">
-            </mat-form-field>
+            <div>
+              <mat-form-field style="width: 100%;">
+                <input type="password" matInput placeholder="Old Password" formControlName="password">
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field style="width: 100%;">
+                <input type="password" matInput placeholder="New Password" formControlName="newPassword">
+              </mat-form-field>
+            </div>
+            <div>
+              <button mat-button
+                      style="border: lightgray 1px solid; padding: 0 12px; line-height: 48px; bottom: 0;"
+                      type="submit">Submit
+              </button>
+              <button (click)="isChangePassword = false" mat-button type="button"
+                      style="border: lightgray 1px solid; padding: 0 12px; line-height: 48px; bottom: 0;">
+                Cancel
+              </button>
+            </div>
           </div>
-          <div>
-            <mat-form-field style="width: 100%;">
-              <input type="password" matInput placeholder="New Password" formControlName="newPassword">
-            </mat-form-field>
-          </div>
-          <div>
-            <button mat-button
-                    style="border: lightgray 1px solid; padding: 0 12px; line-height: 48px; bottom: 0;"
-                    type="submit">Submit
-            </button>
-            <button mat-button
-                    style="border: lightgray 1px solid; padding: 0 12px; line-height: 48px; bottom: 0;">
-              Cancel
-            </button>
-          </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </ng-container>
 
   </mat-card>
