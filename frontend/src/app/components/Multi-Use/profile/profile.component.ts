@@ -150,8 +150,7 @@ export class ProfileComponent implements OnInit {
       if (err.status === 401) {
         alert('Wrong password');
       }
-    });
-    this.isChangePassword = false;
+    }, () => this.isChangePassword = false);
   }
 }
 
