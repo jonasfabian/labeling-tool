@@ -3,7 +3,7 @@ import java.time.LocalDateTime
 
 import akka.http.scaladsl.marshalling.ToResponseMarshallable
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
-import models.{Audio, Avatar, EmailPassword, Recording, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User, UserAndTextAudioIndex, UserLabeledData, UserPublicInfo}
+import models.{Audio, Avatar, ChangePassword, EmailPassword, Recording, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User, UserAndTextAudioIndex, UserLabeledData, UserPublicInfo}
 import com.typesafe.config.Config
 import org.jooq.{DSLContext, Field}
 import org.jooq.impl.DSL
@@ -211,6 +211,22 @@ class LabelingToolService(config: Config) {
     val rec = avatarToRecord(new Avatar(avatar.id, avatar.userId, avatar.avatar))
     dslContext.executeInsert(rec)
     ()
+  })
+
+  def changePassword(changePwd: ChangePassword): Boolean = withDslContext(dslContext => {
+    val passwordDB = dslContext.select()
+      .from(USER)
+      .where(USER.ID.eq(changePwd.userId))
+      .fetchOptional(USER.PASSWORD)
+    if (passwordDB.filter(p => BCrypt.checkpw(changePwd.password, p)).isPresent()) {
+      dslContext.update(USER)
+        .set(USER.PASSWORD, BCrypt.hashpw(changePwd.newPassword, BCrypt.gensalt()))
+        .where(USER.ID.eq(changePwd.userId))
+        .execute()
+      return true
+    } else {
+      return false
+    }
   })
 
   def createUserAndTextAudioIndex(userAndTextAudioIndex: UserAndTextAudioIndex): Unit = withDslContext(dslContext => {
