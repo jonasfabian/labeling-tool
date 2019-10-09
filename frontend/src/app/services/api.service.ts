@@ -19,6 +19,7 @@ import {UserLabeledData} from '../models/UserLabeledData';
 import {Recording} from '../models/Recording';
 import {AudioSnippet} from '../models/AudioSnippet';
 import {Canton} from '../models/Canton';
+import {ChangePassword} from '../models/ChangePassword';
 
 @Injectable({
   providedIn: 'root'
@@ -130,6 +131,10 @@ export class ApiService {
 
   getTopFiveUsersLabeledCount(): Observable<Array<UserLabeledData>> {
     return this.http.get<Array<UserLabeledData>>(this.url + 'getTopFiveUsersLabeledCount');
+  }
+
+  changePassword(changePassword: ChangePassword): Observable<any> {
+    return this.http.post(this.url + 'changePassword', changePassword);
   }
 
   convertDataURIToBinary(dataURI): Uint8Array {

@@ -6,7 +6,7 @@ import akka.http.scaladsl.marshalling.ToResponseMarshallable
 import akka.http.scaladsl.model.StatusCode
 import akka.http.scaladsl.server.{Directives, Route}
 import akka.stream.ActorMaterializer
-import models.{Audio, Avatar, EmailPassword, Recording, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User, UserAndTextAudioIndex, UserPublicInfo}
+import models.{Audio, Avatar, ChangePassword, EmailPassword, Recording, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User, UserAndTextAudioIndex, UserPublicInfo}
 import com.typesafe.config.{ConfigFactory, ConfigValueFactory}
 import de.heikoseeberger.akkahttpcirce.ErrorAccumulatingCirceSupport
 import io.swagger.annotations.{ApiImplicitParam, ApiImplicitParams, ApiOperation, ApiResponse, ApiResponses}
@@ -40,7 +40,7 @@ object WebServer extends App with CorsSupport {
 class LabelingToolRestApi(service: LabelingToolService) extends Directives with ErrorAccumulatingCirceSupport {
   val route = pathPrefix("api") {
     pathPrefix("match") {
-      getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudioIndex ~ getTranscript ~ getTranscripts ~ getAudio ~ getAudioFile ~ getNonLabeledDataIndexes ~ getTenNonLabeledDataIndexes ~ getTextAudioIndexesByLabeledType ~ getLabeledSums ~ getUser ~ createUser ~ checkLogin ~ createUserAndTextAudioIndex ~ getUserByEmail ~ getCheckedTextAudioIndexesByUser ~ createAvatar ~ getAvatar ~ updateUser ~ getUserByUsername ~ getTopFiveUsersLabeledCount ~ createRecording
+      getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudioIndex ~ getTranscript ~ getTranscripts ~ getAudio ~ getAudioFile ~ getNonLabeledDataIndexes ~ getTenNonLabeledDataIndexes ~ getTextAudioIndexesByLabeledType ~ getLabeledSums ~ getUser ~ createUser ~ checkLogin ~ createUserAndTextAudioIndex ~ getUserByEmail ~ getCheckedTextAudioIndexesByUser ~ createAvatar ~ getAvatar ~ updateUser ~ getUserByUsername ~ getTopFiveUsersLabeledCount ~ createRecording ~ changePassword
     }
   }
 
@@ -285,14 +285,24 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
     }
   }
 
-  @ApiOperation(value = "checkLogin", httpMethod = "POST")
-  @ApiImplicitParams(Array(new ApiImplicitParam(name = "body", required = true, dataTypeClass = classOf[Boolean], value = "", paramType = "body")))
-  @ApiResponses(Array(new ApiResponse(code = 200, message = "OK")))
   @Path("checkLogin")
   def checkLogin: Route = path("checkLogin") {
     post {
       entity(as[EmailPassword]) { ep =>
         if (service.checkLogin(ep)) {
+          complete("StatusCode.int2StatusCode(200)")
+        } else {
+          complete(StatusCode.int2StatusCode(401))
+        }
+      }
+    }
+  }
+
+  @Path("changePassword")
+  def changePassword: Route = path("changePassword") {
+    post {
+      entity(as[ChangePassword]) { changePwd =>
+        if (service.changePassword(changePwd)) {
           complete("StatusCode.int2StatusCode(200)")
         } else {
           complete(StatusCode.int2StatusCode(401))

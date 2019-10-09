@@ -9,13 +9,16 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {HttpClient} from '@angular/common/http';
 import {Avatar} from '../../../models/Avatar';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
+import {ErrorStateMatcher} from '@angular/material';
+import {ChangePassword} from '../../../models/ChangePassword';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
+
 export class ProfileComponent implements OnInit {
 
   constructor(
@@ -28,17 +31,19 @@ export class ProfileComponent implements OnInit {
   }
 
   changeProfileForm: FormGroup;
+  changePasswordForm: FormGroup;
   user = new UserPublicInfo(-1, '', '', '', '', 0, '');
   textAudioIndexArray: Array<TextAudioIndex> = [];
   displayedColumns = ['id', 'samplingRate', 'textStartPos', 'textEndPos', 'audioStartPos', 'audioEndPos', 'speakerKey', 'labeled', 'correct', 'wrong', 'transcriptFileId'];
   dataSource = new MatTableDataSource<TextAudioIndex>();
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
-
   selectedFile: Blob;
   fileByteArray: Array<number> = [];
   yeet: any;
   editProfile = false;
+  matcher = new MyErrorStateMatcher();
+  isChangePassword = false;
 
   ngOnInit() {
     this.authService.checkAuthenticated();
@@ -55,6 +60,7 @@ export class ProfileComponent implements OnInit {
           return data.labeled.toString().toLowerCase().includes(filter);
         };
         this.initForm();
+        this.initPasswordForm();
       });
   }
 
@@ -63,8 +69,15 @@ export class ProfileComponent implements OnInit {
       username: [this.user.username, [Validators.required]],
       firstName: [this.user.firstName, [Validators.required]],
       lastName: [this.user.lastName, [Validators.required]],
-      email: [this.user.email, [Validators.required]],
+      email: [this.user.email, [Validators.required, Validators.email]],
       canton: [this.user.canton, [Validators.required]]
+    });
+  }
+
+  initPasswordForm(): void {
+    this.changePasswordForm = this.fb.group({
+      password: ['', [Validators.required]],
+      newPassword: ['', [Validators.required]]
     });
   }
 
@@ -124,5 +137,27 @@ export class ProfileComponent implements OnInit {
         });
       }
     };
+  }
+
+  changePassword(): void {
+    this.apiService.changePassword(
+      new ChangePassword(
+        this.authService.loggedInUser.id,
+        this.changePasswordForm.controls.password.value,
+        this.changePasswordForm.controls.newPassword.value)
+    ).subscribe(() => {
+    }, err => {
+      if (err.status === 401) {
+        alert('Wrong password');
+      }
+    }, () => this.isChangePassword = false);
+  }
+}
+
+// tslint:disable-next-line:component-class-suffix
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
   }
 }
