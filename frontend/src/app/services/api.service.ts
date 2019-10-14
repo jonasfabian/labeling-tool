@@ -37,7 +37,7 @@ export class ApiService {
   ) {
   }
 
-  url = 'http://localhost:8080/api/match/';
+  url = 'http://127.0.0.1:5000/';
   BASE64_MARKER = ';base64,';
   blobUrl: SafeUrl | string = '';
   uri: BehaviorSubject<SafeUrl> = new BehaviorSubject<SafeUrl>('');
