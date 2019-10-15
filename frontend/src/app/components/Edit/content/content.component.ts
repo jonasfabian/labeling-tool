@@ -26,11 +26,7 @@ export class ContentComponent implements OnInit {
   @ViewChild('hT', {static: true}) hT: ElementRef;
   snip = new AudioSnippet(null, null);
   text: string | ArrayBuffer = '';
-  dummyTextAudioIndex = new TextAudio(0, 0, 0, '', 0, '', 0, 0, 0);
-  textBegin = '';
-  highlightedText = '';
-  selectedText = '';
-  textEnd = '';
+  dummyTextAudio = new TextAudio(0, 0, 0, '', 0, '', 0, 0, 0);
   loading = false;
 
   ngOnInit() {
@@ -43,50 +39,23 @@ export class ContentComponent implements OnInit {
   }
 
   getRegionSnippet(snippet: AudioSnippet) {
-    this.dummyTextAudioIndex.audioStart = snippet.startTime;
-    this.dummyTextAudioIndex.audioEnd = snippet.endTime;
-  }
-
-  displayHighlightedText() {
-    let highlightedTextLength = 0;
-    if (window.getSelection) {
-      this.hT.nativeElement.style.backgroundColor = 'white';
-      this.selectedText = window.getSelection().toString();
-      highlightedTextLength = this.selectedText.length;
-    }
-    const tempStartPos = this.text.toString().indexOf(this.selectedText.toString());
-    const tempEndPos = tempStartPos + highlightedTextLength;
-    if (tempStartPos !== -1) {
-      this.dummyTextAudioIndex.audioStart = tempStartPos;
-      this.dummyTextAudioIndex.audioEnd = tempEndPos;
-    }
+    this.dummyTextAudio.audioStart = snippet.startTime;
+    this.dummyTextAudio.audioEnd = snippet.endTime;
   }
 
   submitText(): void {
-    this.dummyTextAudioIndex.labeled = 1;
-    this.apiService.updateTextAudio(this.dummyTextAudioIndex).subscribe(_ => {
+    this.dummyTextAudio.labeled = 1;
+    this.apiService.updateTextAudio(this.dummyTextAudio).subscribe(_ => {
       this.textSetup();
     });
   }
 
   textSetup(): void {
     this.apiService.getTextAudio().subscribe(textAudio => {
-      this.dummyTextAudioIndex = textAudio;
+      this.dummyTextAudio = textAudio;
       this.snip = new AudioSnippet(textAudio.audioStart, textAudio.audioEnd);
       this.text = textAudio.text;
     });
-  }
-
-  showMoreTextBefore(): void {
-    const begin = this.text.toString().indexOf(this.textBegin);
-    const end = this.text.toString().indexOf(this.textBegin) + this.textBegin.length;
-    this.textBegin = this.text.slice(begin - 20, end).toString();
-  }
-
-  showMoreTextAfter(): void {
-    const begin = this.text.toString().indexOf(this.textEnd);
-    const end = this.text.toString().indexOf(this.textEnd) + this.textEnd.length;
-    this.textEnd = this.text.slice(begin, end + 20).toString();
   }
 
   openShortcutDialog(): void {

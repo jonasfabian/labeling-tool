@@ -8,32 +8,22 @@
 </div>
 <div [hidden]="loading" id="label-container">
   <mat-card class="top-card">
-    <app-audio-player (loading)="getLoading($event)" [textAudioIndexWithText]="dummyTextAudioIndex"
+    <app-audio-player (loading)="getLoading($event)" [textAudio]="dummyTextAudio"
                       (regionPosition)="getRegionSnippet($event)" [audioPosition]="snip"></app-audio-player>
   </mat-card>
   <mat-card class="card text-container">
     <h2>Matching Text</h2>
-    <div>
-      <span>{{selectedText}}</span>
-    </div>
     <p style="margin-bottom: 30px;">
       <mat-divider style="margin-left: 15px; margin-right: 15px; width: calc(100% - 30px);"></mat-divider>
     </p>
-    <h2>Text</h2>
     <div>
-      <span>{{dummyTextAudioIndex.text}}</span>
+      <span>{{dummyTextAudio.text}}</span>
     </div>
   </mat-card>
   <mat-card id="select-container" class="card">
     <mat-button-toggle-group>
       <mat-button-toggle (click)="submitText()">Submit</mat-button-toggle>
       <mat-button-toggle (click)="submitText()">Skip</mat-button-toggle>
-    </mat-button-toggle-group>
-  </mat-card>
-  <mat-card style="width: calc(30% - 50px); float: right;" class="card">
-    <mat-button-toggle-group style="width: 100%;">
-      <mat-button-toggle style="width: 50%;" (click)="showMoreTextBefore()">Show more before Text</mat-button-toggle>
-      <mat-button-toggle style="width: 50%;" (click)="showMoreTextAfter()">Show more after Text</mat-button-toggle>
     </mat-button-toggle-group>
   </mat-card>
   <div id="shortcut-button">

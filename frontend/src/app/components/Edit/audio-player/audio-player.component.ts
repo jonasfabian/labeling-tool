@@ -12,6 +12,7 @@ import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 import {AudioSnippet} from '../../../models/AudioSnippet';
 import {ApiService} from '../../../services/api.service';
 import {TextAudioIndexWithText} from '../../../models/TextAudioIndexWithText';
+import {TextAudio} from '../../../models/TextAudio';
 
 @Component({
   selector: 'app-audio-player',
@@ -26,7 +27,7 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   }
 
   @Input() audioPosition: AudioSnippet;
-  @Input() textAudioIndexWithText: TextAudioIndexWithText;
+  @Input() textAudio: TextAudio;
   @Output() regionPosition = new EventEmitter<AudioSnippet>();
   @Output() uploadSuccess = new EventEmitter<boolean>();
   @Output() loading = new EventEmitter<boolean>();
@@ -45,10 +46,10 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     if (this.audioPosition.startTime !== null) {
-      if (this.textAudioIndexWithText.transcriptFileId !== this.fileId) {
+      if (this.textAudio.fileId !== this.fileId) {
         this.loading.emit(true);
-        this.fileId = this.textAudioIndexWithText.transcriptFileId;
-        this.loadAudioBlob(this.textAudioIndexWithText.transcriptFileId);
+        this.fileId = this.textAudio.fileId;
+        this.loadAudioBlob(this.textAudio.fileId);
       }
       if ((this.waveSurfer !== undefined) && (this.audioPosition.startTime !== null)) {
         this.waveSurfer.on('ready', () => {
