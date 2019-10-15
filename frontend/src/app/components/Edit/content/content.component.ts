@@ -63,6 +63,7 @@ export class ContentComponent implements OnInit {
   }
 
   submitText(): void {
+    this.dummyTextAudioIndex.labeled = 1;
     this.apiService.updateTextAudio(this.dummyTextAudioIndex).subscribe(_ => {
       this.textSetup();
     });
