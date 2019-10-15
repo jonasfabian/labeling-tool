@@ -74,6 +74,10 @@ export class ApiService {
     return this.http.get<Array<TextAudio>>(this.url + 'getTextAudios');
   }
 
+  getTextAudio(): Observable<TextAudio> {
+    return this.http.get<TextAudio>(this.url + 'getTextAudio');
+  }
+
   createRecording(recording: Recording): Observable<any> {
     return this.http.post(this.url + 'createRecording', recording);
   }

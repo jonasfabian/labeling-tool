@@ -69,18 +69,11 @@ export class ContentComponent implements OnInit {
   }
 
   textSetup(): void {
-    /*this.apiService.getNonLabeledTextAudioIndex(0).subscribe(nonLabeledTextAudioI => {
-      this.dummyTextAudioIndex = nonLabeledTextAudioI;
-      this.snip = new AudioSnippet(nonLabeledTextAudioI.audioStartPos / nonLabeledTextAudioI.samplingRate,
-      nonLabeledTextAudioI.audioEndPos / nonLabeledTextAudioI.samplingRate);
-      this.text = nonLabeledTextAudioI.text;
-      this.textBegin = nonLabeledTextAudioI.text.slice(nonLabeledTextAudioI.textStartPos - 100, nonLabeledTextAudioI.textStartPos);
-      this.selectedText = this.highlightedText = nonLabeledTextAudioI.text.slice(nonLabeledTextAudioI.textStartPos,
-      nonLabeledTextAudioI.textEndPos);
-      this.hT.nativeElement.style.backgroundColor = 'steelblue';
-      this.textEnd = nonLabeledTextAudioI.text.slice(nonLabeledTextAudioI.textEndPos, nonLabeledTextAudioI.textEndPos + 100);
-      this.dummyTextAudioIndex.labeled = 1;
-    });*/
+    this.apiService.getTextAudio().subscribe(textAudio => {
+      this.dummyTextAudioIndex = textAudio;
+      this.snip = new AudioSnippet(textAudio.audioStart, textAudio.audioEnd);
+      this.text = textAudio.text;
+    });
   }
 
   showMoreTextBefore(): void {

@@ -20,10 +20,8 @@
       <mat-divider style="margin-left: 15px; margin-right: 15px; width: calc(100% - 30px);"></mat-divider>
     </p>
     <h2>Text</h2>
-    <div (mouseup)="displayHighlightedText()">
-      <span>{{textBegin}}</span>
-      <span #hT>{{highlightedText}}</span>
-      <span>{{textEnd}}</span>
+    <div>
+      <span>{{dummyTextAudioIndex.text}}</span>
     </div>
   </mat-card>
   <mat-card id="select-container" class="card">
