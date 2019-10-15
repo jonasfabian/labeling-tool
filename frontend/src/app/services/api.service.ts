@@ -86,7 +86,7 @@ export class ApiService {
   }
 
   getAvatar(id: number): Observable<Avatar> {
-    return this.http.get<Avatar>(this.url + 'getAvatar?id=' + id);
+    return this.http.get<Avatar>(this.url + 'getAvatar?userId=' + id);
   }
 
   getUserByEmail(email: string): Observable<UserPublicInfo> {
