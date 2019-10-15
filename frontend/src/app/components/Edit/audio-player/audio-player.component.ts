@@ -40,6 +40,9 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.onPreviewPressed();
+    this.apiService.getAudioFile(1).subscribe(resp => {
+      this.waveSurfer.load(URL.createObjectURL(resp));
+    });
   }
 
   convertDataURIToBinary(dataURI) {
@@ -89,14 +92,7 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
 
   loadAudioBlob(fileId: number): void {
     this.apiService.getAudioFile(fileId).subscribe(resp => {
-      const reader = new FileReader();
-      reader.readAsDataURL(resp);
-      reader.addEventListener('loadend', () => {
-        const binary = this.convertDataURIToBinary(reader.result);
-        const blob = new Blob([binary], {type: `application/octet-stream`});
-        this.blobUrl = URL.createObjectURL(blob);
-        this.waveSurfer.load(this.blobUrl);
-      });
+      this.waveSurfer.load(URL.createObjectURL(resp));
     });
   }
 

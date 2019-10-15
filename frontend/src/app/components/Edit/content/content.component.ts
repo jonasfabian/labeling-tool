@@ -63,13 +63,13 @@ export class ContentComponent implements OnInit {
   }
 
   submitText(): void {
-    this.apiService.updateTextAudioIndex(this.dummyTextAudioIndex).subscribe(_ => {
+    this.apiService.updateTextAudio(this.dummyTextAudioIndex).subscribe(_ => {
       this.textSetup();
     });
   }
 
   textSetup(): void {
-    this.apiService.getNonLabeledTextAudioIndex(0).subscribe(nonLabeledTextAudioI => {
+    /*this.apiService.getNonLabeledTextAudioIndex(0).subscribe(nonLabeledTextAudioI => {
       this.dummyTextAudioIndex = nonLabeledTextAudioI;
       this.snip = new AudioSnippet(nonLabeledTextAudioI.audioStartPos / nonLabeledTextAudioI.samplingRate, nonLabeledTextAudioI.audioEndPos / nonLabeledTextAudioI.samplingRate);
       this.text = nonLabeledTextAudioI.text;
@@ -78,7 +78,7 @@ export class ContentComponent implements OnInit {
       this.hT.nativeElement.style.backgroundColor = 'steelblue';
       this.textEnd = nonLabeledTextAudioI.text.slice(nonLabeledTextAudioI.textEndPos, nonLabeledTextAudioI.textEndPos + 100);
       this.dummyTextAudioIndex.labeled = 1;
-    });
+    });*/
   }
 
   showMoreTextBefore(): void {

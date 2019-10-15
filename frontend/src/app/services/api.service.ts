@@ -20,6 +20,8 @@ import {Recording} from '../models/Recording';
 import {AudioSnippet} from '../models/AudioSnippet';
 import {Canton} from '../models/Canton';
 import {ChangePassword} from '../models/ChangePassword';
+import {TextAudio} from '../models/TextAudio';
+import {UserAndTextAudio} from '../models/UserAndTextAudio';
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +39,7 @@ export class ApiService {
   ) {
   }
 
-  url = 'http://127.0.0.1:5000/';
+  url = 'http://localhost:5000/';
   BASE64_MARKER = ';base64,';
   blobUrl: SafeUrl | string = '';
   uri: BehaviorSubject<SafeUrl> = new BehaviorSubject<SafeUrl>('');
@@ -73,16 +75,12 @@ export class ApiService {
     {cantonId: 'zh', cantonName: 'Zürich'}
   ];
 
-  getTextAudioIndexes(): Observable<Array<TextAudioIndexWithText>> {
-    return this.http.get<Array<TextAudioIndexWithText>>(this.url + 'getTextAudioIndexes');
+  getTextAudios(): Observable<Array<TextAudio>> {
+    return this.http.get<Array<TextAudio>>(this.url + 'getTextAudios');
   }
 
   createRecording(recording: Recording): Observable<any> {
     return this.http.post(this.url + 'createRecording', recording);
-  }
-
-  getCheckedTextAudioIndexesByUser(userId: number): Observable<Array<TextAudioIndex>> {
-    return this.http.get<Array<TextAudioIndex>>(this.url + 'getCheckedTextAudioIndexesByUser?id=' + userId);
   }
 
   getAvatar(id: number): Observable<Avatar> {
@@ -97,16 +95,16 @@ export class ApiService {
     return this.http.post(this.url + 'createUser', user);
   }
 
-  createUserAndTextAudioIndex(userAndTextAudioIndex: UserAndTextAudioIndex): Observable<any> {
-    return this.http.post(this.url + 'createUserAndTextAudioIndex', userAndTextAudioIndex);
+  createUserAndTextAudioIndex(userAndTextAudio: UserAndTextAudio): Observable<any> {
+    return this.http.post(this.url + 'createUserAndTextAudio', userAndTextAudio);
   }
 
   checkLogin(emailPassword: EmailPassword): Observable<any> {
     return this.http.post(this.url + 'checkLogin', emailPassword);
   }
 
-  updateTextAudioIndex(textAudioIndex: TextAudioIndexWithText): Observable<any> {
-    return this.http.post(this.url + 'updateTextAudioIndex', textAudioIndex);
+  updateTextAudio(textAudio: TextAudio): Observable<any> {
+    return this.http.post(this.url + 'updateTextAudio', textAudio);
   }
 
   updateUser(user: UserPublicInfo): Observable<any> {
@@ -114,13 +112,10 @@ export class ApiService {
   }
 
   getAudioFile(fileId: number): Observable<any> {
-    return this.http.get(this.url + 'getAudioFile?id=' + fileId, {responseType: 'blob'});
+    return this.http.get(this.url + 'getAudio?id=' + fileId, {responseType: 'blob'});
   }
 
-  getNonLabeledTextAudioIndex(labeledType: number): Observable<TextAudioIndexWithText> {
-    return this.http.get<TextAudioIndexWithText>(this.url + 'getNonLabeledDataIndexes?id=' + labeledType);
-  }
-
+  // TODO rework
   getTenNonLabeledTextAudioIndex(userId: number): Observable<Array<TextAudioIndexWithText>> {
     return this.http.get<Array<TextAudioIndexWithText>>(this.url + 'getTenNonLabeledDataIndexes?userId=' + userId);
   }
