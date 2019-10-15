@@ -31,8 +31,6 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   @Output() uploadSuccess = new EventEmitter<boolean>();
   @Output() loading = new EventEmitter<boolean>();
   reg = new AudioSnippet(null, null);
-  BASE64_MARKER = ';base64,';
-  blobUrl = '';
   fileId = 0;
   waveSurfer: WaveSurfer = null;
   paused = false;
@@ -43,19 +41,6 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
     this.apiService.getAudioFile(1).subscribe(resp => {
       this.waveSurfer.load(URL.createObjectURL(resp));
     });
-  }
-
-  convertDataURIToBinary(dataURI) {
-    const base64Index = dataURI.indexOf(this.BASE64_MARKER) + this.BASE64_MARKER.length;
-    const base64 = dataURI.substring(base64Index);
-    const raw = window.atob(base64);
-    const rawLength = raw.length;
-    const array = new Uint8Array(new ArrayBuffer(rawLength));
-
-    for (let i = 0; i < rawLength; i++) {
-      array[i] = raw.charCodeAt(i);
-    }
-    return array;
   }
 
   ngOnChanges(): void {

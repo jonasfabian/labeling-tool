@@ -1,16 +1,13 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {TextAudioIndexWithText} from '../models/TextAudioIndexWithText';
 import {Sums} from '../models/Sums';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {User} from '../models/User';
 import {EmailPassword} from '../models/EmailPassword';
-import {UserAndTextAudioIndex} from '../models/UserAndTextAudioIndex';
 import {UserPublicInfo} from '../models/UserPublicInfo';
 import {AuthService} from './auth.service';
 import {Router} from '@angular/router';
-import {TextAudioIndex} from '../models/TextAudioIndex';
 import {Avatar} from '../models/Avatar';
 import {SnackBarLogOutComponent} from '../components/Login/snack-bar-log-out/snack-bar-log-out.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -40,11 +37,9 @@ export class ApiService {
   }
 
   url = 'http://localhost:5000/';
-  BASE64_MARKER = ';base64,';
   blobUrl: SafeUrl | string = '';
   uri: BehaviorSubject<SafeUrl> = new BehaviorSubject<SafeUrl>('');
   showTenMoreQuest = false;
-  snippet = new AudioSnippet(null, null);
 
   cantons: Canton[] = [
     {cantonId: 'ag', cantonName: 'Aargau'},
@@ -116,8 +111,8 @@ export class ApiService {
   }
 
   // TODO rework
-  getTenNonLabeledTextAudioIndex(userId: number): Observable<Array<TextAudioIndexWithText>> {
-    return this.http.get<Array<TextAudioIndexWithText>>(this.url + 'getTenNonLabeledDataIndexes?userId=' + userId);
+  getTenNonLabeledTextAudios(): Observable<Array<TextAudio>> {
+    return this.http.get<Array<TextAudio>>(this.url + 'getTenNonLabeledTextAudios');
   }
 
   getLabeledSums(): Observable<Array<Sums>> {
@@ -132,30 +127,9 @@ export class ApiService {
     return this.http.post(this.url + 'changePassword', changePassword);
   }
 
-  convertDataURIToBinary(dataURI): Uint8Array {
-    const base64Index = dataURI.indexOf(this.BASE64_MARKER) + this.BASE64_MARKER.length;
-    const base64 = dataURI.substring(base64Index);
-    const raw = window.atob(base64);
-    const rawLength = raw.length;
-    const array = new Uint8Array(new ArrayBuffer(rawLength));
-
-    for (let i = 0; i < rawLength; i++) {
-      array[i] = raw.charCodeAt(i);
-    }
-    return array;
-  }
-
-  loadAudioBlob(file: TextAudioIndexWithText): void {
-    this.getAudioFile(file.transcriptFileId).subscribe(resp => {
-      const reader = new FileReader();
-      reader.readAsDataURL(resp);
-      reader.addEventListener('loadend', _ => {
-        const binary = this.convertDataURIToBinary(reader.result);
-        const blob = new Blob([binary], {type: `application/octet-stream`});
-        this.blobUrl = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(blob));
-      });
-    }, () => {
-    }, () => {
+  loadAudioBlob(file: TextAudio): void {
+    this.getAudioFile(file.fileId).subscribe(resp => {
+      this.blobUrl = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(resp));
       this.uri.next(this.blobUrl);
     });
   }

@@ -4,13 +4,12 @@ import {ApiService} from '../../../services/api.service';
 import {CheckIndex} from '../../../models/CheckIndex';
 import {MatDialog} from '@angular/material';
 import {ShortcutComponent} from '../../Multi-Use/shortcut/shortcut.component';
-import {UserAndTextAudioIndex} from '../../../models/UserAndTextAudioIndex';
 import {AuthService} from '../../../services/auth.service';
 import {CheckMoreComponent} from '../check-more/check-more.component';
 import {SessionOverviewComponent} from '../session-overview/session-overview.component';
 import WaveSurfer from 'wavesurfer.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
-import {AudioSnippet} from '../../../models/AudioSnippet';
+import {UserAndTextAudio} from '../../../models/UserAndTextAudio';
 
 @Component({
   selector: 'app-check',
@@ -41,16 +40,14 @@ export class CheckComponent implements OnInit {
   progress = 0;
   panelOpenState = false;
   audioFileId = 0;
-  BASE64_MARKER = ';base64,';
-  blobUrl = '';
   snippet: any;
   isReady = false;
   waveSurfer: WaveSurfer = null;
 
   ngOnInit() {
     let fileId = 0;
-    this.apiService.getTenNonLabeledTextAudioIndex(this.authService.loggedInUser.id).subscribe(r => {
-      fileId = r[0].transcriptFileId;
+    this.apiService.getTenNonLabeledTextAudios().subscribe(r => {
+      fileId = r[0].fileId;
     }, () => {
     }, () => {
       this.initCarousel();
@@ -84,28 +81,8 @@ export class CheckComponent implements OnInit {
 
   loadAudioBlob(fileId: number): void {
     this.apiService.getAudioFile(fileId).subscribe(resp => {
-      const reader = new FileReader();
-      reader.readAsDataURL(resp);
-      reader.addEventListener('loadend', () => {
-        const binary = this.convertDataURIToBinary(reader.result);
-        const blob = new Blob([binary], {type: `application/octet-stream`});
-        this.blobUrl = URL.createObjectURL(blob);
-        this.waveSurfer.load(this.blobUrl);
-      });
+      this.waveSurfer.load(URL.createObjectURL(resp));
     });
-  }
-
-  convertDataURIToBinary(dataURI) {
-    const base64Index = dataURI.indexOf(this.BASE64_MARKER) + this.BASE64_MARKER.length;
-    const base64 = dataURI.substring(base64Index);
-    const raw = window.atob(base64);
-    const rawLength = raw.length;
-    const array = new Uint8Array(new ArrayBuffer(rawLength));
-
-    for (let i = 0; i < rawLength; i++) {
-      array[i] = raw.charCodeAt(i);
-    }
-    return array;
   }
 
   @HostListener('window:keyup', ['$event'])
@@ -126,7 +103,7 @@ export class CheckComponent implements OnInit {
     this.addNumberOfCheckType(checkType);
     this.prepareNextSlide(checkType);
     this.carousel.slideNext();
-    if (this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.transcriptFileId !== this.audioFileId) {
+    if (this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.fileId !== this.audioFileId) {
       this.loadNextAudioFile();
     }
   }
@@ -142,7 +119,7 @@ export class CheckComponent implements OnInit {
   }
 
   loadNextAudioFile(): void {
-    this.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.transcriptFileId);
+    this.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.fileId);
   }
 
   initSessionCheckData(): void {
@@ -182,7 +159,7 @@ export class CheckComponent implements OnInit {
     this.resetAudioProgress();
     this.updateSessionCheckData();
     this.checkIfFinishedChunk();
-    const currentCheckIndex = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText;
+    const currentCheckIndex = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio;
     if (labeledType === this.correct) {
       currentCheckIndex.labeled = 1;
       currentCheckIndex.correct++;
@@ -190,15 +167,20 @@ export class CheckComponent implements OnInit {
       currentCheckIndex.labeled = 1;
       currentCheckIndex.wrong++;
     }
-    this.apiService.updateTextAudioIndex(currentCheckIndex).subscribe(_ => {
-      this.apiService.createUserAndTextAudioIndex(new UserAndTextAudioIndex(-1, this.authService.loggedInUser.id, currentCheckIndex.id)).subscribe(() => {
+    this.apiService.updateTextAudio(currentCheckIndex).subscribe(_ => {
+      this.apiService.createUserAndTextAudioIndex(
+        new UserAndTextAudio(-1, this.authService.loggedInUser.id, currentCheckIndex.id)
+      ).subscribe(() => {
       }, () => {
       }, () => {
-        if (this.audioFileId !== currentCheckIndex.transcriptFileId) {
+        if (this.audioFileId !== currentCheckIndex.fileId) {
           this.loadNextAudioFile();
         }
-        this.audioFileId = currentCheckIndex.transcriptFileId;
-        this.addRegion(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioStartPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate, this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioEndPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate);
+        this.audioFileId = currentCheckIndex.fileId;
+        this.addRegion(
+          this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.audioStart,
+          this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.audioEnd
+        );
       });
     });
   }
@@ -212,22 +194,20 @@ export class CheckComponent implements OnInit {
 
   lastSlide(): void {
     if (this.carousel.carousel.activeIndex === this.checkIndexArray.length) {
-      this.apiService.getTenNonLabeledTextAudioIndex(this.authService.loggedInUser.id).subscribe(r => r.forEach(labeledTextAudioIndex => {
-        labeledTextAudioIndex.text = labeledTextAudioIndex.text.slice(labeledTextAudioIndex.textStartPos, labeledTextAudioIndex.textEndPos);
+      this.apiService.getTenNonLabeledTextAudios().subscribe(r => r.forEach(labeledTextAudioIndex => {
         this.checkIndexArray.push(new CheckIndex(this.carouselIndex, labeledTextAudioIndex, 0));
         this.carouselIndex++;
       }), () => {
       }, () => {
-        this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
+        this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio);
       });
     }
   }
 
   initCarousel(): void {
-    this.apiService.getTenNonLabeledTextAudioIndex(this.authService.loggedInUser.id).subscribe(r => r.forEach(l => {
+    this.apiService.getTenNonLabeledTextAudios().subscribe(r => r.forEach(l => {
       if (r.length !== 0) {
         this.available = true;
-        l.text = l.text.slice(l.textStartPos, l.textEndPos);
         this.checkIndexArray.push(new CheckIndex(this.carouselIndex, l, 0));
         this.carouselIndex++;
       } else {
@@ -237,10 +217,12 @@ export class CheckComponent implements OnInit {
     }, () => {
       if (this.checkIndexArray.length !== 0) {
         this.progress = 0;
-        this.audioFileId = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.transcriptFileId;
-        this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText);
-        this.addRegion(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioStartPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate, this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.audioEndPos / this.checkIndexArray[this.carousel.carousel.activeIndex].textAudioIndexWithText.samplingRate);
-
+        this.audioFileId = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.fileId;
+        this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio);
+        this.addRegion(
+          this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.audioStart,
+          this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.audioEnd
+        );
       }
     });
   }

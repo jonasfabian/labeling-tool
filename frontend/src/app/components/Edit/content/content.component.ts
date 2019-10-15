@@ -3,9 +3,9 @@ import {AudioSnippet} from '../../../models/AudioSnippet';
 import {MatDialog} from '@angular/material';
 import {ApiService} from '../../../services/api.service';
 import {DomSanitizer} from '@angular/platform-browser';
-import {TextAudioIndexWithText} from '../../../models/TextAudioIndexWithText';
 import {ShortcutComponent} from '../../Multi-Use/shortcut/shortcut.component';
 import {AuthService} from '../../../services/auth.service';
+import {TextAudio} from '../../../models/TextAudio';
 
 @Component({
   selector: 'app-content',
@@ -26,7 +26,7 @@ export class ContentComponent implements OnInit {
   @ViewChild('hT', {static: true}) hT: ElementRef;
   snip = new AudioSnippet(null, null);
   text: string | ArrayBuffer = '';
-  dummyTextAudioIndex = new TextAudioIndexWithText(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '');
+  dummyTextAudioIndex = new TextAudio(0, 0, 0, '', 0, '', 0, 0, 0);
   textBegin = '';
   highlightedText = '';
   selectedText = '';
@@ -43,8 +43,8 @@ export class ContentComponent implements OnInit {
   }
 
   getRegionSnippet(snippet: AudioSnippet) {
-    this.dummyTextAudioIndex.audioStartPos = snippet.startTime * this.dummyTextAudioIndex.samplingRate;
-    this.dummyTextAudioIndex.audioEndPos = snippet.endTime * this.dummyTextAudioIndex.samplingRate;
+    this.dummyTextAudioIndex.audioStart = snippet.startTime;
+    this.dummyTextAudioIndex.audioEnd = snippet.endTime;
   }
 
   displayHighlightedText() {
@@ -57,8 +57,8 @@ export class ContentComponent implements OnInit {
     const tempStartPos = this.text.toString().indexOf(this.selectedText.toString());
     const tempEndPos = tempStartPos + highlightedTextLength;
     if (tempStartPos !== -1) {
-      this.dummyTextAudioIndex.textStartPos = tempStartPos;
-      this.dummyTextAudioIndex.textEndPos = tempEndPos;
+      this.dummyTextAudioIndex.audioStart = tempStartPos;
+      this.dummyTextAudioIndex.audioEnd = tempEndPos;
     }
   }
 
@@ -71,10 +71,12 @@ export class ContentComponent implements OnInit {
   textSetup(): void {
     /*this.apiService.getNonLabeledTextAudioIndex(0).subscribe(nonLabeledTextAudioI => {
       this.dummyTextAudioIndex = nonLabeledTextAudioI;
-      this.snip = new AudioSnippet(nonLabeledTextAudioI.audioStartPos / nonLabeledTextAudioI.samplingRate, nonLabeledTextAudioI.audioEndPos / nonLabeledTextAudioI.samplingRate);
+      this.snip = new AudioSnippet(nonLabeledTextAudioI.audioStartPos / nonLabeledTextAudioI.samplingRate,
+      nonLabeledTextAudioI.audioEndPos / nonLabeledTextAudioI.samplingRate);
       this.text = nonLabeledTextAudioI.text;
       this.textBegin = nonLabeledTextAudioI.text.slice(nonLabeledTextAudioI.textStartPos - 100, nonLabeledTextAudioI.textStartPos);
-      this.selectedText = this.highlightedText = nonLabeledTextAudioI.text.slice(nonLabeledTextAudioI.textStartPos, nonLabeledTextAudioI.textEndPos);
+      this.selectedText = this.highlightedText = nonLabeledTextAudioI.text.slice(nonLabeledTextAudioI.textStartPos,
+      nonLabeledTextAudioI.textEndPos);
       this.hT.nativeElement.style.backgroundColor = 'steelblue';
       this.textEnd = nonLabeledTextAudioI.text.slice(nonLabeledTextAudioI.textEndPos, nonLabeledTextAudioI.textEndPos + 100);
       this.dummyTextAudioIndex.labeled = 1;
