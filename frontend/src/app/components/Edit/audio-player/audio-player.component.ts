@@ -1,17 +1,10 @@
-import {
-  Component,
-  EventEmitter, Input,
-  OnChanges,
-  OnInit,
-  Output
-} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
 import CursorPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 import {AudioSnippet} from '../../../models/AudioSnippet';
 import {ApiService} from '../../../services/api.service';
-import {TextAudioIndexWithText} from '../../../models/TextAudioIndexWithText';
 import {TextAudio} from '../../../models/TextAudio';
 
 @Component({
