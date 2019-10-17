@@ -119,12 +119,12 @@ export class ApiService {
     return this.http.get<Array<TextAudio>>(this.url + 'getTenNonLabeledTextAudios');
   }
 
-  getLabeledSums(): Observable<Array<Sums>> {
-    return this.http.get<Array<Sums>>(this.url + 'getLabeledSums');
+  getLabeledSums(): Observable<Sums> {
+    return this.http.get<Sums>(this.url + 'getLabeledSums');
   }
 
   getTopFiveUsersLabeledCount(): Observable<Array<UserLabeledData>> {
-    return this.http.get<Array<UserLabeledData>>(this.url + 'getTopFiveUsersLabeledCount');
+    return this.http.get<Array<UserLabeledData>>(this.url + 'getTopFive');
   }
 
   changePassword(changePassword: ChangePassword): Observable<any> {

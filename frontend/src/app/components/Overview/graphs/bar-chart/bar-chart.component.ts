@@ -11,7 +11,7 @@ export class BarChartComponent implements OnInit, OnChanges {
   constructor() {
   }
 
-  @Input() inputData: Array<Sums>;
+  @Input() inputData: Sums;
   single = [];
   view = [];
   colorScheme = {domain: ['#3f51b5', '#7482cf', 'blue', 'darkblue']};
@@ -21,14 +21,11 @@ export class BarChartComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
+    console.log(this.inputData);
     const singleData = [];
-    if (this.inputData.length !== 0) {
-      this.inputData.forEach(l => {
-        singleData.push({name: 'Correct', value: l.correct});
-        singleData.push({name: 'Wrong', value: l.wrong});
-      });
-      this.single = singleData;
-    }
+    singleData.push({name: 'Correct', value: this.inputData.correct});
+    singleData.push({name: 'Wrong', value: this.inputData.wrong});
+    this.single = singleData;
   }
 
   onResize(event) {

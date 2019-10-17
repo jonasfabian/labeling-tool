@@ -16,7 +16,7 @@ export class OverviewComponent implements OnInit {
   ) {
   }
 
-  inputData: Array<Sums> = [];
+  inputData: Sums = new Sums(0, 0, 0);
   userInputData: Array<UserLabeledData> = [];
 
   data = [];
@@ -34,7 +34,10 @@ export class OverviewComponent implements OnInit {
   );
 
   ngOnInit() {
-    this.apiService.getLabeledSums().subscribe(l => this.inputData = l);
+    this.apiService.getLabeledSums().subscribe(l => {
+      console.log(l);
+      this.inputData = l;
+    });
     this.apiService.getTopFiveUsersLabeledCount().subscribe(l => this.userInputData = l);
   }
 
