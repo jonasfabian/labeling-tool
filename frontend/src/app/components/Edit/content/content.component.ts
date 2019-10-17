@@ -1,9 +1,7 @@
 import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AudioSnippet} from '../../../models/AudioSnippet';
-import {MatDialog} from '@angular/material';
 import {ApiService} from '../../../services/api.service';
 import {DomSanitizer} from '@angular/platform-browser';
-import {ShortcutComponent} from '../../Multi-Use/shortcut/shortcut.component';
 import {AuthService} from '../../../services/auth.service';
 import {TextAudio} from '../../../models/TextAudio';
 
@@ -18,7 +16,6 @@ export class ContentComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private apiService: ApiService,
     private authService: AuthService,
-    public dialog: MatDialog,
     private ref: ChangeDetectorRef
   ) {
   }
@@ -69,7 +66,8 @@ export class ContentComponent implements OnInit {
     this.editingText = !this.editingText;
   }
 
-  openShortcutDialog(): void {
-    this.dialog.open(ShortcutComponent, {width: '500px'});
+  cancelEditing(): void {
+    this.editingText = !this.editingText;
+    this.textAreaText.nativeElement.value = this.dummyTextAudio.text;
   }
 }

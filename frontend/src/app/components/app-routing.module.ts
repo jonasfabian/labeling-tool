@@ -10,12 +10,12 @@ import {OverviewComponent} from './Overview/overview/overview.component';
 import {CheckComponent} from './Check/check/check.component';
 import {SettingsComponent} from './Settings/settings/settings.component';
 import {LoginComponent} from './Login/login/login.component';
-import {RecordComponent} from "./Record/record/record.component";
+import {RecordComponent} from './Record/record/record.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'labeling-tool/home',
+    redirectTo: '/labeling-tool/home',
     pathMatch: 'full'
   },
   {
@@ -75,7 +75,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'labeling-tool/404'
+    redirectTo: '/labeling-tool/404'
   }
 ];
 

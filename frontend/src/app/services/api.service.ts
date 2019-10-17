@@ -140,9 +140,9 @@ export class ApiService {
 
   logOut(): void {
     sessionStorage.clear();
-    this.router.navigate(['/labeling-tool/login']);
     this.authService.isAuthenticated = false;
     this.authService.loggedInUser = new UserPublicInfo(-1, '', '', '', '', 0, '');
+    this.router.navigate(['/labeling-tool/login']);
     if (this.themeService.getTheme() !== 'dark-theme') {
       this.openSnackBar('light-snackbar');
     } else {
