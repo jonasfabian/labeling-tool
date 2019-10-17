@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AudioSnippet} from '../../../models/AudioSnippet';
 import {MatDialog} from '@angular/material';
 import {ApiService} from '../../../services/api.service';
@@ -24,10 +24,12 @@ export class ContentComponent implements OnInit {
   }
 
   @ViewChild('hT', {static: true}) hT: ElementRef;
+  @ViewChild('textAreaText', {static: false}) textAreaText: ElementRef<HTMLTextAreaElement>;
   snip = new AudioSnippet(null, null);
   text: string | ArrayBuffer = '';
   dummyTextAudio = new TextAudio(0, 0, 0, '', 0, '', 0, 0, 0);
   loading = false;
+  editingText = false;
 
   ngOnInit() {
     this.textSetup();
@@ -58,16 +60,16 @@ export class ContentComponent implements OnInit {
     });
   }
 
-  openShortcutDialog(): void {
-    this.dialog.open(ShortcutComponent, {width: '500px'});
+  editText(): void {
+    this.editingText = !this.editingText;
   }
 
-  @HostListener('window:keyup', ['$event'])
-  keyEvent(event: KeyboardEvent) {
-    if (event.key === 'c') {
-      this.submitText();
-    } else if (event.key === 's') {
-      this.submitText();
-    }
+  changeText(): void {
+    this.dummyTextAudio.text = this.textAreaText.nativeElement.value;
+    this.editingText = !this.editingText;
+  }
+
+  openShortcutDialog(): void {
+    this.dialog.open(ShortcutComponent, {width: '500px'});
   }
 }
