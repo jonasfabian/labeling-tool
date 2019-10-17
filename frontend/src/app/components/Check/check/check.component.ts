@@ -177,6 +177,8 @@ export class CheckComponent implements OnInit {
           this.loadNextAudioFile();
         }
         this.audioFileId = currentCheckIndex.fileId;
+        this.waveSurfer.clearRegions();
+        this.waveSurfer.seekAndCenter(currentCheckIndex.audioStart / this.waveSurfer.getDuration());
         this.addRegion(
           this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.audioStart,
           this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.audioEnd
@@ -228,17 +230,23 @@ export class CheckComponent implements OnInit {
   }
 
   playRegion(): void {
+    console.log(this.snippet.end);
     this.waveSurfer.on('audioprocess', () => {
-      if (this.waveSurfer.getCurrentTime() < this.snippet.end) {
-        this.isPlaying = true;
-      } else {
+      if (this.waveSurfer.getCurrentTime() === this.snippet.end) {
         this.isPlaying = false;
       }
     });
-    this.isPlaying = false;
-    this.snippet.playLoop();
-    this.resetAudioProgress();
-    this.calculateAudioPlayerStatus();
+    if (this.isPlaying) {
+      this.resetAudioProgress();
+      this.calculateAudioPlayerStatus();
+      this.isPlaying = false;
+      this.waveSurfer.pause();
+    } else {
+      this.resetAudioProgress();
+      this.calculateAudioPlayerStatus();
+      this.isPlaying = true;
+      this.snippet.playLoop();
+    }
   }
 
   addRegion(startPos: number, endPos: number): void {
