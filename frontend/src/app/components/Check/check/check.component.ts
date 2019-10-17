@@ -10,6 +10,7 @@ import {SessionOverviewComponent} from '../session-overview/session-overview.com
 import WaveSurfer from 'wavesurfer.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
 import {UserAndTextAudio} from '../../../models/UserAndTextAudio';
+import {AudioSnippet} from '../../../models/AudioSnippet';
 
 @Component({
   selector: 'app-check',
@@ -156,6 +157,7 @@ export class CheckComponent implements OnInit {
   }
 
   prepareNextSlide(labeledType: number): void {
+    this.waveSurfer.stop();
     this.resetAudioProgress();
     this.updateSessionCheckData();
     this.checkIfFinishedChunk();
@@ -177,12 +179,6 @@ export class CheckComponent implements OnInit {
           this.loadNextAudioFile();
         }
         this.audioFileId = currentCheckIndex.fileId;
-        this.waveSurfer.clearRegions();
-        this.waveSurfer.seekAndCenter(currentCheckIndex.audioStart / this.waveSurfer.getDuration());
-        this.addRegion(
-          this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.audioStart,
-          this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.audioEnd
-        );
       });
     });
   }
@@ -230,9 +226,11 @@ export class CheckComponent implements OnInit {
   }
 
   playRegion(): void {
-    console.log(this.snippet.end);
+    this.waveSurfer.clearRegions();
+    const region = new AudioSnippet(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.audioStart, this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.audioEnd);
+    this.addRegion(region.startTime, region.endTime);
     this.waveSurfer.on('audioprocess', () => {
-      if (this.waveSurfer.getCurrentTime() === this.snippet.end) {
+      if (this.waveSurfer.getCurrentTime() === region.endTime) {
         this.isPlaying = false;
       }
     });
@@ -242,10 +240,11 @@ export class CheckComponent implements OnInit {
       this.isPlaying = false;
       this.waveSurfer.pause();
     } else {
+      this.waveSurfer.stop();
       this.resetAudioProgress();
       this.calculateAudioPlayerStatus();
       this.isPlaying = true;
-      this.snippet.playLoop();
+      this.snippet.play();
     }
   }
 
@@ -254,8 +253,7 @@ export class CheckComponent implements OnInit {
     this.snippet = this.waveSurfer.addRegion({
       start: startPos,
       end: endPos,
-      resize: true,
-      color: 'hsla(200, 50%, 70%, 0.4)'
+      resize: false
     });
   }
 
