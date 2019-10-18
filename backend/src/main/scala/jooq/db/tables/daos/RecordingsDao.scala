@@ -5,6 +5,7 @@ package jooq.db.tables.daos
 
 
 import java.lang.Integer
+import java.lang.Long
 import java.lang.String
 import java.util.List
 
@@ -18,21 +19,21 @@ import scala.Array
 import scala.Byte
 
 
-class RecordingsDao(configuration : Configuration) extends DAOImpl[RecordingsRecord, jooq.db.tables.pojos.Recordings, Integer](Recordings.RECORDINGS, classOf[jooq.db.tables.pojos.Recordings], configuration) {
+class RecordingsDao(configuration : Configuration) extends DAOImpl[RecordingsRecord, jooq.db.tables.pojos.Recordings, Long](Recordings.RECORDINGS, classOf[jooq.db.tables.pojos.Recordings], configuration) {
 
   def this() = {
     this(null)
   }
 
-  override protected def getId(o : jooq.db.tables.pojos.Recordings) : Integer = {
+  override protected def getId(o : jooq.db.tables.pojos.Recordings) : Long = {
     o.getId
   }
 
-  def fetchById(values : Integer*) : List[jooq.db.tables.pojos.Recordings] = {
+  def fetchById(values : Long*) : List[jooq.db.tables.pojos.Recordings] = {
     fetch(Recordings.RECORDINGS.ID, values:_*)
   }
 
-  def fetchOneById(value : Integer) : jooq.db.tables.pojos.Recordings = {
+  def fetchOneById(value : Long) : jooq.db.tables.pojos.Recordings = {
     fetchOne(Recordings.RECORDINGS.ID, value)
   }
 

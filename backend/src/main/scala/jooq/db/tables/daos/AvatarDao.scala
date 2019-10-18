@@ -5,6 +5,7 @@ package jooq.db.tables.daos
 
 
 import java.lang.Integer
+import java.lang.Long
 import java.util.List
 
 import jooq.db.tables.Avatar
@@ -17,21 +18,21 @@ import scala.Array
 import scala.Byte
 
 
-class AvatarDao(configuration : Configuration) extends DAOImpl[AvatarRecord, jooq.db.tables.pojos.Avatar, Integer](Avatar.AVATAR, classOf[jooq.db.tables.pojos.Avatar], configuration) {
+class AvatarDao(configuration : Configuration) extends DAOImpl[AvatarRecord, jooq.db.tables.pojos.Avatar, Long](Avatar.AVATAR, classOf[jooq.db.tables.pojos.Avatar], configuration) {
 
   def this() = {
     this(null)
   }
 
-  override protected def getId(o : jooq.db.tables.pojos.Avatar) : Integer = {
+  override protected def getId(o : jooq.db.tables.pojos.Avatar) : Long = {
     o.getId
   }
 
-  def fetchById(values : Integer*) : List[jooq.db.tables.pojos.Avatar] = {
+  def fetchById(values : Long*) : List[jooq.db.tables.pojos.Avatar] = {
     fetch(Avatar.AVATAR.ID, values:_*)
   }
 
-  def fetchOneById(value : Integer) : jooq.db.tables.pojos.Avatar = {
+  def fetchOneById(value : Long) : jooq.db.tables.pojos.Avatar = {
     fetchOne(Avatar.AVATAR.ID, value)
   }
 

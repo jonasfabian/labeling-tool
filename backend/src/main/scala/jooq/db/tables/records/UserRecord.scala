@@ -4,7 +4,7 @@
 package jooq.db.tables.records
 
 
-import java.lang.Integer
+import java.lang.Long
 import java.lang.String
 
 import jooq.db.tables.User
@@ -16,15 +16,15 @@ import org.jooq.Row8
 import org.jooq.impl.UpdatableRecordImpl
 
 
-class UserRecord extends UpdatableRecordImpl[UserRecord](User.USER) with Record8[Integer, String, String, String, String, Integer, String, String] {
+class UserRecord extends UpdatableRecordImpl[UserRecord](User.USER) with Record8[Long, String, String, String, String, Long, String, String] {
 
-  def setId(value : Integer) : Unit = {
+  def setId(value : Long) : Unit = {
     set(0, value)
   }
 
-  def getId : Integer = {
+  def getId : Long = {
     val r = get(0)
-    if (r == null) null else r.asInstanceOf[Integer]
+    if (r == null) null else r.asInstanceOf[Long]
   }
 
   def setFirstname(value : String) : Unit = {
@@ -63,13 +63,13 @@ class UserRecord extends UpdatableRecordImpl[UserRecord](User.USER) with Record8
     if (r == null) null else r.asInstanceOf[String]
   }
 
-  def setAvatarversion(value : Integer) : Unit = {
+  def setAvatarversion(value : Long) : Unit = {
     set(5, value)
   }
 
-  def getAvatarversion : Integer = {
+  def getAvatarversion : Long = {
     val r = get(5)
-    if (r == null) null else r.asInstanceOf[Integer]
+    if (r == null) null else r.asInstanceOf[Long]
   }
 
   def setPassword(value : String) : Unit = {
@@ -93,47 +93,47 @@ class UserRecord extends UpdatableRecordImpl[UserRecord](User.USER) with Record8
   // -------------------------------------------------------------------------
   // Primary key information
   // -------------------------------------------------------------------------
-  override def key : Record1[Integer] = {
-    return super.key.asInstanceOf[ Record1[Integer] ]
+  override def key : Record1[Long] = {
+    return super.key.asInstanceOf[ Record1[Long] ]
   }
 
   // -------------------------------------------------------------------------
   // Record8 type implementation
   // -------------------------------------------------------------------------
 
-  override def fieldsRow : Row8[Integer, String, String, String, String, Integer, String, String] = {
-    super.fieldsRow.asInstanceOf[ Row8[Integer, String, String, String, String, Integer, String, String] ]
+  override def fieldsRow : Row8[Long, String, String, String, String, Long, String, String] = {
+    super.fieldsRow.asInstanceOf[ Row8[Long, String, String, String, String, Long, String, String] ]
   }
 
-  override def valuesRow : Row8[Integer, String, String, String, String, Integer, String, String] = {
-    super.valuesRow.asInstanceOf[ Row8[Integer, String, String, String, String, Integer, String, String] ]
+  override def valuesRow : Row8[Long, String, String, String, String, Long, String, String] = {
+    super.valuesRow.asInstanceOf[ Row8[Long, String, String, String, String, Long, String, String] ]
   }
-  override def field1 : Field[Integer] = User.USER.ID
+  override def field1 : Field[Long] = User.USER.ID
   override def field2 : Field[String] = User.USER.FIRSTNAME
   override def field3 : Field[String] = User.USER.LASTNAME
   override def field4 : Field[String] = User.USER.EMAIL
   override def field5 : Field[String] = User.USER.USERNAME
-  override def field6 : Field[Integer] = User.USER.AVATARVERSION
+  override def field6 : Field[Long] = User.USER.AVATARVERSION
   override def field7 : Field[String] = User.USER.PASSWORD
   override def field8 : Field[String] = User.USER.CANTON
-  override def component1 : Integer = getId
+  override def component1 : Long = getId
   override def component2 : String = getFirstname
   override def component3 : String = getLastname
   override def component4 : String = getEmail
   override def component5 : String = getUsername
-  override def component6 : Integer = getAvatarversion
+  override def component6 : Long = getAvatarversion
   override def component7 : String = getPassword
   override def component8 : String = getCanton
-  override def value1 : Integer = getId
+  override def value1 : Long = getId
   override def value2 : String = getFirstname
   override def value3 : String = getLastname
   override def value4 : String = getEmail
   override def value5 : String = getUsername
-  override def value6 : Integer = getAvatarversion
+  override def value6 : Long = getAvatarversion
   override def value7 : String = getPassword
   override def value8 : String = getCanton
 
-  override def value1(value : Integer) : UserRecord = {
+  override def value1(value : Long) : UserRecord = {
     setId(value)
     this
   }
@@ -158,7 +158,7 @@ class UserRecord extends UpdatableRecordImpl[UserRecord](User.USER) with Record8
     this
   }
 
-  override def value6(value : Integer) : UserRecord = {
+  override def value6(value : Long) : UserRecord = {
     setAvatarversion(value)
     this
   }
@@ -173,7 +173,7 @@ class UserRecord extends UpdatableRecordImpl[UserRecord](User.USER) with Record8
     this
   }
 
-  override def values(value1 : Integer, value2 : String, value3 : String, value4 : String, value5 : String, value6 : Integer, value7 : String, value8 : String) : UserRecord = {
+  override def values(value1 : Long, value2 : String, value3 : String, value4 : String, value5 : String, value6 : Long, value7 : String, value8 : String) : UserRecord = {
     this.value1(value1)
     this.value2(value2)
     this.value3(value3)
@@ -185,7 +185,7 @@ class UserRecord extends UpdatableRecordImpl[UserRecord](User.USER) with Record8
     this
   }
 
-  def this(id : Integer, firstname : String, lastname : String, email : String, username : String, avatarversion : Integer, password : String, canton : String) = {
+  def this(id : Long, firstname : String, lastname : String, email : String, username : String, avatarversion : Long, password : String, canton : String) = {
     this()
 
     set(0, id)

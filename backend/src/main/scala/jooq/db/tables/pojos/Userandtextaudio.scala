@@ -5,25 +5,24 @@ package jooq.db.tables.pojos
 
 
 import java.io.Serializable
-import java.lang.Integer
 import java.lang.Long
+import java.lang.String
 import java.lang.StringBuilder
 
-import scala.Array
-import scala.Byte
 
-
-case class Avatar(
+case class Userandtextaudio(
     id : Long
-  , userid : Integer
-  , avatar : Array[Byte]
+  , userid : String
+  , textaudioid : String
+  , time : String
 ) extends Serializable {
 
-  def this (value : Avatar) = {
+  def this (value : Userandtextaudio) = {
     this(
         value.id
       , value.userid
-      , value.avatar
+      , value.textaudioid
+      , value.time
     )
   }
 
@@ -31,20 +30,25 @@ case class Avatar(
     this.id
   }
 
-  def getUserid : Integer = {
+  def getUserid : String = {
     this.userid
   }
 
-  def getAvatar : Array[Byte] = {
-    this.avatar
+  def getTextaudioid : String = {
+    this.textaudioid
+  }
+
+  def getTime : String = {
+    this.time
   }
 
   override def toString : String = {
-    val sb = new StringBuilder("Avatar (")
+    val sb = new StringBuilder("Userandtextaudio (")
 
     sb.append(id)
     sb.append(", ").append(userid)
-    sb.append(", ").append("[binary...]")
+    sb.append(", ").append(textaudioid)
+    sb.append(", ").append(time)
 
     sb.append(")")
     return sb.toString

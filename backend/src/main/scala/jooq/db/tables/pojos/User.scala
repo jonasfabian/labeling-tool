@@ -5,18 +5,18 @@ package jooq.db.tables.pojos
 
 
 import java.io.Serializable
-import java.lang.Integer
+import java.lang.Long
 import java.lang.String
 import java.lang.StringBuilder
 
 
 case class User(
-    id : Integer
+    id : Long
   , firstname : String
   , lastname : String
   , email : String
   , username : String
-  , avatarversion : Integer
+  , avatarversion : Long
   , password : String
   , canton : String
 ) extends Serializable {
@@ -34,7 +34,7 @@ case class User(
     )
   }
 
-  def getId : Integer = {
+  def getId : Long = {
     this.id
   }
 
@@ -54,7 +54,7 @@ case class User(
     this.username
   }
 
-  def getAvatarversion : Integer = {
+  def getAvatarversion : Long = {
     this.avatarversion
   }
 

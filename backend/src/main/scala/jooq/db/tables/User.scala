@@ -5,7 +5,7 @@ package jooq.db.tables
 
 
 import java.lang.Class
-import java.lang.Integer
+import java.lang.Long
 import java.lang.String
 import java.util.Arrays
 import java.util.List
@@ -59,7 +59,7 @@ extends TableImpl[UserRecord](
     classOf[UserRecord]
   }
 
-  val ID : TableField[UserRecord, Integer] = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), "")
+  val ID : TableField[UserRecord, Long] = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), "")
 
   val FIRSTNAME : TableField[UserRecord, String] = createField("firstName", org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), "")
 
@@ -69,7 +69,7 @@ extends TableImpl[UserRecord](
 
   val USERNAME : TableField[UserRecord, String] = createField("username", org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), "")
 
-  val AVATARVERSION : TableField[UserRecord, Integer] = createField("avatarVersion", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.INTEGER)), "")
+  val AVATARVERSION : TableField[UserRecord, Long] = createField("avatarVersion", org.jooq.impl.SQLDataType.BIGINT.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.BIGINT)), "")
 
   val PASSWORD : TableField[UserRecord, String] = createField("password", org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), "")
 
@@ -101,7 +101,7 @@ extends TableImpl[UserRecord](
     return Arrays.asList[ Index ](Indexes.USER_EMAIL, Indexes.USER_PRIMARY)
   }
 
-  override def getIdentity : Identity[UserRecord, Integer] = {
+  override def getIdentity : Identity[UserRecord, Long] = {
     Keys.IDENTITY_USER
   }
 

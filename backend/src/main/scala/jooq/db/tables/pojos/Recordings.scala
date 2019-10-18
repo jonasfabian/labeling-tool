@@ -6,6 +6,7 @@ package jooq.db.tables.pojos
 
 import java.io.Serializable
 import java.lang.Integer
+import java.lang.Long
 import java.lang.String
 import java.lang.StringBuilder
 
@@ -14,7 +15,7 @@ import scala.Byte
 
 
 case class Recordings(
-    id : Integer
+    id : Long
   , text : String
   , userid : Integer
   , audio : Array[Byte]
@@ -29,7 +30,7 @@ case class Recordings(
     )
   }
 
-  def getId : Integer = {
+  def getId : Long = {
     this.id
   }
 

@@ -4,7 +4,7 @@
 package jooq.db.tables.daos
 
 
-import java.lang.Integer
+import java.lang.Long
 import java.lang.String
 import java.util.List
 
@@ -15,21 +15,21 @@ import org.jooq.Configuration
 import org.jooq.impl.DAOImpl
 
 
-class UserDao(configuration : Configuration) extends DAOImpl[UserRecord, jooq.db.tables.pojos.User, Integer](User.USER, classOf[jooq.db.tables.pojos.User], configuration) {
+class UserDao(configuration : Configuration) extends DAOImpl[UserRecord, jooq.db.tables.pojos.User, Long](User.USER, classOf[jooq.db.tables.pojos.User], configuration) {
 
   def this() = {
     this(null)
   }
 
-  override protected def getId(o : jooq.db.tables.pojos.User) : Integer = {
+  override protected def getId(o : jooq.db.tables.pojos.User) : Long = {
     o.getId
   }
 
-  def fetchById(values : Integer*) : List[jooq.db.tables.pojos.User] = {
+  def fetchById(values : Long*) : List[jooq.db.tables.pojos.User] = {
     fetch(User.USER.ID, values:_*)
   }
 
-  def fetchOneById(value : Integer) : jooq.db.tables.pojos.User = {
+  def fetchOneById(value : Long) : jooq.db.tables.pojos.User = {
     fetchOne(User.USER.ID, value)
   }
 
@@ -53,7 +53,7 @@ class UserDao(configuration : Configuration) extends DAOImpl[UserRecord, jooq.db
     fetch(User.USER.USERNAME, values:_*)
   }
 
-  def fetchByAvatarversion(values : Integer*) : List[jooq.db.tables.pojos.User] = {
+  def fetchByAvatarversion(values : Long*) : List[jooq.db.tables.pojos.User] = {
     fetch(User.USER.AVATARVERSION, values:_*)
   }
 

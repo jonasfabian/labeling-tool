@@ -6,6 +6,7 @@ package jooq.db.tables
 
 import java.lang.Class
 import java.lang.Integer
+import java.lang.Long
 import java.lang.String
 import java.util.Arrays
 import java.util.List
@@ -60,7 +61,7 @@ extends TableImpl[RecordingsRecord](
     classOf[RecordingsRecord]
   }
 
-  val ID : TableField[RecordingsRecord, Integer] = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), "")
+  val ID : TableField[RecordingsRecord, Long] = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), "")
 
   val TEXT : TableField[RecordingsRecord, String] = createField("text", org.jooq.impl.SQLDataType.CLOB.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.CLOB)), "")
 
@@ -94,7 +95,7 @@ extends TableImpl[RecordingsRecord](
     return Arrays.asList[ Index ](Indexes.RECORDINGS_PRIMARY)
   }
 
-  override def getIdentity : Identity[RecordingsRecord, Integer] = {
+  override def getIdentity : Identity[RecordingsRecord, Long] = {
     Keys.IDENTITY_RECORDINGS
   }
 

@@ -5,6 +5,7 @@ package jooq.db.tables.records
 
 
 import java.lang.Integer
+import java.lang.Long
 import java.lang.String
 
 import jooq.db.tables.Recordings
@@ -19,15 +20,15 @@ import scala.Array
 import scala.Byte
 
 
-class RecordingsRecord extends UpdatableRecordImpl[RecordingsRecord](Recordings.RECORDINGS) with Record4[Integer, String, Integer, Array[Byte]] {
+class RecordingsRecord extends UpdatableRecordImpl[RecordingsRecord](Recordings.RECORDINGS) with Record4[Long, String, Integer, Array[Byte]] {
 
-  def setId(value : Integer) : Unit = {
+  def setId(value : Long) : Unit = {
     set(0, value)
   }
 
-  def getId : Integer = {
+  def getId : Long = {
     val r = get(0)
-    if (r == null) null else r.asInstanceOf[Integer]
+    if (r == null) null else r.asInstanceOf[Long]
   }
 
   def setText(value : String) : Unit = {
@@ -60,35 +61,35 @@ class RecordingsRecord extends UpdatableRecordImpl[RecordingsRecord](Recordings.
   // -------------------------------------------------------------------------
   // Primary key information
   // -------------------------------------------------------------------------
-  override def key : Record1[Integer] = {
-    return super.key.asInstanceOf[ Record1[Integer] ]
+  override def key : Record1[Long] = {
+    return super.key.asInstanceOf[ Record1[Long] ]
   }
 
   // -------------------------------------------------------------------------
   // Record4 type implementation
   // -------------------------------------------------------------------------
 
-  override def fieldsRow : Row4[Integer, String, Integer, Array[Byte]] = {
-    super.fieldsRow.asInstanceOf[ Row4[Integer, String, Integer, Array[Byte]] ]
+  override def fieldsRow : Row4[Long, String, Integer, Array[Byte]] = {
+    super.fieldsRow.asInstanceOf[ Row4[Long, String, Integer, Array[Byte]] ]
   }
 
-  override def valuesRow : Row4[Integer, String, Integer, Array[Byte]] = {
-    super.valuesRow.asInstanceOf[ Row4[Integer, String, Integer, Array[Byte]] ]
+  override def valuesRow : Row4[Long, String, Integer, Array[Byte]] = {
+    super.valuesRow.asInstanceOf[ Row4[Long, String, Integer, Array[Byte]] ]
   }
-  override def field1 : Field[Integer] = Recordings.RECORDINGS.ID
+  override def field1 : Field[Long] = Recordings.RECORDINGS.ID
   override def field2 : Field[String] = Recordings.RECORDINGS.TEXT
   override def field3 : Field[Integer] = Recordings.RECORDINGS.USERID
   override def field4 : Field[Array[Byte]] = Recordings.RECORDINGS.AUDIO
-  override def component1 : Integer = getId
+  override def component1 : Long = getId
   override def component2 : String = getText
   override def component3 : Integer = getUserid
   override def component4 : Array[Byte] = getAudio
-  override def value1 : Integer = getId
+  override def value1 : Long = getId
   override def value2 : String = getText
   override def value3 : Integer = getUserid
   override def value4 : Array[Byte] = getAudio
 
-  override def value1(value : Integer) : RecordingsRecord = {
+  override def value1(value : Long) : RecordingsRecord = {
     setId(value)
     this
   }
@@ -108,7 +109,7 @@ class RecordingsRecord extends UpdatableRecordImpl[RecordingsRecord](Recordings.
     this
   }
 
-  override def values(value1 : Integer, value2 : String, value3 : Integer, value4 : Array[Byte]) : RecordingsRecord = {
+  override def values(value1 : Long, value2 : String, value3 : Integer, value4 : Array[Byte]) : RecordingsRecord = {
     this.value1(value1)
     this.value2(value2)
     this.value3(value3)
@@ -116,7 +117,7 @@ class RecordingsRecord extends UpdatableRecordImpl[RecordingsRecord](Recordings.
     this
   }
 
-  def this(id : Integer, text : String, userid : Integer, audio : Array[Byte]) = {
+  def this(id : Long, text : String, userid : Integer, audio : Array[Byte]) = {
     this()
 
     set(0, id)

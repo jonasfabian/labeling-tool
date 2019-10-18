@@ -4,14 +4,13 @@
 package jooq.db
 
 
-import jooq.db.tables.Audio
 import jooq.db.tables.Avatar
 import jooq.db.tables.FlywaySchemaHistory
 import jooq.db.tables.Recordings
-import jooq.db.tables.Textaudioindex
-import jooq.db.tables.Transcript
+import jooq.db.tables.Speaker
+import jooq.db.tables.Textaudio
 import jooq.db.tables.User
-import jooq.db.tables.Userandtextaudioindex
+import jooq.db.tables.Userandtextaudio
 
 import org.jooq.Index
 import org.jooq.OrderField
@@ -24,35 +23,33 @@ object Indexes {
   // INDEX definitions
   // -------------------------------------------------------------------------
 
-  val AUDIO_PRIMARY = Indexes0.AUDIO_PRIMARY
   val AVATAR_PRIMARY = Indexes0.AVATAR_PRIMARY
   val AVATAR_USERID = Indexes0.AVATAR_USERID
   val FLYWAY_SCHEMA_HISTORY_FLYWAY_SCHEMA_HISTORY_S_IDX = Indexes0.FLYWAY_SCHEMA_HISTORY_FLYWAY_SCHEMA_HISTORY_S_IDX
   val FLYWAY_SCHEMA_HISTORY_PRIMARY = Indexes0.FLYWAY_SCHEMA_HISTORY_PRIMARY
   val RECORDINGS_PRIMARY = Indexes0.RECORDINGS_PRIMARY
-  val TEXTAUDIOINDEX_PRIMARY = Indexes0.TEXTAUDIOINDEX_PRIMARY
-  val TRANSCRIPT_PRIMARY = Indexes0.TRANSCRIPT_PRIMARY
+  val SPEAKER_PRIMARY = Indexes0.SPEAKER_PRIMARY
+  val TEXTAUDIO_PRIMARY = Indexes0.TEXTAUDIO_PRIMARY
   val USER_EMAIL = Indexes0.USER_EMAIL
   val USER_PRIMARY = Indexes0.USER_PRIMARY
-  val USERANDTEXTAUDIOINDEX_PRIMARY = Indexes0.USERANDTEXTAUDIOINDEX_PRIMARY
-  val USERANDTEXTAUDIOINDEX_UNI = Indexes0.USERANDTEXTAUDIOINDEX_UNI
+  val USERANDTEXTAUDIO_PRIMARY = Indexes0.USERANDTEXTAUDIO_PRIMARY
+  val USERANDTEXTAUDIO_UNI = Indexes0.USERANDTEXTAUDIO_UNI
 
   // -------------------------------------------------------------------------
   // [#1459] distribute members to avoid static initialisers > 64kb
   // -------------------------------------------------------------------------
 
   private object Indexes0 {
-    val AUDIO_PRIMARY : Index = Internal.createIndex("PRIMARY", Audio.AUDIO, Array[OrderField [_] ](Audio.AUDIO.ID), true)
     val AVATAR_PRIMARY : Index = Internal.createIndex("PRIMARY", Avatar.AVATAR, Array[OrderField [_] ](Avatar.AVATAR.ID), true)
     val AVATAR_USERID : Index = Internal.createIndex("userId", Avatar.AVATAR, Array[OrderField [_] ](Avatar.AVATAR.USERID), true)
     val FLYWAY_SCHEMA_HISTORY_FLYWAY_SCHEMA_HISTORY_S_IDX : Index = Internal.createIndex("flyway_schema_history_s_idx", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, Array[OrderField [_] ](FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.SUCCESS), false)
     val FLYWAY_SCHEMA_HISTORY_PRIMARY : Index = Internal.createIndex("PRIMARY", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, Array[OrderField [_] ](FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK), true)
     val RECORDINGS_PRIMARY : Index = Internal.createIndex("PRIMARY", Recordings.RECORDINGS, Array[OrderField [_] ](Recordings.RECORDINGS.ID), true)
-    val TEXTAUDIOINDEX_PRIMARY : Index = Internal.createIndex("PRIMARY", Textaudioindex.TEXTAUDIOINDEX, Array[OrderField [_] ](Textaudioindex.TEXTAUDIOINDEX.ID), true)
-    val TRANSCRIPT_PRIMARY : Index = Internal.createIndex("PRIMARY", Transcript.TRANSCRIPT, Array[OrderField [_] ](Transcript.TRANSCRIPT.ID), true)
+    val SPEAKER_PRIMARY : Index = Internal.createIndex("PRIMARY", Speaker.SPEAKER, Array[OrderField [_] ](Speaker.SPEAKER.ID), true)
+    val TEXTAUDIO_PRIMARY : Index = Internal.createIndex("PRIMARY", Textaudio.TEXTAUDIO, Array[OrderField [_] ](Textaudio.TEXTAUDIO.ID), true)
     val USER_EMAIL : Index = Internal.createIndex("email", User.USER, Array[OrderField [_] ](User.USER.EMAIL), true)
     val USER_PRIMARY : Index = Internal.createIndex("PRIMARY", User.USER, Array[OrderField [_] ](User.USER.ID), true)
-    val USERANDTEXTAUDIOINDEX_PRIMARY : Index = Internal.createIndex("PRIMARY", Userandtextaudioindex.USERANDTEXTAUDIOINDEX, Array[OrderField [_] ](Userandtextaudioindex.USERANDTEXTAUDIOINDEX.ID), true)
-    val USERANDTEXTAUDIOINDEX_UNI : Index = Internal.createIndex("uni", Userandtextaudioindex.USERANDTEXTAUDIOINDEX, Array[OrderField [_] ](Userandtextaudioindex.USERANDTEXTAUDIOINDEX.USERID, Userandtextaudioindex.USERANDTEXTAUDIOINDEX.TEXTAUDIOINDEXID), true)
+    val USERANDTEXTAUDIO_PRIMARY : Index = Internal.createIndex("PRIMARY", Userandtextaudio.USERANDTEXTAUDIO, Array[OrderField [_] ](Userandtextaudio.USERANDTEXTAUDIO.ID), true)
+    val USERANDTEXTAUDIO_UNI : Index = Internal.createIndex("uni", Userandtextaudio.USERANDTEXTAUDIO, Array[OrderField [_] ](Userandtextaudio.USERANDTEXTAUDIO.USERID, Userandtextaudio.USERANDTEXTAUDIO.TEXTAUDIOID), true)
   }
 }

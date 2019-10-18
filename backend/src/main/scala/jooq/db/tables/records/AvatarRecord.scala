@@ -5,6 +5,7 @@ package jooq.db.tables.records
 
 
 import java.lang.Integer
+import java.lang.Long
 
 import jooq.db.tables.Avatar
 
@@ -18,15 +19,15 @@ import scala.Array
 import scala.Byte
 
 
-class AvatarRecord extends UpdatableRecordImpl[AvatarRecord](Avatar.AVATAR) with Record3[Integer, Integer, Array[Byte]] {
+class AvatarRecord extends UpdatableRecordImpl[AvatarRecord](Avatar.AVATAR) with Record3[Long, Integer, Array[Byte]] {
 
-  def setId(value : Integer) : Unit = {
+  def setId(value : Long) : Unit = {
     set(0, value)
   }
 
-  def getId : Integer = {
+  def getId : Long = {
     val r = get(0)
-    if (r == null) null else r.asInstanceOf[Integer]
+    if (r == null) null else r.asInstanceOf[Long]
   }
 
   def setUserid(value : Integer) : Unit = {
@@ -50,32 +51,32 @@ class AvatarRecord extends UpdatableRecordImpl[AvatarRecord](Avatar.AVATAR) with
   // -------------------------------------------------------------------------
   // Primary key information
   // -------------------------------------------------------------------------
-  override def key : Record1[Integer] = {
-    return super.key.asInstanceOf[ Record1[Integer] ]
+  override def key : Record1[Long] = {
+    return super.key.asInstanceOf[ Record1[Long] ]
   }
 
   // -------------------------------------------------------------------------
   // Record3 type implementation
   // -------------------------------------------------------------------------
 
-  override def fieldsRow : Row3[Integer, Integer, Array[Byte]] = {
-    super.fieldsRow.asInstanceOf[ Row3[Integer, Integer, Array[Byte]] ]
+  override def fieldsRow : Row3[Long, Integer, Array[Byte]] = {
+    super.fieldsRow.asInstanceOf[ Row3[Long, Integer, Array[Byte]] ]
   }
 
-  override def valuesRow : Row3[Integer, Integer, Array[Byte]] = {
-    super.valuesRow.asInstanceOf[ Row3[Integer, Integer, Array[Byte]] ]
+  override def valuesRow : Row3[Long, Integer, Array[Byte]] = {
+    super.valuesRow.asInstanceOf[ Row3[Long, Integer, Array[Byte]] ]
   }
-  override def field1 : Field[Integer] = Avatar.AVATAR.ID
+  override def field1 : Field[Long] = Avatar.AVATAR.ID
   override def field2 : Field[Integer] = Avatar.AVATAR.USERID
   override def field3 : Field[Array[Byte]] = Avatar.AVATAR.AVATAR_
-  override def component1 : Integer = getId
+  override def component1 : Long = getId
   override def component2 : Integer = getUserid
   override def component3 : Array[Byte] = getAvatar
-  override def value1 : Integer = getId
+  override def value1 : Long = getId
   override def value2 : Integer = getUserid
   override def value3 : Array[Byte] = getAvatar
 
-  override def value1(value : Integer) : AvatarRecord = {
+  override def value1(value : Long) : AvatarRecord = {
     setId(value)
     this
   }
@@ -90,14 +91,14 @@ class AvatarRecord extends UpdatableRecordImpl[AvatarRecord](Avatar.AVATAR) with
     this
   }
 
-  override def values(value1 : Integer, value2 : Integer, value3 : Array[Byte]) : AvatarRecord = {
+  override def values(value1 : Long, value2 : Integer, value3 : Array[Byte]) : AvatarRecord = {
     this.value1(value1)
     this.value2(value2)
     this.value3(value3)
     this
   }
 
-  def this(id : Integer, userid : Integer, avatar : Array[Byte]) = {
+  def this(id : Long, userid : Integer, avatar : Array[Byte]) = {
     this()
 
     set(0, id)

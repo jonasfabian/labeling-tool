@@ -1,14 +1,14 @@
 import java.io.File
 import java.time.LocalDateTime
-
 import akka.http.scaladsl.marshalling.ToResponseMarshallable
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
-import models.{Audio, Avatar, ChangePassword, EmailPassword, Recording, Sums, TextAudioIndex, TextAudioIndexWithText, Transcript, User, UserAndTextAudioIndex, UserLabeledData, UserPublicInfo}
+import models.{Avatar, ChangePassword, EmailPassword, Recording, Sums, TextAudio, User, UserAndTextAudio, UserLabeledData, UserPublicInfo}
 import com.typesafe.config.Config
 import org.jooq.{DSLContext, Field}
 import org.jooq.impl.DSL
 import jooq.db.Tables._
-import jooq.db.tables.records.{AudioRecord, AvatarRecord, RecordingsRecord, TextaudioindexRecord, TranscriptRecord, UserRecord, UserandtextaudioindexRecord}
+import jooq.db.tables.pojos.Textaudio
+import jooq.db.tables.records.{AvatarRecord, RecordingsRecord, TextaudioRecord, UserRecord, UserandtextaudioRecord}
 import org.mindrot.jbcrypt.BCrypt
 
 class LabelingToolService(config: Config) {
@@ -30,22 +30,20 @@ class LabelingToolService(config: Config) {
     finally ctx.close()
   }
 
-  // get all
-  def getTextAudioIndexes: Array[TextAudioIndex] = withDslContext(dslContext => {
-    dslContext.selectFrom(TEXTAUDIOINDEX).fetchArray().map(m => TextAudioIndex(m.getId, m.getSamplingrate, m.getTextstartpos, m.getTextendpos, m.getAudiostartpos, m.getAudioendpos, m.getSpeakerkey, m.getLabeled, m.getCorrect, m.getWrong, m.getTranscriptFileId))
+  def getTextAudios: Array[TextAudio] = withDslContext(dslContext => {
+    dslContext.selectFrom(TEXTAUDIO).fetchArray().map(m => TextAudio(m.getId.toLong, m.getAudiostart, m.getAudioend, m.getText, m.getFileid, m.getSpeaker, m.getLabeled, m.getCorrect, m.getWrong))
   })
 
   def getTopFiveUsersLabeledCount: (Array[UserLabeledData]) = withDslContext(dslContext => {
-    dslContext.select(USER.ID, USER.USERNAME, DSL.count()).from(USERANDTEXTAUDIOINDEX).join(USER).on(USER.ID.eq(USERANDTEXTAUDIOINDEX.USERID)).groupBy(USER.ID)
+    dslContext.select(USER.ID, USER.USERNAME, DSL.count()).from(USERANDTEXTAUDIO).join(USER).on(USER.ID.eq(USERANDTEXTAUDIO.USERID)).groupBy(USER.ID)
       .fetchArray().map(m => UserLabeledData(m.get(USER.ID).asInstanceOf[Int], m.get(USER.USERNAME), m.get(2).asInstanceOf[Int]))
   })
 
-  // get one by id
-  def getTextAudioIndexById(id: Int): TextAudioIndex = withDslContext(dslContext => {
+  def getTextAudioIndexById(id: Int): TextAudio = withDslContext(dslContext => {
     dslContext.select()
-      .from(TEXTAUDIOINDEX)
-      .where(TEXTAUDIOINDEX.ID.eq(id))
-      .fetchOne().map(m => TextAudioIndex(m.get(TEXTAUDIOINDEX.ID).toInt, m.get(TEXTAUDIOINDEX.SAMPLINGRATE).toInt, m.get(TEXTAUDIOINDEX.TEXTSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.TEXTENDPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOSTARTPOS).toDouble, m.get(TEXTAUDIOINDEX.AUDIOENDPOS).toDouble, m.get(TEXTAUDIOINDEX.SPEAKERKEY).toInt, m.get(TEXTAUDIOINDEX.LABELED).toInt, m.get(TEXTAUDIOINDEX.CORRECT).toInt, m.get(TEXTAUDIOINDEX.WRONG).toInt, m.get(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID).toInt))
+      .from(TEXTAUDIO)
+      .where(TEXTAUDIO.ID.eq(id))
+      .fetchOne().map(m => TextAudio(m.get(TEXTAUDIO.ID).toInt, m.get(TEXTAUDIO.AUDIOSTART).toInt, m.get(TEXTAUDIO.AUDIOSTART).toInt, m.get(TEXTAUDIO.TEXT).toInt, m.get(TEXTAUDIO.FILEID).toDouble, m.get(TEXTAUDIO.SPEAKER).toDouble, m.get(TEXTAUDIO.LABELED).toInt, m.get(TEXTAUDIO.CORRECT).toInt, m.get(TEXTAUDIO.WRONG).toInt))
   })
 
   def getUserById(id: Int): UserPublicInfo = withDslContext(dslContext => {
@@ -69,46 +67,26 @@ class LabelingToolService(config: Config) {
       .fetchOne().map(m => UserPublicInfo(m.get(USER.ID).toInt, m.get(USER.FIRSTNAME), m.get(USER.LASTNAME), m.get(USER.EMAIL), m.get(USER.USERNAME), m.get(USER.AVATARVERSION).toInt, m.get(USER.CANTON)))
   })
 
-  // get all of labeled-type
-  def getTextAudioIndexesByLabeledType(labeledType: Int): Array[TextAudioIndex] = withDslContext(dslContext => {
+  def getTextAudioIndexesByLabeledType(labeledType: Int): Array[TextAudio] = withDslContext(dslContext => {
     dslContext.select()
-      .from(TEXTAUDIOINDEX)
-      .where(TEXTAUDIOINDEX.LABELED.eq(labeledType))
-      .fetchArray().map(m => TextAudioIndex(m.get(TEXTAUDIOINDEX.ID).toInt, m.get(TEXTAUDIOINDEX.SAMPLINGRATE).toInt, m.get(TEXTAUDIOINDEX.TEXTSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.TEXTENDPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOSTARTPOS).toDouble, m.get(TEXTAUDIOINDEX.AUDIOENDPOS).toDouble, m.get(TEXTAUDIOINDEX.SPEAKERKEY).toInt, m.get(TEXTAUDIOINDEX.LABELED).toInt, m.get(TEXTAUDIOINDEX.CORRECT).toInt, m.get(TEXTAUDIOINDEX.WRONG).toInt, m.get(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID).toInt))
+      .from(TEXTAUDIO)
+      .where(TEXTAUDIO.LABELED.eq(labeledType))
+      .fetchArray().map(m => TextAudio(m.get(TEXTAUDIO.ID).toInt, m.get(TEXTAUDIO.AUDIOSTART).toInt, m.get(TEXTAUDIO.AUDIOEND).toInt, m.get(TEXTAUDIO.TEXT).toDouble, m.get(TEXTAUDIO.FILEID).toDouble, m.get(TEXTAUDIO.SPEAKER).toInt, m.get(TEXTAUDIO.LABELED).toInt, m.get(TEXTAUDIO.CORRECT).toInt, m.get(TEXTAUDIO.WRONG).toInt))
   })
 
-  // get sums of labeled
   def getLabeledSums: Array[Sums] = withDslContext(dslContext => {
-    val correct: Field[Integer] = dslContext.selectCount().from(TEXTAUDIOINDEX).where(TEXTAUDIOINDEX.CORRECT.ne(0)).asField("correct")
-    val wrong: Field[Integer] = dslContext.selectCount().from(TEXTAUDIOINDEX).where(TEXTAUDIOINDEX.WRONG.ne(0)).asField("wrong")
-    val totalTextAudioIndexes: Field[Integer] = dslContext.selectCount().from(TEXTAUDIOINDEX).asField("totalTextAudioIndexes")
+    val correct: Field[Integer] = dslContext.selectCount().from(TEXTAUDIO).where(TEXTAUDIO.CORRECT.ne(0)).asField("correct")
+    val wrong: Field[Integer] = dslContext.selectCount().from(TEXTAUDIO).where(TEXTAUDIO.WRONG.ne(0)).asField("wrong")
+    val totalTextAudioIndexes: Field[Integer] = dslContext.selectCount().from(TEXTAUDIO).asField("totalTextAudioIndexes")
     dslContext.select(
       correct, wrong, totalTextAudioIndexes
-    ).from(TEXTAUDIOINDEX).limit(1).fetchArray().map(m => Sums(m.get(correct).asInstanceOf[Int], m.get(wrong).asInstanceOf[Int], m.get(totalTextAudioIndexes).asInstanceOf[Int]))
-  })
-
-  def getTranscript(id: Int): Transcript = withDslContext(dslContext => {
-    dslContext.select()
-      .from(TRANSCRIPT)
-      .where(TRANSCRIPT.FILEID.eq(id))
-      .fetchOne().map(m => Transcript(m.get(TRANSCRIPT.ID).toInt, m.get(TRANSCRIPT.TEXT).toString, m.get(TRANSCRIPT.FILEID).toInt))
-  })
-
-  def getAudio(id: Int): Audio = withDslContext(dslContext => {
-    dslContext.select()
-      .from(AUDIO)
-      .where(AUDIO.FILEID.eq(id))
-      .fetchOne().map(m => Audio(m.get(AUDIO.ID).toInt, m.get(AUDIO.PATH).toString, m.get(AUDIO.FILEID).toInt))
+    ).from(TEXTAUDIO).limit(1).fetchArray().map(m => Sums(m.get(correct).asInstanceOf[Int], m.get(wrong).asInstanceOf[Int], m.get(totalTextAudioIndexes).asInstanceOf[Int]))
   })
 
   def getAudioFile(fileId: Int): ToResponseMarshallable = {
-    val path = "C:\\Users\\Jonas\\Documents\\DeutschAndreaErzaehlt\\"
-    HttpEntity.fromFile(ContentTypes.`application/octet-stream`, new File(path + fileId + "/audio.mp3"))
+    val path = "C:\\Users\\Jonas\\Documents\\Data\\"
+    HttpEntity.fromFile(ContentTypes.`application/octet-stream`, new File(path + fileId + "/audio.wav"))
   }
-
-  def getTranscripts: Array[Transcript] = withDslContext(dslContext => {
-    dslContext.selectFrom(TRANSCRIPT).fetchArray().map(m => Transcript(m.getId, m.getText, m.getFileid))
-  })
 
   def getAvatar(userId: Integer): Avatar = withDslContext(dslContext => {
     dslContext.select()
@@ -117,63 +95,56 @@ class LabelingToolService(config: Config) {
       .fetchOne().map(m => Avatar(m.get(AVATAR.ID).toInt, m.get(AVATAR.USERID).toInt, m.get(AVATAR.AVATAR_)))
   })
 
-  def getNonLabeledDataIndexes(labeledType: Integer): TextAudioIndexWithText = withDslContext(dslContext => {
+  def getNonLabeledDataIndexes(labeledType: Integer): TextAudio = withDslContext(dslContext => {
     dslContext.select(
-      TEXTAUDIOINDEX.ID, TEXTAUDIOINDEX.SAMPLINGRATE, TEXTAUDIOINDEX.TEXTSTARTPOS, TEXTAUDIOINDEX.TEXTENDPOS, TEXTAUDIOINDEX.AUDIOSTARTPOS, TEXTAUDIOINDEX.AUDIOENDPOS,
-      TEXTAUDIOINDEX.SPEAKERKEY, TEXTAUDIOINDEX.LABELED, TEXTAUDIOINDEX.CORRECT, TEXTAUDIOINDEX.WRONG, TRANSCRIPT.FILEID.as("transcript_file_id"), TRANSCRIPT.TEXT
-    ).from(TEXTAUDIOINDEX)
-      .join(TRANSCRIPT)
-      .on(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID.eq(TRANSCRIPT.FILEID))
-      .where(TEXTAUDIOINDEX.LABELED.eq(labeledType))
-      .orderBy(TEXTAUDIOINDEX.ID.asc())
+      TEXTAUDIO.ID, TEXTAUDIO.AUDIOSTART, TEXTAUDIO.AUDIOEND, TEXTAUDIO.TEXT, TEXTAUDIO.FILEID, TEXTAUDIO.SPEAKER,
+      TEXTAUDIO.LABELED, TEXTAUDIO.CORRECT, TEXTAUDIO.WRONG
+    ).from(TEXTAUDIO)
+      .where(TEXTAUDIO.LABELED.eq(labeledType))
+      .orderBy(TEXTAUDIO.ID.asc())
       .limit(1)
-      .fetchOne().map(m => TextAudioIndexWithText(m.get(TEXTAUDIOINDEX.ID).toInt, m.get(TEXTAUDIOINDEX.SAMPLINGRATE).toInt, m.get(TEXTAUDIOINDEX.TEXTSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.TEXTENDPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOSTARTPOS).toDouble, m.get(TEXTAUDIOINDEX.AUDIOENDPOS).toDouble, m.get(TEXTAUDIOINDEX.SPEAKERKEY).toInt, m.get(TEXTAUDIOINDEX.LABELED).toInt, m.get(TEXTAUDIOINDEX.CORRECT).toInt, m.get(TEXTAUDIOINDEX.WRONG).toInt, m.get(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID).toInt, m.get(TRANSCRIPT.TEXT).toString))
+      .fetchOne().map(m => TextAudio(m.get(TEXTAUDIO.ID).toInt, m.get(TEXTAUDIO.AUDIOSTART).toInt, m.get(TEXTAUDIO.AUDIOEND).toInt, m.get(TEXTAUDIO.TEXT), m.get(TEXTAUDIO.FILEID).toInt, m.get(TEXTAUDIO.SPEAKER), m.get(TEXTAUDIO.LABELED).toInt, m.get(TEXTAUDIO.CORRECT).toInt, m.get(TEXTAUDIO.WRONG).toInt))
   })
 
-  def getTenNonLabeledDataIndexes(): Array[TextAudioIndexWithText] = withDslContext(dslContext => {
+  def getTenNonLabeledDataIndexes(): TextAudio = withDslContext(dslContext => {
     dslContext.select(
-      TEXTAUDIOINDEX.ID, TEXTAUDIOINDEX.SAMPLINGRATE, TEXTAUDIOINDEX.TEXTSTARTPOS, TEXTAUDIOINDEX.TEXTENDPOS, TEXTAUDIOINDEX.AUDIOSTARTPOS, TEXTAUDIOINDEX.AUDIOENDPOS,
-      TEXTAUDIOINDEX.SPEAKERKEY, TEXTAUDIOINDEX.LABELED, TEXTAUDIOINDEX.CORRECT, TEXTAUDIOINDEX.WRONG, TRANSCRIPT.FILEID.as("transcript_file_id"), TRANSCRIPT.TEXT
-    ).from(TEXTAUDIOINDEX)
-      .join(TRANSCRIPT)
-      .on(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID.eq(TRANSCRIPT.FILEID))
-      .orderBy(TEXTAUDIOINDEX.ID.asc())
+      TEXTAUDIO.ID, TEXTAUDIO.AUDIOSTART, TEXTAUDIO.AUDIOEND, TEXTAUDIO.TEXT, TEXTAUDIO.FILEID, TEXTAUDIO.SPEAKER,
+      TEXTAUDIO.LABELED, TEXTAUDIO.CORRECT, TEXTAUDIO.WRONG
+    ).from(TEXTAUDIO)
+      .where(TEXTAUDIO.LABELED.eq(0))
+      .orderBy(TEXTAUDIO.ID.asc())
       .limit(10)
-      .fetchArray().map(m => TextAudioIndexWithText(m.get(TEXTAUDIOINDEX.ID).toInt, m.get(TEXTAUDIOINDEX.SAMPLINGRATE).toInt, m.get(TEXTAUDIOINDEX.TEXTSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.TEXTENDPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOSTARTPOS).toDouble, m.get(TEXTAUDIOINDEX.AUDIOENDPOS).toDouble, m.get(TEXTAUDIOINDEX.SPEAKERKEY).toInt, m.get(TEXTAUDIOINDEX.LABELED).toInt, m.get(TEXTAUDIOINDEX.CORRECT).toInt, m.get(TEXTAUDIOINDEX.WRONG).toInt, m.get(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID).toInt, m.get(TRANSCRIPT.TEXT)))
+      .fetchOne().map(m => TextAudio(m.get(TEXTAUDIO.ID).toInt, m.get(TEXTAUDIO.AUDIOSTART).toInt, m.get(TEXTAUDIO.AUDIOEND).toInt, m.get(TEXTAUDIO.TEXT), m.get(TEXTAUDIO.FILEID).toInt, m.get(TEXTAUDIO.SPEAKER), m.get(TEXTAUDIO.LABELED).toInt, m.get(TEXTAUDIO.CORRECT).toInt, m.get(TEXTAUDIO.WRONG).toInt))
   })
 
-  def getTenNonLabeledDataIndexesByUser(userId: Integer): Array[TextAudioIndexWithText] = withDslContext(dslContext => {
+  def getTenNonLabeledTextAudiosByUser(userId: Integer): Array[TextAudio] = withDslContext(dslContext => {
     val selectAllByUser = dslContext.select(
-      TEXTAUDIOINDEX.ID
-    ).from(TEXTAUDIOINDEX)
-      .join(USERANDTEXTAUDIOINDEX)
-      .on(USERANDTEXTAUDIOINDEX.TEXTAUDIOINDEXID.eq(TEXTAUDIOINDEX.ID))
-      .and(USERANDTEXTAUDIOINDEX.USERID.eq(userId))
+      TEXTAUDIO.ID
+    ).from(TEXTAUDIO)
+      .join(USERANDTEXTAUDIO)
+      .on(USERANDTEXTAUDIO.TEXTAUDIOID.eq(TEXTAUDIO.ID))
+      .and(USERANDTEXTAUDIO.USERID.eq(userId))
 
     dslContext.select(
-      TEXTAUDIOINDEX.ID, TEXTAUDIOINDEX.SAMPLINGRATE, TEXTAUDIOINDEX.TEXTSTARTPOS, TEXTAUDIOINDEX.TEXTENDPOS, TEXTAUDIOINDEX.AUDIOSTARTPOS, TEXTAUDIOINDEX.AUDIOENDPOS,
-      TEXTAUDIOINDEX.SPEAKERKEY, TEXTAUDIOINDEX.LABELED, TEXTAUDIOINDEX.CORRECT, TEXTAUDIOINDEX.WRONG, TRANSCRIPT.FILEID.as("transcript_file_id"), TRANSCRIPT.TEXT
-    ).from(TEXTAUDIOINDEX)
-      .join(TRANSCRIPT)
-      .on(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID.eq(TRANSCRIPT.FILEID))
-      .where(TEXTAUDIOINDEX.ID.notIn(selectAllByUser))
+      TEXTAUDIO.ID, TEXTAUDIO.AUDIOSTART, TEXTAUDIO.AUDIOEND, TEXTAUDIO.TEXT, TEXTAUDIO.FILEID, TEXTAUDIO.SPEAKER,
+      TEXTAUDIO.LABELED, TEXTAUDIO.CORRECT, TEXTAUDIO.WRONG
+    ).from(TEXTAUDIO)
+      .where(TEXTAUDIO.ID.notIn(selectAllByUser))
       .limit(10)
-      .fetchArray().map(m => TextAudioIndexWithText(m.get(TEXTAUDIOINDEX.ID).toInt, m.get(TEXTAUDIOINDEX.SAMPLINGRATE).toInt, m.get(TEXTAUDIOINDEX.TEXTSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.TEXTENDPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOSTARTPOS).toDouble, m.get(TEXTAUDIOINDEX.AUDIOENDPOS).toDouble, m.get(TEXTAUDIOINDEX.SPEAKERKEY).toInt, m.get(TEXTAUDIOINDEX.LABELED).toInt, m.get(TEXTAUDIOINDEX.CORRECT).toInt, m.get(TEXTAUDIOINDEX.WRONG).toInt, m.get(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID).toInt, m.get(TRANSCRIPT.TEXT)))
+      .fetchArray().map(m => TextAudio(m.get(TEXTAUDIO.ID).toInt, m.get(TEXTAUDIO.AUDIOSTART).toInt, m.get(TEXTAUDIO.AUDIOEND).toInt, m.get(TEXTAUDIO.TEXT), m.get(TEXTAUDIO.FILEID).toInt, m.get(TEXTAUDIO.SPEAKER), m.get(TEXTAUDIO.LABELED).toInt, m.get(TEXTAUDIO.CORRECT).toInt, m.get(TEXTAUDIO.WRONG).toInt))
   })
 
-  def updateTextAudioIndex(textAudioIndex: TextAudioIndex): Unit = withDslContext(dslContext => {
-    dslContext.update(TEXTAUDIOINDEX)
-      .set(TEXTAUDIOINDEX.SAMPLINGRATE, Integer.valueOf(textAudioIndex.samplingRate))
-      .set(TEXTAUDIOINDEX.TEXTSTARTPOS, Integer.valueOf(textAudioIndex.textStartPos))
-      .set(TEXTAUDIOINDEX.TEXTENDPOS, Integer.valueOf(textAudioIndex.textEndPos))
-      .set(TEXTAUDIOINDEX.AUDIOSTARTPOS, java.lang.Double.valueOf(textAudioIndex.audioStartPos))
-      .set(TEXTAUDIOINDEX.AUDIOENDPOS, java.lang.Double.valueOf(textAudioIndex.audioEndPos))
-      .set(TEXTAUDIOINDEX.SPEAKERKEY, Integer.valueOf(textAudioIndex.speakerKey))
-      .set(TEXTAUDIOINDEX.LABELED, Integer.valueOf(textAudioIndex.labeled))
-      .set(TEXTAUDIOINDEX.CORRECT, Integer.valueOf(textAudioIndex.correct))
-      .set(TEXTAUDIOINDEX.WRONG, Integer.valueOf(textAudioIndex.wrong))
-      .set(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID, Integer.valueOf(textAudioIndex.transcriptFileId))
-      .where(TEXTAUDIOINDEX.ID.eq(textAudioIndex.id))
+  def updateTextAudioIndex(textAudio: TextAudio): Unit = withDslContext(dslContext => {
+    dslContext.update(TEXTAUDIO)
+      .set(TEXTAUDIO.AUDIOSTART, textAudio.audioStart)
+      .set(TEXTAUDIO.AUDIOEND, textAudio.audioEnd)
+      .set(TEXTAUDIO.TEXT, textAudio.text)
+      .set(TEXTAUDIO.FILEID, textAudio.fileId)
+      .set(TEXTAUDIO.SPEAKER, textAudio.speaker)
+      .set(TEXTAUDIO.LABELED, textAudio.labeled)
+      .set(TEXTAUDIO.CORRECT, textAudio.correct)
+      .set(TEXTAUDIO.WRONG, textAudio.wrong)
+      .where(TEXTAUDIO.ID.eq(textAudio.id))
       .execute()
     ()
   })
@@ -197,7 +168,7 @@ class LabelingToolService(config: Config) {
       .set(USER.LASTNAME, user.lastName)
       .set(USER.EMAIL, user.email)
       .set(USER.USERNAME, user.username)
-      .set(USER.AVATARVERSION, Integer.valueOf(user.avatarVersion))
+      .set(USER.AVATARVERSION, long2Long(user.avatarVersion.toLong))
       .set(USER.CANTON, user.canton)
       .where(USER.ID.eq(user.id))
       .execute()
@@ -229,9 +200,9 @@ class LabelingToolService(config: Config) {
     }
   })
 
-  def createUserAndTextAudioIndex(userAndTextAudioIndex: UserAndTextAudioIndex): Unit = withDslContext(dslContext => {
+  def createUserAndTextAudioIndex(userAndTextAudio: UserAndTextAudio): Unit = withDslContext(dslContext => {
     println(LocalDateTime.now())
-    val rec = userAndTextAudioIndexToRecord(new UserAndTextAudioIndex(userAndTextAudioIndex.id, userAndTextAudioIndex.userId, userAndTextAudioIndex.textAudioIndexId, Some(LocalDateTime.now())))
+    val rec = userAndTextAudioToRecord(new UserAndTextAudio(userAndTextAudio.id, userAndTextAudio.userId, userAndTextAudio.textAudioId, Some(LocalDateTime.now())))
     dslContext.executeInsert(rec)
     ()
   })
@@ -244,44 +215,30 @@ class LabelingToolService(config: Config) {
     test.filter(test => BCrypt.checkpw(emailPassword.password, test)).isPresent()
   })
 
-  def getCheckedTextAudioIndexesByUser(userId: Int): Array[TextAudioIndex] = withDslContext(dslContext => {
+  def getCheckedTextAudioIndexesByUser(userId: Int): Array[TextAudio] = withDslContext(dslContext => {
     dslContext.select(
-      TEXTAUDIOINDEX.ID,
-      TEXTAUDIOINDEX.SAMPLINGRATE,
-      TEXTAUDIOINDEX.TEXTSTARTPOS,
-      TEXTAUDIOINDEX.TEXTENDPOS,
-      TEXTAUDIOINDEX.AUDIOSTARTPOS,
-      TEXTAUDIOINDEX.AUDIOENDPOS,
-      TEXTAUDIOINDEX.SPEAKERKEY,
-      TEXTAUDIOINDEX.LABELED,
-      TEXTAUDIOINDEX.CORRECT,
-      TEXTAUDIOINDEX.WRONG,
-      TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID
-    ).from(TEXTAUDIOINDEX)
-      .join(USERANDTEXTAUDIOINDEX)
-      .on(TEXTAUDIOINDEX.ID.eq(USERANDTEXTAUDIOINDEX.TEXTAUDIOINDEXID))
-      .and(USERANDTEXTAUDIOINDEX.USERID.eq(userId))
-      .fetchArray().map(m => TextAudioIndex(m.get(TEXTAUDIOINDEX.ID).toInt, m.get(TEXTAUDIOINDEX.SAMPLINGRATE).toInt, m.get(TEXTAUDIOINDEX.TEXTSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.TEXTENDPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOSTARTPOS).toInt, m.get(TEXTAUDIOINDEX.AUDIOENDPOS).toInt, m.get(TEXTAUDIOINDEX.SPEAKERKEY).toInt, m.get(TEXTAUDIOINDEX.LABELED).toInt, m.get(TEXTAUDIOINDEX.CORRECT).toInt, m.get(TEXTAUDIOINDEX.WRONG).toInt, m.get(TEXTAUDIOINDEX.TRANSCRIPT_FILE_ID).toInt))
+      TEXTAUDIO.ID,
+      TEXTAUDIO.AUDIOSTART,
+      TEXTAUDIO.AUDIOEND,
+      TEXTAUDIO.TEXT,
+      TEXTAUDIO.FILEID,
+      TEXTAUDIO.SPEAKER,
+      TEXTAUDIO.LABELED,
+      TEXTAUDIO.CORRECT,
+      TEXTAUDIO.WRONG
+    ).from(TEXTAUDIO)
+      .join(USERANDTEXTAUDIO)
+      .on(TEXTAUDIO.ID.eq(USERANDTEXTAUDIO.TEXTAUDIOID))
+      .and(USERANDTEXTAUDIO.USERID.eq(userId))
+      .fetchArray().map(m => TextAudio(m.get(TEXTAUDIO.ID).toInt, m.get(TEXTAUDIO.AUDIOSTART).toInt, m.get(TEXTAUDIO.AUDIOEND).toInt, m.get(TEXTAUDIO.TEXT), m.get(TEXTAUDIO.FILEID).toInt, m.get(TEXTAUDIO.SPEAKER), m.get(TEXTAUDIO.LABELED).toInt, m.get(TEXTAUDIO.CORRECT).toInt, m.get(TEXTAUDIO.WRONG).toInt))
   })
 
-  def transcriptToRecord(t: Transcript): TranscriptRecord = {
-    val rec = new TranscriptRecord()
-    rec.setText(t.text)
-    rec.setFileid(t.fileId)
-    rec
-  }
 
-  def userAndTextAudioIndexToRecord(t: UserAndTextAudioIndex): UserandtextaudioindexRecord = {
-    val rec = new UserandtextaudioindexRecord()
-    rec.setUserid(t.userId)
-    rec.setTextaudioindexid(t.textAudioIndexId)
-    rec
-  }
-
-  def audioToRecord(t: Audio): AudioRecord = {
-    val rec = new AudioRecord()
-    rec.setPath(t.path)
-    rec.setFileid(t.fileId)
+  def userAndTextAudioToRecord(t: UserAndTextAudio): UserandtextaudioRecord = {
+    val rec = new UserandtextaudioRecord()
+    rec.setUserid(int2Integer(t.userId).toString)
+    rec.setTextaudioid(int2Integer(t.textAudioId).toString)
+    rec.setTime(t.time.getOrElse(LocalDateTime.now()).toString)
     rec
   }
 
@@ -306,22 +263,22 @@ class LabelingToolService(config: Config) {
     rec.setLastname(u.lastName)
     rec.setEmail(u.email)
     rec.setUsername(u.username)
-    rec.setAvatarversion(u.avatarVersion)
+    rec.setAvatarversion(u.avatarVersion.toLong)
     rec.setPassword(u.password)
     rec.setCanton(u.canton)
     rec
   }
 
-  def textAudioIndexToRecord(m: TextAudioIndex): TextaudioindexRecord = {
-    val rec = new TextaudioindexRecord()
-    rec.setSamplingrate(m.samplingRate)
-    rec.setTextstartpos(m.textStartPos)
-    rec.setTextendpos(m.textEndPos)
-    rec.setAudiostartpos(m.audioStartPos)
-    rec.setAudioendpos(m.audioEndPos)
-    rec.setSpeakerkey(m.speakerKey)
-    rec.setLabeled(m.labeled)
-    rec.setTranscriptFileId(m.transcriptFileId)
+  def textAudioToRecord(m: TextAudio): TextaudioRecord = {
+    val rec = new TextaudioRecord()
+    rec.setAudiostart(m.audioStart.toDouble)
+    rec.setAudioend(m.audioEnd.toDouble)
+    rec.setText(m.text)
+    rec.setFileid(m.fileId.toLong)
+    rec.setSpeaker(m.speaker)
+    rec.setLabeled(m.labeled.toLong)
+    rec.setCorrect(m.correct.toLong)
+    rec.setWrong(m.wrong.toLong)
     rec
   }
 }

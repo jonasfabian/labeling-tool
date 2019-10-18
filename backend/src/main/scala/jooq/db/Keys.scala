@@ -4,24 +4,22 @@
 package jooq.db
 
 
-import java.lang.Integer
+import java.lang.Long
 
-import jooq.db.tables.Audio
 import jooq.db.tables.Avatar
 import jooq.db.tables.FlywaySchemaHistory
 import jooq.db.tables.Recordings
-import jooq.db.tables.Textaudioindex
-import jooq.db.tables.Transcript
+import jooq.db.tables.Speaker
+import jooq.db.tables.Textaudio
 import jooq.db.tables.User
-import jooq.db.tables.Userandtextaudioindex
-import jooq.db.tables.records.AudioRecord
+import jooq.db.tables.Userandtextaudio
 import jooq.db.tables.records.AvatarRecord
 import jooq.db.tables.records.FlywaySchemaHistoryRecord
 import jooq.db.tables.records.RecordingsRecord
-import jooq.db.tables.records.TextaudioindexRecord
-import jooq.db.tables.records.TranscriptRecord
+import jooq.db.tables.records.SpeakerRecord
+import jooq.db.tables.records.TextaudioRecord
 import jooq.db.tables.records.UserRecord
-import jooq.db.tables.records.UserandtextaudioindexRecord
+import jooq.db.tables.records.UserandtextaudioRecord
 
 import org.jooq.Identity
 import org.jooq.UniqueKey
@@ -34,29 +32,27 @@ object Keys {
   // IDENTITY definitions
   // -------------------------------------------------------------------------
 
-  val IDENTITY_AUDIO = Identities0.IDENTITY_AUDIO
   val IDENTITY_AVATAR = Identities0.IDENTITY_AVATAR
   val IDENTITY_RECORDINGS = Identities0.IDENTITY_RECORDINGS
-  val IDENTITY_TEXTAUDIOINDEX = Identities0.IDENTITY_TEXTAUDIOINDEX
-  val IDENTITY_TRANSCRIPT = Identities0.IDENTITY_TRANSCRIPT
+  val IDENTITY_SPEAKER = Identities0.IDENTITY_SPEAKER
+  val IDENTITY_TEXTAUDIO = Identities0.IDENTITY_TEXTAUDIO
   val IDENTITY_USER = Identities0.IDENTITY_USER
-  val IDENTITY_USERANDTEXTAUDIOINDEX = Identities0.IDENTITY_USERANDTEXTAUDIOINDEX
+  val IDENTITY_USERANDTEXTAUDIO = Identities0.IDENTITY_USERANDTEXTAUDIO
 
   // -------------------------------------------------------------------------
   // UNIQUE and PRIMARY KEY definitions
   // -------------------------------------------------------------------------
 
-  val KEY_AUDIO_PRIMARY = UniqueKeys0.KEY_AUDIO_PRIMARY
   val KEY_AVATAR_PRIMARY = UniqueKeys0.KEY_AVATAR_PRIMARY
   val KEY_AVATAR_USERID = UniqueKeys0.KEY_AVATAR_USERID
   val KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY = UniqueKeys0.KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY
   val KEY_RECORDINGS_PRIMARY = UniqueKeys0.KEY_RECORDINGS_PRIMARY
-  val KEY_TEXTAUDIOINDEX_PRIMARY = UniqueKeys0.KEY_TEXTAUDIOINDEX_PRIMARY
-  val KEY_TRANSCRIPT_PRIMARY = UniqueKeys0.KEY_TRANSCRIPT_PRIMARY
+  val KEY_SPEAKER_PRIMARY = UniqueKeys0.KEY_SPEAKER_PRIMARY
+  val KEY_TEXTAUDIO_PRIMARY = UniqueKeys0.KEY_TEXTAUDIO_PRIMARY
   val KEY_USER_PRIMARY = UniqueKeys0.KEY_USER_PRIMARY
   val KEY_USER_EMAIL = UniqueKeys0.KEY_USER_EMAIL
-  val KEY_USERANDTEXTAUDIOINDEX_PRIMARY = UniqueKeys0.KEY_USERANDTEXTAUDIOINDEX_PRIMARY
-  val KEY_USERANDTEXTAUDIOINDEX_UNI = UniqueKeys0.KEY_USERANDTEXTAUDIOINDEX_UNI
+  val KEY_USERANDTEXTAUDIO_PRIMARY = UniqueKeys0.KEY_USERANDTEXTAUDIO_PRIMARY
+  val KEY_USERANDTEXTAUDIO_UNI = UniqueKeys0.KEY_USERANDTEXTAUDIO_UNI
 
   // -------------------------------------------------------------------------
   // FOREIGN KEY definitions
@@ -68,26 +64,24 @@ object Keys {
   // -------------------------------------------------------------------------
 
   private object Identities0 {
-    val IDENTITY_AUDIO : Identity[AudioRecord, Integer] = Internal.createIdentity(Audio.AUDIO, Audio.AUDIO.ID)
-    val IDENTITY_AVATAR : Identity[AvatarRecord, Integer] = Internal.createIdentity(Avatar.AVATAR, Avatar.AVATAR.ID)
-    val IDENTITY_RECORDINGS : Identity[RecordingsRecord, Integer] = Internal.createIdentity(Recordings.RECORDINGS, Recordings.RECORDINGS.ID)
-    val IDENTITY_TEXTAUDIOINDEX : Identity[TextaudioindexRecord, Integer] = Internal.createIdentity(Textaudioindex.TEXTAUDIOINDEX, Textaudioindex.TEXTAUDIOINDEX.ID)
-    val IDENTITY_TRANSCRIPT : Identity[TranscriptRecord, Integer] = Internal.createIdentity(Transcript.TRANSCRIPT, Transcript.TRANSCRIPT.ID)
-    val IDENTITY_USER : Identity[UserRecord, Integer] = Internal.createIdentity(User.USER, User.USER.ID)
-    val IDENTITY_USERANDTEXTAUDIOINDEX : Identity[UserandtextaudioindexRecord, Integer] = Internal.createIdentity(Userandtextaudioindex.USERANDTEXTAUDIOINDEX, Userandtextaudioindex.USERANDTEXTAUDIOINDEX.ID)
+    val IDENTITY_AVATAR : Identity[AvatarRecord, Long] = Internal.createIdentity(Avatar.AVATAR, Avatar.AVATAR.ID)
+    val IDENTITY_RECORDINGS : Identity[RecordingsRecord, Long] = Internal.createIdentity(Recordings.RECORDINGS, Recordings.RECORDINGS.ID)
+    val IDENTITY_SPEAKER : Identity[SpeakerRecord, Long] = Internal.createIdentity(Speaker.SPEAKER, Speaker.SPEAKER.ID)
+    val IDENTITY_TEXTAUDIO : Identity[TextaudioRecord, Long] = Internal.createIdentity(Textaudio.TEXTAUDIO, Textaudio.TEXTAUDIO.ID)
+    val IDENTITY_USER : Identity[UserRecord, Long] = Internal.createIdentity(User.USER, User.USER.ID)
+    val IDENTITY_USERANDTEXTAUDIO : Identity[UserandtextaudioRecord, Long] = Internal.createIdentity(Userandtextaudio.USERANDTEXTAUDIO, Userandtextaudio.USERANDTEXTAUDIO.ID)
   }
 
   private object UniqueKeys0 {
-    val KEY_AUDIO_PRIMARY : UniqueKey[AudioRecord] = Internal.createUniqueKey(Audio.AUDIO, "KEY_audio_PRIMARY", Audio.AUDIO.ID)
     val KEY_AVATAR_PRIMARY : UniqueKey[AvatarRecord] = Internal.createUniqueKey(Avatar.AVATAR, "KEY_avatar_PRIMARY", Avatar.AVATAR.ID)
     val KEY_AVATAR_USERID : UniqueKey[AvatarRecord] = Internal.createUniqueKey(Avatar.AVATAR, "KEY_avatar_userId", Avatar.AVATAR.USERID)
     val KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY : UniqueKey[FlywaySchemaHistoryRecord] = Internal.createUniqueKey(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, "KEY_flyway_schema_history_PRIMARY", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK)
     val KEY_RECORDINGS_PRIMARY : UniqueKey[RecordingsRecord] = Internal.createUniqueKey(Recordings.RECORDINGS, "KEY_recordings_PRIMARY", Recordings.RECORDINGS.ID)
-    val KEY_TEXTAUDIOINDEX_PRIMARY : UniqueKey[TextaudioindexRecord] = Internal.createUniqueKey(Textaudioindex.TEXTAUDIOINDEX, "KEY_textaudioindex_PRIMARY", Textaudioindex.TEXTAUDIOINDEX.ID)
-    val KEY_TRANSCRIPT_PRIMARY : UniqueKey[TranscriptRecord] = Internal.createUniqueKey(Transcript.TRANSCRIPT, "KEY_transcript_PRIMARY", Transcript.TRANSCRIPT.ID)
+    val KEY_SPEAKER_PRIMARY : UniqueKey[SpeakerRecord] = Internal.createUniqueKey(Speaker.SPEAKER, "KEY_speaker_PRIMARY", Speaker.SPEAKER.ID)
+    val KEY_TEXTAUDIO_PRIMARY : UniqueKey[TextaudioRecord] = Internal.createUniqueKey(Textaudio.TEXTAUDIO, "KEY_textaudio_PRIMARY", Textaudio.TEXTAUDIO.ID)
     val KEY_USER_PRIMARY : UniqueKey[UserRecord] = Internal.createUniqueKey(User.USER, "KEY_user_PRIMARY", User.USER.ID)
     val KEY_USER_EMAIL : UniqueKey[UserRecord] = Internal.createUniqueKey(User.USER, "KEY_user_email", User.USER.EMAIL)
-    val KEY_USERANDTEXTAUDIOINDEX_PRIMARY : UniqueKey[UserandtextaudioindexRecord] = Internal.createUniqueKey(Userandtextaudioindex.USERANDTEXTAUDIOINDEX, "KEY_userandtextaudioindex_PRIMARY", Userandtextaudioindex.USERANDTEXTAUDIOINDEX.ID)
-    val KEY_USERANDTEXTAUDIOINDEX_UNI : UniqueKey[UserandtextaudioindexRecord] = Internal.createUniqueKey(Userandtextaudioindex.USERANDTEXTAUDIOINDEX, "KEY_userandtextaudioindex_uni", Userandtextaudioindex.USERANDTEXTAUDIOINDEX.USERID, Userandtextaudioindex.USERANDTEXTAUDIOINDEX.TEXTAUDIOINDEXID)
+    val KEY_USERANDTEXTAUDIO_PRIMARY : UniqueKey[UserandtextaudioRecord] = Internal.createUniqueKey(Userandtextaudio.USERANDTEXTAUDIO, "KEY_userandtextaudio_PRIMARY", Userandtextaudio.USERANDTEXTAUDIO.ID)
+    val KEY_USERANDTEXTAUDIO_UNI : UniqueKey[UserandtextaudioRecord] = Internal.createUniqueKey(Userandtextaudio.USERANDTEXTAUDIO, "KEY_userandtextaudio_uni", Userandtextaudio.USERANDTEXTAUDIO.USERID, Userandtextaudio.USERANDTEXTAUDIO.TEXTAUDIOID)
   }
 }

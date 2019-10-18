@@ -2,7 +2,11 @@ package models
 
 import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
 
-case class Sums(correct: Integer, wrong: Integer, totalTextAudioIndexes: Integer) {
+case class Sums(
+                 correct: Integer,
+                 wrong: Integer,
+                 totalTextAudios: Integer
+               ) {
 }
 
 object Sums {

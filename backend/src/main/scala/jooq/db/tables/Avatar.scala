@@ -6,6 +6,7 @@ package jooq.db.tables
 
 import java.lang.Class
 import java.lang.Integer
+import java.lang.Long
 import java.lang.String
 import java.util.Arrays
 import java.util.List
@@ -60,7 +61,7 @@ extends TableImpl[AvatarRecord](
     classOf[AvatarRecord]
   }
 
-  val ID : TableField[AvatarRecord, Integer] = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), "")
+  val ID : TableField[AvatarRecord, Long] = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), "")
 
   val USERID : TableField[AvatarRecord, Integer] = createField("userId", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.INTEGER)), "")
 
@@ -92,7 +93,7 @@ extends TableImpl[AvatarRecord](
     return Arrays.asList[ Index ](Indexes.AVATAR_PRIMARY, Indexes.AVATAR_USERID)
   }
 
-  override def getIdentity : Identity[AvatarRecord, Integer] = {
+  override def getIdentity : Identity[AvatarRecord, Long] = {
     Keys.IDENTITY_AVATAR
   }
 

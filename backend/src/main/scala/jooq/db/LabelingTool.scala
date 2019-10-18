@@ -8,14 +8,13 @@ import java.util.ArrayList
 import java.util.Arrays
 import java.util.List
 
-import jooq.db.tables.Audio
 import jooq.db.tables.Avatar
 import jooq.db.tables.FlywaySchemaHistory
 import jooq.db.tables.Recordings
-import jooq.db.tables.Textaudioindex
-import jooq.db.tables.Transcript
+import jooq.db.tables.Speaker
+import jooq.db.tables.Textaudio
 import jooq.db.tables.User
-import jooq.db.tables.Userandtextaudioindex
+import jooq.db.tables.Userandtextaudio
 
 import org.jooq.Catalog
 import org.jooq.Table
@@ -39,13 +38,12 @@ class LabelingTool extends SchemaImpl("labeling-tool", DefaultCatalog.DEFAULT_CA
 
   private def getTables0(): List[Table[_]] = {
     return Arrays.asList[Table[_]](
-      Audio.AUDIO,
       Avatar.AVATAR,
       FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY,
       Recordings.RECORDINGS,
-      Textaudioindex.TEXTAUDIOINDEX,
-      Transcript.TRANSCRIPT,
+      Speaker.SPEAKER,
+      Textaudio.TEXTAUDIO,
       User.USER,
-      Userandtextaudioindex.USERANDTEXTAUDIOINDEX)
+      Userandtextaudio.USERANDTEXTAUDIO)
   }
 }
