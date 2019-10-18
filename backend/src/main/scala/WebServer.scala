@@ -8,6 +8,7 @@ import akka.stream.ActorMaterializer
 import models.{Avatar, ChangePassword, EmailPassword, Recording, TextAudio, User, UserAndTextAudio, UserPublicInfo}
 import com.typesafe.config.{ConfigFactory, ConfigValueFactory}
 import de.heikoseeberger.akkahttpcirce.ErrorAccumulatingCirceSupport
+import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
 import javax.ws.rs.Path
 import jooq.db.tables.pojos.Textaudio
 
@@ -36,6 +37,10 @@ object WebServer extends App with CorsSupport {
 }
 
 class LabelingToolRestApi(service: LabelingToolService) extends Directives with ErrorAccumulatingCirceSupport {
+
+  implicit val encoder1 = deriveEncoder[Textaudio]
+  implicit val decoder1 = deriveDecoder[Textaudio]
+
   val route = pathPrefix("api") {
     pathPrefix("match") {
       getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudioIndex ~ getAudioFile ~ getNonLabeledDataIndexes ~ getTenNonLabeledDataIndexes ~ getTextAudioIndexesByLabeledType ~ getLabeledSums ~ getUser ~ createUser ~ checkLogin ~ createUserAndTextAudioIndex ~ getUserByEmail ~ getCheckedTextAudioIndexesByUser ~ createAvatar ~ getAvatar ~ updateUser ~ getUserByUsername ~ getTopFiveUsersLabeledCount ~ createRecording ~ changePassword
@@ -79,7 +84,7 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
   @Path("textAudioIndex")
   def updateTextAudioIndex: Route = path("updateTextAudioIndex") {
     post {
-      entity(as[TextAudio]) { t =>
+      entity(as[Textaudio]) { t =>
         service.updateTextAudioIndex(t)
         complete("OK")
       }
