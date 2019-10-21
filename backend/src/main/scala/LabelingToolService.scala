@@ -1,5 +1,6 @@
 import java.io.File
 import java.time.LocalDateTime
+import java.util
 
 import akka.http.scaladsl.marshalling.ToResponseMarshallable
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
@@ -16,6 +17,8 @@ import org.mindrot.jbcrypt.BCrypt
 import scala.collection.JavaConverters._
 
 class LabelingToolService(config: Config) {
+  def insert(asJava: Seq[Textaudio]) = textaudioDao.insert(asJava.asJava)
+
 
   val url: String = config.getString("labeling-tool.db.url")
   val user: String = config.getString("labeling-tool.db.user")
