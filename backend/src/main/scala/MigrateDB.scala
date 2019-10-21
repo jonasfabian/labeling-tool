@@ -1,11 +1,12 @@
 import java.io.File
-import models.{TextAudio}
+
+import models.{Speaker, TextAudio}
 import com.typesafe.config.{ConfigFactory, ConfigValueFactory}
+
 import scala.xml.XML
 
 object MigrateDB extends App with CorsSupport {
 
-  private var index = 0
   private var labelingToolService = new LabelingToolService(null)
 
   override def main(args: Array[String]): Unit = {
@@ -13,7 +14,6 @@ object MigrateDB extends App with CorsSupport {
     labelingToolService = new LabelingToolService(config)
     extractFromXml()
   }
-
 
   def getFileTree(f: File): Stream[File] =
     f #:: (if (f.isDirectory) f.listFiles().toStream.flatMap(getFileTree)
@@ -24,19 +24,27 @@ object MigrateDB extends App with CorsSupport {
     getFileTree(new File(path)).filter(_.getName.endsWith(".xml")).zipWithIndex.foreach {
       case (file, count) => {
         val f = XML.loadFile(file.getAbsolutePath)
-        print(f)
-        /*val samplingRate = (f \ "SamplingRate").text
-        (f \ "TextAudioIndex").foreach(m => {
-          val textAudioIndex = new TextAudio(count, samplingRate.toInt, (m \ "TextStartPos").text.toInt, (m \ "TextEndPos").text.toInt, (m \ "AudioStartPos").text.toDouble, (m \ "AudioEndPos").text.toDouble, (m \ "SpeakerKey").text.toInt, 0, 0, 0, file.getParentFile.getName.toInt)
-          newTextAudioIndex(textAudioIndex)
-        })*/
+        (f \\ "speaker").foreach(spk => {
+          newSpeaker(new Speaker(
+            (spk \\ "abbreviation").text,
+            (spk \\ "sex").\@("value"),
+            (spk \\ "languages-used" \ "language").\@("lang"),
+            (spk \\ "ud-speaker-information" \ "ud-information").text
+          ))
+        })
       }
     }
-    println("Extracted all xml-data from directory ...")
+    println("\nExtracted all xml-data from directory ...")
   }
 
   def newTextAudioIndex(t: TextAudio): Unit = labelingToolService.withDslContext(dslContext => {
     val rec = labelingToolService.textAudioToRecord(t)
+    dslContext.executeInsert(rec)
+    ()
+  })
+
+  def newSpeaker(speaker: Speaker): Unit = labelingToolService.withDslContext(dslContext => {
+    val rec = labelingToolService.speakerToRecord(speaker)
     dslContext.executeInsert(rec)
     ()
   })

@@ -1,18 +1,18 @@
 import java.io.File
 import java.time.LocalDateTime
-import java.util
 
 import akka.http.scaladsl.marshalling.ToResponseMarshallable
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
-import models.{Avatar, ChangePassword, EmailPassword, Recording, Sums, TextAudio, User, UserAndTextAudio, UserLabeledData, UserPublicInfo}
+import models.{Avatar, ChangePassword, EmailPassword, Recording, Speaker, Sums, TextAudio, User, UserAndTextAudio, UserLabeledData, UserPublicInfo}
 import com.typesafe.config.Config
-import org.jooq.{Configuration, DSLContext, Field}
-import org.jooq.impl.{DSL, DefaultConfiguration}
+import org.jooq.{DSLContext, Field}
+import org.jooq.impl.DSL
 import jooq.db.Tables._
 import jooq.db.tables.daos.TextaudioDao
 import jooq.db.tables.pojos.Textaudio
-import jooq.db.tables.records.{AvatarRecord, RecordingsRecord, TextaudioRecord, UserRecord, UserandtextaudioRecord}
+import jooq.db.tables.records.{AvatarRecord, RecordingsRecord, SpeakerRecord, TextaudioRecord, UserRecord, UserandtextaudioRecord}
 import org.mindrot.jbcrypt.BCrypt
+
 import scala.collection.JavaConverters._
 
 class LabelingToolService(config: Config) {
@@ -260,6 +260,15 @@ class LabelingToolService(config: Config) {
     rec.setAvatarversion(u.avatarVersion.toLong)
     rec.setPassword(u.password)
     rec.setCanton(u.canton)
+    rec
+  }
+
+  def speakerToRecord(spk: Speaker): SpeakerRecord = {
+    val rec = new SpeakerRecord()
+    rec.setSpeakerid(spk.id)
+    rec.setSex(spk.sex)
+    rec.setLanguageused(spk.languageUsed)
+    rec.setDialect(spk.dialect)
     rec
   }
 

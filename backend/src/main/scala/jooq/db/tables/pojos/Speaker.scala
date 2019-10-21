@@ -12,7 +12,7 @@ import java.lang.StringBuilder
 
 case class Speaker(
     id : Long
-  , speakerid : Long
+  , speakerid : String
   , sex : String
   , languageused : String
   , dialect : String
@@ -32,7 +32,7 @@ case class Speaker(
     this.id
   }
 
-  def getSpeakerid : Long = {
+  def getSpeakerid : String = {
     this.speakerid
   }
 

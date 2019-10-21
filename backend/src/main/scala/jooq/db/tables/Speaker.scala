@@ -61,7 +61,7 @@ extends TableImpl[SpeakerRecord](
 
   val ID : TableField[SpeakerRecord, Long] = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), "")
 
-  val SPEAKERID : TableField[SpeakerRecord, Long] = createField("speakerId", org.jooq.impl.SQLDataType.BIGINT.nullable(false), "")
+  val SPEAKERID : TableField[SpeakerRecord, String] = createField("speakerId", org.jooq.impl.SQLDataType.VARCHAR(45).nullable(false), "")
 
   val SEX : TableField[SpeakerRecord, String] = createField("sex", org.jooq.impl.SQLDataType.VARCHAR(45).nullable(false), "")
 

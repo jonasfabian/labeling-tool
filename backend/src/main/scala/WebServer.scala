@@ -1,11 +1,10 @@
 import java.time.LocalDateTime
-
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.StatusCode
 import akka.http.scaladsl.server.{Directives, Route}
 import akka.stream.ActorMaterializer
-import models.{Avatar, ChangePassword, EmailPassword, Recording, TextAudio, User, UserAndTextAudio, UserPublicInfo}
+import models.{Avatar, ChangePassword, EmailPassword, Recording, User, UserAndTextAudio, UserPublicInfo}
 import com.typesafe.config.{ConfigFactory, ConfigValueFactory}
 import de.heikoseeberger.akkahttpcirce.ErrorAccumulatingCirceSupport
 import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}

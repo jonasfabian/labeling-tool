@@ -16,7 +16,7 @@ import org.jooq.Row5
 import org.jooq.impl.UpdatableRecordImpl
 
 
-class SpeakerRecord extends UpdatableRecordImpl[SpeakerRecord](Speaker.SPEAKER) with Record5[Long, Long, String, String, String] {
+class SpeakerRecord extends UpdatableRecordImpl[SpeakerRecord](Speaker.SPEAKER) with Record5[Long, String, String, String, String] {
 
   def setId(value : Long) : Unit = {
     set(0, value)
@@ -27,13 +27,13 @@ class SpeakerRecord extends UpdatableRecordImpl[SpeakerRecord](Speaker.SPEAKER) 
     if (r == null) null else r.asInstanceOf[Long]
   }
 
-  def setSpeakerid(value : Long) : Unit = {
+  def setSpeakerid(value : String) : Unit = {
     set(1, value)
   }
 
-  def getSpeakerid : Long = {
+  def getSpeakerid : String = {
     val r = get(1)
-    if (r == null) null else r.asInstanceOf[Long]
+    if (r == null) null else r.asInstanceOf[String]
   }
 
   def setSex(value : String) : Unit = {
@@ -74,25 +74,25 @@ class SpeakerRecord extends UpdatableRecordImpl[SpeakerRecord](Speaker.SPEAKER) 
   // Record5 type implementation
   // -------------------------------------------------------------------------
 
-  override def fieldsRow : Row5[Long, Long, String, String, String] = {
-    super.fieldsRow.asInstanceOf[ Row5[Long, Long, String, String, String] ]
+  override def fieldsRow : Row5[Long, String, String, String, String] = {
+    super.fieldsRow.asInstanceOf[ Row5[Long, String, String, String, String] ]
   }
 
-  override def valuesRow : Row5[Long, Long, String, String, String] = {
-    super.valuesRow.asInstanceOf[ Row5[Long, Long, String, String, String] ]
+  override def valuesRow : Row5[Long, String, String, String, String] = {
+    super.valuesRow.asInstanceOf[ Row5[Long, String, String, String, String] ]
   }
   override def field1 : Field[Long] = Speaker.SPEAKER.ID
-  override def field2 : Field[Long] = Speaker.SPEAKER.SPEAKERID
+  override def field2 : Field[String] = Speaker.SPEAKER.SPEAKERID
   override def field3 : Field[String] = Speaker.SPEAKER.SEX
   override def field4 : Field[String] = Speaker.SPEAKER.LANGUAGEUSED
   override def field5 : Field[String] = Speaker.SPEAKER.DIALECT
   override def component1 : Long = getId
-  override def component2 : Long = getSpeakerid
+  override def component2 : String = getSpeakerid
   override def component3 : String = getSex
   override def component4 : String = getLanguageused
   override def component5 : String = getDialect
   override def value1 : Long = getId
-  override def value2 : Long = getSpeakerid
+  override def value2 : String = getSpeakerid
   override def value3 : String = getSex
   override def value4 : String = getLanguageused
   override def value5 : String = getDialect
@@ -102,7 +102,7 @@ class SpeakerRecord extends UpdatableRecordImpl[SpeakerRecord](Speaker.SPEAKER) 
     this
   }
 
-  override def value2(value : Long) : SpeakerRecord = {
+  override def value2(value : String) : SpeakerRecord = {
     setSpeakerid(value)
     this
   }
@@ -122,7 +122,7 @@ class SpeakerRecord extends UpdatableRecordImpl[SpeakerRecord](Speaker.SPEAKER) 
     this
   }
 
-  override def values(value1 : Long, value2 : Long, value3 : String, value4 : String, value5 : String) : SpeakerRecord = {
+  override def values(value1 : Long, value2 : String, value3 : String, value4 : String, value5 : String) : SpeakerRecord = {
     this.value1(value1)
     this.value2(value2)
     this.value3(value3)
@@ -131,7 +131,7 @@ class SpeakerRecord extends UpdatableRecordImpl[SpeakerRecord](Speaker.SPEAKER) 
     this
   }
 
-  def this(id : Long, speakerid : Long, sex : String, languageused : String, dialect : String) = {
+  def this(id : Long, speakerid : String, sex : String, languageused : String, dialect : String) = {
     this()
 
     set(0, id)

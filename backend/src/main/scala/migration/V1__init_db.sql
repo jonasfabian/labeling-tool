@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `textAudio`
 CREATE TABLE IF NOT EXISTS `speaker`
 (
     `id`           BIGINT      NOT NULL AUTO_INCREMENT,
-    `speakerId`    BIGINT      NOT NULL,
+    `speakerId`    VARCHAR(45) NOT NULL,
     `sex`          VARCHAR(45) NOT NULL,
     `languageUsed` VARCHAR(45),
     `dialect`      VARCHAR(45),

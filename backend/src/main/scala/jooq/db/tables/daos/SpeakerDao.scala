@@ -33,7 +33,7 @@ class SpeakerDao(configuration : Configuration) extends DAOImpl[SpeakerRecord, j
     fetchOne(Speaker.SPEAKER.ID, value)
   }
 
-  def fetchBySpeakerid(values : Long*) : List[jooq.db.tables.pojos.Speaker] = {
+  def fetchBySpeakerid(values : String*) : List[jooq.db.tables.pojos.Speaker] = {
     fetch(Speaker.SPEAKER.SPEAKERID, values:_*)
   }
 
