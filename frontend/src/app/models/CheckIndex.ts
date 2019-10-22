@@ -1,13 +1,13 @@
-import {TextAudioIndexWithText} from './TextAudioIndexWithText';
+import {TextAudio} from './TextAudio';
 
 export class CheckIndex {
   id: number;
-  textAudioIndexWithText: TextAudioIndexWithText;
+  textAudio: TextAudio;
   checkedType: number;
 
-  constructor(id: number, textAudioIndexWithText: TextAudioIndexWithText, checkedType: number) {
+  constructor(id: number, textAudio: TextAudio, checkedType: number) {
     this.id = id;
-    this.textAudioIndexWithText = textAudioIndexWithText;
+    this.textAudio = textAudio;
     this.checkedType = checkedType;
   }
 }

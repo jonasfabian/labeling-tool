@@ -1,17 +1,11 @@
-import {
-  Component,
-  EventEmitter, Input,
-  OnChanges,
-  OnInit,
-  Output
-} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
 import CursorPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 import {AudioSnippet} from '../../../models/AudioSnippet';
 import {ApiService} from '../../../services/api.service';
-import {TextAudioIndexWithText} from '../../../models/TextAudioIndexWithText';
+import {TextAudio} from '../../../models/TextAudio';
 
 @Component({
   selector: 'app-audio-player',
@@ -26,7 +20,7 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   }
 
   @Input() audioPosition: AudioSnippet;
-  @Input() textAudioIndexWithText: TextAudioIndexWithText;
+  @Input() textAudioIndexWithText: TextAudio;
   @Output() regionPosition = new EventEmitter<AudioSnippet>();
   @Output() uploadSuccess = new EventEmitter<boolean>();
   @Output() loading = new EventEmitter<boolean>();
@@ -42,7 +36,7 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
     this.onPreviewPressed();
   }
 
-  convertDataURIToBinary(dataURI) {
+  convertDataURIToBinary(dataURI): Uint8Array {
     const base64Index = dataURI.indexOf(this.BASE64_MARKER) + this.BASE64_MARKER.length;
     const base64 = dataURI.substring(base64Index);
     const raw = window.atob(base64);
@@ -57,10 +51,10 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     if (this.audioPosition.startTime !== null) {
-      if (this.textAudioIndexWithText.transcriptFileId !== this.fileId) {
+      if (this.textAudioIndexWithText.fileid !== this.fileId) {
         this.loading.emit(true);
-        this.fileId = this.textAudioIndexWithText.transcriptFileId;
-        this.loadAudioBlob(this.textAudioIndexWithText.transcriptFileId);
+        this.fileId = this.textAudioIndexWithText.fileid;
+        this.loadAudioBlob(this.textAudioIndexWithText.fileid);
       }
       if ((this.waveSurfer !== undefined) && (this.audioPosition.startTime !== null)) {
         this.waveSurfer.on('ready', () => {

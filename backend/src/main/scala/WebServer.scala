@@ -42,14 +42,15 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
 
   val route = pathPrefix("api") {
     pathPrefix("match") {
-      getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudioIndex ~ getAudioFile ~ getNonLabeledDataIndexes ~ getTenNonLabeledDataIndexes ~ getTextAudioIndexesByLabeledType ~ getLabeledSums ~ getUser ~ createUser ~ checkLogin ~ createUserAndTextAudioIndex ~ getUserByEmail ~ getCheckedTextAudioIndexesByUser ~ createAvatar ~ getAvatar ~ updateUser ~ getUserByUsername ~ getTopFiveUsersLabeledCount ~ createRecording ~ changePassword
+      getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudio ~ getAudioFile ~ createUserAndTextAudio ~ getNonLabeledDataIndexes ~ getTenNonLabeledTextAudiosByUser ~ getTextAudioIndexesByLabeledType ~ getLabeledSums ~ getUser ~ createUser ~ checkLogin ~ getUserByEmail ~ getCheckedTextAudioIndexesByUser ~ createAvatar ~ getAvatar ~ updateUser ~ getUserByUsername ~ getTopFiveUsersLabeledCount ~ createRecording ~ changePassword
     }
   }
 
   @Path("getTopFiveUsersLabeledCount")
   def getTopFiveUsersLabeledCount = path("getTopFiveUsersLabeledCount") {
     get {
-      complete(service.getTopFiveUsersLabeledCount)
+      val yeet = service.getTopFiveUsersLabeledCount()
+      complete(yeet)
     }
   }
 
@@ -80,11 +81,11 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
     }
   }
 
-  @Path("textAudioIndex")
-  def updateTextAudioIndex: Route = path("updateTextAudioIndex") {
+  @Path("updateTextAudio")
+  def updateTextAudio: Route = path("updateTextAudio") {
     post {
       entity(as[Textaudio]) { t =>
-        service.updateTextAudioIndex(t)
+        service.updateTextAudio(t)
         complete("OK")
       }
     }
@@ -154,19 +155,20 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
   @Path("getNonLabeledDataIndexes")
   def getNonLabeledDataIndexes = path("getNonLabeledDataIndexes") {
     get {
-      parameters("id".as[Int] ? 0) { labeledType =>
-        complete(service.getNonLabeledDataIndexes(labeledType))
-      }
+      complete(service.getNonLabeledDataIndexes())
     }
   }
 
-  @Path("getTenNonLabeledDataIndexes")
-  def getTenNonLabeledDataIndexes = path("getTenNonLabeledDataIndexes") {
+
+  @Path("getTenNonLabeledTextAudiosByUser")
+  def getTenNonLabeledTextAudiosByUser = path("getTenNonLabeledTextAudiosByUser") {
     get {
       parameters("userId".as[Int] ? 0) { (userId) =>
         val test = service.getTenNonLabeledTextAudiosByUser(userId)
         if (test.length != 0) {
-          complete(service.getTenNonLabeledTextAudiosByUser(userId))
+          val yeet = service.getTenNonLabeledTextAudiosByUser(userId)
+          yeet.foreach(l => println(l.labeled))
+          complete(yeet)
         } else {
           complete(service.getTenNonLabeledDataIndexes())
         }
@@ -213,11 +215,12 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
     }
   }
 
-  def createUserAndTextAudioIndex: Route = path("createUserAndTextAudioIndex") {
+  @Path("createUserAndTextAudio")
+  def createUserAndTextAudio: Route = path("createUserAndTextAudio") {
     post {
-      entity(as[UserAndTextAudio]) { userAndTextAudioIndex =>
+      entity(as[UserAndTextAudio]) { userAndTextAudio =>
         println(LocalDateTime.now())
-        service.createUserAndTextAudioIndex(userAndTextAudioIndex)
+        service.createUserAndTextAudio(userAndTextAudio)
         complete("OK")
       }
     }

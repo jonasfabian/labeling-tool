@@ -31,6 +31,7 @@ export class HorizontalNormalizedBarChartComponent implements OnInit, OnChanges 
           ]
         });
       });
+      console.log(singleData);
       this.single = singleData;
     }
   }

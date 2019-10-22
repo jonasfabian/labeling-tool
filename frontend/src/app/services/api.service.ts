@@ -6,11 +6,11 @@ import {Sums} from '../models/Sums';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {User} from '../models/User';
 import {EmailPassword} from '../models/EmailPassword';
-import {UserAndTextAudioIndex} from '../models/UserAndTextAudioIndex';
+import {UserAndTextAudio} from '../models/UserAndTextAudio';
 import {UserPublicInfo} from '../models/UserPublicInfo';
 import {AuthService} from './auth.service';
 import {Router} from '@angular/router';
-import {TextAudioIndex} from '../models/TextAudioIndex';
+import {TextAudio} from '../models/TextAudio';
 import {Avatar} from '../models/Avatar';
 import {SnackBarLogOutComponent} from '../components/Login/snack-bar-log-out/snack-bar-log-out.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -81,8 +81,8 @@ export class ApiService {
     return this.http.post(this.url + 'createRecording', recording);
   }
 
-  getCheckedTextAudioIndexesByUser(userId: number): Observable<Array<TextAudioIndex>> {
-    return this.http.get<Array<TextAudioIndex>>(this.url + 'getCheckedTextAudioIndexesByUser?id=' + userId);
+  getCheckedTextAudioIndexesByUser(userId: number): Observable<Array<TextAudio>> {
+    return this.http.get<Array<TextAudio>>(this.url + 'getCheckedTextAudioIndexesByUser?id=' + userId);
   }
 
   getAvatar(id: number): Observable<Avatar> {
@@ -97,16 +97,16 @@ export class ApiService {
     return this.http.post(this.url + 'createUser', user);
   }
 
-  createUserAndTextAudioIndex(userAndTextAudioIndex: UserAndTextAudioIndex): Observable<any> {
-    return this.http.post(this.url + 'createUserAndTextAudioIndex', userAndTextAudioIndex);
+  createUserAndTextAudio(userAndTextAudio: UserAndTextAudio): Observable<any> {
+    return this.http.post(this.url + 'createUserAndTextAudio', userAndTextAudio);
   }
 
   checkLogin(emailPassword: EmailPassword): Observable<any> {
     return this.http.post(this.url + 'checkLogin', emailPassword);
   }
 
-  updateTextAudioIndex(textAudioIndex: TextAudioIndexWithText): Observable<any> {
-    return this.http.post(this.url + 'updateTextAudioIndex', textAudioIndex);
+  updateTextAudio(textAudio: TextAudio): Observable<any> {
+    return this.http.post(this.url + 'updateTextAudio', textAudio);
   }
 
   updateUser(user: UserPublicInfo): Observable<any> {
@@ -117,12 +117,12 @@ export class ApiService {
     return this.http.get(this.url + 'getAudioFile?id=' + fileId, {responseType: 'blob'});
   }
 
-  getNonLabeledTextAudioIndex(labeledType: number): Observable<TextAudioIndexWithText> {
-    return this.http.get<TextAudioIndexWithText>(this.url + 'getNonLabeledDataIndexes?id=' + labeledType);
+  getNonLabeledTextAudioIndex(labeledType: number): Observable<TextAudio> {
+    return this.http.get<TextAudio>(this.url + 'getNonLabeledDataIndexes?id=' + labeledType);
   }
 
-  getTenNonLabeledTextAudioIndex(userId: number): Observable<Array<TextAudioIndexWithText>> {
-    return this.http.get<Array<TextAudioIndexWithText>>(this.url + 'getTenNonLabeledDataIndexes?userId=' + userId);
+  getTenNonLabeledTextAudiosByUser(userId: number): Observable<Array<TextAudio>> {
+    return this.http.get<Array<TextAudio>>(this.url + 'getTenNonLabeledTextAudiosByUser?userId=' + userId);
   }
 
   getLabeledSums(): Observable<Array<Sums>> {
@@ -150,8 +150,8 @@ export class ApiService {
     return array;
   }
 
-  loadAudioBlob(file: TextAudioIndexWithText): void {
-    this.getAudioFile(file.transcriptFileId).subscribe(resp => {
+  loadAudioBlob(file: TextAudio): void {
+    this.getAudioFile(file.fileid).subscribe(resp => {
       const reader = new FileReader();
       reader.readAsDataURL(resp);
       reader.addEventListener('loadend', _ => {

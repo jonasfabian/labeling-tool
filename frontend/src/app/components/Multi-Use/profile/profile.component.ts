@@ -3,7 +3,7 @@ import {ApiService} from '../../../services/api.service';
 import {UserPublicInfo} from '../../../models/UserPublicInfo';
 import {Router} from '@angular/router';
 import {AuthService} from '../../../services/auth.service';
-import {TextAudioIndex} from '../../../models/TextAudioIndex';
+import {TextAudio} from '../../../models/TextAudio';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
@@ -33,9 +33,8 @@ export class ProfileComponent implements OnInit {
   changeProfileForm: FormGroup;
   changePasswordForm: FormGroup;
   user = new UserPublicInfo(-1, '', '', '', '', 0, '');
-  textAudioIndexArray: Array<TextAudioIndex> = [];
-  displayedColumns = ['id', 'samplingRate', 'textStartPos', 'textEndPos', 'audioStartPos', 'audioEndPos', 'speakerKey', 'labeled', 'correct', 'wrong', 'transcriptFileId'];
-  dataSource = new MatTableDataSource<TextAudioIndex>();
+  textAudioIndexArray: Array<TextAudio> = [];
+  dataSource = new MatTableDataSource<TextAudio>();
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   selectedFile: Blob;
@@ -50,7 +49,7 @@ export class ProfileComponent implements OnInit {
     this.user = this.authService.loggedInUser;
     this.apiService.getCheckedTextAudioIndexesByUser(this.authService.loggedInUser.id).subscribe(l => {
         this.textAudioIndexArray = l;
-        this.dataSource = new MatTableDataSource<TextAudioIndex>(l);
+        this.dataSource = new MatTableDataSource<TextAudio>(l);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       }, () => {

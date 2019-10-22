@@ -4,10 +4,10 @@ import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
 
 case class TextAudio(
                       id: BigInt,
-                      audioStart: Float,
-                      audioEnd: Float,
+                      audiostart: Float,
+                      audioend: Float,
                       text: String,
-                      fileId: BigInt,
+                      fileid: BigInt,
                       speaker: String,
                       labeled: BigInt,
                       correct: BigInt,
