@@ -36,8 +36,14 @@ object MigrateDB extends App with CorsSupport {
             .toMap
           ).get
         (f \\ "tier").foreach(tli => {
+          var speaker = ""
+          if (tli.\@("speaker") != "") {
+            speaker = tli.\@("speaker")
+          } else {
+            speaker = "None"
+          }
           val tas = tli.\\("event").map(event => {
-            jooq.db.tables.pojos.Textaudio(null, tliMap(event.\@("start")).toDouble, tliMap(event.\@("end")).toDouble, event.text, 1, "", 0, 0, 0)
+            jooq.db.tables.pojos.Textaudio(null, tliMap(event.\@("start")).toDouble, tliMap(event.\@("end")).toDouble, event.text, 1, speaker, 0, 0, 0)
           })
           labelingToolService.insert(tas)
         })
