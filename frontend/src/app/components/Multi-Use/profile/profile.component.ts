@@ -39,7 +39,7 @@ export class ProfileComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   selectedFile: Blob;
   fileByteArray: Array<number> = [];
-  yeet: any;
+  avatarByteArray: any;
   editProfile = false;
   matcher = new MyErrorStateMatcher();
   isChangePassword = false;
@@ -112,9 +112,9 @@ export class ProfileComponent implements OnInit {
     reader.readAsArrayBuffer(this.selectedFile);
     reader.onloadend = () => {
       // @ts-ignore
-      this.yeet = new Int8Array(reader.result);
-      if (this.yeet.length <= 65535) {
-        this.yeet.map(l => {
+      this.avatarByteArray = new Int8Array(reader.result);
+      if (this.avatarByteArray.length <= 65535) {
+        this.avatarByteArray.map(l => {
           this.fileByteArray.push(l);
         });
         this.authService.loggedInUser.avatarVersion++;

@@ -26,7 +26,7 @@ export class RecordComponent implements OnInit {
   // @ts-ignore
   mediaRecorder: MediaRecorder;
   fileByteArray: Array<number> = [];
-  yeet: any;
+  recordingByteArray: any;
   fileContent: string | ArrayBuffer = '';
   showTextArea = false;
 
@@ -63,9 +63,9 @@ export class RecordComponent implements OnInit {
         fileReader.readAsArrayBuffer(audioBlob);
         fileReader.onloadend = () => {
           // @ts-ignore
-          this.yeet = new Int8Array(fileReader.result);
-          if (this.yeet.length <= 65535) {
-            this.yeet.map(l => {
+          this.recordingByteArray = new Int8Array(fileReader.result);
+          if (this.recordingByteArray.length <= 65535) {
+            this.recordingByteArray.map(l => {
               this.fileByteArray.push(l);
             });
           }
@@ -104,7 +104,7 @@ export class RecordComponent implements OnInit {
   }
 
   createRecording(): void {
-    const rec =  new Recording(-1, this.fileContent.toString(), this.authService.loggedInUser.id, this.fileByteArray);
+    const rec = new Recording(-1, this.fileContent.toString(), this.authService.loggedInUser.id, this.fileByteArray);
     this.apiService.createRecording(rec).subscribe();
   }
 
