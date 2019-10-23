@@ -41,9 +41,6 @@ class LabelingToolService(config: Config) {
   def getTextAudios: List[Textaudio] = textaudioDao.findAll().asScala.toList
 
   def getTopFiveUsersLabeledCount(): (Array[UserLabeledData]) = withDslContext(dslContext => {
-    val yeet = dslContext.select(USER.ID, USER.USERNAME, DSL.count(USERANDTEXTAUDIO.ID)).from(USERANDTEXTAUDIO).join(USER).on(USER.ID.eq(USERANDTEXTAUDIO.USERID)).groupBy(USER.ID)
-      .fetchArray().map(m => UserLabeledData(m.get(USER.ID).asInstanceOf[Int], m.get(USER.USERNAME), m.get(2).asInstanceOf[Int]))
-    yeet.foreach(l => println(l.labelCount))
     dslContext.select(USER.ID, USER.USERNAME, DSL.count(USERANDTEXTAUDIO.ID)).from(USERANDTEXTAUDIO).join(USER).on(USER.ID.eq(USERANDTEXTAUDIO.USERID)).groupBy(USER.ID)
       .fetchArray().map(m => UserLabeledData(m.get(USER.ID).asInstanceOf[Int], m.get(USER.USERNAME), m.get(2).asInstanceOf[Int]))
   })
@@ -208,11 +205,11 @@ class LabelingToolService(config: Config) {
   })
 
   def checkLogin(emailPassword: EmailPassword): Boolean = withDslContext(dslContext => {
-    val test = dslContext.select()
+    val userPassword = dslContext.select()
       .from(USER)
       .where(USER.EMAIL.eq(emailPassword.email))
       .fetchOptional(USER.PASSWORD)
-    test.filter(test => BCrypt.checkpw(emailPassword.password, test)).isPresent()
+    userPassword.filter(usrpw => BCrypt.checkpw(emailPassword.password, usrpw)).isPresent()
   })
 
   def getCheckedTextAudioIndexesByUser(userId: Int): Array[TextAudio] = withDslContext(dslContext => {

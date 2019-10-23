@@ -49,8 +49,7 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
   @Path("getTopFiveUsersLabeledCount")
   def getTopFiveUsersLabeledCount = path("getTopFiveUsersLabeledCount") {
     get {
-      val yeet = service.getTopFiveUsersLabeledCount()
-      complete(yeet)
+      complete(service.getTopFiveUsersLabeledCount())
     }
   }
 
@@ -164,11 +163,8 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
   def getTenNonLabeledTextAudiosByUser = path("getTenNonLabeledTextAudiosByUser") {
     get {
       parameters("userId".as[Int] ? 0) { (userId) =>
-        val test = service.getTenNonLabeledTextAudiosByUser(userId)
-        if (test.length != 0) {
-          val yeet = service.getTenNonLabeledTextAudiosByUser(userId)
-          yeet.foreach(l => println(l.labeled))
-          complete(yeet)
+        if (service.getTenNonLabeledTextAudiosByUser(userId).length != 0) {
+          complete(service.getTenNonLabeledTextAudiosByUser(userId))
         } else {
           complete(service.getTenNonLabeledDataIndexes())
         }
