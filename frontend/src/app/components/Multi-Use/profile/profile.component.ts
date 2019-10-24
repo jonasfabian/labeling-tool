@@ -9,8 +9,7 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {HttpClient} from '@angular/common/http';
 import {Avatar} from '../../../models/Avatar';
-import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
-import {ErrorStateMatcher} from '@angular/material';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ChangePassword} from '../../../models/ChangePassword';
 
 @Component({
@@ -40,9 +39,8 @@ export class ProfileComponent implements OnInit {
   selectedFile: Blob;
   fileByteArray: Array<number> = [];
   avatarByteArray: any;
-  editProfile = false;
-  matcher = new MyErrorStateMatcher();
-  isChangePassword = false;
+  currentView: ProfileEnum = ProfileEnum.ProfileView;
+  profileView = ProfileEnum;
 
   ngOnInit() {
     this.authService.checkAuthenticated();
@@ -88,7 +86,7 @@ export class ProfileComponent implements OnInit {
     this.user.canton = this.changeProfileForm.controls.canton.value;
     if (this.changeProfileForm.valid) {
       this.apiService.updateUser(this.user).subscribe(_ => {
-        this.editProfile = false;
+        this.currentView = this.profileView.ProfileView;
       }, () => {
       }, () => {
         sessionStorage.setItem('user', JSON.stringify([{
@@ -149,14 +147,12 @@ export class ProfileComponent implements OnInit {
       if (err.status === 401) {
         alert('Wrong password');
       }
-    }, () => this.isChangePassword = false);
+    }, () => this.currentView = this.profileView.ProfileView);
   }
 }
 
-// tslint:disable-next-line:component-class-suffix
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    const isSubmitted = form && form.submitted;
-    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
-  }
+export enum ProfileEnum {
+  ProfileView,
+  ProfileEdit,
+  PasswordEdit
 }
