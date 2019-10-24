@@ -45,7 +45,7 @@ export class OverviewComponent implements OnInit {
           audiostart: l.audiostart,
           audioend: l.audioend,
           text: l.text,
-          fielId: l.fileid,
+          fielid: l.fileid,
           speaker: l.speaker,
           labeled: l.labeled,
           correct: l.correct,
