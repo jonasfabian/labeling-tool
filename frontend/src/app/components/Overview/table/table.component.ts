@@ -1,7 +1,7 @@
 import {Component, Input, OnChanges, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
-import {TextAudioIndexWithText} from '../../../models/TextAudioIndexWithText';
 import {ApiService} from '../../../services/api.service';
+import {TextAudio} from '../../../models/TextAudio';
 
 @Component({
   selector: 'app-table',
@@ -15,19 +15,20 @@ export class TableComponent implements OnInit, OnChanges {
   ) {
   }
 
-  displayedColumns = ['id', 'samplingRate', 'textStartPos', 'textEndPos', 'audioStartPos', 'audioEndPos', 'speakerKey', 'labeled', 'correct', 'wrong', 'transcriptFileId'];
-  dataSource = new MatTableDataSource<TextAudioIndexWithText>();
+  displayedColumns = ['id', 'audioStart', 'audioEnd', 'text', 'fileId', 'speaker', 'labeled', 'correct', 'wrong'];
+  dataSource = new MatTableDataSource<TextAudio>();
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @Input() vale: string;
 
   ngOnInit() {
-    this.apiService.getTextAudioIndexes().subscribe(i => {
-      this.dataSource = new MatTableDataSource<TextAudioIndexWithText>(i);
+    this.apiService.getTextAudios().subscribe(i => {
+      this.dataSource = new MatTableDataSource<TextAudio>(i);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-    }, () => {}, () => {
+    }, () => {
+    }, () => {
       this.dataSource.filterPredicate = (data, filter: string): boolean => {
         return data.labeled.toString().toLowerCase().includes(filter);
       };

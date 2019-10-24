@@ -39,21 +39,20 @@ export class OverviewComponent implements OnInit {
   }
 
   generateTable(): void {
-    this.apiService.getTextAudioIndexes().subscribe(te => te.forEach(l => {
+    this.apiService.getTextAudios().subscribe(te => te.forEach(l => {
         this.data.push({
           id: l.id,
-          samplingRate: l.samplingRate,
-          textStartPos: l.textStartPos,
-          textEndPos: l.textEndPos,
-          audioStartPos: l.audioStartPos,
-          audioEndPos: l.audioEndPos,
-          speakerKey: l.speakerKey,
+          audiostart: l.audiostart,
+          audioend: l.audioend,
+          text: l.text,
+          fielId: l.fileid,
+          speaker: l.speaker,
           labeled: l.labeled,
           correct: l.correct,
-          wrong: l.wrong,
-          transcriptFileId: l.transcriptFileId
+          wrong: l.wrong
         });
-      }), () => {}
+      }), () => {
+      }
       , () => this.csvExporter.generateCsv(this.data));
   }
 }

@@ -42,7 +42,7 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
 
   val route = pathPrefix("api") {
     pathPrefix("match") {
-      getTextAudioIndex ~ getTextAudioIndexes ~ updateTextAudio ~ getAudioFile ~ createUserAndTextAudio ~ getNonLabeledDataIndexes ~ getTenNonLabeledTextAudiosByUser ~ getTextAudioIndexesByLabeledType ~ getLabeledSums ~ getUser ~ createUser ~ checkLogin ~ getUserByEmail ~ getCheckedTextAudioIndexesByUser ~ createAvatar ~ getAvatar ~ updateUser ~ getUserByUsername ~ getTopFiveUsersLabeledCount ~ createRecording ~ changePassword
+      getTextAudioIndex ~ getTextAudios ~ updateTextAudio ~ getAudioFile ~ createUserAndTextAudio ~ getNonLabeledDataIndexes ~ getTenNonLabeledTextAudiosByUser ~ getTextAudioIndexesByLabeledType ~ getLabeledSums ~ getUser ~ createUser ~ checkLogin ~ getUserByEmail ~ getCheckedTextAudioIndexesByUser ~ createAvatar ~ getAvatar ~ updateUser ~ getUserByUsername ~ getTopFiveUsersLabeledCount ~ createRecording ~ changePassword
     }
   }
 
@@ -100,8 +100,8 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
     }
   }
 
-  @Path("textAudioIndexes")
-  def getTextAudioIndexes = path("getTextAudioIndexes") {
+  @Path("getTextAudios")
+  def getTextAudios = path("getTextAudios") {
     get {
       complete(service.getTextAudios)
     }

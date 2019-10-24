@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {TextAudioIndexWithText} from '../models/TextAudioIndexWithText';
 import {Sums} from '../models/Sums';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {User} from '../models/User';
@@ -42,7 +41,6 @@ export class ApiService {
   blobUrl: SafeUrl | string = '';
   uri: BehaviorSubject<SafeUrl> = new BehaviorSubject<SafeUrl>('');
   showTenMoreQuest = false;
-  snippet = new AudioSnippet(null, null);
 
   cantons: Canton[] = [
     {cantonId: 'ag', cantonName: 'Aargau'},
@@ -73,8 +71,8 @@ export class ApiService {
     {cantonId: 'zh', cantonName: 'Zürich'}
   ];
 
-  getTextAudioIndexes(): Observable<Array<TextAudioIndexWithText>> {
-    return this.http.get<Array<TextAudioIndexWithText>>(this.url + 'getTextAudioIndexes');
+  getTextAudios(): Observable<Array<TextAudio>> {
+    return this.http.get<Array<TextAudio>>(this.url + 'getTextAudios');
   }
 
   createRecording(recording: Recording): Observable<any> {
