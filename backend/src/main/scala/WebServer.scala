@@ -49,7 +49,7 @@ class LabelingToolRestApi(service: LabelingToolService) extends Directives with 
   @Path("getTopFiveUsersLabeledCount")
   def getTopFiveUsersLabeledCount = path("getTopFiveUsersLabeledCount") {
     get {
-      complete(service.getTopFiveUsersLabeledCount())
+      complete(service.getTopFiveUsersLabeledCount)
     }
   }
 

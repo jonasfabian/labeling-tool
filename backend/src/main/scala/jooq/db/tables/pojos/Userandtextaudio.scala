@@ -12,7 +12,7 @@ import java.lang.StringBuilder
 
 case class Userandtextaudio(
     id : Long
-  , userid : String
+  , userid : Long
   , textaudioid : String
   , time : String
 ) extends Serializable {
@@ -30,7 +30,7 @@ case class Userandtextaudio(
     this.id
   }
 
-  def getUserid : String = {
+  def getUserid : Long = {
     this.userid
   }
 

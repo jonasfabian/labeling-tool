@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `recordings`
 CREATE TABLE IF NOT EXISTS `userAndTextAudio`
 (
     `id`          BIGINT NOT NULL AUTO_INCREMENT,
-    `userId`      VARCHAR(100),
+    `userId`      BIGINT,
     `textAudioId` VARCHAR(100),
     `time`        VARCHAR(100),
     PRIMARY KEY (`id`),

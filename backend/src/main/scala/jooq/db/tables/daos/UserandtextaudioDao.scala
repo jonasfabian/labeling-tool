@@ -33,7 +33,7 @@ class UserandtextaudioDao(configuration : Configuration) extends DAOImpl[Userand
     fetchOne(Userandtextaudio.USERANDTEXTAUDIO.ID, value)
   }
 
-  def fetchByUserid(values : String*) : List[jooq.db.tables.pojos.Userandtextaudio] = {
+  def fetchByUserid(values : Long*) : List[jooq.db.tables.pojos.Userandtextaudio] = {
     fetch(Userandtextaudio.USERANDTEXTAUDIO.USERID, values:_*)
   }
 

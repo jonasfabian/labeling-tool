@@ -16,7 +16,7 @@ import org.jooq.Row4
 import org.jooq.impl.UpdatableRecordImpl
 
 
-class UserandtextaudioRecord extends UpdatableRecordImpl[UserandtextaudioRecord](Userandtextaudio.USERANDTEXTAUDIO) with Record4[Long, String, String, String] {
+class UserandtextaudioRecord extends UpdatableRecordImpl[UserandtextaudioRecord](Userandtextaudio.USERANDTEXTAUDIO) with Record4[Long, Long, String, String] {
 
   def setId(value : Long) : Unit = {
     set(0, value)
@@ -27,13 +27,13 @@ class UserandtextaudioRecord extends UpdatableRecordImpl[UserandtextaudioRecord]
     if (r == null) null else r.asInstanceOf[Long]
   }
 
-  def setUserid(value : String) : Unit = {
+  def setUserid(value : Long) : Unit = {
     set(1, value)
   }
 
-  def getUserid : String = {
+  def getUserid : Long = {
     val r = get(1)
-    if (r == null) null else r.asInstanceOf[String]
+    if (r == null) null else r.asInstanceOf[Long]
   }
 
   def setTextaudioid(value : String) : Unit = {
@@ -65,23 +65,23 @@ class UserandtextaudioRecord extends UpdatableRecordImpl[UserandtextaudioRecord]
   // Record4 type implementation
   // -------------------------------------------------------------------------
 
-  override def fieldsRow : Row4[Long, String, String, String] = {
-    super.fieldsRow.asInstanceOf[ Row4[Long, String, String, String] ]
+  override def fieldsRow : Row4[Long, Long, String, String] = {
+    super.fieldsRow.asInstanceOf[ Row4[Long, Long, String, String] ]
   }
 
-  override def valuesRow : Row4[Long, String, String, String] = {
-    super.valuesRow.asInstanceOf[ Row4[Long, String, String, String] ]
+  override def valuesRow : Row4[Long, Long, String, String] = {
+    super.valuesRow.asInstanceOf[ Row4[Long, Long, String, String] ]
   }
   override def field1 : Field[Long] = Userandtextaudio.USERANDTEXTAUDIO.ID
-  override def field2 : Field[String] = Userandtextaudio.USERANDTEXTAUDIO.USERID
+  override def field2 : Field[Long] = Userandtextaudio.USERANDTEXTAUDIO.USERID
   override def field3 : Field[String] = Userandtextaudio.USERANDTEXTAUDIO.TEXTAUDIOID
   override def field4 : Field[String] = Userandtextaudio.USERANDTEXTAUDIO.TIME
   override def component1 : Long = getId
-  override def component2 : String = getUserid
+  override def component2 : Long = getUserid
   override def component3 : String = getTextaudioid
   override def component4 : String = getTime
   override def value1 : Long = getId
-  override def value2 : String = getUserid
+  override def value2 : Long = getUserid
   override def value3 : String = getTextaudioid
   override def value4 : String = getTime
 
@@ -90,7 +90,7 @@ class UserandtextaudioRecord extends UpdatableRecordImpl[UserandtextaudioRecord]
     this
   }
 
-  override def value2(value : String) : UserandtextaudioRecord = {
+  override def value2(value : Long) : UserandtextaudioRecord = {
     setUserid(value)
     this
   }
@@ -105,7 +105,7 @@ class UserandtextaudioRecord extends UpdatableRecordImpl[UserandtextaudioRecord]
     this
   }
 
-  override def values(value1 : Long, value2 : String, value3 : String, value4 : String) : UserandtextaudioRecord = {
+  override def values(value1 : Long, value2 : Long, value3 : String, value4 : String) : UserandtextaudioRecord = {
     this.value1(value1)
     this.value2(value2)
     this.value3(value3)
@@ -113,7 +113,7 @@ class UserandtextaudioRecord extends UpdatableRecordImpl[UserandtextaudioRecord]
     this
   }
 
-  def this(id : Long, userid : String, textaudioid : String, time : String) = {
+  def this(id : Long, userid : Long, textaudioid : String, time : String) = {
     this()
 
     set(0, id)

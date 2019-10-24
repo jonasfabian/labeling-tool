@@ -3,7 +3,7 @@ package models
 import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
 
 case class UserLabeledData(
-                            userId: Int,
+                            userId: Long,
                             username: String,
                             labelCount: Int
                           ) {

@@ -61,7 +61,7 @@ extends TableImpl[UserandtextaudioRecord](
 
   val ID : TableField[UserandtextaudioRecord, Long] = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), "")
 
-  val USERID : TableField[UserandtextaudioRecord, String] = createField("userId", org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), "")
+  val USERID : TableField[UserandtextaudioRecord, Long] = createField("userId", org.jooq.impl.SQLDataType.BIGINT.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.BIGINT)), "")
 
   val TEXTAUDIOID : TableField[UserandtextaudioRecord, String] = createField("textAudioId", org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.VARCHAR)), "")
 

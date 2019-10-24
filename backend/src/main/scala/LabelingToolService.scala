@@ -40,9 +40,9 @@ class LabelingToolService(config: Config) {
 
   def getTextAudios: List[Textaudio] = textaudioDao.findAll().asScala.toList
 
-  def getTopFiveUsersLabeledCount(): (Array[UserLabeledData]) = withDslContext(dslContext => {
+  def getTopFiveUsersLabeledCount: Array[UserLabeledData] = withDslContext(dslContext => {
     dslContext.select(USER.ID, USER.USERNAME, DSL.count(USERANDTEXTAUDIO.ID)).from(USERANDTEXTAUDIO).join(USER).on(USER.ID.eq(USERANDTEXTAUDIO.USERID)).groupBy(USER.ID)
-      .fetchArray().map(m => UserLabeledData(m.get(USER.ID).asInstanceOf[Int], m.get(USER.USERNAME), m.get(2).asInstanceOf[Int]))
+      .fetchArray().map(m => UserLabeledData(m.get(USER.ID).asInstanceOf[Long], m.get(USER.USERNAME), m.get(2).asInstanceOf[Int]))
   })
 
   def getTextAudioIndexById(id: Long): Textaudio = textaudioDao.findById(id)
@@ -233,7 +233,7 @@ class LabelingToolService(config: Config) {
 
   def userAndTextAudioToRecord(t: UserAndTextAudio): UserandtextaudioRecord = {
     val rec = new UserandtextaudioRecord()
-    rec.setUserid(int2Integer(t.userId).toString)
+    rec.setUserid(t.userId.toLong)
     rec.setTextaudioid(int2Integer(t.textAudioId).toString)
     rec.setTime(t.time.getOrElse(LocalDateTime.now()).toString)
     rec
