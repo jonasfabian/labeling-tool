@@ -27,7 +27,7 @@ export class HorizontalNormalizedBarChartComponent implements OnInit, OnChanges 
         singleData.push({
           name: '', series: [
             {name: 'Checked', value: l.correct + l.wrong},
-            {name: 'Not-Checked', value: l.totalTextAudioIndexes - (l.correct + l.wrong)}
+            {name: 'Not-Checked', value: l.totalTextAudios - (l.correct + l.wrong)}
           ]
         });
       });
