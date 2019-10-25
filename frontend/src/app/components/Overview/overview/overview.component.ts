@@ -35,7 +35,6 @@ export class OverviewComponent implements OnInit {
 
   ngOnInit() {
     this.apiService.getLabeledSums().subscribe(l => {
-      console.log(l);
       this.inputData = l;
     });
     this.apiService.getTopFiveUsersLabeledCount().subscribe(l => this.userInputData = l);

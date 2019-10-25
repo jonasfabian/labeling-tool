@@ -15,6 +15,7 @@ export class HorizontalBarChartComponent implements OnInit, OnChanges {
   single = [];
   view = [];
   colorScheme = {domain: ['#3f51b5', '#7482cf', 'blue', 'darkblue']};
+  loaded = false;
 
   ngOnInit() {
     this.view = [innerWidth / 4, innerHeight / 6];
@@ -24,9 +25,11 @@ export class HorizontalBarChartComponent implements OnInit, OnChanges {
     const singleData = [];
     if (this.inputData.length !== 0) {
       this.inputData.forEach(l => {
-        singleData.push({name: l.username, value: l.labelCount});
+        // @ts-ignore
+        singleData.push({name: l.username, value: l.count});
       });
       this.single = singleData;
+      this.loaded = true;
     }
   }
 

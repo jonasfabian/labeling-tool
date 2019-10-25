@@ -15,17 +15,18 @@ export class BarChartComponent implements OnInit, OnChanges {
   single = [];
   view = [];
   colorScheme = {domain: ['#3f51b5', '#7482cf', 'blue', 'darkblue']};
+  loaded = false;
 
   ngOnInit() {
     this.view = [innerWidth / 4, innerHeight / 6];
   }
 
   ngOnChanges() {
-    console.log(this.inputData);
     const singleData = [];
     singleData.push({name: 'Correct', value: this.inputData.correct});
     singleData.push({name: 'Wrong', value: this.inputData.wrong});
     this.single = singleData;
+    this.loaded = true;
   }
 
   onResize(event) {
