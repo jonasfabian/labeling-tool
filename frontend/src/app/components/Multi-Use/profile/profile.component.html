@@ -1,13 +1,12 @@
-<div style="height: 40%;"
-     style="height: 400px; margin-top: -12px; background-color: #303f9f; display: flex; justify-content: center;">
+<div style="height: 40%; margin-top: -12px; background-color: #303f9f; display: flex; justify-content: center;">
   <mat-card style="margin: 15px; width: 50%; position: absolute;"
-            [style.height]="editProfile ? '500px' : 'calc(100% - 130px)'" id="header-card">
+            [style.height]="currentView === profileView.ProfileEdit ? '500px' : 'calc(100% - 130px)'" id="header-card">
     <div style="height: 10%; display: flex; align-items: center; margin-top: -15px;">
       <h1 style="margin: 0;">Account Settings</h1>
     </div>
     <mat-divider></mat-divider>
     <div style="width: 70%; float: left; height: 90%;">
-      <ng-container *ngIf="!editProfile && !isChangePassword">
+      <ng-container *ngIf="currentView === profileView.ProfileView">
         <mat-list>
           <mat-list-item>
             <span>First name:</span>&nbsp;
@@ -28,12 +27,12 @@
           <mat-list-item>
             <span>Password:</span>&nbsp;
             <mat-button-toggle style="position: absolute; left: 200px;"
-                               (click)="(isChangePassword = true) && (editProfile = true)">Change
+                               (click)="currentView = profileView.PasswordEdit">Change
             </mat-button-toggle>
           </mat-list-item>
         </mat-list>
       </ng-container>
-      <ng-container *ngIf="editProfile && isChangePassword">
+      <ng-container *ngIf="currentView === profileView.PasswordEdit">
         <form [formGroup]="changePasswordForm" (ngSubmit)="changePassword()">
           <div>
             <div>
@@ -51,7 +50,7 @@
                       style="border: lightgray 1px solid; padding: 0 12px; line-height: 48px; bottom: 0;"
                       type="submit">Submit
               </button>
-              <button (click)="(isChangePassword = false) && (editProfile = false)" mat-button type="button"
+              <button (click)="currentView = profileView.ProfileView" mat-button type="button"
                       style="border: lightgray 1px solid; padding: 0 12px; line-height: 48px; bottom: 0;">
                 Cancel
               </button>
@@ -59,8 +58,8 @@
           </div>
         </form>
       </ng-container>
-      <ng-container *ngIf="editProfile && !isChangePassword">
-        <form style="position: absolute; left: 300px; top: 16px;" [formGroup]="changeProfileForm"
+      <ng-container *ngIf="currentView === profileView.ProfileEdit">
+        <form style="margin: 30px;" [formGroup]="changeProfileForm"
               (ngSubmit)="changeProfile()">
           <div>
             <mat-form-field style="width: 100%;">
@@ -79,7 +78,7 @@
           </div>
           <div>
             <mat-form-field style="width: 100%;">
-              <input [errorStateMatcher]="matcher" type="email" matInput placeholder="Email" formControlName="email">
+              <input type="email" matInput placeholder="Email" formControlName="email">
             </mat-form-field>
           </div>
           <div>
@@ -94,170 +93,36 @@
           </div>
           <div>
             <button mat-button
-                    style="position: absolute; border: lightgray 1px solid; padding: 0 12px; line-height: 48px; bottom: 0;"
+                    style="border: lightgray 1px solid; padding: 0 12px; line-height: 48px;"
                     type="submit">Submit change Profile
             </button>
-            <button mat-button style="position: absolute; left: 200px; border: lightgray 1px solid; padding: 0 12px; line-height: 48px; bottom: 0;" (click)="editProfile = false">Cancel
+            <button mat-button
+                    style="border: lightgray 1px solid; padding: 0 12px; line-height: 48px; margin-left: 5px;"
+                    (click)="currentView = profileView.ProfileView">Cancel
             </button>
           </div>
         </form>
       </ng-container>
     </div>
     <div style="width: 30%; float: right; height: 90%; margin-top: 15px;">
-      <ng-container *ngIf="!isChangePassword && !editProfile">
+      <ng-container *ngIf="currentView === profileView.ProfileView">
+        <mat-button-toggle title="Change Avatar"
+                           style="position: absolute; right: 25px; top: calc(10% + 20px); border-radius: 50%;"
+                           (click)="fileInput.click()">
+          <mat-icon>edit</mat-icon>
+        </mat-button-toggle>
+        <app-avatar [size]="260" style="float: left;" [user]="user" [fontSize]="100" [borderRadius]="0"></app-avatar>
         <div style="text-align: center; padding: 15px;">
           <span style="font-size: 25px;">{{user.username}}</span>
         </div>
-        <ng-container *ngIf="authService.loggedInUser.avatarVersion === 0">
-          <mat-button-toggle title="Change Avatar"
-                             style="position: absolute; right: 25px; top: calc(10% + 20px); border-radius: 50%;"
-                             (click)="fileInput.click()">
-            <mat-icon>edit</mat-icon>
-          </mat-button-toggle>
-          <app-avatar [size]="260" style="float: left;" [user]="user" [fontSize]="100" [borderRadius]="0"></app-avatar>
-        </ng-container>
         <input style="display: none;" type="file" (change)="onFileChanged($event)" accept=".png, .jpg" #fileInput>
         <div>
           <mat-button-toggle style="position: absolute; bottom: 15px; width: calc(30% - 10px);"
-                             (click)="editProfile = true">Edit Profile Information
+                             (click)="currentView = profileView.ProfileEdit">Edit Profile Information
           </mat-button-toggle>
         </div>
       </ng-container>
     </div>
-    <!--
-    <ng-container *ngIf="editProfile">
-      <form style="position: absolute; left: 300px; top: 16px;" [formGroup]="changeProfileForm"
-            (ngSubmit)="changeProfile()">
-        <div>
-          <mat-form-field style="width: 100%;">
-            <input type="text" matInput placeholder="Username" formControlName="username">
-          </mat-form-field>
-        </div>
-        <div>
-          <mat-form-field style="width: 100%;">
-            <input type="text" matInput placeholder="First Name" formControlName="firstName">
-          </mat-form-field>
-        </div>
-        <div>
-          <mat-form-field style="width: 100%;">
-            <input type="text" matInput placeholder="Last Name" formControlName="lastName">
-          </mat-form-field>
-        </div>
-        <div>
-          <mat-form-field style="width: 100%;">
-            <input [errorStateMatcher]="matcher" type="email" matInput placeholder="Email" formControlName="email">
-          </mat-form-field>
-        </div>
-        <div>
-          <mat-form-field style="width: 100%;">
-            <mat-label>Canton</mat-label>
-            <mat-select formControlName="canton">
-              <mat-option>None</mat-option>
-              <mat-option *ngFor="let canton of apiService.cantons"
-                          [value]="canton.cantonId">{{canton.cantonName}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div>
-          <button mat-button
-                  style="position: absolute; left: 200px; border: lightgray 1px solid; padding: 0 12px; line-height: 48px; bottom: 0;"
-                  type="submit">Submit change Profile
-          </button>
-        </div>
-      </form>
-      <input style="display: none;" type="file" (change)="onFileChanged($event)" accept=".png, .jpg" #fileInput>
-      <mat-button-toggle style="left: 500px; position: absolute;" (click)="fileInput.click()">Change Avatar
-      </mat-button-toggle>
-      <mat-button-toggle style="position: absolute; top: 16px; left: 630px;" *ngIf="editProfile"
-                         (click)="isChangePassword = true">Change Password
-      </mat-button-toggle>
-      <mat-button-toggle style="position: absolute; right: 15px; bottom: 15px;" (click)="editProfile = false">Back to
-        Profile
-      </mat-button-toggle>
-      <div style="margin-top: 50px;" *ngIf="isChangePassword">
-        <form [formGroup]="changePasswordForm" (ngSubmit)="changePassword()">
-          <div>
-            <div>
-              <mat-form-field style="width: 100%;">
-                <input type="password" matInput placeholder="Old Password" formControlName="password">
-              </mat-form-field>
-            </div>
-            <div>
-              <mat-form-field style="width: 100%;">
-                <input type="password" matInput placeholder="New Password" formControlName="newPassword">
-              </mat-form-field>
-            </div>
-            <div>
-              <button mat-button
-                      style="border: lightgray 1px solid; padding: 0 12px; line-height: 48px; bottom: 0;"
-                      type="submit">Submit
-              </button>
-              <button (click)="isChangePassword = false" mat-button type="button"
-                      style="border: lightgray 1px solid; padding: 0 12px; line-height: 48px; bottom: 0;">
-                Cancel
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </ng-container>-->
-
   </mat-card>
 </div>
 <div style="height: 60%;"></div>
-<!--
-<div *ngIf="!editProfile" style="height: calc(100% - 330px);">
-  <mat-card style="margin: 15px; height: calc(100% - 170px);">
-    <table style="height: calc(100% - 50px); width: 100%;" mat-table [dataSource]="dataSource" matSort
-           id="overview-table">
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-        <td mat-cell *matCellDef="let element">{{element.id}}</td>
-      </ng-container>
-      <ng-container matColumnDef="samplingRate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Sampling Rate</th>
-        <td mat-cell *matCellDef="let element">{{element.samplingRate}}</td>
-      </ng-container>
-      <ng-container matColumnDef="textStartPos">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Text Starting Position</th>
-        <td mat-cell *matCellDef="let element">{{element.textStartPos}}</td>
-      </ng-container>
-      <ng-container matColumnDef="textEndPos">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Text Ending Position</th>
-        <td mat-cell *matCellDef="let element">{{element.textEndPos}}</td>
-      </ng-container>
-      <ng-container matColumnDef="audioStartPos">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Audio Starting Position</th>
-        <td mat-cell *matCellDef="let element">{{element.audioStartPos}}</td>
-      </ng-container>
-      <ng-container matColumnDef="audioEndPos">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Audio Ending Position</th>
-        <td mat-cell *matCellDef="let element">{{element.audioEndPos}}</td>
-      </ng-container>
-      <ng-container matColumnDef="speakerKey">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Speaker Key</th>
-        <td mat-cell *matCellDef="let element">{{element.speakerKey}}</td>
-      </ng-container>
-      <ng-container matColumnDef="labeled">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Labeled</th>
-        <td mat-cell *matCellDef="let element">{{element.labeled | IntToBooleanPipe}}</td>
-      </ng-container>
-      <ng-container matColumnDef="correct">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Correct</th>
-        <td mat-cell *matCellDef="let element">{{element.correct}}</td>
-      </ng-container>
-      <ng-container matColumnDef="wrong">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Wrong</th>
-        <td mat-cell *matCellDef="let element">{{element.wrong}}</td>
-      </ng-container>
-      <ng-container matColumnDef="transcriptFileId">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Transcript File ID</th>
-        <td mat-cell *matCellDef="let element">{{element.transcriptFileId}}</td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-      <tr style="height: 20px;" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-    <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons></mat-paginator>
-  </mat-card>
-</div>
--->

@@ -16,7 +16,7 @@ export class OverviewComponent implements OnInit {
   ) {
   }
 
-  inputData: Array<Sums> = [];
+  inputData: Sums = new Sums(0, 0, 0);
   userInputData: Array<UserLabeledData> = [];
 
   data = [];
@@ -34,26 +34,27 @@ export class OverviewComponent implements OnInit {
   );
 
   ngOnInit() {
-    this.apiService.getLabeledSums().subscribe(l => this.inputData = l);
+    this.apiService.getLabeledSums().subscribe(l => {
+      this.inputData = l;
+    });
     this.apiService.getTopFiveUsersLabeledCount().subscribe(l => this.userInputData = l);
   }
 
   generateTable(): void {
-    this.apiService.getTextAudioIndexes().subscribe(te => te.forEach(l => {
+    this.apiService.getTextAudios().subscribe(textAudio => textAudio.forEach(l => {
         this.data.push({
           id: l.id,
-          samplingRate: l.samplingRate,
-          textStartPos: l.textStartPos,
-          textEndPos: l.textEndPos,
-          audioStartPos: l.audioStartPos,
-          audioEndPos: l.audioEndPos,
-          speakerKey: l.speakerKey,
+          audioStart: l.audioStart,
+          audioEnd: l.audioEnd,
+          text: l.text,
+          fileId: l.fileId,
+          speaker: l.speaker,
           labeled: l.labeled,
           correct: l.correct,
           wrong: l.wrong,
-          transcriptFileId: l.transcriptFileId
         });
-      }), () => {}
+      }), () => {
+      }
       , () => this.csvExporter.generateCsv(this.data));
   }
 }

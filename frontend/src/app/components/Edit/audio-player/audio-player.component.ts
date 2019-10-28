@@ -1,17 +1,11 @@
-import {
-  Component,
-  EventEmitter, Input,
-  OnChanges,
-  OnInit,
-  Output
-} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
 import CursorPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 import {AudioSnippet} from '../../../models/AudioSnippet';
 import {ApiService} from '../../../services/api.service';
-import {TextAudioIndexWithText} from '../../../models/TextAudioIndexWithText';
+import {TextAudio} from '../../../models/TextAudio';
 
 @Component({
   selector: 'app-audio-player',
@@ -26,13 +20,11 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
   }
 
   @Input() audioPosition: AudioSnippet;
-  @Input() textAudioIndexWithText: TextAudioIndexWithText;
+  @Input() textAudio: TextAudio;
   @Output() regionPosition = new EventEmitter<AudioSnippet>();
   @Output() uploadSuccess = new EventEmitter<boolean>();
   @Output() loading = new EventEmitter<boolean>();
   reg = new AudioSnippet(null, null);
-  BASE64_MARKER = ';base64,';
-  blobUrl = '';
   fileId = 0;
   waveSurfer: WaveSurfer = null;
   paused = false;
@@ -40,27 +32,17 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.onPreviewPressed();
-  }
-
-  convertDataURIToBinary(dataURI) {
-    const base64Index = dataURI.indexOf(this.BASE64_MARKER) + this.BASE64_MARKER.length;
-    const base64 = dataURI.substring(base64Index);
-    const raw = window.atob(base64);
-    const rawLength = raw.length;
-    const array = new Uint8Array(new ArrayBuffer(rawLength));
-
-    for (let i = 0; i < rawLength; i++) {
-      array[i] = raw.charCodeAt(i);
-    }
-    return array;
+    this.apiService.getAudioFile(1).subscribe(resp => {
+      this.waveSurfer.load(URL.createObjectURL(resp));
+    });
   }
 
   ngOnChanges(): void {
     if (this.audioPosition.startTime !== null) {
-      if (this.textAudioIndexWithText.transcriptFileId !== this.fileId) {
+      if (this.textAudio.fileId !== this.fileId) {
         this.loading.emit(true);
-        this.fileId = this.textAudioIndexWithText.transcriptFileId;
-        this.loadAudioBlob(this.textAudioIndexWithText.transcriptFileId);
+        this.fileId = this.textAudio.fileId;
+        this.loadAudioBlob(this.textAudio.fileId);
       }
       if ((this.waveSurfer !== undefined) && (this.audioPosition.startTime !== null)) {
         this.waveSurfer.on('ready', () => {
@@ -89,14 +71,7 @@ export class AudioPlayerComponent implements OnInit, OnChanges {
 
   loadAudioBlob(fileId: number): void {
     this.apiService.getAudioFile(fileId).subscribe(resp => {
-      const reader = new FileReader();
-      reader.readAsDataURL(resp);
-      reader.addEventListener('loadend', () => {
-        const binary = this.convertDataURIToBinary(reader.result);
-        const blob = new Blob([binary], {type: `application/octet-stream`});
-        this.blobUrl = URL.createObjectURL(blob);
-        this.waveSurfer.load(this.blobUrl);
-      });
+      this.waveSurfer.load(URL.createObjectURL(resp));
     });
   }
 

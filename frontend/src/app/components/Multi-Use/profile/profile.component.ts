@@ -3,14 +3,11 @@ import {ApiService} from '../../../services/api.service';
 import {UserPublicInfo} from '../../../models/UserPublicInfo';
 import {Router} from '@angular/router';
 import {AuthService} from '../../../services/auth.service';
-import {TextAudioIndex} from '../../../models/TextAudioIndex';
-import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {HttpClient} from '@angular/common/http';
 import {Avatar} from '../../../models/Avatar';
-import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
-import {ErrorStateMatcher} from '@angular/material';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ChangePassword} from '../../../models/ChangePassword';
 
 @Component({
@@ -33,35 +30,19 @@ export class ProfileComponent implements OnInit {
   changeProfileForm: FormGroup;
   changePasswordForm: FormGroup;
   user = new UserPublicInfo(-1, '', '', '', '', 0, '');
-  textAudioIndexArray: Array<TextAudioIndex> = [];
-  displayedColumns = ['id', 'samplingRate', 'textStartPos', 'textEndPos', 'audioStartPos', 'audioEndPos', 'speakerKey', 'labeled', 'correct', 'wrong', 'transcriptFileId'];
-  dataSource = new MatTableDataSource<TextAudioIndex>();
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   selectedFile: Blob;
   fileByteArray: Array<number> = [];
   yeet: any;
-  editProfile = false;
-  matcher = new MyErrorStateMatcher();
-  isChangePassword = false;
+  profileView = ProfileView;
+  currentView = this.profileView.ProfileView;
 
   ngOnInit() {
     this.authService.checkAuthenticated();
     this.user = this.authService.loggedInUser;
-    this.apiService.getCheckedTextAudioIndexesByUser(this.authService.loggedInUser.id).subscribe(l => {
-        this.textAudioIndexArray = l;
-        this.dataSource = new MatTableDataSource<TextAudioIndex>(l);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      }, () => {
-      },
-      () => {
-        this.dataSource.filterPredicate = (data, filter: string): boolean => {
-          return data.labeled.toString().toLowerCase().includes(filter);
-        };
-        this.initForm();
-        this.initPasswordForm();
-      });
+    this.initForm();
+    this.initPasswordForm();
   }
 
   initForm(): void {
@@ -89,7 +70,7 @@ export class ProfileComponent implements OnInit {
     this.user.canton = this.changeProfileForm.controls.canton.value;
     if (this.changeProfileForm.valid) {
       this.apiService.updateUser(this.user).subscribe(_ => {
-        this.editProfile = false;
+        this.currentView = this.profileView.ProfileView;
       }, () => {
       }, () => {
         sessionStorage.setItem('user', JSON.stringify([{
@@ -119,9 +100,8 @@ export class ProfileComponent implements OnInit {
           this.fileByteArray.push(l);
         });
         this.authService.loggedInUser.avatarVersion++;
-        this.http.post('http://localhost:8080/api/match/createAvatar', new Avatar(-1, this.user.id, this.fileByteArray)).subscribe(_ => {
+        this.http.post('http://localhost:5000/createAvatar?userId=' + this.user.id, new Avatar(-1, this.user.id, this.fileByteArray)).subscribe(_ => {
           this.apiService.getAvatar(this.user.id).subscribe(a => {
-            this.authService.source = 'data:image/png;base64,' + btoa(String.fromCharCode.apply(null, new Uint8Array(a.avatar)));
             this.apiService.updateUser(this.authService.loggedInUser).subscribe();
             sessionStorage.setItem('user', JSON.stringify([{
               id: this.authService.loggedInUser.id,
@@ -150,14 +130,12 @@ export class ProfileComponent implements OnInit {
       if (err.status === 401) {
         alert('Wrong password');
       }
-    }, () => this.isChangePassword = false);
+    }, () => this.currentView = this.profileView.ProfileView);
   }
 }
 
-// tslint:disable-next-line:component-class-suffix
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    const isSubmitted = form && form.submitted;
-    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
-  }
+export enum ProfileView {
+  ProfileView,
+  ProfileEdit,
+  PasswordEdit
 }

@@ -24,7 +24,7 @@
             <mat-icon style="color: green; float: left;" *ngIf="entry.checkedType === 1">check</mat-icon>
             <mat-icon style="color: red; float: left;" *ngIf="entry.checkedType === 2">clear</mat-icon>
             <mat-icon style="color: gray; float: left;" *ngIf="entry.checkedType === 3">redo</mat-icon>
-            <span style="float: left;">{{entry.textAudioIndexWithText.id}}</span>
+            <span style="float: left;">{{entry.textAudio.id}}</span>
           </mat-chip>
         </mat-list-item>
       </ng-container>
@@ -41,11 +41,11 @@
         <div class="item-carousel" *ngFor="let te of checkIndexArray">
           <mat-card *ngIf="te.id !== carousel.carousel.activeIndex"
                     style="border-bottom-left-radius: 0; border-bottom-right-radius: 0;">
-            <div style="width: 100%;">{{te.textAudioIndexWithText.text}}</div>
+            <div style="width: 100%;">{{te.textAudio.text}}</div>
           </mat-card>
           <mat-card *ngIf="te.id === carousel.carousel.activeIndex"
                     style="border-bottom-left-radius: 0; border-bottom-right-radius: 0;">
-            <div style="width: 100%;">{{te.textAudioIndexWithText.text}}</div>
+            <div style="width: 100%;">{{te.textAudio.text}}</div>
           </mat-card>
           <mat-progress-bar *ngIf="te.id === carousel.carousel.activeIndex"
                             style="margin-left: auto; margin-right: auto; transition: none; height: 8px; border-radius: 0 0 10px 10px;"

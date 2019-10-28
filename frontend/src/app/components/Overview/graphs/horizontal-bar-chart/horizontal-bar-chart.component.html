@@ -1,4 +1,4 @@
-<ngx-charts-bar-horizontal
+<ngx-charts-bar-horizontal *ngIf="loaded"
   (window:resize)="onResize($event)"
   [showGridLines]="true"
   [view]="view"

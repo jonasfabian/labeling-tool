@@ -1,11 +1,9 @@
-import {ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AudioSnippet} from '../../../models/AudioSnippet';
-import {MatDialog} from '@angular/material';
 import {ApiService} from '../../../services/api.service';
 import {DomSanitizer} from '@angular/platform-browser';
-import {TextAudioIndexWithText} from '../../../models/TextAudioIndexWithText';
-import {ShortcutComponent} from '../../Multi-Use/shortcut/shortcut.component';
 import {AuthService} from '../../../services/auth.service';
+import {TextAudio} from '../../../models/TextAudio';
 
 @Component({
   selector: 'app-content',
@@ -18,20 +16,17 @@ export class ContentComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private apiService: ApiService,
     private authService: AuthService,
-    public dialog: MatDialog,
     private ref: ChangeDetectorRef
   ) {
   }
 
   @ViewChild('hT', {static: true}) hT: ElementRef;
+  @ViewChild('textAreaText', {static: false}) textAreaText: ElementRef<HTMLTextAreaElement>;
   snip = new AudioSnippet(null, null);
   text: string | ArrayBuffer = '';
-  dummyTextAudioIndex = new TextAudioIndexWithText(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '');
-  textBegin = '';
-  highlightedText = '';
-  selectedText = '';
-  textEnd = '';
+  dummyTextAudio = new TextAudio(0, 0, 0, '', 0, '', 0, 0, 0);
   loading = false;
+  editingText = false;
 
   ngOnInit() {
     this.textSetup();
@@ -43,66 +38,36 @@ export class ContentComponent implements OnInit {
   }
 
   getRegionSnippet(snippet: AudioSnippet) {
-    this.dummyTextAudioIndex.audioStartPos = snippet.startTime * this.dummyTextAudioIndex.samplingRate;
-    this.dummyTextAudioIndex.audioEndPos = snippet.endTime * this.dummyTextAudioIndex.samplingRate;
-  }
-
-  displayHighlightedText() {
-    let highlightedTextLength = 0;
-    if (window.getSelection) {
-      this.hT.nativeElement.style.backgroundColor = 'white';
-      this.selectedText = window.getSelection().toString();
-      highlightedTextLength = this.selectedText.length;
-    }
-    const tempStartPos = this.text.toString().indexOf(this.selectedText.toString());
-    const tempEndPos = tempStartPos + highlightedTextLength;
-    if (tempStartPos !== -1) {
-      this.dummyTextAudioIndex.textStartPos = tempStartPos;
-      this.dummyTextAudioIndex.textEndPos = tempEndPos;
-    }
+    this.dummyTextAudio.audioStart = snippet.startTime;
+    this.dummyTextAudio.audioEnd = snippet.endTime;
   }
 
   submitText(): void {
-    this.apiService.updateTextAudioIndex(this.dummyTextAudioIndex).subscribe(_ => {
+    this.dummyTextAudio.labeled = 1;
+    this.apiService.updateTextAudio(this.dummyTextAudio).subscribe(_ => {
       this.textSetup();
     });
   }
 
   textSetup(): void {
-    this.apiService.getNonLabeledTextAudioIndex(0).subscribe(nonLabeledTextAudioI => {
-      this.dummyTextAudioIndex = nonLabeledTextAudioI;
-      this.snip = new AudioSnippet(nonLabeledTextAudioI.audioStartPos / nonLabeledTextAudioI.samplingRate, nonLabeledTextAudioI.audioEndPos / nonLabeledTextAudioI.samplingRate);
-      this.text = nonLabeledTextAudioI.text;
-      this.textBegin = nonLabeledTextAudioI.text.slice(nonLabeledTextAudioI.textStartPos - 100, nonLabeledTextAudioI.textStartPos);
-      this.selectedText = this.highlightedText = nonLabeledTextAudioI.text.slice(nonLabeledTextAudioI.textStartPos, nonLabeledTextAudioI.textEndPos);
-      this.hT.nativeElement.style.backgroundColor = 'steelblue';
-      this.textEnd = nonLabeledTextAudioI.text.slice(nonLabeledTextAudioI.textEndPos, nonLabeledTextAudioI.textEndPos + 100);
-      this.dummyTextAudioIndex.labeled = 1;
+    this.apiService.getTextAudio().subscribe(textAudio => {
+      this.dummyTextAudio = textAudio;
+      this.snip = new AudioSnippet(textAudio.audioStart, textAudio.audioEnd);
+      this.text = textAudio.text;
     });
   }
 
-  showMoreTextBefore(): void {
-    const begin = this.text.toString().indexOf(this.textBegin);
-    const end = this.text.toString().indexOf(this.textBegin) + this.textBegin.length;
-    this.textBegin = this.text.slice(begin - 20, end).toString();
+  editText(): void {
+    this.editingText = !this.editingText;
   }
 
-  showMoreTextAfter(): void {
-    const begin = this.text.toString().indexOf(this.textEnd);
-    const end = this.text.toString().indexOf(this.textEnd) + this.textEnd.length;
-    this.textEnd = this.text.slice(begin, end + 20).toString();
+  changeText(): void {
+    this.dummyTextAudio.text = this.textAreaText.nativeElement.value;
+    this.editingText = !this.editingText;
   }
 
-  openShortcutDialog(): void {
-    this.dialog.open(ShortcutComponent, {width: '500px'});
-  }
-
-  @HostListener('window:keyup', ['$event'])
-  keyEvent(event: KeyboardEvent) {
-    if (event.key === 'c') {
-      this.submitText();
-    } else if (event.key === 's') {
-      this.submitText();
-    }
+  cancelEditing(): void {
+    this.editingText = !this.editingText;
+    this.textAreaText.nativeElement.value = this.dummyTextAudio.text;
   }
 }
