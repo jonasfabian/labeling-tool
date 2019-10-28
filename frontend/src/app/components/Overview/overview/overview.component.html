@@ -37,7 +37,7 @@
           </mat-card-title>
           <app-table *ngIf="!editElement" (editAudio)="isEditElement($event)" (textAudio)="setTextAudio($event)"></app-table>
           <div *ngIf="editElement">
-            <app-audio-player (loading)="getReady($event)" [audioPosition]="audioSnippet" [textAudio]="textAudio"></app-audio-player>
+            <app-audio-player [audioPosition]="audioSnippet" [textAudio]="textAudio"></app-audio-player>
             <mat-button-toggle (click)="editElement = false">Cancel</mat-button-toggle>
           </div>
           <div style="position: absolute; top: 15px; right: 15px;">

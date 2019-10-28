@@ -21,10 +21,12 @@ export class BarChartComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    const singleData = [];
-    singleData.push({name: 'Correct', value: this.inputData.correct});
-    singleData.push({name: 'Wrong', value: this.inputData.wrong});
-    this.single = singleData;
+    if (this.inputData.total !== 0) {
+      const singleData = [];
+      singleData.push({name: 'Correct', value: this.inputData.correct});
+      singleData.push({name: 'Wrong', value: this.inputData.wrong});
+      this.single = singleData;
+    }
   }
 
   onResize(event) {

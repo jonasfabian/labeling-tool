@@ -29,7 +29,8 @@ export class TableComponent implements OnInit, OnChanges {
       this.dataSource = new MatTableDataSource<TextAudio>(textAudio);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-    }, () => {}, () => {
+    }, () => {
+    }, () => {
       this.dataSource.filterPredicate = (data, filter: string): boolean => {
         return data.labeled.toString().toLowerCase().includes(filter);
       };

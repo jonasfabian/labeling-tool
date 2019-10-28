@@ -57,6 +57,7 @@ export class OverviewComponent implements OnInit {
 
   generateTable(): void {
     this.apiService.getTextAudios().subscribe(textAudio => textAudio.forEach(l => {
+        console.log(l);
         this.data.push({
           id: l.id,
           audioStart: l.audioStart,
