@@ -35,7 +35,11 @@
           <mat-card-title>
             <strong>Interesting numbers</strong>
           </mat-card-title>
-          <app-table></app-table>
+          <app-table *ngIf="!editElement" (editAudio)="isEditElement($event)" (textAudio)="setTextAudio($event)"></app-table>
+          <div *ngIf="editElement">
+            <app-audio-player (loading)="getReady($event)" [audioPosition]="audioSnippet" [textAudio]="textAudio"></app-audio-player>
+            <mat-button-toggle (click)="editElement = false">Cancel</mat-button-toggle>
+          </div>
           <div style="position: absolute; top: 15px; right: 15px;">
             <mat-button-toggle (click)="generateTable()">Export as CSV</mat-button-toggle>
           </div>

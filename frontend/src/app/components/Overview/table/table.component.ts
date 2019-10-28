@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} from '@angular/core';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {ApiService} from '../../../services/api.service';
 import {TextAudio} from '../../../models/TextAudio';
@@ -15,12 +15,14 @@ export class TableComponent implements OnInit, OnChanges {
   ) {
   }
 
-  displayedColumns = ['id', 'audioStart', 'audioEnd', 'text', 'fileId', 'speaker', 'labeled', 'correct', 'wrong'];
+  displayedColumns = ['id', 'audioStart', 'audioEnd', 'text', 'fileId', 'speaker', 'labeled', 'correct', 'wrong', 'play', 'edit'];
   dataSource = new MatTableDataSource<TextAudio>();
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @Input() vale: string;
+  @Output() editAudio = new EventEmitter<boolean>();
+  @Output() textAudio = new EventEmitter<TextAudio>();
 
   ngOnInit() {
     this.apiService.getTextAudios().subscribe(textAudio => {
@@ -38,6 +40,11 @@ export class TableComponent implements OnInit, OnChanges {
     if (this.vale !== '') {
       this.filterPie(this.vale);
     }
+  }
+
+  editElement(element: TextAudio): void {
+    this.textAudio.emit(element);
+    this.editAudio.emit(true);
   }
 
   filterPie(input: string): void {

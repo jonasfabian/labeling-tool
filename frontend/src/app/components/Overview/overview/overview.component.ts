@@ -3,6 +3,8 @@ import {ExportToCsv} from 'export-to-csv';
 import {ApiService} from '../../../services/api.service';
 import {Sums} from '../../../models/Sums';
 import {UserLabeledData} from '../../../models/UserLabeledData';
+import {TextAudio} from '../../../models/TextAudio';
+import {AudioSnippet} from '../../../models/AudioSnippet';
 
 @Component({
   selector: 'app-overview',
@@ -18,6 +20,9 @@ export class OverviewComponent implements OnInit {
 
   inputData: Sums = new Sums(0, 0, 0);
   userInputData: Array<UserLabeledData> = [];
+  editElement = false;
+  textAudio = new TextAudio(0, 0, 0, '', 0, '', 0, 0, 0);
+  audioSnippet = new AudioSnippet(0, 0);
 
   data = [];
   options = {
@@ -38,6 +43,16 @@ export class OverviewComponent implements OnInit {
       this.inputData = l;
     });
     this.apiService.getTopFiveUsersLabeledCount().subscribe(l => this.userInputData = l);
+  }
+
+  isEditElement(isEdit: boolean): void {
+    this.editElement = isEdit;
+  }
+
+  setTextAudio(tA: TextAudio): void {
+    this.textAudio = tA;
+    this.audioSnippet.startTime = tA.audioStart;
+    this.audioSnippet.endTime = tA.audioEnd;
   }
 
   generateTable(): void {

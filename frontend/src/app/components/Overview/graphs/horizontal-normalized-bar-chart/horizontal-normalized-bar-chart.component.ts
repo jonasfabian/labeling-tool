@@ -15,7 +15,6 @@ export class HorizontalNormalizedBarChartComponent implements OnInit, OnChanges 
   single = [];
   view = [];
   colorScheme = {domain: ['#3f51b5', '#7482cf', 'blue', 'darkblue']};
-  loaded = false;
 
   ngOnInit() {
     this.view = [innerWidth / 4, innerHeight / 6];
@@ -30,7 +29,6 @@ export class HorizontalNormalizedBarChartComponent implements OnInit, OnChanges 
       ]
     });
     this.single = singleData;
-    this.loaded = true;
   }
 
   onResize(event) {
