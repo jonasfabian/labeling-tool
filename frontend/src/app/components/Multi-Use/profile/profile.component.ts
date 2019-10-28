@@ -100,8 +100,9 @@ export class ProfileComponent implements OnInit {
           this.fileByteArray.push(l);
         });
         this.authService.loggedInUser.avatarVersion++;
-        this.http.post('http://localhost:5000/createAvatar?userId=' + this.user.id, new Avatar(-1, this.user.id, this.fileByteArray)).subscribe(_ => {
+        this.http.post('http://localhost:5000/createAvatar', new Avatar(-1, this.user.id, this.fileByteArray)).subscribe(_ => {
           this.apiService.getAvatar(this.user.id).subscribe(a => {
+            this.authService.source = 'data:image/png;base64,' + btoa(String.fromCharCode.apply(null, new Uint8Array(a.avatar)));
             this.apiService.updateUser(this.authService.loggedInUser).subscribe();
             sessionStorage.setItem('user', JSON.stringify([{
               id: this.authService.loggedInUser.id,
