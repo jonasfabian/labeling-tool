@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} from '@angular/core';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {ApiService} from '../../../services/api.service';
 import {TextAudio} from '../../../models/TextAudio';
@@ -6,6 +6,7 @@ import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
 import CursorPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-table',
@@ -15,7 +16,9 @@ import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 export class TableComponent implements OnInit, OnChanges {
 
   constructor(
-    private apiService: ApiService
+    private apiService: ApiService,
+    private sanitizer: DomSanitizer,
+    private ref: ChangeDetectorRef
   ) {
   }
 
@@ -28,6 +31,7 @@ export class TableComponent implements OnInit, OnChanges {
   dataSource = new MatTableDataSource<TextAudio>();
   waveSurfer: WaveSurfer = null;
   isEdit = false;
+  wavesurferIsReady = false;
   paused = false;
   toggleVolume = false;
   text = '';
@@ -52,8 +56,20 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   editElement(textAudio: TextAudio): void {
+    this.wavesurferIsReady = false;
     this.generateWaveform(textAudio);
     this.isEdit = true;
+    if (this.waveSurfer != null) {
+      this.waveSurfer.destroy();
+    }
+  }
+
+  calcTableWidth(isEdit: boolean) {
+    if (isEdit) {
+      return this.sanitizer.bypassSecurityTrustStyle('calc(50% + 150px)');
+    } else {
+      return this.sanitizer.bypassSecurityTrustStyle('calc(100% - 36px)');
+    }
   }
 
   generateWaveform(textAudio: TextAudio): void {
@@ -91,6 +107,10 @@ export class TableComponent implements OnInit, OnChanges {
         });
         this.setViewToRegion(textAudio);
         this.text = textAudio.text;
+      });
+      this.waveSurfer.on('waveform-ready', () => {
+        this.wavesurferIsReady = true;
+        this.ref.detectChanges();
       });
     });
   }
