@@ -62,10 +62,13 @@
           <mat-icon>thumb_up</mat-icon>
           <span>&nbsp;Correct</span>
         </mat-button-toggle>
-        <mat-button-toggle *ngIf="!isPlaying" class="check-navigation-button" (click)="playRegion();" [disabled]="!isReady">
+        <mat-button-toggle class="check-navigation-button" style="line-height: 48px;" *ngIf="!isReady">
+          <mat-spinner [diameter]="20" style="top: 5px;"></mat-spinner>
+        </mat-button-toggle>
+        <mat-button-toggle *ngIf="isReady && !isPlaying" class="check-navigation-button" (click)="playRegion();" [disabled]="!isReady">
           <mat-icon>play_arrow</mat-icon>
         </mat-button-toggle>
-        <mat-button-toggle *ngIf="isPlaying" class="check-navigation-button" (click)="playRegion();" [disabled]="!isReady">
+        <mat-button-toggle *ngIf="isReady && isPlaying" class="check-navigation-button" (click)="playRegion();" [disabled]="!isReady">
           <mat-icon>pause</mat-icon>
         </mat-button-toggle>
         <mat-button-toggle class="check-navigation-button" (click)="setCheckedType(this.wrong)">
