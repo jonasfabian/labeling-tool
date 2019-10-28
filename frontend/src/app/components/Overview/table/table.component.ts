@@ -2,6 +2,10 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} fr
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {ApiService} from '../../../services/api.service';
 import {TextAudio} from '../../../models/TextAudio';
+import WaveSurfer from 'wavesurfer.js';
+import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
+import CursorPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js';
+import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 
 @Component({
   selector: 'app-table',
@@ -15,14 +19,17 @@ export class TableComponent implements OnInit, OnChanges {
   ) {
   }
 
-  displayedColumns = ['id', 'audioStart', 'audioEnd', 'text', 'fileId', 'speaker', 'labeled', 'correct', 'wrong', 'play', 'edit'];
-  dataSource = new MatTableDataSource<TextAudio>();
-
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @Input() vale: string;
   @Output() editAudio = new EventEmitter<boolean>();
   @Output() textAudio = new EventEmitter<TextAudio>();
+  displayedColumns = ['id', 'audioStart', 'audioEnd', 'text', 'fileId', 'speaker', 'labeled', 'correct', 'wrong', 'play', 'edit'];
+  dataSource = new MatTableDataSource<TextAudio>();
+  waveSurfer: WaveSurfer = null;
+  isEdit = false;
+  paused = false;
+  toggleVolume = false;
 
   ngOnInit() {
     this.apiService.getTextAudios().subscribe(textAudio => {
@@ -43,9 +50,79 @@ export class TableComponent implements OnInit, OnChanges {
     }
   }
 
-  editElement(element: TextAudio): void {
-    this.textAudio.emit(element);
-    this.editAudio.emit(true);
+  editElement(textAudio: TextAudio): void {
+    this.generateWaveform(textAudio);
+  }
+
+  generateWaveform(textAudio: TextAudio): void {
+    Promise.resolve(null).then(() => {
+      this.waveSurfer = WaveSurfer.create({
+        container: '#waveform',
+        backend: 'MediaElement',
+        waveColor: 'lightblue',
+        progressColor: 'blue',
+        partialRender: false,
+        normalize: false,
+        responsive: true,
+        plugins: [
+          TimelinePlugin.create({
+            container: '#wave-timeline'
+          }),
+          CursorPlugin.create({
+            showTime: true,
+            opacity: 1
+          }),
+          RegionsPlugin.create({
+            regions: []
+          })
+        ]
+      });
+      this.loadAudioBlob(textAudio.fileId);
+      this.waveSurfer.on('ready', () => {
+        this.isEdit = true;
+        this.waveSurfer.clearRegions();
+        this.waveSurfer.addRegion({
+          start: textAudio.audioStart,
+          end: textAudio.audioEnd,
+          resize: true,
+          color: 'hsla(200, 50%, 70%, 0.4)'
+        });
+        this.setViewToRegion(textAudio);
+      });
+    });
+  }
+
+  play(): void {
+    this.paused = true;
+    this.waveSurfer.play();
+  }
+
+  setViewToRegion(textAudio: TextAudio): void {
+    this.waveSurfer.zoom(50);
+    const diff = textAudio.audioStart - textAudio.audioEnd;
+    const centre = textAudio.audioStart + (diff / 2);
+    const fin = (centre / this.waveSurfer.getDuration());
+    this.waveSurfer.seekAndCenter(fin);
+  }
+
+  pause(): void {
+    this.paused = false;
+    this.waveSurfer.pause();
+  }
+
+  setVolume(volume: any): void {
+    this.waveSurfer.setVolume(volume.value / 100);
+  }
+
+  loadAudioBlob(fileId: number): void {
+    this.apiService.getAudioFile(fileId).subscribe(resp => {
+      this.waveSurfer.load(URL.createObjectURL(resp));
+    });
+  }
+
+  cancelEdit(): void {
+    this.isEdit = false;
+    this.waveSurfer.destroy();
   }
 
   filterPie(input: string): void {
