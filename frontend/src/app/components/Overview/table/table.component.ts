@@ -24,12 +24,13 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() vale: string;
   @Output() editAudio = new EventEmitter<boolean>();
   @Output() textAudio = new EventEmitter<TextAudio>();
-  displayedColumns = ['id', 'audioStart', 'audioEnd', 'text', 'fileId', 'speaker', 'labeled', 'correct', 'wrong', 'play', 'edit'];
+  displayedColumns = ['id', 'audioStart', 'audioEnd', 'text', 'fileId', 'speaker', 'labeled', 'correct', 'wrong', 'play'];
   dataSource = new MatTableDataSource<TextAudio>();
   waveSurfer: WaveSurfer = null;
   isEdit = false;
   paused = false;
   toggleVolume = false;
+  text = '';
 
   ngOnInit() {
     this.apiService.getTextAudios().subscribe(textAudio => {
@@ -52,6 +53,7 @@ export class TableComponent implements OnInit, OnChanges {
 
   editElement(textAudio: TextAudio): void {
     this.generateWaveform(textAudio);
+    this.isEdit = true;
   }
 
   generateWaveform(textAudio: TextAudio): void {
@@ -88,6 +90,7 @@ export class TableComponent implements OnInit, OnChanges {
           color: 'hsla(200, 50%, 70%, 0.4)'
         });
         this.setViewToRegion(textAudio);
+        this.text = textAudio.text;
       });
     });
   }
