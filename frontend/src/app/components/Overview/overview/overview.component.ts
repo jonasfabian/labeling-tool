@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {ExportToCsv} from 'export-to-csv';
 import {ApiService} from '../../../services/api.service';
 import {Sums} from '../../../models/Sums';
 import {UserLabeledData} from '../../../models/UserLabeledData';
@@ -24,20 +23,6 @@ export class OverviewComponent implements OnInit {
   textAudio = new TextAudio(0, 0, 0, '', 0, '', 0, 0, 0);
   audioSnippet = new AudioSnippet(0, 0);
 
-  data = [];
-  options = {
-    fieldSeparator: ',',
-    quoteStrings: '"',
-    decimalSeparator: '.',
-    showLabels: true,
-    useTextFile: false,
-    useBom: true,
-    useKeysAsHeaders: true
-  };
-  csvExporter = new ExportToCsv(
-    this.options
-  );
-
   ngOnInit() {
     this.apiService.getLabeledSums().subscribe(l => {
       this.inputData = l;
@@ -53,23 +38,5 @@ export class OverviewComponent implements OnInit {
     this.textAudio = tA;
     this.audioSnippet.startTime = tA.audioStart;
     this.audioSnippet.endTime = tA.audioEnd;
-  }
-
-  generateTable(): void {
-    this.apiService.getTextAudios().subscribe(textAudio => textAudio.forEach(l => {
-        this.data.push({
-          id: l.id,
-          audioStart: l.audioStart,
-          audioEnd: l.audioEnd,
-          text: l.text,
-          fileId: l.fileId,
-          speaker: l.speaker,
-          labeled: l.labeled,
-          correct: l.correct,
-          wrong: l.wrong,
-        });
-      }), () => {
-      }
-      , () => this.csvExporter.generateCsv(this.data));
   }
 }

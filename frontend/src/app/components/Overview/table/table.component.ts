@@ -6,6 +6,7 @@ import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 import {DomSanitizer} from '@angular/platform-browser';
+import {ExportToCsv} from 'export-to-csv';
 
 @Component({
   selector: 'app-table',
@@ -26,7 +27,7 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() vale: string;
   @Output() editAudio = new EventEmitter<boolean>();
   @Output() textAudio = new EventEmitter<TextAudio>();
-  displayedColumns = ['id', 'audioStart', 'audioEnd', 'text', 'fileId', 'speaker', 'labeled', 'correct', 'wrong', 'play'];
+  displayedColumns = ['id', 'audioStart', 'audioEnd', 'text', 'fileId', 'speaker', 'labeled', 'correct', 'wrong'];
   dataSource = new MatTableDataSource<TextAudio>();
   waveSurfer: WaveSurfer = null;
   isEdit = false;
@@ -34,6 +35,19 @@ export class TableComponent implements OnInit, OnChanges {
   paused = false;
   toggleVolume = false;
   text = '';
+  data = [];
+  options = {
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalSeparator: '.',
+    showLabels: true,
+    useTextFile: false,
+    useBom: true,
+    useKeysAsHeaders: true
+  };
+  csvExporter = new ExportToCsv(
+    this.options
+  );
 
   ngOnInit() {
     this.apiService.getTextAudios().subscribe(textAudio => {
@@ -54,7 +68,7 @@ export class TableComponent implements OnInit, OnChanges {
     }
   }
 
-  editElement(textAudio: TextAudio): void {
+  previewElement(textAudio: TextAudio): void {
     this.wavesurferIsReady = false;
     this.generateWaveform(textAudio);
     this.isEdit = true;
@@ -147,5 +161,23 @@ export class TableComponent implements OnInit, OnChanges {
     input = input.trim();
     input = input.toLowerCase();
     this.dataSource.filter = input;
+  }
+
+  generateTable(): void {
+    this.apiService.getTextAudios().subscribe(textAudio => textAudio.forEach(l => {
+        this.data.push({
+          id: l.id,
+          audioStart: l.audioStart,
+          audioEnd: l.audioEnd,
+          text: l.text,
+          fileId: l.fileId,
+          speaker: l.speaker,
+          labeled: l.labeled,
+          correct: l.correct,
+          wrong: l.wrong,
+        });
+      }), () => {
+      }
+      , () => this.csvExporter.generateCsv(this.data));
   }
 }
