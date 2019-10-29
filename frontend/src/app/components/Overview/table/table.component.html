@@ -52,7 +52,7 @@
   <mat-card
     style="width: calc(50% - 235px); height: calc(100% - 35px); position: absolute; top: 0; right: 0; display: flex; justify-content: center;">
     <ng-container *ngIf="!wavesurferIsReady">
-      <mat-spinner></mat-spinner>
+      <mat-spinner style="margin: 0 auto; top: 35%;"></mat-spinner>
     </ng-container>
     <div [hidden]="!wavesurferIsReady" style="width: 100%;">
       <div id="wave" style="padding: 15px; border: 1px solid black;">
