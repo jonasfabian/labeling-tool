@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {ApiService} from '../../../services/api.service';
 import {TextAudio} from '../../../models/TextAudio';
@@ -7,6 +7,7 @@ import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 import {DomSanitizer} from '@angular/platform-browser';
 import {ExportToCsv} from 'export-to-csv';
+import {AudioSnippet} from '../../../models/AudioSnippet';
 
 @Component({
   selector: 'app-table',
@@ -24,14 +25,17 @@ export class TableComponent implements OnInit {
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild('textAreaText', {static: false}) textAreaText: ElementRef<HTMLTextAreaElement>;
   @Input() vale: string;
   @Output() editAudio = new EventEmitter<boolean>();
   @Output() textAudio = new EventEmitter<TextAudio>();
   displayedColumns = ['id', 'audioStart', 'audioEnd', 'text', 'fileId', 'speaker', 'labeled', 'correct', 'wrong'];
   dataSource = new MatTableDataSource<TextAudio>();
   waveSurfer: WaveSurfer = null;
-  isEdit = false;
+  isEditing = false;
+  isEditText = false;
   wavesurferIsReady = false;
+  dummyTextAudio = new TextAudio(0, 0, 0, '', 0, '', 0, 0, 0);
   paused = false;
   toggleVolume = false;
   currentFileId = -1;
@@ -64,7 +68,9 @@ export class TableComponent implements OnInit {
   }
 
   previewElement(textAudio: TextAudio): void {
-    this.isEdit = true;
+    this.isEditText = false;
+    this.dummyTextAudio = textAudio;
+    this.isEditing = true;
     this.wavesurferIsReady = false;
     this.generateWaveform(textAudio);
   }
@@ -130,11 +136,16 @@ export class TableComponent implements OnInit {
 
   addRegion(textAudio: TextAudio): void {
     this.waveSurfer.clearRegions();
-    this.waveSurfer.addRegion({
+    const region = this.waveSurfer.addRegion({
       start: textAudio.audioStart,
       end: textAudio.audioEnd,
       resize: true,
       color: 'hsla(200, 50%, 70%, 0.4)'
+    });
+    region.on('update-end', () => {
+      this.dummyTextAudio.audioStart = region.start;
+      this.dummyTextAudio.audioEnd = region.end;
+      console.log(this.dummyTextAudio);
     });
   }
 
@@ -168,9 +179,15 @@ export class TableComponent implements OnInit {
 
   cancelEdit(): void {
     this.pause();
-    this.isEdit = false;
+    this.isEditing = false;
     this.waveSurfer.destroy();
     this.waveSurfer = null;
+  }
+
+  changeText(): void {
+    this.dummyTextAudio.text = this.textAreaText.nativeElement.value;
+    this.apiService.updateTextAudio(this.dummyTextAudio).subscribe();
+    this.isEditText = !this.isEditText;
   }
 
   generateTable(): void {
