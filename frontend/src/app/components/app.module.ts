@@ -15,7 +15,6 @@ import {MaterialModule} from './material.module';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {CarouselModule} from 'ngx-carousel-lib';
-import {HomeComponent} from './Multi-Use/home/home.component';
 import {ErrorComponent} from './Multi-Use/error/error.component';
 import {RegisterComponent} from './Login/register/register.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -30,7 +29,6 @@ import {NumberCardsComponent} from './Overview/graphs/number-cards/number-cards.
 import {SnackBarLogOutComponent} from './Login/snack-bar-log-out/snack-bar-log-out.component';
 import {OverviewComponent} from './Overview/overview/overview.component';
 import {CheckComponent} from './Check/check/check.component';
-import {SettingsComponent} from './Settings/settings/settings.component';
 import {LoginComponent} from './Login/login/login.component';
 import {TranscriptPreviewComponent} from './Record/transcript-preview/transcript-preview.component';
 import {RecordComponent} from './Record/record/record.component';
@@ -50,9 +48,7 @@ import {CantonIdToCantonPipe} from '../pipes/canton-id-to-canton.pipe';
     CheckComponent,
     BarChartComponent,
     TableComponent,
-    HomeComponent,
     ErrorComponent,
-    SettingsComponent,
     RegisterComponent,
     LoginComponent,
     ProfileComponent,

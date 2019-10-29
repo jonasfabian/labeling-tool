@@ -28,10 +28,6 @@
   <mat-sidenav fixedInViewport #sidenav mode="over">
     <div>
       <mat-list>
-          <mat-list-item (click)="redirectToPage('home')">
-            <mat-icon>home</mat-icon>
-            <span>Home</span>
-          </mat-list-item>
         <ng-container *ngFor="let bookmark of bookmarksContainer">
           <mat-list-item *ngIf="bookmarksContainer.includes(bookmark)" (click)="redirectToPage(bookmark.title.toLocaleLowerCase())">
             <mat-icon>{{bookmark.matIcon}}</mat-icon>
@@ -40,7 +36,6 @@
             </mat-icon>
           </mat-list-item>
         </ng-container>
-        <mat-divider></mat-divider>
         <ng-container *ngIf="authService.isAuthenticated">
           <ng-container *ngFor="let naviItem of navigationContainer">
             <mat-list-item *ngIf="navigationContainer.includes(naviItem)" (click)="redirectToPage(naviItem.title.toLocaleLowerCase())">
