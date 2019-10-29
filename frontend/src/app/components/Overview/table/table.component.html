@@ -52,13 +52,14 @@
   </ng-container>
 </mat-card>
 <div [hidden]="!isEdit">
-  <mat-card style="width: calc(50% - 235px); height: calc(100% - 35px); position: absolute; top: 0; right: 0;">
+  <mat-card
+    style="width: calc(50% - 235px); height: calc(100% - 35px); position: absolute; top: 0; right: 0; display: flex; align-items: center; justify-content: center;">
     <ng-container *ngIf="!wavesurferIsReady">
       <mat-spinner></mat-spinner>
     </ng-container>
-    <div [hidden]="!wavesurferIsReady">
+    <div [hidden]="!wavesurferIsReady" style="width: 100%;">
       <div id="wave" style="padding: 15px; border: 1px solid black;">
-        <div id="waveform"></div>
+        <div id="waveform" style="cursor: pointer;"></div>
         <div id="wave-timeline"></div>
       </div>
       <div id="wave-navigation" style="display: flex; justify-content: center; margin-top: 10px;">

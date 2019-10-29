@@ -14,7 +14,6 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {ThemeService} from './theme.service';
 import {UserLabeledData} from '../models/UserLabeledData';
 import {Recording} from '../models/Recording';
-import {AudioSnippet} from '../models/AudioSnippet';
 import {Canton} from '../models/Canton';
 import {ChangePassword} from '../models/ChangePassword';
 import {TextAudio} from '../models/TextAudio';

@@ -4,7 +4,6 @@ import {ApiService} from '../../../services/api.service';
 import {TextAudio} from '../../../models/TextAudio';
 import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
-import CursorPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 import {DomSanitizer} from '@angular/platform-browser';
 
@@ -85,10 +84,6 @@ export class TableComponent implements OnInit, OnChanges {
         plugins: [
           TimelinePlugin.create({
             container: '#wave-timeline'
-          }),
-          CursorPlugin.create({
-            showTime: true,
-            opacity: 1
           }),
           RegionsPlugin.create({
             regions: []
