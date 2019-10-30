@@ -48,7 +48,7 @@
     <mat-button-toggle (click)="generateTable()">Export as CSV</mat-button-toggle>
   </div>
 </mat-card>
-<div [hidden]="!isEditing">
+<div>
   <mat-card
     style="width: calc(50% - 235px); height: calc(100% - 35px); position: absolute; top: 0; right: 0; display: flex; justify-content: center;">
     <ng-container *ngIf="!wavesurferIsReady">
