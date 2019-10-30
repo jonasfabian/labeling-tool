@@ -207,12 +207,4 @@ export class TableComponent implements OnInit {
       }
       , () => this.csvExporter.generateCsv(this.data));
   }
-
-  calcTableWidth(isEdit: boolean) {
-    if (isEdit) {
-      return this.sanitizer.bypassSecurityTrustStyle('calc(50% + 150px)');
-    } else {
-      return this.sanitizer.bypassSecurityTrustStyle('calc(100% - 36px)');
-    }
-  }
 }
