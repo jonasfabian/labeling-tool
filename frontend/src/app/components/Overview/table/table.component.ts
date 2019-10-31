@@ -38,6 +38,7 @@ export class TableComponent implements OnInit {
   currentFileId = -1;
   text = '';
   data = [];
+  spinnerValue = 0;
   options = {
     fieldSeparator: ',',
     quoteStrings: '"',
@@ -81,6 +82,10 @@ export class TableComponent implements OnInit {
           this.addRegion(textAudio);
           this.setViewToRegion(textAudio);
           this.text = textAudio.text;
+        });
+        this.waveSurfer.on('loading', l => {
+          this.spinnerValue = l;
+          console.log(l);
         });
         this.waveSurfer.on('waveform-ready', () => {
           this.wavesurferIsReady = true;

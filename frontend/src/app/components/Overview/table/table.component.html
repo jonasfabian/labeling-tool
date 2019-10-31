@@ -39,7 +39,7 @@
         <td mat-cell *matCellDef="let element">{{element.wrong}}</td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-      <tr style="height: 25px; cursor: pointer;" mat-row *matRowDef="let row; columns: displayedColumns;"
+      <tr class="table-row" style="height: 25px; cursor: pointer;" mat-row *matRowDef="let row; columns: displayedColumns;"
           (click)="previewElement(row)"></tr>
     </table>
     <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons></mat-paginator>
@@ -52,7 +52,7 @@
   <mat-card
     style="width: calc(50% - 235px); height: calc(100% - 35px); position: absolute; top: 0; right: 0; display: flex; justify-content: center;">
     <ng-container *ngIf="!wavesurferIsReady">
-      <mat-spinner style="margin: 0 auto; top: 35%;"></mat-spinner>
+      <mat-progress-spinner style="margin: 0 auto; top: 35%;" [mode]="'determinate'" [value]="spinnerValue"></mat-progress-spinner>
     </ng-container>
     <div [hidden]="!wavesurferIsReady" style="width: 100%;">
       <div id="wave" style="border: 1px solid lightgrey; border-radius: 4px;">
