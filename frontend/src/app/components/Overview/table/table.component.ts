@@ -85,7 +85,6 @@ export class TableComponent implements OnInit {
         });
         this.waveSurfer.on('loading', l => {
           this.spinnerValue = l;
-          console.log(l);
         });
         this.waveSurfer.on('waveform-ready', () => {
           this.wavesurferIsReady = true;
