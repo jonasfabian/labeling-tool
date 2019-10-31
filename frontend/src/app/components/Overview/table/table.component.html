@@ -55,9 +55,8 @@
       <mat-spinner style="margin: 0 auto; top: 35%;"></mat-spinner>
     </ng-container>
     <div [hidden]="!wavesurferIsReady" style="width: 100%;">
-      <div id="wave" style="padding: 15px; border: 1px solid black;">
+      <div id="wave" style="border: 1px solid lightgrey; border-radius: 4px;">
         <div id="waveform" style="cursor: pointer;"></div>
-        <div id="wave-timeline"></div>
       </div>
       <div id="wave-navigation" style="display: flex; justify-content: left; margin-top: 10px;">
         <mat-button-toggle-group>
@@ -71,18 +70,20 @@
         <mat-button-toggle class="audio-nav-button" title="Volume" (click)="toggleVolume = !toggleVolume">
           <mat-icon>volume_up</mat-icon>
         </mat-button-toggle>
-        <mat-button-toggle *ngIf="!isEditText" class="audio-nav-button" (click)="isEditText = true">Edit</mat-button-toggle>
-        <mat-button-toggle class="audio-nav-button" (click)="cancelEdit()">Cancel</mat-button-toggle>
+        <mat-button-toggle *ngIf="isEditText" class="audio-nav-button" (click)="cancelEdit()">Cancel</mat-button-toggle>
         <mat-button-toggle *ngIf="isEditText" class="audio-nav-button" (click)="changeText()">Submit</mat-button-toggle>
         <mat-slider *ngIf="toggleVolume" min="0" max="100" step="1" value="25" (input)="setVolume($event)"></mat-slider>
       </div>
-      <div style="height: calc(100% - 280px);">
+      <div style="height: calc(100% - 210px);">
+        <mat-button-toggle style="position: absolute; right: 20px; top: 220px; border-radius: 50%;" *ngIf="!isEditText" (click)="isEditText = true">
+          <mat-icon>edit</mat-icon>
+        </mat-button-toggle>
         <div *ngIf="!isEditText"
-          style="border: 1px solid black; border-radius: 4px; padding: 15px; height: 100%; margin-top: 10px;">
+          style="border: 1px solid lightgrey; border-radius: 4px; height: 100%; margin-top: 10px; font-size: 16px;">
           {{text}}
         </div>
-        <div *ngIf="isEditText" style="border: 1px solid black; border-radius: 4px; padding: 15px; height: 100%; margin-top: 10px;">
-          <textarea #textAreaText style="height: 100%; resize: vertical; width: 100%;" [value]="text"></textarea>
+        <div *ngIf="isEditText" style="border: 1px solid lightgrey; border-radius: 4px; border: none; height: 100%; margin-top: 10px;">
+          <textarea #textAreaText style="height: calc(100% - 50px); resize: vertical; width: 100%; resize: none; font-family: Roboto, 'Helvetica Neue', sans-serif; font-size: 16px;" [value]="text"></textarea>
         </div>
       </div>
     </div>

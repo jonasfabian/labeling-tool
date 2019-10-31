@@ -3,7 +3,6 @@ import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {ApiService} from '../../../services/api.service';
 import {TextAudio} from '../../../models/TextAudio';
 import WaveSurfer from 'wavesurfer.js';
-import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 import {DomSanitizer} from '@angular/platform-browser';
 import {ExportToCsv} from 'export-to-csv';
@@ -31,7 +30,6 @@ export class TableComponent implements OnInit {
   displayedColumns = ['id', 'audioStart', 'audioEnd', 'text', 'fileId', 'speaker', 'labeled', 'correct', 'wrong'];
   dataSource = new MatTableDataSource<TextAudio>();
   waveSurfer: WaveSurfer = null;
-  isEditing = false;
   isEditText = false;
   wavesurferIsReady = false;
   dummyTextAudio = new TextAudio(0, 0, 0, '', 0, '', 0, 0, 0);
@@ -69,7 +67,6 @@ export class TableComponent implements OnInit {
   previewElement(textAudio: TextAudio): void {
     this.isEditText = false;
     this.dummyTextAudio = textAudio;
-    this.isEditing = true;
     this.wavesurferIsReady = false;
     this.generateWaveform(textAudio);
   }
@@ -119,13 +116,12 @@ export class TableComponent implements OnInit {
       backend: 'MediaElement',
       waveColor: 'lightblue',
       progressColor: 'blue',
+      barHeight: 1,
+      autoCenter: true,
       partialRender: false,
       normalize: false,
       responsive: true,
       plugins: [
-        TimelinePlugin.create({
-          container: '#wave-timeline'
-        }),
         RegionsPlugin.create({
           regions: []
         })
@@ -177,9 +173,7 @@ export class TableComponent implements OnInit {
 
   cancelEdit(): void {
     this.pause();
-    this.isEditing = false;
-    this.waveSurfer.destroy();
-    this.waveSurfer = null;
+    this.isEditText = false;
   }
 
   changeText(): void {
