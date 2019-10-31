@@ -1,5 +1,4 @@
 import {RouterModule, Routes} from '@angular/router';
-import {ContentComponent} from './Edit/content/content.component';
 import {NgModule} from '@angular/core';
 import {ErrorComponent} from './Multi-Use/error/error.component';
 import {RegisterComponent} from './Login/register/register.component';
@@ -13,17 +12,12 @@ import {RecordComponent} from './Record/record/record.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/labeling-tool/home',
+    redirectTo: '/labeling-tool/login',
     pathMatch: 'full'
   },
   {
     path: 'labeling-tool',
     children: [
-      {
-        path: 'label',
-        component: ContentComponent,
-        canActivate: [AuthGuardService]
-      },
       {
         path: 'check',
         component: CheckComponent,

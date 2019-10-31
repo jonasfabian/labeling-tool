@@ -7,7 +7,6 @@ import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 import {DomSanitizer} from '@angular/platform-browser';
 import {ExportToCsv} from 'export-to-csv';
-import {AudioSnippet} from '../../../models/AudioSnippet';
 
 @Component({
   selector: 'app-table',
@@ -145,7 +144,6 @@ export class TableComponent implements OnInit {
     region.on('update-end', () => {
       this.dummyTextAudio.audioStart = region.start;
       this.dummyTextAudio.audioEnd = region.end;
-      console.log(this.dummyTextAudio);
     });
   }
 
