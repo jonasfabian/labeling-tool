@@ -24,7 +24,7 @@ export class HorizontalBarChartComponent implements OnInit, OnChanges {
     const singleData = [];
     if (this.inputData.length !== 0) {
       this.inputData.forEach(l => {
-        singleData.push({name: l.username, value: l.labelCount});
+        singleData.push({name: l.username, value: l.count});
       });
       this.single = singleData;
     }
