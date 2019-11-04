@@ -19,16 +19,17 @@ export class AuthService {
   checkAuthenticated(): void {
     if (sessionStorage.getItem('user')) {
       JSON.parse(sessionStorage.getItem('user')).map(r => {
-        const expirationDate = new Date(new Date(r.time).setMinutes(new Date(r.time).getMinutes() + 30));
+        const expirationDate = new Date(new Date(r.time).setSeconds(new Date(r.time).getSeconds() + 15));
         if (expirationDate < new Date()) {
           sessionStorage.clear();
           this.isAuthenticated = false;
-          location.reload();
+          this.loggedInUser = new UserPublicInfo(-1, '', '', '', '', 0, '');
           this.router.navigate(['/labeling-tool/login']);
+        } else {
+          this.isAuthenticated = true;
+          this.loggedInUser = new UserPublicInfo(r.id, r.firstName, r.lastName, r.email, r.username, r.avatarVersion, r.canton);
         }
-        this.loggedInUser = new UserPublicInfo(r.id, r.firstName, r.lastName, r.email, r.username, r.avatarVersion, r.canton);
       });
-      this.isAuthenticated = true;
     } else {
       this.isAuthenticated = false;
     }

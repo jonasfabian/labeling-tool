@@ -39,7 +39,6 @@ export class ApiService {
   blobUrl: SafeUrl | string = '';
   uri: BehaviorSubject<SafeUrl> = new BehaviorSubject<SafeUrl>('');
   showTenMoreQuest = false;
-
   cantons: Canton[] = [
     {cantonId: 'ag', cantonName: 'Aargau'},
     {cantonId: 'ai', cantonName: 'Appenzell Innerrhoden'},
@@ -113,7 +112,6 @@ export class ApiService {
     return this.http.get(this.url + 'getAudio?id=' + fileId, {responseType: 'blob'});
   }
 
-  // TODO rework
   getTenNonLabeledTextAudios(): Observable<Array<TextAudio>> {
     return this.http.get<Array<TextAudio>>(this.url + 'getTenNonLabeledTextAudios');
   }
