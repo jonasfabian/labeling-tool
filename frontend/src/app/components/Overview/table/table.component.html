@@ -51,8 +51,11 @@
 <div>
   <mat-card
     style="width: calc(50% - 235px); height: calc(100% - 35px); position: absolute; top: 0; right: 0; display: flex; justify-content: center;">
-    <ng-container *ngIf="!wavesurferIsReady">
-      <mat-progress-spinner style="margin: 0 auto; top: 35%;" [mode]="'determinate'" [value]="spinnerValue"></mat-progress-spinner>
+    <ng-container *ngIf="!wavesurferIsReady && waveSurfer == null">
+      Please select an element in the table to view more details
+    </ng-container>
+    <ng-container *ngIf="!wavesurferIsReady && waveSurfer != null">
+      <mat-spinner style="margin: 0 auto; top: 35%;"></mat-spinner>
     </ng-container>
     <div [hidden]="!wavesurferIsReady" style="width: 100%;">
       <div id="wave" style="border: 1px solid lightgrey; border-radius: 4px;">
