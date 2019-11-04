@@ -24,10 +24,8 @@ export class NavigationMenuComponent implements OnInit {
   @ViewChild('menu', {static: true}) menu: MatMenu;
   navigationContainer: Array<NavigationItem> = [
     new NavigationItem(0, 'Check', 'check'),
-    new NavigationItem(1, 'Label', 'label'),
     new NavigationItem(2, 'Record', 'record_voice_over'),
-    new NavigationItem(3, 'Overview', 'view_list'),
-    new NavigationItem(4, 'Settings', 'settings'),
+    new NavigationItem(3, 'Overview', 'view_list')
   ];
   bookmarksContainer: Array<NavigationItem> = [];
 

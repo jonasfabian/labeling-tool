@@ -1,41 +1,94 @@
-<table style="width: 100%; height: calc(100% - 120px);" mat-table [dataSource]="dataSource" matSort id="overview-table">
-  <ng-container matColumnDef="id">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-    <td mat-cell *matCellDef="let element">{{element.id}}</td>
+<mat-card style="position: absolute; top: 0; left: 0; width: calc(50% + 150px); height: calc(100% - 35px);">
+  <ng-container>
+    <table style="width: 100%; height: calc(100% - 50px);" mat-table [dataSource]="dataSource" matSort
+           id="overview-table">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+        <td mat-cell *matCellDef="let element">{{element.id}}</td>
+      </ng-container>
+      <ng-container matColumnDef="audioStart">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>AudioStart</th>
+        <td mat-cell *matCellDef="let element">{{element.audioStart | number : '1.2-5'}}</td>
+      </ng-container>
+      <ng-container matColumnDef="audioEnd">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>AudioEnd</th>
+        <td mat-cell *matCellDef="let element">{{element.audioEnd | number : '1.2-5'}}</td>
+      </ng-container>
+      <ng-container matColumnDef="text">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Text</th>
+        <td mat-cell *matCellDef="let element">{{element.text}}</td>
+      </ng-container>
+      <ng-container matColumnDef="fileId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>FileId</th>
+        <td mat-cell *matCellDef="let element">{{element.fileId}}</td>
+      </ng-container>
+      <ng-container matColumnDef="speaker">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Speaker</th>
+        <td mat-cell *matCellDef="let element">{{element.speaker}}</td>
+      </ng-container>
+      <ng-container matColumnDef="labeled">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Labeled</th>
+        <td mat-cell *matCellDef="let element">{{element.labeled | IntToBooleanPipe}}</td>
+      </ng-container>
+      <ng-container matColumnDef="correct">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Correct</th>
+        <td mat-cell *matCellDef="let element">{{element.correct}}</td>
+      </ng-container>
+      <ng-container matColumnDef="wrong">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Wrong</th>
+        <td mat-cell *matCellDef="let element">{{element.wrong}}</td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr class="table-row" style="height: 25px; cursor: pointer;" mat-row *matRowDef="let row; columns: displayedColumns;"
+          (click)="previewElement(row)"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons></mat-paginator>
   </ng-container>
-  <ng-container matColumnDef="audioStart">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>AudioStart</th>
-    <td mat-cell *matCellDef="let element">{{element.audioStart}}</td>
-  </ng-container>
-  <ng-container matColumnDef="audioEnd">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>AudioEnd</th>
-    <td mat-cell *matCellDef="let element">{{element.audioEnd}}</td>
-  </ng-container>
-  <ng-container matColumnDef="text">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Text</th>
-    <td mat-cell *matCellDef="let element">{{element.text}}</td>
-  </ng-container>
-  <ng-container matColumnDef="fileId">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>FileId</th>
-    <td mat-cell *matCellDef="let element">{{element.fileId}}</td>
-  </ng-container>
-  <ng-container matColumnDef="speaker">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Speaker</th>
-    <td mat-cell *matCellDef="let element">{{element.speaker}}</td>
-  </ng-container>
-  <ng-container matColumnDef="labeled">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Labeled</th>
-    <td mat-cell *matCellDef="let element">{{element.labeled | IntToBooleanPipe}}</td>
-  </ng-container>
-  <ng-container matColumnDef="correct">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Correct</th>
-    <td mat-cell *matCellDef="let element">{{element.correct}}</td>
-  </ng-container>
-  <ng-container matColumnDef="wrong">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Wrong</th>
-    <td mat-cell *matCellDef="let element">{{element.wrong}}</td>
-  </ng-container>
-  <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-  <tr style="height: 25px;" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
-<mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons></mat-paginator>
+  <div style="position: absolute; bottom: 10px; left: 15px;">
+    <mat-button-toggle (click)="generateTable()">Export as CSV</mat-button-toggle>
+  </div>
+</mat-card>
+<div>
+  <mat-card
+    style="width: calc(50% - 235px); height: calc(100% - 35px); position: absolute; top: 0; right: 0; display: flex; justify-content: center;">
+    <ng-container *ngIf="!wavesurferIsReady && waveSurfer == null">
+      Please select an element in the table to view more details
+    </ng-container>
+    <ng-container *ngIf="!wavesurferIsReady && waveSurfer != null">
+      <mat-spinner style="margin: 0 auto; top: 35%;"></mat-spinner>
+    </ng-container>
+    <div [hidden]="!wavesurferIsReady" style="width: 100%;">
+      <div id="wave" style="border: 1px solid lightgrey; border-radius: 4px;">
+        <div id="waveform" style="cursor: pointer;"></div>
+      </div>
+      <div id="wave-navigation" style="display: flex; justify-content: left; margin-top: 10px;">
+        <mat-button-toggle-group>
+          <mat-button-toggle class="audio-nav-button" (click)="play()" *ngIf="!paused" title="Play">
+            <mat-icon>play_arrow</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle class="audio-nav-button" (click)="pause()" *ngIf="paused" title="Pause">
+            <mat-icon>pause</mat-icon>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+        <mat-button-toggle class="audio-nav-button" title="Volume" (click)="toggleVolume = !toggleVolume">
+          <mat-icon>volume_up</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle *ngIf="isEditText" class="audio-nav-button" (click)="cancelEdit()">Cancel</mat-button-toggle>
+        <mat-button-toggle *ngIf="isEditText" class="audio-nav-button" (click)="changeText()">Submit</mat-button-toggle>
+        <mat-slider *ngIf="toggleVolume" min="0" max="100" step="1" value="25" (input)="setVolume($event)"></mat-slider>
+      </div>
+      <div style="height: calc(100% - 210px);">
+        <mat-button-toggle style="position: absolute; right: 20px; top: 220px; border-radius: 50%;" *ngIf="!isEditText" (click)="isEditText = true">
+          <mat-icon>edit</mat-icon>
+        </mat-button-toggle>
+        <div *ngIf="!isEditText"
+          style="border: 1px solid lightgrey; border-radius: 4px; height: 100%; margin-top: 10px; font-size: 16px;">
+          {{text}}
+        </div>
+        <div *ngIf="isEditText" style="border: 1px solid lightgrey; border-radius: 4px; border: none; height: 100%; margin-top: 10px;">
+          <textarea #textAreaText style="height: calc(100% - 50px); resize: vertical; width: 100%; resize: none; font-family: Roboto, 'Helvetica Neue', sans-serif; font-size: 16px;" [value]="text"></textarea>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>

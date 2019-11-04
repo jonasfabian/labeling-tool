@@ -1,3 +1,16 @@
 #overview-table {
   width: 100%;
 }
+
+.audio-nav-button {
+  margin-left: 5px;
+}
+
+.table-row {
+  transition: 0.3s;
+}
+
+.table-row:hover {
+  background-color: rgba(116, 130, 207, 20%);
+  opacity: 1;
+}

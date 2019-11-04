@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
           }]));
           this.authService.checkAuthenticated();
           this.authService.isAuthenticated = true;
-          this.router.navigate(['labeling-tool/home']);
+          this.router.navigate(['labeling-tool/overview']);
         });
       }, error => {
         if (error.status === 401) {

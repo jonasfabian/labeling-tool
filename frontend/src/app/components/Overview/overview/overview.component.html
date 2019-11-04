@@ -22,7 +22,7 @@
           <app-horizontal-normalized-bar-chart [inputData]="inputData"></app-horizontal-normalized-bar-chart>
         </mat-card>
       </mat-grid-tile>
-      <mat-grid-tile>
+      <mat-grid-tile *ngIf="userInputData">
         <mat-card>
           <mat-card-title>
             <strong>Who labels the most?</strong>
@@ -31,15 +31,7 @@
         </mat-card>
       </mat-grid-tile>
       <mat-grid-tile colspan="3" rowspan="2">
-        <mat-card>
-          <mat-card-title>
-            <strong>Interesting numbers</strong>
-          </mat-card-title>
-          <app-table></app-table>
-          <div style="position: absolute; top: 15px; right: 15px;">
-            <mat-button-toggle (click)="generateTable()">Export as CSV</mat-button-toggle>
-          </div>
-        </mat-card>
+        <app-table (editAudio)="isEditElement($event)" (textAudio)="setTextAudio($event)"></app-table>
       </mat-grid-tile>
     </mat-grid-list>
   </div>

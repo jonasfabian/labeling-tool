@@ -58,21 +58,24 @@
         </audio>
       </div>
       <div id="navigation-button-container">
-        <mat-button-toggle (click)="setCheckedType(this.correct)">
+        <mat-button-toggle (click)="setCheckedType(this.correct)" [disabled]="!isReady">
           <mat-icon>thumb_up</mat-icon>
           <span>&nbsp;Correct</span>
         </mat-button-toggle>
-        <mat-button-toggle *ngIf="!isPlaying" class="check-navigation-button" (click)="playRegion();" [disabled]="!isReady">
+        <mat-button-toggle class="check-navigation-button" style="line-height: 48px;" *ngIf="!isReady" [disabled]="!isReady">
+          <mat-spinner [diameter]="20" style="top: 5px;"></mat-spinner>
+        </mat-button-toggle>
+        <mat-button-toggle *ngIf="isReady && !isPlaying" class="check-navigation-button" (click)="playRegion();" [disabled]="!isReady">
           <mat-icon>play_arrow</mat-icon>
         </mat-button-toggle>
-        <mat-button-toggle *ngIf="isPlaying" class="check-navigation-button" (click)="playRegion();" [disabled]="!isReady">
+        <mat-button-toggle *ngIf="isReady && isPlaying" class="check-navigation-button" (click)="playRegion();" [disabled]="!isReady">
           <mat-icon>pause</mat-icon>
         </mat-button-toggle>
-        <mat-button-toggle class="check-navigation-button" (click)="setCheckedType(this.wrong)">
+        <mat-button-toggle class="check-navigation-button" (click)="setCheckedType(this.wrong)" [disabled]="!isReady">
           <mat-icon>thumb_down</mat-icon>
           <span>&nbsp;Wrong</span>
         </mat-button-toggle>
-        <mat-button-toggle class="check-navigation-button" (click)="setCheckedType(this.skip)">
+        <mat-button-toggle class="check-navigation-button" (click)="setCheckedType(this.skip)" [disabled]="!isReady">
           <span>Skip</span>
         </mat-button-toggle>
       </div>

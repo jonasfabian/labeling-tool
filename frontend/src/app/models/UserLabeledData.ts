@@ -1,11 +1,11 @@
 export class UserLabeledData {
   userId: number;
   username: string;
-  labelCount: number;
+  count: number;
 
-  constructor(userId: number, username: string, labelCount: number) {
+  constructor(userId: number, username: string, count: number) {
     this.userId = userId;
     this.username = username;
-    this.labelCount = labelCount;
+    this.count = count;
   }
 }
