@@ -1,4 +1,4 @@
-<mat-card style="position: absolute; top: 0; left: 0; width: calc(50% + 150px); height: calc(100% - 35px);">
+<mat-card style="position: absolute; top: 0; left: 5px; width: calc(50% + 155px); height: calc(100% - 35px);">
   <ng-container>
     <table style="width: 100%; height: calc(100% - 50px);" mat-table [dataSource]="dataSource" matSort
            id="overview-table">
@@ -49,8 +49,8 @@
   </div>
 </mat-card>
 <div>
-  <mat-card
-    style="width: calc(50% - 235px); height: calc(100% - 35px); position: absolute; top: 0; right: 0; display: flex; justify-content: center;">
+  <mat-card [style.align-items]="(!wavesurferIsReady && waveSurfer == null) ? 'center' : 'initial'"
+    style="width: calc(50% - 245px); height: calc(100% - 35px); position: absolute; top: 0; right: 5px; display: flex; justify-content: center;">
     <ng-container *ngIf="!wavesurferIsReady && waveSurfer == null">
       Please select an element in the table to view more details
     </ng-container>
