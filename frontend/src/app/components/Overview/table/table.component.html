@@ -39,7 +39,8 @@
         <td mat-cell *matCellDef="let element">{{element.wrong}}</td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-      <tr class="table-row" style="height: 25px; cursor: pointer;" mat-row *matRowDef="let row; columns: displayedColumns;"
+      <tr class="table-row" style="height: 25px; cursor: pointer;" mat-row
+          *matRowDef="let row; columns: displayedColumns;"
           (click)="previewElement(row)"></tr>
     </table>
     <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons></mat-paginator>
@@ -50,7 +51,10 @@
 </mat-card>
 <div>
   <mat-card [style.align-items]="(!wavesurferIsReady && waveSurfer == null) ? 'center' : 'initial'"
-    style="width: calc(50% - 245px); height: calc(100% - 35px); position: absolute; top: 0; right: 5px; display: flex; justify-content: center;">
+            style="width: calc(50% - 245px); height: calc(100% - 35px); position: absolute; top: 0; right: 5px; display: flex; justify-content: center;">
+    <mat-button-toggle style="position: absolute; right: 20px; top: 20px; border-radius: 50%; z-index: 4;" *ngIf="!isEditText && wavesurferIsReady" (click)="edit()">
+      <mat-icon>edit</mat-icon>
+    </mat-button-toggle>
     <ng-container *ngIf="!wavesurferIsReady && waveSurfer == null">
       Please select an element in the table to view more details
     </ng-container>
@@ -74,19 +78,20 @@
           <mat-icon>volume_up</mat-icon>
         </mat-button-toggle>
         <mat-button-toggle *ngIf="isEditText" class="audio-nav-button" (click)="cancelEdit()">Cancel</mat-button-toggle>
-        <mat-button-toggle *ngIf="isEditText" class="audio-nav-button" (click)="changeText()">Submit</mat-button-toggle>
+        <mat-button-toggle *ngIf="isEditText" class="audio-nav-button" (click)="submitChange()">Submit
+        </mat-button-toggle>
         <mat-slider *ngIf="toggleVolume" min="0" max="100" step="1" value="25" (input)="setVolume($event)"></mat-slider>
       </div>
       <div style="height: calc(100% - 210px);">
-        <mat-button-toggle style="position: absolute; right: 20px; top: 220px; border-radius: 50%;" *ngIf="!isEditText" (click)="isEditText = true">
-          <mat-icon>edit</mat-icon>
-        </mat-button-toggle>
         <div *ngIf="!isEditText"
-          style="border: 1px solid lightgrey; border-radius: 4px; height: 100%; margin-top: 10px; font-size: 16px;">
+             style="border: 1px solid lightgrey; border-radius: 4px; height: 100%; margin-top: 10px; font-size: 16px;">
           {{text}}
         </div>
-        <div *ngIf="isEditText" style="border: 1px solid lightgrey; border-radius: 4px; border: none; height: 100%; margin-top: 10px;">
-          <textarea #textAreaText style="height: calc(100% - 50px); resize: vertical; width: 100%; resize: none; font-family: Roboto, 'Helvetica Neue', sans-serif; font-size: 16px;" [value]="text"></textarea>
+        <div *ngIf="isEditText"
+             style="border: 1px solid lightgrey; border-radius: 4px; border: none; height: 100%; margin-top: 10px;">
+          <textarea #textAreaText
+                    style="height: calc(100% - 50px); resize: vertical; width: 100%; resize: none; font-family: Roboto, 'Helvetica Neue', sans-serif; font-size: 16px;"
+                    [value]="text"></textarea>
         </div>
       </div>
     </div>
