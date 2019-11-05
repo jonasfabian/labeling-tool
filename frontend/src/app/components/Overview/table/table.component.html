@@ -41,7 +41,7 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
       <tr class="table-row" style="height: 25px; cursor: pointer;" mat-row
           *matRowDef="let row; columns: displayedColumns;"
-          (click)="previewElement(row)"></tr>
+          (click)="previewElement(row)" [class.isSelected]="dummyTextAudio === row"></tr>
     </table>
     <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons></mat-paginator>
   </ng-container>
