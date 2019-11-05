@@ -5,14 +5,14 @@
 </div>
 <div id="content">
   <div style="height: 100%;">
-    <mat-grid-list id="graph-list" gutterSize="15" cols="6" rowHeight="fit" style="height: 100%;">
-      <mat-grid-tile colspan="3">
+    <mat-grid-list id="graph-list" gutterSize="15" cols="15" rowHeight="fit" style="height: 100%;">
+      <mat-grid-tile colspan="6">
         <mat-card style="height: 100%;">
-          <div id="mapid" style="position: relative; height: calc(100% - 60px); top: 15px;">
+          <div id="mapid" style="cursor: default; position: relative; height: calc(100% - 60px); top: 15px;">
           </div>
         </mat-card>
       </mat-grid-tile>
-      <mat-grid-tile>
+      <mat-grid-tile colspan="3">
         <mat-card>
           <mat-card-title>
             <strong>Check results</strong>
@@ -20,7 +20,7 @@
           <app-bar-chart [inputData]="inputData"></app-bar-chart>
         </mat-card>
       </mat-grid-tile>
-      <mat-grid-tile>
+      <mat-grid-tile colspan="3">
         <mat-card>
           <mat-card-title>
             <strong>Amount of checked</strong>
@@ -28,7 +28,7 @@
           <app-horizontal-normalized-bar-chart [inputData]="inputData"></app-horizontal-normalized-bar-chart>
         </mat-card>
       </mat-grid-tile>
-      <mat-grid-tile *ngIf="userInputData">
+      <mat-grid-tile colspan="3" *ngIf="userInputData">
         <mat-card>
           <mat-card-title>
             <strong>Who labels the most?</strong>
@@ -36,7 +36,7 @@
           <app-horizontal-bar-chart [inputData]="userInputData"></app-horizontal-bar-chart>
         </mat-card>
       </mat-grid-tile>
-      <mat-grid-tile colspan="6" rowspan="2">
+      <mat-grid-tile colspan="15" rowspan="2">
         <app-table (editAudio)="isEditElement($event)" (textAudio)="setTextAudio($event)"></app-table>
       </mat-grid-tile>
     </mat-grid-list>

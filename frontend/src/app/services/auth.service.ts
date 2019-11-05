@@ -23,7 +23,7 @@ export class AuthService {
         if (expirationDate < new Date()) {
           sessionStorage.clear();
           this.isAuthenticated = false;
-          location.reload();
+          this.loggedInUser = new UserPublicInfo(-1, '', '', '', '', 0, '');
           this.router.navigate(['/labeling-tool/login']);
         }
         this.loggedInUser = new UserPublicInfo(r.id, r.firstName, r.lastName, r.email, r.username, r.avatarVersion, r.canton);

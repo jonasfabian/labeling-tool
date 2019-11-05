@@ -27,13 +27,16 @@ export class OverviewComponent implements OnInit {
   audioSnippet = new AudioSnippet(0, 0);
 
   ngOnInit() {
-    this.map = new Map('mapid').setView([46.818188, 8.227512], 7);
+    this.map = new Map('mapid', {zoomControl: false}).setView([46.818188, 8.227512], 7);
     tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18
     }).addTo(this.map);
     this.onMapReady(this.map);
     geoJSON(sui).addTo(this.map);
-    console.log(sui.features[0].properties.name);
+    this.map.touchZoom.disable();
+    this.map.doubleClickZoom.disable();
+    this.map.scrollWheelZoom.disable();
+    this.map.dragging.disable();
     this.apiService.getLabeledSums().subscribe(l => {
       this.inputData = l;
     });
