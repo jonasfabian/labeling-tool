@@ -29,6 +29,7 @@ import {LoginComponent} from './Login/login/login.component';
 import {TranscriptPreviewComponent} from './Record/transcript-preview/transcript-preview.component';
 import {RecordComponent} from './Record/record/record.component';
 import {CantonIdToCantonPipe} from '../pipes/canton-id-to-canton.pipe';
+import {LeafletModule} from '@asymmetrik/ngx-leaflet';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import {CantonIdToCantonPipe} from '../pipes/canton-id-to-canton.pipe';
     TranscriptPreviewComponent
   ],
   imports: [
+    LeafletModule.forRoot(),
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,

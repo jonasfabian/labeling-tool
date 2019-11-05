@@ -4,6 +4,8 @@ import {Sums} from '../../../models/Sums';
 import {UserLabeledData} from '../../../models/UserLabeledData';
 import {TextAudio} from '../../../models/TextAudio';
 import {AudioSnippet} from '../../../models/AudioSnippet';
+import {geoJSON, Map, tileLayer} from 'leaflet';
+import sui from 'src/assets/sui.json';
 
 @Component({
   selector: 'app-overview',
@@ -17,6 +19,7 @@ export class OverviewComponent implements OnInit {
   ) {
   }
 
+  map: Map;
   inputData: Sums = new Sums(0, 0, 0);
   userInputData: Array<UserLabeledData> = [];
   editElement = false;
@@ -24,10 +27,23 @@ export class OverviewComponent implements OnInit {
   audioSnippet = new AudioSnippet(0, 0);
 
   ngOnInit() {
+    this.map = new Map('mapid').setView([46.818188, 8.227512], 7);
+    tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18
+    }).addTo(this.map);
+    this.onMapReady(this.map);
+    geoJSON(sui).addTo(this.map);
+    console.log(sui.features[0].properties.name);
     this.apiService.getLabeledSums().subscribe(l => {
       this.inputData = l;
     });
     this.apiService.getTopFiveUsersLabeledCount().subscribe(l => this.userInputData = l);
+  }
+
+  onMapReady(map) {
+    setTimeout(() => {
+      map.invalidateSize();
+    }, 0);
   }
 
   isEditElement(isEdit: boolean): void {
