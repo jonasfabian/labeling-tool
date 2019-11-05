@@ -4,7 +4,8 @@ import {Sums} from '../../../models/Sums';
 import {UserLabeledData} from '../../../models/UserLabeledData';
 import {TextAudio} from '../../../models/TextAudio';
 import {AudioSnippet} from '../../../models/AudioSnippet';
-import {geoJSON, Map, tileLayer} from 'leaflet';
+import {geoJSON, Map} from 'leaflet';
+// @ts-ignore
 import sui from 'src/assets/sui.json';
 
 @Component({
@@ -27,10 +28,7 @@ export class OverviewComponent implements OnInit {
   audioSnippet = new AudioSnippet(0, 0);
 
   ngOnInit() {
-    this.map = new Map('mapid', {zoomControl: false}).setView([46.818188, 8.227512], 7);
-    tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 18
-    }).addTo(this.map);
+    this.map = new Map('mapid', {zoomControl: false, attributionControl: false}).setView([46.818188, 8.227512], 7);
     this.onMapReady(this.map);
     geoJSON(sui).addTo(this.map);
     this.map.touchZoom.disable();
