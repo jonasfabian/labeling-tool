@@ -41,6 +41,7 @@ export class OverviewComponent implements OnInit {
     this.apiService.getTopFiveUsersLabeledCount().subscribe(l => this.userInputData = l);
   }
 
+  // Otherwise map won't load fully on init
   onMapReady(map) {
     setTimeout(() => {
       map.invalidateSize();
