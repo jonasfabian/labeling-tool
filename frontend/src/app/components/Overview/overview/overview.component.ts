@@ -26,8 +26,10 @@ export class OverviewComponent implements OnInit {
   editElement = false;
   textAudio = new TextAudio(0, 0, 0, '', 0, '', 0, 0, 0);
   audioSnippet = new AudioSnippet(0, 0);
+  mapReady = false;
 
   ngOnInit() {
+    this.mapReady = false;
     this.map = new Map('mapid', {zoomControl: false, attributionControl: false}).setView([46.818188, 8.227512], 7);
     this.onMapReady(this.map);
     geoJSON(sui).addTo(this.map);
@@ -39,6 +41,7 @@ export class OverviewComponent implements OnInit {
       this.inputData = l;
     });
     this.apiService.getTopFiveUsersLabeledCount().subscribe(l => this.userInputData = l);
+    this.map.whenReady(() => this.mapReady = true);
   }
 
   // Otherwise map won't load fully on init
