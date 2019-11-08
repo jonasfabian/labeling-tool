@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {Sums} from '../models/Sums';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
@@ -98,7 +98,14 @@ export class ApiService {
   }
 
   checkLogin(emailPassword: EmailPassword): Observable<any> {
-    return this.http.post(this.url + 'checkLogin', emailPassword);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+        Authorization: this.authService.buildAuthenticationHeader(emailPassword.email, emailPassword.password)
+      })
+    };
+    return this.http.post(this.url + 'login', emailPassword, httpOptions);
   }
 
   updateTextAudio(textAudio: TextAudio): Observable<any> {
@@ -135,18 +142,6 @@ export class ApiService {
       this.blobUrl = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(resp));
       this.uri.next(this.blobUrl);
     });
-  }
-
-  logOut(): void {
-    sessionStorage.clear();
-    this.authService.isAuthenticated = false;
-    this.authService.loggedInUser = new UserPublicInfo(-1, '', '', '', '', 0, '');
-    this.router.navigate(['/labeling-tool/login']);
-    if (this.themeService.getTheme() !== 'dark-theme') {
-      this.openSnackBar('light-snackbar');
-    } else {
-      this.openSnackBar('dark-snackbar');
-    }
   }
 
   openSnackBar(snackbarColor: string) {

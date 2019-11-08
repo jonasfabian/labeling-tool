@@ -12,25 +12,35 @@ export class AuthService {
   ) {
   }
 
+  static currentUserStore = 'currentUser';
+
   isAuthenticated = false;
   loggedInUser = new UserPublicInfo(-1, '', '', '', '', 0, '');
   source = '';
 
   checkAuthenticated(): void {
-    if (sessionStorage.getItem('user')) {
-      JSON.parse(sessionStorage.getItem('user')).map(r => {
-        const expirationDate = new Date(new Date(r.time).setMinutes(new Date(r.time).getMinutes() + 30));
-        if (expirationDate < new Date()) {
-          sessionStorage.clear();
-          this.isAuthenticated = false;
-          this.loggedInUser = new UserPublicInfo(-1, '', '', '', '', 0, '');
-          this.router.navigate(['/labeling-tool/login']);
+    const item = localStorage.getItem(AuthService.currentUserStore);
+    this.isAuthenticated = item != null && item.trim().length > 0;
+  }
+
+  addToLocalStorage(username, password): void {
+    localStorage.setItem(AuthService.currentUserStore, this.buildAuthenticationHeader(username, password));
+  }
+
+  buildAuthenticationHeader(username: string, password: string): string {
+    return 'Basic ' + btoa(username + ':' + password);
+  }
+
+  logout(b: boolean) {
+    localStorage.removeItem(AuthService.currentUserStore);
+    this.router.navigate(['/'])
+      .finally(() => {
+        if (b) {
+          // NOTE: we need to reload to force reload all cached data in services etc.
+          // tslint:disable-next-line:deprecation
+          location.reload(true);
         }
-        this.loggedInUser = new UserPublicInfo(r.id, r.firstName, r.lastName, r.email, r.username, r.avatarVersion, r.canton);
       });
-      this.isAuthenticated = true;
-    } else {
-      this.isAuthenticated = false;
-    }
+
   }
 }
