@@ -33,12 +33,10 @@ export class AuthService {
 
   logout(b: boolean) {
     localStorage.removeItem(AuthService.currentUserStore);
-    this.router.navigate(['/'])
+    this.router.navigate(['/labeling-tool/login'])
       .finally(() => {
         if (b) {
-          // NOTE: we need to reload to force reload all cached data in services etc.
-          // tslint:disable-next-line:deprecation
-          location.reload(true);
+          location.reload();
         }
       });
 

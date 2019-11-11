@@ -37,11 +37,13 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.apiService.checkLogin(new EmailPassword(this.loginForm.controls.email.value, this.loginForm.controls.password.value))
         .subscribe(() => {
+        }, () => {
+          alert('Unauthorized');
+          localStorage.clear();
+        }, () => {
+          console.log('reditrect');
           this.router.navigate(['/labeling-tool/overview']);
           this.authService.addToLocalStorage(this.loginForm.controls.email.value, this.loginForm.controls.password.value);
-        }, () => {
-          alert('U dumb');
-          localStorage.clear();
         });
     }
   }

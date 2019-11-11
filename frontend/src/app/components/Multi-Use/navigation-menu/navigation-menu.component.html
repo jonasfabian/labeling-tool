@@ -19,7 +19,7 @@
       <mat-list style="padding: 0;">
         <mat-list-item [routerLink]="['/labeling-tool/profile']">Profile</mat-list-item>
         <mat-divider></mat-divider>
-        <mat-list-item (click)="apiService.logOut()">Log Out</mat-list-item>
+        <mat-list-item (click)="authService.logout(true)">Log Out</mat-list-item>
       </mat-list>
     </mat-menu>
   </ng-container>
