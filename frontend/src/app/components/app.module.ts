@@ -9,7 +9,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MaterialModule} from './material.module';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {CarouselModule} from 'ngx-carousel-lib';
 import {ErrorComponent} from './Multi-Use/error/error.component';
@@ -29,6 +29,9 @@ import {LoginComponent} from './Login/login/login.component';
 import {TranscriptPreviewComponent} from './Record/transcript-preview/transcript-preview.component';
 import {RecordComponent} from './Record/record/record.component';
 import {CantonIdToCantonPipe} from '../pipes/canton-id-to-canton.pipe';
+import {LeafletModule} from '@asymmetrik/ngx-leaflet';
+import {AuthHeaderInterceptorService} from '../services/auth-header-interceptor.service';
+import {ErrorInterceptorService} from '../services/error-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -55,6 +58,7 @@ import {CantonIdToCantonPipe} from '../pipes/canton-id-to-canton.pipe';
     TranscriptPreviewComponent
   ],
   imports: [
+    LeafletModule.forRoot(),
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -67,7 +71,18 @@ import {CantonIdToCantonPipe} from '../pipes/canton-id-to-canton.pipe';
   ],
   providers: [
     HttpClient,
-    AuthGuardService
+    AuthGuardService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptorService,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthHeaderInterceptorService,
+      multi: true
+    },
+
   ],
   bootstrap: [
     AppComponent

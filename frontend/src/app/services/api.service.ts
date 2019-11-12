@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {Sums} from '../models/Sums';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
@@ -11,7 +11,6 @@ import {Router} from '@angular/router';
 import {Avatar} from '../models/Avatar';
 import {SnackBarLogOutComponent} from '../components/Login/snack-bar-log-out/snack-bar-log-out.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {ThemeService} from './theme.service';
 import {UserLabeledData} from '../models/UserLabeledData';
 import {Recording} from '../models/Recording';
 import {Canton} from '../models/Canton';
@@ -30,8 +29,7 @@ export class ApiService {
     private sanitizer: DomSanitizer,
     private router: Router,
     private authService: AuthService,
-    private snackBar: MatSnackBar,
-    private themeService: ThemeService
+    private snackBar: MatSnackBar
   ) {
   }
 
@@ -73,10 +71,6 @@ export class ApiService {
     return this.http.get<Array<TextAudio>>(this.url + 'getTextAudios');
   }
 
-  getTextAudio(): Observable<TextAudio> {
-    return this.http.get<TextAudio>(this.url + 'getTextAudio');
-  }
-
   createRecording(recording: Recording): Observable<any> {
     return this.http.post(this.url + 'createRecording', recording);
   }
@@ -98,7 +92,14 @@ export class ApiService {
   }
 
   checkLogin(emailPassword: EmailPassword): Observable<any> {
-    return this.http.post(this.url + 'checkLogin', emailPassword);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+        Authorization: this.authService.buildAuthenticationHeader(emailPassword.email, emailPassword.password)
+      })
+    };
+    return this.http.post(this.url + 'login', emailPassword, httpOptions);
   }
 
   updateTextAudio(textAudio: TextAudio): Observable<any> {
@@ -135,18 +136,6 @@ export class ApiService {
       this.blobUrl = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(resp));
       this.uri.next(this.blobUrl);
     });
-  }
-
-  logOut(): void {
-    sessionStorage.clear();
-    this.authService.isAuthenticated = false;
-    this.authService.loggedInUser = new UserPublicInfo(-1, '', '', '', '', 0, '');
-    this.router.navigate(['/labeling-tool/login']);
-    if (this.themeService.getTheme() !== 'dark-theme') {
-      this.openSnackBar('light-snackbar');
-    } else {
-      this.openSnackBar('dark-snackbar');
-    }
   }
 
   openSnackBar(snackbarColor: string) {

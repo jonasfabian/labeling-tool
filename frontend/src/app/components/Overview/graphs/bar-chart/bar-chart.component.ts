@@ -17,7 +17,6 @@ export class BarChartComponent implements OnInit, OnChanges {
   colorScheme = {domain: ['#3f51b5', '#7482cf', 'blue', 'darkblue']};
 
   ngOnInit() {
-    this.view = [innerWidth / 4, innerHeight / 6];
   }
 
   ngOnChanges() {
@@ -27,9 +26,5 @@ export class BarChartComponent implements OnInit, OnChanges {
       singleData.push({name: 'Wrong', value: this.inputData.wrong});
       this.single = singleData;
     }
-  }
-
-  onResize(event) {
-    this.view = [event.target.innerWidth / 4, event.target.innerHeight / 6];
   }
 }

@@ -36,6 +36,11 @@ export class NavigationMenuComponent implements OnInit {
         this.bookmarksContainer.push(l);
       });
     }
+    if (JSON.parse(sessionStorage.getItem('email'))) {
+      this.apiService.getUserByEmail(JSON.parse(localStorage.getItem('email'))).subscribe(user => {
+        this.authService.loggedInUser = user;
+      });
+    }
   }
 
   toggleSidenav(): void {
@@ -45,38 +50,5 @@ export class NavigationMenuComponent implements OnInit {
   redirectToPage(route: string): void {
     this.router.navigate(['/labeling-tool/' + route]);
     this.toggleSidenav();
-  }
-
-  markAsBookmark(naviItem: NavigationItem) {
-    this.bookmarksContainer.push(naviItem);
-    this.navigationContainer.splice(this.navigationContainer.indexOf(naviItem), 1);
-    this.saveBookmarkToLocalStorage(naviItem);
-  }
-
-  unmarkAsBookmark(naviItem: NavigationItem) {
-    this.navigationContainer.push(naviItem);
-    this.bookmarksContainer.splice(this.bookmarksContainer.indexOf(naviItem), 1);
-    this.removeBookmarkFromLocalStorage(naviItem);
-  }
-
-  saveBookmarkToLocalStorage(naviItem: NavigationItem): void {
-    const bookmarkArray: Array<NavigationItem> = [];
-    if (localStorage.getItem('bookmark')) {
-      JSON.parse(localStorage.getItem('bookmark')).forEach(l => bookmarkArray.push(l));
-      bookmarkArray.push(naviItem);
-      localStorage.setItem('bookmark', JSON.stringify(bookmarkArray));
-    } else {
-      bookmarkArray.push(naviItem);
-      localStorage.setItem('bookmark', JSON.stringify(bookmarkArray));
-    }
-  }
-
-  removeBookmarkFromLocalStorage(naviItem: NavigationItem): void {
-    const bookmarkArray: Array<NavigationItem> = [];
-    if (localStorage.getItem('bookmark')) {
-      JSON.parse(localStorage.getItem('bookmark')).forEach(l => bookmarkArray.push(l));
-      bookmarkArray.splice(bookmarkArray.indexOf(naviItem));
-      localStorage.setItem('bookmark', JSON.stringify(bookmarkArray));
-    }
   }
 }

@@ -33,6 +33,7 @@ export class TableComponent implements OnInit {
   isEditText = false;
   wavesurferIsReady = false;
   dummyTextAudio = new TextAudio(0, 0, 0, '', 0, '', 0, 0, 0);
+  dummy = new TextAudio(0, 0, 0, '', 0, '', 0, 0, 0);
   paused = false;
   toggleVolume = false;
   currentFileId = -1;
@@ -78,7 +79,7 @@ export class TableComponent implements OnInit {
         this.currentFileId = textAudio.fileId;
         this.loadAudioBlob(textAudio.fileId);
         this.waveSurfer.on('ready', () => {
-          this.addRegion(textAudio);
+          this.addRegion(textAudio, false);
           this.setViewToRegion(textAudio);
           this.text = textAudio.text;
         });
@@ -91,7 +92,7 @@ export class TableComponent implements OnInit {
         if (this.currentFileId !== textAudio.fileId) {
           this.loadAudioBlob(textAudio.fileId);
           this.waveSurfer.on('ready', () => {
-            this.addRegion(textAudio);
+            this.addRegion(textAudio, false);
             this.setViewToRegion(textAudio);
             this.text = textAudio.text;
           });
@@ -100,7 +101,7 @@ export class TableComponent implements OnInit {
             this.ref.detectChanges();
           });
         } else {
-          this.addRegion(textAudio);
+          this.addRegion(textAudio, false);
           this.setViewToRegion(textAudio);
           this.text = textAudio.text;
           this.wavesurferIsReady = true;
@@ -129,12 +130,13 @@ export class TableComponent implements OnInit {
     });
   }
 
-  addRegion(textAudio: TextAudio): void {
+  addRegion(textAudio: TextAudio, draw: boolean): void {
     this.waveSurfer.clearRegions();
     const region = this.waveSurfer.addRegion({
       start: textAudio.audioStart,
       end: textAudio.audioEnd,
-      resize: true,
+      resize: draw,
+      drag: draw,
       color: 'hsla(200, 50%, 70%, 0.4)'
     });
     region.on('update-end', () => {
@@ -171,15 +173,23 @@ export class TableComponent implements OnInit {
     });
   }
 
+  edit(): void {
+    this.isEditText = true;
+    this.addRegion(this.dummyTextAudio, true);
+    this.dummy = this.dummyTextAudio;
+  }
+
+  submitChange(): void {
+    this.dummyTextAudio.text = this.text = this.textAreaText.nativeElement.value;
+    this.apiService.updateTextAudio(this.dummyTextAudio).subscribe();
+    this.isEditText = !this.isEditText;
+    this.addRegion(this.dummyTextAudio, false);
+  }
+
   cancelEdit(): void {
     this.pause();
     this.isEditText = false;
-  }
-
-  changeText(): void {
-    this.dummyTextAudio.text = this.textAreaText.nativeElement.value;
-    this.apiService.updateTextAudio(this.dummyTextAudio).subscribe();
-    this.isEditText = !this.isEditText;
+    this.addRegion(this.dummy, false);
   }
 
   generateTable(): void {

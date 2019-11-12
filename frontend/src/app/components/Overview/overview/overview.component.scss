@@ -1,10 +1,10 @@
 #header-card {
-  margin: 15px;
+  padding: 10px;
+  margin: 15px 10px -5px 10px;
 }
 
 #content {
-  margin: 15px;
-  height: calc(100% - 165px);
+  height: calc(100% - 140px);
 }
 
 #graph-list mat-grid-tile {
@@ -27,4 +27,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.leaflet-container {
+  background-color: whitesmoke;
 }
