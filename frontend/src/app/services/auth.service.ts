@@ -32,13 +32,13 @@ export class AuthService {
   }
 
   logout(b: boolean) {
-    localStorage.removeItem(AuthService.currentUserStore);
+    localStorage.clear();
+    sessionStorage.clear();
     this.router.navigate(['/labeling-tool/login'])
       .finally(() => {
         if (b) {
           location.reload();
         }
       });
-
   }
 }

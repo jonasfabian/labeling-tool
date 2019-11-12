@@ -36,6 +36,11 @@ export class NavigationMenuComponent implements OnInit {
         this.bookmarksContainer.push(l);
       });
     }
+    if (JSON.parse(sessionStorage.getItem('email'))) {
+      this.apiService.getUserByEmail(JSON.parse(localStorage.getItem('email'))).subscribe(user => {
+        this.authService.loggedInUser = user;
+      });
+    }
   }
 
   toggleSidenav(): void {

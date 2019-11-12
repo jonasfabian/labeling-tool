@@ -41,9 +41,13 @@ export class LoginComponent implements OnInit {
           alert('Unauthorized');
           localStorage.clear();
         }, () => {
-          console.log('reditrect');
+          this.authService.isAuthenticated = true;
           this.router.navigate(['/labeling-tool/overview']);
           this.authService.addToLocalStorage(this.loginForm.controls.email.value, this.loginForm.controls.password.value);
+          this.apiService.getUserByEmail(this.loginForm.controls.email.value).subscribe(user => {
+            this.authService.loggedInUser = user;
+          });
+          sessionStorage.setItem('email', JSON.stringify(this.loginForm.controls.email.value));
         });
     }
   }

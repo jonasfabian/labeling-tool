@@ -11,7 +11,6 @@ import {Router} from '@angular/router';
 import {Avatar} from '../models/Avatar';
 import {SnackBarLogOutComponent} from '../components/Login/snack-bar-log-out/snack-bar-log-out.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {ThemeService} from './theme.service';
 import {UserLabeledData} from '../models/UserLabeledData';
 import {Recording} from '../models/Recording';
 import {Canton} from '../models/Canton';
@@ -30,8 +29,7 @@ export class ApiService {
     private sanitizer: DomSanitizer,
     private router: Router,
     private authService: AuthService,
-    private snackBar: MatSnackBar,
-    private themeService: ThemeService
+    private snackBar: MatSnackBar
   ) {
   }
 
@@ -71,10 +69,6 @@ export class ApiService {
 
   getTextAudios(): Observable<Array<TextAudio>> {
     return this.http.get<Array<TextAudio>>(this.url + 'getTextAudios');
-  }
-
-  getTextAudio(): Observable<TextAudio> {
-    return this.http.get<TextAudio>(this.url + 'getTextAudio');
   }
 
   createRecording(recording: Recording): Observable<any> {
