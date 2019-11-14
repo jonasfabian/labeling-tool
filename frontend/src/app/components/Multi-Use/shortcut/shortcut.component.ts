@@ -20,7 +20,7 @@ export class ShortcutComponent implements OnInit {
   ngOnInit() {
     if (this.router.url !== '/label') {
       this.isInLabeling = false;
-      this.cols = 4;
+      this.cols = 3;
     } else {
       this.isInLabeling = true;
       this.cols = 2;
