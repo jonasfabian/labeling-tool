@@ -8,5 +8,6 @@
     <mat-button-toggle (click)="startRecording()">Record</mat-button-toggle>
     <mat-button-toggle (click)="stopRecording()">Stop</mat-button-toggle>
     <mat-button-toggle (click)="playRecording()">Play</mat-button-toggle>
+    <audio [hidden]="audioUrl === ''" controls [src]="sanitizer.bypassSecurityTrustUrl(audioUrl)"></audio>
   </mat-card>
 </div>

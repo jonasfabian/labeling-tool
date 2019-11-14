@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-record',
@@ -7,49 +8,41 @@ import {Component, OnInit} from '@angular/core';
 })
 export class RecordComponent implements OnInit {
 
-  constructor() {
+  constructor(
+    public sanitizer: DomSanitizer
+  ) {
   }
 
   // @ts-ignore
   mediaRecorder: MediaRecorder;
   audioChunks = [];
+  audioBlob: Blob;
   audioUrl = '';
-  audio: any;
 
   ngOnInit() {
-  }
-
-  startRecording(): void {
     navigator.mediaDevices.getUserMedia({audio: true}).then(stream => {
       // @ts-ignore
       this.mediaRecorder = new MediaRecorder(stream);
-      this.mediaRecorder.start();
       this.mediaRecorder.addEventListener('dataavailable', event => {
         this.audioChunks.push(event.data);
       });
       this.mediaRecorder.addEventListener('stop', () => {
-        const audioBlob = new Blob(this.audioChunks);
-        this.audioUrl = URL.createObjectURL(audioBlob);
-        this.audio = new Audio(this.audioUrl);
+        this.audioBlob = new Blob(this.audioChunks);
+        this.audioUrl = URL.createObjectURL(this.audioBlob);
       });
     });
   }
 
-  stopRecording() {
-    return new Promise(resolve => {
-      this.mediaRecorder.addEventListener('stop', () => {
-        const audioBlob = new Blob(this.audioChunks);
-        const audioUrl = URL.createObjectURL(audioBlob);
-        const audio = new Audio(audioUrl);
-        cont play = () => {
-          audio.play();
-        };
-        resolve({audioBlob, audioUrl, play});
-      });
-    });
+  startRecording(): void {
+    this.mediaRecorder.start();
+  }
+
+  stopRecording(): void {
+    this.mediaRecorder.stop();
   }
 
   playRecording(): void {
-    this.audio.play();
+    const audio = new Audio(this.audioUrl);
+    audio.play();
   }
 }
