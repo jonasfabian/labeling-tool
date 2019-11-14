@@ -9,7 +9,6 @@ import {HttpClient} from '@angular/common/http';
 import {Avatar} from '../../../models/Avatar';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ChangePassword} from '../../../models/ChangePassword';
-import {ThemeService} from '../../../services/theme.service';
 
 @Component({
   selector: 'app-profile',
@@ -24,8 +23,7 @@ export class ProfileComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private http: HttpClient,
-    private fb: FormBuilder,
-    private themeService: ThemeService
+    private fb: FormBuilder
   ) {
   }
 

@@ -171,7 +171,7 @@ export class CheckComponent implements OnInit {
     }
     this.apiService.updateTextAudio(currentCheckIndex).subscribe(_ => {
       this.apiService.createUserAndTextAudioIndex(
-        new UserAndTextAudio(-1, this.authService.loggedInUser.id, currentCheckIndex.id)
+        new UserAndTextAudio(-1, this.authService.loggedInUser.getValue().id, currentCheckIndex.id)
       ).subscribe(() => {
       }, () => {
       }, () => {

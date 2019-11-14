@@ -123,17 +123,6 @@
         </div>
       </ng-container>
     </div>
-    <div style="position: absolute; bottom: 15px; left: 15px;">
-      <div>
-        <mat-chip-list>
-          <ng-container *ngFor="let theme of themeService.themes">
-            <mat-chip color="primary" (click)="themeService.setTheme(theme)">
-              {{theme | titlecase}}
-            </mat-chip>
-          </ng-container>
-        </mat-chip-list>
-      </div>
-    </div>
   </mat-card>
 </div>
 <div style="height: 60%;"></div>

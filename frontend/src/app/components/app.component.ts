@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiService} from '../services/api.service';
 import {AuthService} from '../services/auth.service';
-import {ThemeService} from '../services/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -12,13 +11,11 @@ export class AppComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private authService: AuthService,
-    private themeService: ThemeService
+    private authService: AuthService
   ) {
   }
 
   ngOnInit(): void {
     this.authService.checkAuthenticated();
-    this.themeService.initTheme();
   }
 }
