@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  url: '/'
+  // TODO add real url once everything is ready
+  url: 'http://the.real.server/'
 };
