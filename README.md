@@ -14,57 +14,9 @@ Note: Other versions might work, but have not been tested yet
 1. Clone the Github Project (https://github.com/jonasfabian/labeling-tool.git)
 
 # Setup Backend
+
 1. clone the submodule using `git submodule init` & `git submodule update` 
 1. Go to `flask/*,py` and change the path variables to your the desired directory. Do the same thing in the `LabelingToolService.scala` file.
-
-Your directory should look like the following example:
-```bash
-├── your directory
-│   ├── 36
-│   │   ├── audio.mp3
-│   │   ├── transcript.txt
-│   │   ├── transcript_indexes.xml
-│   ├── 37
-│   │   ├── audio.mp3
-│   │   ├── transcript.txt
-│   │   ├── transcript_indexes.xml
-│   ├── 38
-│   │   ├── audio.mp3
-│   │   ├── transcript.txt
-│   │   ├── transcript_indexes.xml
-│   ├── ...
-```
-
-The `transcript_indexes.xml` should look like this:
-
-```xml
-<XMLIndexFile>
-    <Version>2.0.0</Version>
-    <SamplingRate>44100</SamplingRate>
-    <NumberOfIndices>146</NumberOfIndices>
-    <TextAudioIndex>
-        <TextStartPos>49</TextStartPos>
-        <TextEndPos>146</TextEndPos>
-        <AudioStartPos>1279561</AudioStartPos>
-        <AudioEndPos>1692337</AudioEndPos>
-        <SpeakerKey>0</SpeakerKey>
-    </TextAudioIndex>
-    <TextAudioIndex>
-        <TextStartPos>148</TextStartPos>
-        <TextEndPos>204</TextEndPos>
-        <AudioStartPos>1728499</AudioStartPos>
-        <AudioEndPos>1895197</AudioEndPos>
-        <SpeakerKey>0</SpeakerKey>
-    </TextAudioIndex>
-    <TextAudioIndex>
-        <TextStartPos>206</TextStartPos>
-        <TextEndPos>286</TextEndPos>
-        <AudioStartPos>1907104</AudioStartPos>
-        <AudioEndPos>2112169</AudioEndPos>
-        <SpeakerKey>0</SpeakerKey>
-    </TextAudioIndex>
-```
-
 1. Start setup.py
 1. Start migration.py
 1. Start rest.py
