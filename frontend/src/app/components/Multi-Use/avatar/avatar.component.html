@@ -1,10 +1,10 @@
-<ng-container *ngIf="authService.loggedInUser.avatarVersion === 0">
-  <div [title]="(user.username | titlecase) + ' ' + (user.lastName | titlecase) + ' (' + user.email + ')'" class="avatar" [style.background-color]="color" [style.height.px]="size" [style.width.px]="size" [style.font-size.px]="fontSize" [style.border-radius.%]="borderRadius">
+<ng-container *ngIf="authService.loggedInUser.getValue().avatarVersion === 0">
+  <div [title]="(authService.loggedInUser.getValue().username | titlecase) + ' ' + (authService.loggedInUser.getValue().lastName | titlecase) + ' (' + authService.loggedInUser.getValue().email + ')'" class="avatar" [style.background-color]="color" [style.height.px]="size" [style.width.px]="size" [style.font-size.px]="fontSize" [style.border-radius.%]="borderRadius">
   <span>
     {{initials}}
   </span>
   </div>
 </ng-container>
-<ng-container *ngIf="authService.loggedInUser.avatarVersion !== 0">
+<ng-container *ngIf="authService.loggedInUser.getValue().avatarVersion !== 0">
   <img class="avatar" [style.width.px]="size" [style.height.px]="size" [src]="authService.source">
 </ng-container>

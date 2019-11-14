@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {UserPublicInfo} from '../models/UserPublicInfo';
 import {Router} from '@angular/router';
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class AuthService {
   static currentUserStore = 'currentUser';
 
   isAuthenticated = false;
-  loggedInUser = new UserPublicInfo(-1, '', '', '', '', 0, '');
+  loggedInUser = new BehaviorSubject<UserPublicInfo>(new UserPublicInfo(-1, '', '', '', '', 0, ''));
   source = '';
 
   checkAuthenticated(): void {

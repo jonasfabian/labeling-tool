@@ -10,19 +10,19 @@
         <mat-list>
           <mat-list-item>
             <span>First name:</span>&nbsp;
-            <span class="info-input">{{user.firstName}}</span>
+            <span class="info-input">{{authService.loggedInUser.getValue().firstName}}</span>
           </mat-list-item>
           <mat-list-item>
             <span>Last name:</span>&nbsp;
-            <span class="info-input">{{user.lastName}}</span>
+            <span class="info-input">{{authService.loggedInUser.getValue().lastName}}</span>
           </mat-list-item>
           <mat-list-item>
             <span>Email:</span>&nbsp;
-            <span class="info-input">{{user.email}}</span>
+            <span class="info-input">{{authService.loggedInUser.getValue().email}}</span>
           </mat-list-item>
           <mat-list-item>
             <span>Canton:</span>&nbsp;
-            <span class="info-input">{{user.canton | CantonIdToCanton}}</span>
+            <span class="info-input">{{authService.loggedInUser.getValue().canton | CantonIdToCanton}}</span>
           </mat-list-item>
           <mat-list-item>
             <span>Password:</span>&nbsp;
@@ -111,9 +111,9 @@
                            (click)="fileInput.click()">
           <mat-icon>edit</mat-icon>
         </mat-button-toggle>
-        <app-avatar [size]="260" style="float: left;" [user]="user" [fontSize]="100" [borderRadius]="0"></app-avatar>
+        <app-avatar [size]="260" style="float: left;" [fontSize]="100" [borderRadius]="0"></app-avatar>
         <div style="text-align: center; padding: 15px;">
-          <span style="font-size: 25px;">{{user.username}}</span>
+          <span style="font-size: 25px;">{{authService.loggedInUser.getValue().username}}</span>
         </div>
         <input style="display: none;" type="file" (change)="onFileChanged($event)" accept=".png, .jpg" #fileInput>
         <div>

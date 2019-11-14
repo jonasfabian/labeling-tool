@@ -13,7 +13,7 @@
     Login
   </span>
   <ng-container *ngIf="authService.isAuthenticated">
-    <app-avatar [size]="32" [matMenuTriggerFor]="menu" [user]="authService.loggedInUser" [fontSize]="15" [borderRadius]="50"
+    <app-avatar [size]="32" [matMenuTriggerFor]="menu" [fontSize]="15" [borderRadius]="50"
       style="float: right;"></app-avatar>
     <mat-menu #menu>
       <mat-list style="padding: 0;">

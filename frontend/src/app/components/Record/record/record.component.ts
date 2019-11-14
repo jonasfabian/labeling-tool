@@ -104,7 +104,7 @@ export class RecordComponent implements OnInit {
   }
 
   createRecording(): void {
-    const rec =  new Recording(-1, this.fileContent.toString(), this.authService.loggedInUser.id, this.fileByteArray);
+    const rec =  new Recording(-1, this.fileContent.toString(), this.authService.loggedInUser.getValue().id, this.fileByteArray);
     this.apiService.createRecording(rec).subscribe();
   }
 

@@ -42,7 +42,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.authService.checkAuthenticated();
-    this.user = this.authService.loggedInUser;
+    this.user = this.authService.loggedInUser.getValue();
     this.initForm();
     this.initPasswordForm();
   }
@@ -90,6 +90,7 @@ export class ProfileComponent implements OnInit {
   }
 
   onFileChanged(event): void {
+    const lU = this.authService.loggedInUser.getValue();
     this.fileByteArray = [];
     const reader = new FileReader();
     this.selectedFile = event.target.files[0];
@@ -101,23 +102,23 @@ export class ProfileComponent implements OnInit {
         this.yeet.map(l => {
           this.fileByteArray.push(l);
         });
-        this.authService.loggedInUser.avatarVersion++;
+        lU.avatarVersion++;
         this.http.post('http://localhost:5000/createAvatar', new Avatar(-1, this.user.id, this.fileByteArray)).subscribe(_ => {
           this.apiService.getAvatar(this.user.id).subscribe(a => {
             this.authService.source = 'data:image/png;base64,' + btoa(String.fromCharCode.apply(null, new Uint8Array(a.avatar)));
-            this.apiService.updateUser(this.authService.loggedInUser).subscribe();
+            this.apiService.updateUser(lU).subscribe();
             sessionStorage.setItem('user', JSON.stringify([{
-              id: this.authService.loggedInUser.id,
-              firstName: this.authService.loggedInUser.firstName,
-              lastName: this.authService.loggedInUser.lastName,
-              email: this.authService.loggedInUser.email,
-              username: this.authService.loggedInUser.username,
-              avatarVersion: this.authService.loggedInUser.avatarVersion,
-              canton: this.authService.loggedInUser.canton,
+              id: lU.id,
+              firstName: lU.firstName,
+              lastName: lU.lastName,
+              email: lU.email,
+              username: lU.username,
+              avatarVersion: lU.avatarVersion,
+              canton: lU.canton,
               time: new Date()
             }]));
           });
-        });
+        }, () => {}, () => this.authService.loggedInUser.next(lU));
       }
     };
   }
@@ -125,7 +126,7 @@ export class ProfileComponent implements OnInit {
   changePassword(): void {
     this.apiService.changePassword(
       new ChangePassword(
-        this.authService.loggedInUser.id,
+        this.authService.loggedInUser.getValue().id,
         this.changePasswordForm.controls.password.value,
         this.changePasswordForm.controls.newPassword.value)
     ).subscribe(() => {
