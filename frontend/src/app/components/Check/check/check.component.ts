@@ -32,12 +32,10 @@ export class CheckComponent implements OnInit {
   available = false;
   isPlaying = false;
   carouselIndex = 0;
-  skip = 3;
   correct = 1;
   wrong = 2;
   numberCorrect = 0;
   numberWrong = 0;
-  numberSkipped = 0;
   progress = 0;
   panelOpenState = false;
   audioFileId = 0;
@@ -114,8 +112,6 @@ export class CheckComponent implements OnInit {
       this.numberCorrect++;
     } else if (checkType === this.wrong) {
       this.numberWrong++;
-    } else {
-      this.numberSkipped++;
     }
   }
 
@@ -125,18 +121,16 @@ export class CheckComponent implements OnInit {
 
   initSessionCheckData(): void {
     if (!sessionStorage.getItem('checkData')) {
-      sessionStorage.setItem('checkData', JSON.stringify([{correct: 0, wrong: 0, skipped: 0}]));
+      sessionStorage.setItem('checkData', JSON.stringify([{correct: 0, wrong: 0}]));
     }
     this.numberCorrect = JSON.parse(sessionStorage.getItem('checkData'))[0].correct;
     this.numberWrong = JSON.parse(sessionStorage.getItem('checkData'))[0].wrong;
-    this.numberSkipped = JSON.parse(sessionStorage.getItem('checkData'))[0].skipped;
   }
 
   updateSessionCheckData(): void {
     sessionStorage.setItem('checkData', JSON.stringify([{
       correct: this.numberCorrect,
-      wrong: this.numberWrong,
-      skipped: this.numberSkipped
+      wrong: this.numberWrong
     }]));
   }
 
