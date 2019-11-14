@@ -57,7 +57,6 @@ export class AvatarComponent implements OnInit {
 
   generateProfileImage(): void {
     this.initials = this.authService.loggedInUser.getValue().firstName.charAt(0).toLocaleUpperCase();
-    console.log(this.authService.loggedInUser.getValue().firstName);
   }
 
   generateColor() {
