@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
 
   login(): void {
     if (this.loginForm.valid) {
-      this.apiService.checkLogin(
+      this.apiService.login(
         new EmailPassword(this.loginForm.controls.email.value, this.loginForm.controls.password.value)).subscribe(_ => {
         this.apiService.getUserByEmail(this.loginForm.controls.email.value).subscribe(u => {
           sessionStorage.setItem('user', JSON.stringify([{

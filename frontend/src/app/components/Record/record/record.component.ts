@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {ApiService} from '../../../services/api.service';
 import {Recording} from '../../../models/Recording';
 import {AuthService} from '../../../services/auth.service';
 import {TranscriptPreviewComponent} from '../transcript-preview/transcript-preview.component';
 import {MatDialog} from '@angular/material/dialog';
+import WaveSurfer from 'wavesurfer.js';
 
 @Component({
   selector: 'app-record',
@@ -15,7 +16,8 @@ export class RecordComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private authService: AuthService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private ref: ChangeDetectorRef
   ) {
   }
 
@@ -29,8 +31,42 @@ export class RecordComponent implements OnInit {
   yeet: any;
   fileContent: string | ArrayBuffer = '';
   showTextArea = false;
+  waveSurfer: WaveSurfer = null;
+  wavesurferIsReady = false;
 
   ngOnInit() {
+    this.generateWaveform();
+  }
+
+  generateWaveform(): void {
+    Promise.resolve(null).then(() => {
+      if (this.waveSurfer === null) {
+        this.createWaveform();
+        this.waveSurfer.on('waveform-ready', () => {
+          this.wavesurferIsReady = true;
+          this.ref.detectChanges();
+        });
+      } else {
+        this.waveSurfer.on('waveform-ready', () => {
+          this.wavesurferIsReady = true;
+          this.ref.detectChanges();
+        });
+      }
+    });
+  }
+
+  createWaveform(): void {
+    this.waveSurfer = WaveSurfer.create({
+      container: '#waveform',
+      backend: 'MediaElement',
+      waveColor: 'lightblue',
+      progressColor: 'blue',
+      barHeight: 1,
+      autoCenter: true,
+      partialRender: true,
+      normalize: false,
+      responsive: true
+    });
   }
 
   disableCreateButton(): boolean {
@@ -47,6 +83,7 @@ export class RecordComponent implements OnInit {
 
   record(): void {
     this.recording = true;
+    this.wavesurferIsReady = false;
     navigator.mediaDevices.getUserMedia({audio: true}).then(stream => {
       // @ts-ignore
       this.setMediaRecorder(stream);
@@ -55,21 +92,10 @@ export class RecordComponent implements OnInit {
       this.mediaRecorder.addEventListener('dataavailable', event => {
         audioChunks.push(event.data);
       });
-
       this.mediaRecorder.addEventListener('stop', () => {
         const audioBlob = new Blob(audioChunks);
-        this.setAudioUrl(audioBlob);
-        const fileReader = new FileReader();
-        fileReader.readAsArrayBuffer(audioBlob);
-        fileReader.onloadend = () => {
-          // @ts-ignore
-          this.yeet = new Int8Array(fileReader.result);
-          if (this.yeet.length <= 65535) {
-            this.yeet.map(l => {
-              this.fileByteArray.push(l);
-            });
-          }
-        };
+        console.log(URL.createObjectURL(audioBlob));
+        this.waveSurfer.load(URL.createObjectURL(audioBlob));
       });
     });
   }
@@ -84,14 +110,9 @@ export class RecordComponent implements OnInit {
     this.mediaRecorder = new MediaRecorder(stream);
   }
 
-  setAudioUrl(audioBlob: Blob): void {
-    this.audioUrl = URL.createObjectURL(audioBlob);
-  }
-
   playRecording(): void {
     this.togglePlay();
-    this.audio = new Audio(this.audioUrl);
-    this.audio.play();
+    this.waveSurfer.play();
   }
 
   stopPlayRecording(): void {
@@ -104,7 +125,7 @@ export class RecordComponent implements OnInit {
   }
 
   createRecording(): void {
-    const rec =  new Recording(-1, this.fileContent.toString(), this.authService.loggedInUser.id, this.fileByteArray);
+    const rec = new Recording(-1, this.fileContent.toString(), this.authService.loggedInUser.id, this.fileByteArray);
     this.apiService.createRecording(rec).subscribe();
   }
 

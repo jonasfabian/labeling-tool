@@ -22,9 +22,16 @@
     </mat-button-toggle-group>
     <mat-button-toggle (click)="createRecording()" style="float: right;" [disabled]="disableCreateButton()">Create
     </mat-button-toggle>
-    <mat-slide-toggle matTooltip="Switch between uploading a text or typing it straight in" style="margin: 0 0 0 15px;" color="primary" (toggleChange)="toggle()">Switch text upload</mat-slide-toggle>
+    <mat-slide-toggle matTooltip="Switch between uploading a text or typing it straight in" style="margin: 0 0 0 15px;"
+                      color="primary" (toggleChange)="toggle()">Switch text upload
+    </mat-slide-toggle>
     <div id="recording" *ngIf="recording">
       Recording
+    </div>
+  </mat-card>
+  <mat-card>
+    <div [hidden]="!wavesurferIsReady" id="wave" style="border: 1px solid lightgrey; border-radius: 4px;">
+      <div id="waveform" style="cursor: pointer;"></div>
     </div>
   </mat-card>
 </div>
