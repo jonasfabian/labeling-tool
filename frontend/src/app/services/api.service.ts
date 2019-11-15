@@ -17,6 +17,7 @@ import {Canton} from '../models/Canton';
 import {ChangePassword} from '../models/ChangePassword';
 import {TextAudio} from '../models/TextAudio';
 import {UserAndTextAudio} from '../models/UserAndTextAudio';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -24,20 +25,10 @@ import {UserAndTextAudio} from '../models/UserAndTextAudio';
 
 export class ApiService {
 
-  constructor(
-    private http: HttpClient,
-    private sanitizer: DomSanitizer,
-    private router: Router,
-    private authService: AuthService,
-    private snackBar: MatSnackBar
-  ) {
-  }
-
-  url = 'http://localhost:5000/';
+  url = environment.url;
   blobUrl: SafeUrl | string = '';
   uri: BehaviorSubject<SafeUrl> = new BehaviorSubject<SafeUrl>('');
   showTenMoreQuest = false;
-
   cantons: Canton[] = [
     {cantonId: 'ag', cantonName: 'Aargau'},
     {cantonId: 'ai', cantonName: 'Appenzell Innerrhoden'},
@@ -66,6 +57,15 @@ export class ApiService {
     {cantonId: 'zg', cantonName: 'Zug'},
     {cantonId: 'zh', cantonName: 'Zürich'}
   ];
+
+  constructor(
+    private http: HttpClient,
+    private sanitizer: DomSanitizer,
+    private router: Router,
+    private authService: AuthService,
+    private snackBar: MatSnackBar
+  ) {
+  }
 
   getTextAudios(): Observable<Array<TextAudio>> {
     return this.http.get<Array<TextAudio>>(this.url + 'getTextAudios');
