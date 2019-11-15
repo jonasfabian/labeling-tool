@@ -96,8 +96,8 @@ export class ApiService {
     return this.http.post(this.url + 'createUserAndTextAudio', userAndTextAudio);
   }
 
-  checkLogin(emailPassword: EmailPassword): Observable<any> {
-    return this.http.post(this.url + 'checkLogin', emailPassword);
+  login(emailPassword: EmailPassword): Observable<any> {
+    return this.http.post(this.url + 'login', emailPassword);
   }
 
   updateTextAudio(textAudio: TextAudio): Observable<any> {
