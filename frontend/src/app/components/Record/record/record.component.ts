@@ -17,7 +17,7 @@ export class RecordComponent implements OnInit {
   }
 
   fileContent: string | ArrayBuffer = '';
-  showTextArea = false;
+  showTextArea = true;
   waveSurfer: WaveSurfer = null;
   context = new AudioContext();
   processor = this.context.createScriptProcessor(1024, 1, 1);
