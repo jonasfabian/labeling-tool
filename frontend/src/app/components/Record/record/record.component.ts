@@ -1,10 +1,8 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {ApiService} from '../../../services/api.service';
-import {Recording} from '../../../models/Recording';
-import {AuthService} from '../../../services/auth.service';
+import {Component, OnInit} from '@angular/core';
 import {TranscriptPreviewComponent} from '../transcript-preview/transcript-preview.component';
 import {MatDialog} from '@angular/material/dialog';
 import WaveSurfer from 'wavesurfer.js';
+import MicrophonesPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.microphone.js';
 
 @Component({
   selector: 'app-record',
@@ -14,119 +12,67 @@ import WaveSurfer from 'wavesurfer.js';
 export class RecordComponent implements OnInit {
 
   constructor(
-    private apiService: ApiService,
-    private authService: AuthService,
-    public dialog: MatDialog,
-    private ref: ChangeDetectorRef
+    public dialog: MatDialog
   ) {
   }
 
-  audio = new Audio();
-  audioUrl = '';
-  recording = false;
-  playing = false;
-  // @ts-ignore
-  mediaRecorder: MediaRecorder;
-  fileByteArray: Array<number> = [];
-  yeet: any;
   fileContent: string | ArrayBuffer = '';
   showTextArea = false;
   waveSurfer: WaveSurfer = null;
-  wavesurferIsReady = false;
+  context = new AudioContext();
+  processor = this.context.createScriptProcessor(1024, 1, 1);
+  // @ts-ignore
+  mediaRecorder: MediaRecorder;
+  recordingBlob: object;
+  url = '';
 
   ngOnInit() {
-    this.generateWaveform();
-  }
-
-  generateWaveform(): void {
-    Promise.resolve(null).then(() => {
-      if (this.waveSurfer === null) {
-        this.createWaveform();
-        this.waveSurfer.on('waveform-ready', () => {
-          this.wavesurferIsReady = true;
-          this.ref.detectChanges();
-        });
-      } else {
-        this.waveSurfer.on('waveform-ready', () => {
-          this.wavesurferIsReady = true;
-          this.ref.detectChanges();
-        });
-      }
-    });
-  }
-
-  createWaveform(): void {
-    this.waveSurfer = WaveSurfer.create({
-      container: '#waveform',
-      backend: 'MediaElement',
-      waveColor: 'lightblue',
-      progressColor: 'blue',
-      barHeight: 1,
-      autoCenter: true,
-      partialRender: true,
-      normalize: false,
-      responsive: true
-    });
-  }
-
-  disableCreateButton(): boolean {
-    if (this.fileByteArray.length !== 0 && this.fileContent !== '') {
-      return false;
-    } else {
-      return true;
+    if (this.waveSurfer === null) {
+      this.waveSurfer = WaveSurfer.create({
+        container: '#waveform',
+        waveColor: 'black',
+        interact: false,
+        cursorWidth: 0,
+        audioContext: this.context || null,
+        audioScriptProcessor: this.processor || null,
+        plugins: [
+          MicrophonesPlugin.create({
+            bufferSize: 4096,
+            numberOfInputChannels: 1,
+            numberOfOutputChannels: 1,
+            constraints: {
+              video: false,
+              audio: true
+            }
+          })
+        ]
+      });
+      this.waveSurfer.microphone.on('deviceReady', stream => {
+        // @ts-ignore
+        this.mediaRecorder = new MediaRecorder(stream);
+        this.mediaRecorder.ondataavailable = event => {
+          this.recordingBlob = event.data;
+          this.url = URL.createObjectURL(this.recordingBlob);
+          console.log(this.url);
+        };
+        this.mediaRecorder.start();
+      });
+      this.waveSurfer.microphone.on('deviceError', code => {
+        console.log('Device error: ' + code);
+      });
+      this.waveSurfer.on('error', e => {
+        console.log(e);
+      });
     }
   }
 
-  toggle(): void {
-    this.showTextArea = !this.showTextArea;
+  startRecord(): void {
+    this.waveSurfer.microphone.start();
   }
 
-  record(): void {
-    this.recording = true;
-    this.wavesurferIsReady = false;
-    navigator.mediaDevices.getUserMedia({audio: true}).then(stream => {
-      // @ts-ignore
-      this.setMediaRecorder(stream);
-      this.mediaRecorder.start();
-      const audioChunks = [];
-      this.mediaRecorder.addEventListener('dataavailable', event => {
-        audioChunks.push(event.data);
-      });
-      this.mediaRecorder.addEventListener('stop', () => {
-        const audioBlob = new Blob(audioChunks);
-        console.log(URL.createObjectURL(audioBlob));
-        this.waveSurfer.load(URL.createObjectURL(audioBlob));
-      });
-    });
-  }
-
-  stopRecording(): void {
-    this.recording = false;
+  stopRecord(): void {
     this.mediaRecorder.stop();
-  }
-
-  setMediaRecorder(stream: MediaStream): void {
-    // @ts-ignore
-    this.mediaRecorder = new MediaRecorder(stream);
-  }
-
-  playRecording(): void {
-    this.togglePlay();
-    this.waveSurfer.play();
-  }
-
-  stopPlayRecording(): void {
-    this.togglePlay();
-    this.audio.pause();
-  }
-
-  togglePlay(): void {
-    this.playing = !this.playing;
-  }
-
-  createRecording(): void {
-    const rec = new Recording(-1, this.fileContent.toString(), this.authService.loggedInUser.id, this.fileByteArray);
-    this.apiService.createRecording(rec).subscribe();
+    this.waveSurfer.microphone.pause();
   }
 
   handleFileInput(fileList: FileList): void {
