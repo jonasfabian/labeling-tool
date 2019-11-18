@@ -11,8 +11,8 @@
     <mat-button-toggle-group>
       <mat-button-toggle (click)="startRecord()">Start</mat-button-toggle>
       <mat-button-toggle (click)="stopRecord()">Stop</mat-button-toggle>
+      <mat-button-toggle (click)="playRecord()">Play</mat-button-toggle>
     </mat-button-toggle-group>
-    <audio [src]="url" [hidden]="url === ''" controls></audio>
   </mat-card>
 </div>
 <div style="height: calc(100% - 390px);">

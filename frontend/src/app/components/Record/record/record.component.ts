@@ -23,14 +23,18 @@ export class RecordComponent implements OnInit {
   processor = this.context.createScriptProcessor(1024, 1, 1);
   // @ts-ignore
   mediaRecorder: MediaRecorder;
-  recordingBlob: object;
-  url = '';
 
   ngOnInit() {
     if (this.waveSurfer === null) {
       this.waveSurfer = WaveSurfer.create({
         container: '#waveform',
-        waveColor: 'black',
+        waveColor: 'lightblue',
+        progressColor: 'blue',
+        barHeight: 1,
+        autoCenter: true,
+        partialRender: false,
+        normalize: false,
+        responsive: true,
         interact: false,
         cursorWidth: 0,
         audioContext: this.context || null,
@@ -51,17 +55,9 @@ export class RecordComponent implements OnInit {
         // @ts-ignore
         this.mediaRecorder = new MediaRecorder(stream);
         this.mediaRecorder.ondataavailable = event => {
-          this.recordingBlob = event.data;
-          this.url = URL.createObjectURL(this.recordingBlob);
-          console.log(this.url);
+          this.waveSurfer.loadBlob(event.data);
         };
         this.mediaRecorder.start();
-      });
-      this.waveSurfer.microphone.on('deviceError', code => {
-        console.log('Device error: ' + code);
-      });
-      this.waveSurfer.on('error', e => {
-        console.log(e);
       });
     }
   }
@@ -73,6 +69,10 @@ export class RecordComponent implements OnInit {
   stopRecord(): void {
     this.mediaRecorder.stop();
     this.waveSurfer.microphone.pause();
+  }
+
+  playRecord(): void {
+    this.waveSurfer.play();
   }
 
   handleFileInput(fileList: FileList): void {
