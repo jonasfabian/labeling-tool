@@ -76,30 +76,11 @@ export class TableComponent implements OnInit {
     Promise.resolve(null).then(() => {
       if (this.waveSurfer === null) {
         this.createWaveform();
-        this.currentFileId = textAudio.fileId;
-        this.loadAudioBlob(textAudio.fileId);
-        this.waveSurfer.on('ready', () => {
-          this.addRegion(textAudio, false);
-          this.setViewToRegion(textAudio);
-          this.text = textAudio.text;
-        });
-        this.waveSurfer.on('waveform-ready', () => {
-          this.wavesurferIsReady = true;
-          this.ref.detectChanges();
-        });
+        this.load(textAudio);
       } else {
         this.pause();
         if (this.currentFileId !== textAudio.fileId) {
-          this.loadAudioBlob(textAudio.fileId);
-          this.waveSurfer.on('ready', () => {
-            this.addRegion(textAudio, false);
-            this.setViewToRegion(textAudio);
-            this.text = textAudio.text;
-          });
-          this.waveSurfer.on('waveform-ready', () => {
-            this.wavesurferIsReady = true;
-            this.ref.detectChanges();
-          });
+          this.load(textAudio);
         } else {
           this.addRegion(textAudio, false);
           this.setViewToRegion(textAudio);
@@ -208,5 +189,19 @@ export class TableComponent implements OnInit {
       }), () => {
       }
       , () => this.csvExporter.generateCsv(this.data));
+  }
+
+  private load(textAudio) {
+    this.currentFileId = textAudio.fileId;
+    this.loadAudioBlob(textAudio.fileId);
+    this.waveSurfer.on('ready', () => {
+      this.addRegion(textAudio, false);
+      this.setViewToRegion(textAudio);
+      this.text = textAudio.text;
+    });
+    this.waveSurfer.on('waveform-ready', () => {
+      this.wavesurferIsReady = true;
+      this.ref.detectChanges();
+    });
   }
 }

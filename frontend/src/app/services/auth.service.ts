@@ -11,7 +11,6 @@ export class AuthService {
   static currentUserStore = 'currentUser';
   isAuthenticated = false;
   loggedInUser = new BehaviorSubject<UserPublicInfo>(new UserPublicInfo(-1, '', '', '', '', 0, ''));
-  source = '';
 
   constructor(
     private router: Router
