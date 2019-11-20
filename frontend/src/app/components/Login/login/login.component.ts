@@ -12,6 +12,8 @@ import {Router} from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
+  loginForm: FormGroup;
+
   constructor(
     private fb: FormBuilder,
     private apiService: ApiService,
@@ -19,8 +21,6 @@ export class LoginComponent implements OnInit {
     private router: Router
   ) {
   }
-
-  loginForm: FormGroup;
 
   ngOnInit() {
     this.initForm();
@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/labeling-tool/overview']);
           this.authService.addToLocalStorage(this.loginForm.controls.email.value, this.loginForm.controls.password.value);
           this.apiService.getUserByEmail(this.loginForm.controls.email.value).subscribe(user => {
-            this.authService.loggedInUser = user;
+            this.authService.loggedInUser.next(user);
           });
           sessionStorage.setItem('email', JSON.stringify(this.loginForm.controls.email.value));
         });
