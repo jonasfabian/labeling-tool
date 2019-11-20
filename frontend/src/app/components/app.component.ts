@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {ApiService} from '../services/api.service';
 import {AuthService} from '../services/auth.service';
 
 @Component({
@@ -9,13 +8,11 @@ import {AuthService} from '../services/auth.service';
 })
 export class AppComponent implements OnInit {
 
-  constructor(
-    private apiService: ApiService,
-    private authService: AuthService,
-  ) {
+  constructor(private authService: AuthService,) {
   }
 
   ngOnInit(): void {
+    // TODO this could be moved into a home-coponent sow we could check the login over a AuthGuard
     this.authService.checkAuthenticated();
   }
 }

@@ -13,13 +13,6 @@ import {NavigationItem} from '../../../models/NavigationItem';
 })
 export class NavigationMenuComponent implements OnInit {
 
-  constructor(
-    private authService: AuthService,
-    private apiService: ApiService,
-    private router: Router
-  ) {
-  }
-
   @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
   @ViewChild('menu', {static: true}) menu: MatMenu;
   navigationContainer: Array<NavigationItem> = [
@@ -27,6 +20,9 @@ export class NavigationMenuComponent implements OnInit {
     new NavigationItem(2, 'Record', 'record_voice_over'),
     new NavigationItem(3, 'Overview', 'view_list')
   ];
+
+  constructor(private apiService: ApiService, public authService: AuthService, public router: Router) {
+  }
 
   ngOnInit() {
     if (JSON.parse(sessionStorage.getItem('email'))) {
