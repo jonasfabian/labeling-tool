@@ -4,9 +4,6 @@ import {Sums} from '../../../models/Sums';
 import {UserLabeledData} from '../../../models/UserLabeledData';
 import {TextAudio} from '../../../models/TextAudio';
 import {AudioSnippet} from '../../../models/AudioSnippet';
-import {geoJSON, Map} from 'leaflet';
-// @ts-ignore
-import sui from 'src/assets/sui.json';
 
 @Component({
   selector: 'app-overview',
@@ -20,7 +17,6 @@ export class OverviewComponent implements OnInit {
   ) {
   }
 
-  map: Map;
   inputData: Sums = new Sums(0, 0, 0);
   userInputData: Array<UserLabeledData> = [];
   editElement = false;
@@ -30,25 +26,10 @@ export class OverviewComponent implements OnInit {
 
   ngOnInit() {
     this.mapReady = false;
-    this.map = new Map('mapid', {zoomControl: false, attributionControl: false}).setView([46.818188, 8.227512], 7);
-    this.onMapReady(this.map);
-    geoJSON(sui).addTo(this.map);
-    this.map.touchZoom.disable();
-    this.map.doubleClickZoom.disable();
-    this.map.scrollWheelZoom.disable();
-    this.map.dragging.disable();
     this.apiService.getLabeledSums().subscribe(l => {
       this.inputData = l;
     });
     this.apiService.getTopFiveUsersLabeledCount().subscribe(l => this.userInputData = l);
-    this.map.whenReady(() => this.mapReady = true);
-  }
-
-  // Otherwise map won't load fully on init
-  onMapReady(map) {
-    setTimeout(() => {
-      map.invalidateSize();
-    }, 0);
   }
 
   isEditElement(isEdit: boolean): void {
