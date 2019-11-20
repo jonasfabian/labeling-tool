@@ -10,6 +10,7 @@ import {Avatar} from '../../../models/Avatar';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ChangePassword} from '../../../models/ChangePassword';
 import {ThemeService} from '../../../services/theme.service';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-profile',
@@ -18,16 +19,6 @@ import {ThemeService} from '../../../services/theme.service';
 })
 
 export class ProfileComponent implements OnInit {
-
-  constructor(
-    private apiService: ApiService,
-    private router: Router,
-    private authService: AuthService,
-    private http: HttpClient,
-    private fb: FormBuilder,
-    private themeService: ThemeService
-  ) {
-  }
 
   changeProfileForm: FormGroup;
   changePasswordForm: FormGroup;
@@ -39,6 +30,16 @@ export class ProfileComponent implements OnInit {
   yeet: any;
   profileView = ProfileView;
   currentView = this.profileView.ProfileView;
+
+  constructor(
+    private apiService: ApiService,
+    private router: Router,
+    private authService: AuthService,
+    private http: HttpClient,
+    private fb: FormBuilder,
+    private themeService: ThemeService
+  ) {
+  }
 
   ngOnInit() {
     this.authService.checkAuthenticated();
@@ -102,7 +103,7 @@ export class ProfileComponent implements OnInit {
           this.fileByteArray.push(l);
         });
         this.authService.loggedInUser.avatarVersion++;
-        this.http.post('http://localhost:5000/createAvatar', new Avatar(-1, this.user.id, this.fileByteArray)).subscribe(_ => {
+        this.http.post(environment.url + 'createAvatar', new Avatar(-1, this.user.id, this.fileByteArray)).subscribe(_ => {
           this.apiService.getAvatar(this.user.id).subscribe(a => {
             this.authService.source = 'data:image/png;base64,' + btoa(String.fromCharCode.apply(null, new Uint8Array(a.avatar)));
             this.apiService.updateUser(this.authService.loggedInUser).subscribe();

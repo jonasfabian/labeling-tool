@@ -29,6 +29,12 @@ export class NavigationMenuComponent implements OnInit {
   ];
 
   ngOnInit() {
+    // TODO is this needed?
+    if (JSON.parse(sessionStorage.getItem('email'))) {
+      this.apiService.getUserByEmail(JSON.parse(localStorage.getItem('email'))).subscribe(user => {
+        this.authService.loggedInUser = user;
+      });
+    }
   }
 
   toggleSidenav(): void {
