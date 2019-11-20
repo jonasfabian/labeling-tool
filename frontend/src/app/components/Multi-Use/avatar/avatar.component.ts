@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {UserPublicInfo} from '../../../models/UserPublicInfo';
 import stringToColor from '../../../calculations/stringToColor';
 import {ApiService} from '../../../services/api.service';
 import {AuthService} from '../../../services/auth.service';
@@ -17,28 +16,23 @@ export class AvatarComponent implements OnInit {
   ) {
   }
 
-  @Input() user: UserPublicInfo;
   @Input() size: number;
   @Input() fontSize: number;
   @Input() borderRadius: number;
+  @Input() hover: string;
   initials = '';
   color = '';
 
   ngOnInit() {
     this.generateProfileImage();
     this.generateColor();
-    if (this.authService.loggedInUser.avatarVersion !== 0) {
-      this.apiService.getUserByEmail(this.authService.loggedInUser.email).subscribe(u => {
-        this.authService.checkAuthenticated();
-      });
-    }
   }
 
   generateProfileImage(): void {
-    this.initials = this.user.firstName.charAt(0).toLocaleUpperCase();
+    this.initials = JSON.parse(sessionStorage.getItem('email')).charAt(0).toLocaleUpperCase();
   }
 
   generateColor() {
-    this.color = stringToColor(this.user.firstName + this.user.lastName);
+    this.color = stringToColor(this.authService.loggedInUser.getValue().firstName + this.authService.loggedInUser.getValue().lastName);
   }
 }
