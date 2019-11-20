@@ -28,6 +28,8 @@ Note: Other versions might work, but have not been tested yet
 1. Go to http://localhost:4200
 
 ## Production
+some additional packages needed:
+* `sudo apt install default-libmysqlclient-dev python3 mariadb-client libssl-dev`
 ### Frontend
 1. change the the url in `environment.prod.ts`
 1. install locked dependencies using `npm ci`
@@ -38,7 +40,7 @@ Note: Other versions might work, but have not been tested yet
 
 1. Go to `flask/*,py` and change the path variables to your the desired directory.
 1. install dependencies 
-   1. `python -m venv venv`
+   1. `python3 -m venv venv`
    1. `source venv/bin/activate` (assumes bash is used)
    1. `pip install -r requirements.txt`
 1. Start setup.py
