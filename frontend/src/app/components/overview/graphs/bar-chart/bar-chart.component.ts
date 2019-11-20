@@ -10,7 +10,6 @@ export class BarChartComponent implements OnInit, OnChanges {
 
   @Input() inputData: Sums;
   single = [];
-  view = [];
   colorScheme = {domain: ['#3f51b5', '#7482cf', 'blue', 'darkblue']};
 
   constructor() {

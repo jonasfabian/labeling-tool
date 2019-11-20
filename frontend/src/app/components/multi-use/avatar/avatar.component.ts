@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import stringToColor from '../../../calculations/stringToColor';
-import {ApiService} from '../../../services/api.service';
 import {AuthService} from '../../../services/auth.service';
 
 @Component({
@@ -17,7 +16,7 @@ export class AvatarComponent implements OnInit {
   initials = '';
   color = '';
 
-  constructor(private apiService: ApiService, public authService: AuthService) {
+  constructor(public authService: AuthService) {
   }
 
   ngOnInit() {

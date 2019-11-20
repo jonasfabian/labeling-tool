@@ -23,11 +23,7 @@ export class SessionOverviewComponent implements OnInit {
 
   ngOnInit() {
     const sessionData = JSON.parse(sessionStorage.getItem('checkData'))[0];
-    if (sessionData.correct === 0 && sessionData.wrong === 0 && sessionData.skipped === 0) {
-      this.noDataAvailable = true;
-    } else {
-      this.noDataAvailable = false;
-    }
+    this.noDataAvailable = sessionData.correct === 0 && sessionData.wrong === 0 && sessionData.skipped === 0;
     this.single = [
       {name: 'Correct', value: sessionData.correct},
       {name: 'Wrong', value: sessionData.wrong},

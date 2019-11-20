@@ -10,7 +10,6 @@ export class HorizontalBarChartComponent implements OnInit, OnChanges {
 
   @Input() inputData: Array<UserLabeledData>;
   single = [];
-  view = [];
   colorScheme = {domain: ['#3f51b5', '#7482cf', 'blue', 'darkblue']};
 
   constructor() {
