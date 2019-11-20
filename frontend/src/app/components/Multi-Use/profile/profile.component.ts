@@ -79,7 +79,9 @@ export class ProfileComponent implements OnInit {
       if (err === 'BAD REQUEST') {
         alert('Wrong password');
       }
-    }, () => this.currentView = this.profileView.ProfileView);
+    }, () => {
+      this.authService.logout(true);
+    });
   }
 }
 
