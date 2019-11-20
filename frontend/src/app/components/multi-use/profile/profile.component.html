@@ -1,0 +1,123 @@
+<div style="height: 40%; margin-top: -12px; background-color: #303f9f; display: flex; justify-content: center;">
+  <mat-card [style.height]="currentView === profileView.ProfileEdit ? '500px' : 'calc(100% - 130px)'"
+            id="header-card" style="margin: 15px; width: 50%; position: absolute;">
+    <div style="height: 10%; display: flex; align-items: center; margin-top: -15px;">
+      <h1 style="margin: 0;">Account Settings</h1>
+    </div>
+    <mat-divider></mat-divider>
+    <div style="width: 70%; float: left; height: 90%;">
+      <ng-container *ngIf="currentView === profileView.ProfileView">
+        <mat-list>
+          <mat-list-item>
+            <span>First name:</span>&nbsp;
+            <span class="info-input">{{authService.loggedInUser.getValue().firstName}}</span>
+          </mat-list-item>
+          <mat-list-item>
+            <span>Last name:</span>&nbsp;
+            <span class="info-input">{{authService.loggedInUser.getValue().lastName}}</span>
+          </mat-list-item>
+          <mat-list-item>
+            <span>Email:</span>&nbsp;
+            <span class="info-input">{{authService.loggedInUser.getValue().email}}</span>
+          </mat-list-item>
+          <mat-list-item>
+            <span>Canton:</span>&nbsp;
+            <span class="info-input">{{authService.loggedInUser.getValue().canton | CantonIdToCanton}}</span>
+          </mat-list-item>
+          <mat-list-item>
+            <span>Password:</span>&nbsp;
+            <mat-button-toggle (click)="currentView = profileView.PasswordEdit"
+                               style="position: absolute; left: 200px;">Change
+            </mat-button-toggle>
+          </mat-list-item>
+        </mat-list>
+      </ng-container>
+      <ng-container *ngIf="currentView === profileView.PasswordEdit">
+        <form (ngSubmit)="changePassword()" [formGroup]="changePasswordForm">
+          <div>
+            <div>
+              <mat-form-field style="width: 100%;">
+                <input formControlName="password" matInput placeholder="Old Password" type="password">
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field style="width: 100%;">
+                <input formControlName="newPassword" matInput placeholder="New Password" type="password">
+              </mat-form-field>
+            </div>
+            <div>
+              <button mat-button
+                      style="border: lightgray 1px solid; padding: 0 12px; line-height: 48px; bottom: 0;"
+                      type="submit">Submit
+              </button>
+              <button (click)="currentView = profileView.ProfileView" mat-button style="border: lightgray 1px solid; padding: 0 12px; line-height: 48px; bottom: 0;"
+                      type="button">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </form>
+      </ng-container>
+      <ng-container *ngIf="currentView === profileView.ProfileEdit">
+        <form (ngSubmit)="changeProfile()" [formGroup]="changeProfileForm"
+              style="margin: 30px;">
+          <div>
+            <mat-form-field style="width: 100%;">
+              <input formControlName="username" matInput placeholder="Username" type="text">
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field style="width: 100%;">
+              <input formControlName="firstName" matInput placeholder="First Name" type="text">
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field style="width: 100%;">
+              <input formControlName="lastName" matInput placeholder="Last Name" type="text">
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field style="width: 100%;">
+              <input formControlName="email" matInput placeholder="Email" type="email">
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field style="width: 100%;">
+              <mat-label>Canton</mat-label>
+              <mat-select formControlName="canton">
+                <mat-option>None</mat-option>
+                <mat-option *ngFor="let canton of apiService.cantons"
+                            [value]="canton.cantonId">{{canton.cantonName}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div>
+            <button mat-button
+                    style="border: lightgray 1px solid; padding: 0 12px; line-height: 48px;"
+                    type="submit">Submit change Profile
+            </button>
+            <button (click)="currentView = profileView.ProfileView"
+                    mat-button
+                    style="border: lightgray 1px solid; padding: 0 12px; line-height: 48px; margin-left: 5px;">Cancel
+            </button>
+          </div>
+        </form>
+      </ng-container>
+    </div>
+    <div style="width: 30%; float: right; height: 90%; margin-top: 15px;">
+      <ng-container *ngIf="currentView === profileView.ProfileView">
+        <app-avatar [borderRadius]="0" [fontSize]="100" [hover]="'default'" [size]="260"
+                    style="float: left;"></app-avatar>
+        <div style="text-align: center; padding: 15px;">
+          <span style="font-size: 25px;">{{authService.loggedInUser.getValue().username}}</span>
+        </div>
+        <div>
+          <mat-button-toggle (click)="currentView = profileView.ProfileEdit"
+                             style="position: absolute; bottom: 15px; width: calc(30% - 10px);">Edit Profile Information
+          </mat-button-toggle>
+        </div>
+      </ng-container>
+    </div>
+  </mat-card>
+</div>
+<div style="height: 60%;"></div>

@@ -8,16 +8,15 @@ import {BehaviorSubject} from 'rxjs';
 })
 export class AuthService {
 
+  static currentUserStore = 'currentUser';
+  isAuthenticated = false;
+  loggedInUser = new BehaviorSubject<UserPublicInfo>(new UserPublicInfo(-1, '', '', '', '', 0, ''));
+  source = '';
+
   constructor(
     private router: Router
   ) {
   }
-
-  static currentUserStore = 'currentUser';
-
-  isAuthenticated = false;
-  loggedInUser = new BehaviorSubject<UserPublicInfo>(new UserPublicInfo(-1, '', '', '', '', 0, ''));
-  source = '';
 
   checkAuthenticated(): void {
     const item = localStorage.getItem(AuthService.currentUserStore);
