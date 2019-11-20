@@ -19,13 +19,6 @@ import {AudioSnippet} from '../../../models/AudioSnippet';
 })
 export class CheckComponent implements OnInit {
 
-  constructor(
-    private apiService: ApiService,
-    public dialog: MatDialog,
-    private authService: AuthService
-  ) {
-  }
-
   @ViewChild('carousel', {static: false}) carousel: CarouselComponent;
   @ViewChild('audioPlayer', {static: false}) audioPlayer: ElementRef;
   checkIndexArray: Array<CheckIndex> = [];
@@ -44,6 +37,9 @@ export class CheckComponent implements OnInit {
   snippet: any;
   isReady = false;
   waveSurfer: WaveSurfer = null;
+
+  constructor(public apiService: ApiService, private dialog: MatDialog, private authService: AuthService) {
+  }
 
   ngOnInit() {
     let fileId = 0;

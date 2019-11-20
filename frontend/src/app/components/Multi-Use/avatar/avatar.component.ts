@@ -11,18 +11,15 @@ import {AuthService} from '../../../services/auth.service';
 })
 export class AvatarComponent implements OnInit {
 
-  constructor(
-    private apiService: ApiService,
-    private authService: AuthService
-  ) {
-  }
-
   @Input() user: UserPublicInfo;
   @Input() size: number;
   @Input() fontSize: number;
   @Input() borderRadius: number;
   initials = '';
   color = '';
+
+  constructor(private apiService: ApiService, public authService: AuthService) {
+  }
 
   ngOnInit() {
     this.generateProfileImage();

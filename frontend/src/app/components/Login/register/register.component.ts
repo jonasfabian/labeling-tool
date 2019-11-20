@@ -11,15 +11,11 @@ import {Router} from '@angular/router';
 })
 export class RegisterComponent implements OnInit {
 
-  constructor(
-    private fb: FormBuilder,
-    private apiService: ApiService,
-    private router: Router
-  ) {
-  }
-
   registerForm: FormGroup;
   user: User = new User(-1, '', '', '', '', 0, '', '');
+
+  constructor(public apiService: ApiService, private fb: FormBuilder, private router: Router) {
+  }
 
   ngOnInit() {
     this.initForm();

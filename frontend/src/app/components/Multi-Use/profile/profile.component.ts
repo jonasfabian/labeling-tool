@@ -37,7 +37,7 @@ export class ProfileComponent implements OnInit {
     private authService: AuthService,
     private http: HttpClient,
     private fb: FormBuilder,
-    private themeService: ThemeService
+    public themeService: ThemeService
   ) {
   }
 
