@@ -1,0 +1,18 @@
+<h2 *ngIf="!noDataAvailable" style="margin: 0;">Session Overview</h2>
+<mat-icon (click)="close()" id="shortcut-icon">close</mat-icon>
+<ng-container *ngIf="!noDataAvailable">
+  <ngx-charts-bar-vertical
+    [animations]="true"
+    [legendPosition]="'below'"
+    [legend]="showLegend"
+    [results]="single"
+    [scheme]="colorScheme"
+    [view]="[400, 200]"
+    [yAxis]="true">
+  </ngx-charts-bar-vertical>
+</ng-container>
+<ng-container *ngIf="noDataAvailable">
+  <h1 style="text-align: center;">
+    No data available yet
+  </h1>
+</ng-container>

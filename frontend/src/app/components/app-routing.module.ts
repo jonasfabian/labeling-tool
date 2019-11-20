@@ -1,13 +1,13 @@
 import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
-import {ErrorComponent} from './Multi-Use/error/error.component';
-import {RegisterComponent} from './Login/register/register.component';
+import {ErrorComponent} from './multi-use/error/error.component';
+import {RegisterComponent} from './login/register/register.component';
 import {AuthGuardService} from '../guards/auth-guard.service';
-import {ProfileComponent} from './Multi-Use/profile/profile.component';
-import {OverviewComponent} from './Overview/overview/overview.component';
-import {CheckComponent} from './Check/check/check.component';
-import {LoginComponent} from './Login/login/login.component';
-import {RecordComponent} from './Record/record/record.component';
+import {ProfileComponent} from './multi-use/profile/profile.component';
+import {OverviewComponent} from './overview/overview/overview.component';
+import {CheckComponent} from './check/check/check.component';
+import {LoginComponent} from './login/login/login.component';
+import {RecordComponent} from './record/record/record.component';
 
 const routes: Routes = [
   {
