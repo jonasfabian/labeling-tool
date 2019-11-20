@@ -6,16 +6,7 @@
 <div id="content" style="margin: 15px 6px 15px 6px;">
   <div style="height: 100%;">
     <mat-grid-list id="graph-list" gutterSize="5" cols="12" rowHeight="fit" style="height: 100%;">
-      <mat-grid-tile colspan="3">
-        <mat-card style="display: grid;">
-          <div [hidden]="!mapReady" id="mapid" style="cursor: default; position: relative;">
-          </div>
-          <div *ngIf="!mapReady">
-            <mat-spinner></mat-spinner>
-          </div>
-        </mat-card>
-      </mat-grid-tile>
-      <mat-grid-tile colspan="3">
+      <mat-grid-tile colspan="4">
         <mat-card style="display: grid;">
           <mat-card-title>
             <strong>Check results</strong>
@@ -23,7 +14,7 @@
           <app-bar-chart [inputData]="inputData"></app-bar-chart>
         </mat-card>
       </mat-grid-tile>
-      <mat-grid-tile colspan="3">
+      <mat-grid-tile colspan="4">
         <mat-card style="display: grid;">
           <mat-card-title>
             <strong>Amount of checked</strong>
@@ -31,7 +22,7 @@
           <app-horizontal-normalized-bar-chart [inputData]="inputData"></app-horizontal-normalized-bar-chart>
         </mat-card>
       </mat-grid-tile>
-      <mat-grid-tile colspan="3" *ngIf="userInputData">
+      <mat-grid-tile colspan="4" *ngIf="userInputData">
         <mat-card style="display: grid;">
           <mat-card-title>
             <strong>Who labels the most?</strong>

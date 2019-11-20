@@ -27,15 +27,9 @@ export class NavigationMenuComponent implements OnInit {
     new NavigationItem(2, 'Record', 'record_voice_over'),
     new NavigationItem(3, 'Overview', 'view_list')
   ];
-  bookmarksContainer: Array<NavigationItem> = [];
 
   ngOnInit() {
-    if (localStorage.getItem('bookmark')) {
-      JSON.parse(localStorage.getItem('bookmark')).forEach(l => {
-        this.navigationContainer.splice(this.navigationContainer.indexOf(l), 1);
-        this.bookmarksContainer.push(l);
-      });
-    }
+    // TODO is this needed?
     if (JSON.parse(sessionStorage.getItem('email'))) {
       this.apiService.getUserByEmail(JSON.parse(localStorage.getItem('email'))).subscribe(user => {
         this.authService.loggedInUser = user;

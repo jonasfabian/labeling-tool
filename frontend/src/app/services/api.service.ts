@@ -91,7 +91,7 @@ export class ApiService {
     return this.http.post(this.url + 'createUserAndTextAudio', userAndTextAudio);
   }
 
-  checkLogin(emailPassword: EmailPassword): Observable<any> {
+  login(emailPassword: EmailPassword): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -114,7 +114,6 @@ export class ApiService {
     return this.http.get(this.url + 'getAudio?id=' + fileId, {responseType: 'blob'});
   }
 
-  // TODO rework
   getTenNonLabeledTextAudios(): Observable<Array<TextAudio>> {
     return this.http.get<Array<TextAudio>>(this.url + 'getTenNonLabeledTextAudios');
   }

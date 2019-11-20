@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {ApiService} from '../../../services/api.service';
-import {Recording} from '../../../models/Recording';
-import {AuthService} from '../../../services/auth.service';
 import {TranscriptPreviewComponent} from '../transcript-preview/transcript-preview.component';
 import {MatDialog} from '@angular/material/dialog';
+import WaveSurfer from 'wavesurfer.js';
+import MicrophonesPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.microphone.js';
 
 @Component({
   selector: 'app-record',
@@ -13,99 +12,67 @@ import {MatDialog} from '@angular/material/dialog';
 export class RecordComponent implements OnInit {
 
   constructor(
-    private apiService: ApiService,
-    private authService: AuthService,
     public dialog: MatDialog
   ) {
   }
 
-  audio = new Audio();
-  audioUrl = '';
-  recording = false;
-  playing = false;
+  fileContent: string | ArrayBuffer = '';
+  showTextArea = true;
+  waveSurfer: WaveSurfer = null;
+  context = new AudioContext();
+  processor = this.context.createScriptProcessor(1024, 1, 1);
   // @ts-ignore
   mediaRecorder: MediaRecorder;
-  fileByteArray: Array<number> = [];
-  yeet: any;
-  fileContent: string | ArrayBuffer = '';
-  showTextArea = false;
 
   ngOnInit() {
-  }
-
-  disableCreateButton(): boolean {
-    if (this.fileByteArray.length !== 0 && this.fileContent !== '') {
-      return false;
-    } else {
-      return true;
+    if (this.waveSurfer === null) {
+      this.waveSurfer = WaveSurfer.create({
+        container: '#waveform',
+        waveColor: 'lightblue',
+        progressColor: 'blue',
+        barHeight: 1,
+        autoCenter: true,
+        partialRender: false,
+        normalize: false,
+        responsive: true,
+        interact: false,
+        cursorWidth: 0,
+        audioContext: this.context || null,
+        audioScriptProcessor: this.processor || null,
+        plugins: [
+          MicrophonesPlugin.create({
+            bufferSize: 4096,
+            numberOfInputChannels: 1,
+            numberOfOutputChannels: 1,
+            constraints: {
+              video: false,
+              audio: true
+            }
+          })
+        ]
+      });
+      this.waveSurfer.microphone.on('deviceReady', stream => {
+        // @ts-ignore
+        this.mediaRecorder = new MediaRecorder(stream);
+        this.mediaRecorder.ondataavailable = event => {
+          this.waveSurfer.loadBlob(event.data);
+        };
+        this.mediaRecorder.start();
+      });
     }
   }
 
-  toggle(): void {
-    this.showTextArea = !this.showTextArea;
+  startRecord(): void {
+    this.waveSurfer.microphone.start();
   }
 
-  record(): void {
-    this.recording = true;
-    navigator.mediaDevices.getUserMedia({audio: true}).then(stream => {
-      // @ts-ignore
-      this.setMediaRecorder(stream);
-      this.mediaRecorder.start();
-      const audioChunks = [];
-      this.mediaRecorder.addEventListener('dataavailable', event => {
-        audioChunks.push(event.data);
-      });
-
-      this.mediaRecorder.addEventListener('stop', () => {
-        const audioBlob = new Blob(audioChunks);
-        this.setAudioUrl(audioBlob);
-        const fileReader = new FileReader();
-        fileReader.readAsArrayBuffer(audioBlob);
-        fileReader.onloadend = () => {
-          // @ts-ignore
-          this.yeet = new Int8Array(fileReader.result);
-          if (this.yeet.length <= 65535) {
-            this.yeet.map(l => {
-              this.fileByteArray.push(l);
-            });
-          }
-        };
-      });
-    });
-  }
-
-  stopRecording(): void {
-    this.recording = false;
+  stopRecord(): void {
     this.mediaRecorder.stop();
+    this.waveSurfer.microphone.pause();
   }
 
-  setMediaRecorder(stream: MediaStream): void {
-    // @ts-ignore
-    this.mediaRecorder = new MediaRecorder(stream);
-  }
-
-  setAudioUrl(audioBlob: Blob): void {
-    this.audioUrl = URL.createObjectURL(audioBlob);
-  }
-
-  playRecording(): void {
-    this.togglePlay();
-    this.audio = new Audio(this.audioUrl);
-    this.audio.play();
-  }
-
-  stopPlayRecording(): void {
-    this.togglePlay();
-    this.audio.pause();
-  }
-
-  togglePlay(): void {
-    this.playing = !this.playing;
-  }
-
-  createRecording(): void {
-    const rec =  new Recording(-1, this.fileContent.toString(), this.authService.loggedInUser.id, this.fileByteArray);
-    this.apiService.createRecording(rec).subscribe();
+  playRecord(): void {
+    this.waveSurfer.play();
   }
 
   handleFileInput(fileList: FileList): void {

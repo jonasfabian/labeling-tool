@@ -3,44 +3,34 @@
     <h1>Record</h1>
   </mat-card>
 </div>
-<div>
-  <mat-card style="margin: 15px;">
-    <mat-button-toggle-group>
-      <mat-button-toggle title="Record your voice" (click)="record()">
-        <mat-icon>fiber_manual_record</mat-icon>
-      </mat-button-toggle>
-      <mat-button-toggle *ngIf="!playing" title="Listen to your recording" [disabled]="audioUrl === ''"
-                         (click)="playRecording()">
-        <mat-icon>play_arrow</mat-icon>
-      </mat-button-toggle>
-      <mat-button-toggle *ngIf="playing" title="Stop listen to your recording" (click)="stopPlayRecording()">
-        <mat-icon>pause</mat-icon>
-      </mat-button-toggle>
-      <mat-button-toggle title="Stop recording" (click)="stopRecording()">
-        <mat-icon>stop</mat-icon>
-      </mat-button-toggle>
-    </mat-button-toggle-group>
-    <mat-button-toggle (click)="createRecording()" style="float: right;" [disabled]="disableCreateButton()">Create
-    </mat-button-toggle>
-    <mat-slide-toggle matTooltip="Switch between uploading a text or typing it straight in" style="margin: 0 0 0 15px;"
-                      color="primary" (toggleChange)="toggle()">Switch text upload
-    </mat-slide-toggle>
-    <div id="recording" *ngIf="recording">
-      Recording
+<div style="margin: 15px;">
+  <mat-card>
+    <div id="wave" style="border: 1px solid lightgrey; border-radius: 4px;">
+      <div id="waveform" style="cursor: pointer;"></div>
     </div>
+    <mat-button-toggle-group>
+      <mat-button-toggle (click)="startRecord()">Start</mat-button-toggle>
+      <mat-button-toggle (click)="stopRecord()">Stop</mat-button-toggle>
+      <mat-button-toggle (click)="playRecord()">Play</mat-button-toggle>
+    </mat-button-toggle-group>
   </mat-card>
 </div>
 <div style="height: calc(100% - 390px);">
-  <mat-card class="content-card">
+  <mat-card style="height: calc(100% - 30px);" class="content-card">
     <ng-container *ngIf="showTextArea">
-      <textarea [(ngModel)]="fileContent" style="width: calc(100% - 5px); height: 100%; resize: vertical;"></textarea>
+      <textarea [(ngModel)]="fileContent"
+                style="width: calc(100% - 5px); height: calc(100% - 60px); resize: vertical;"></textarea>
     </ng-container>
-    <ng-container *ngIf="!showTextArea">
+    <ng-container>
       <input #uploadTranscript type="file" id="file" hidden (change)="handleFileInput($event.target.files)">
-      <mat-button-toggle (click)="uploadTranscript.click()">Upload Transcript</mat-button-toggle>
-      <mat-button-toggle style="margin-left: 15px;" (click)="openTranscriptPreviewDialog()"
-                         [disabled]="fileContent === ''">Show full Transcript
-      </mat-button-toggle>
+      <mat-button-toggle-group style="margin-top: 5px;">
+        <mat-button-toggle title="Upload Transcript File" (click)="uploadTranscript.click()" style="width: 35px;">
+          <mat-icon>cloud_upload</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle style="margin-left: 15px;" (click)="openTranscriptPreviewDialog()"
+                           [disabled]="fileContent === ''">Show full Transcript
+        </mat-button-toggle>
+      </mat-button-toggle-group>
     </ng-container>
   </mat-card>
 </div>

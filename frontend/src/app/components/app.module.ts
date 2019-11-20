@@ -29,7 +29,6 @@ import {LoginComponent} from './Login/login/login.component';
 import {TranscriptPreviewComponent} from './Record/transcript-preview/transcript-preview.component';
 import {RecordComponent} from './Record/record/record.component';
 import {CantonIdToCantonPipe} from '../pipes/canton-id-to-canton.pipe';
-import {LeafletModule} from '@asymmetrik/ngx-leaflet';
 import {AuthHeaderInterceptorService} from '../services/auth-header-interceptor.service';
 import {ErrorInterceptorService} from '../services/error-interceptor.service';
 
@@ -58,7 +57,6 @@ import {ErrorInterceptorService} from '../services/error-interceptor.service';
     TranscriptPreviewComponent
   ],
   imports: [
-    LeafletModule.forRoot(),
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,

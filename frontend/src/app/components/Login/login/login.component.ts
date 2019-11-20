@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
 
   login(): void {
     if (this.loginForm.valid) {
-      this.apiService.checkLogin(new EmailPassword(this.loginForm.controls.email.value, this.loginForm.controls.password.value))
+      this.apiService.login(new EmailPassword(this.loginForm.controls.email.value, this.loginForm.controls.password.value))
         .subscribe(() => {
         }, () => {
           alert('Unauthorized');
