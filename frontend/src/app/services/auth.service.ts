@@ -21,8 +21,8 @@ export class AuthService {
     return item != null && item.trim().length > 0;
   }
 
-  addToLocalStorage(username, password): void {
-    localStorage.setItem(AuthService.currentUserStore, this.buildAuthenticationHeader(username, password));
+  addToSessionStorage(username, password): void {
+    sessionStorage.setItem(AuthService.currentUserStore, this.buildAuthenticationHeader(username, password));
   }
 
   buildAuthenticationHeader(username: string, password: string): string {
@@ -30,7 +30,6 @@ export class AuthService {
   }
 
   logout(b: boolean) {
-    localStorage.clear();
     sessionStorage.clear();
     this.router.navigate(['/labeling-tool/login'])
       .finally(() => {
