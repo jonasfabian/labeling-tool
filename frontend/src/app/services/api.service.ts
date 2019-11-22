@@ -8,8 +8,6 @@ import {EmailPassword} from '../models/EmailPassword';
 import {UserPublicInfo} from '../models/UserPublicInfo';
 import {AuthService} from './auth.service';
 import {Router} from '@angular/router';
-import {Avatar} from '../models/Avatar';
-import {SnackBarLogOutComponent} from '../components/login/snack-bar-log-out/snack-bar-log-out.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {UserLabeledData} from '../models/UserLabeledData';
 import {Recording} from '../models/Recording';

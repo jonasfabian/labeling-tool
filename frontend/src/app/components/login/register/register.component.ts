@@ -37,7 +37,6 @@ export class RegisterComponent implements OnInit {
     this.user.lastName = this.registerForm.controls.lastName.value;
     this.user.email = this.registerForm.controls.email.value;
     this.user.username = this.registerForm.controls.username.value;
-    this.user.avatarVersion = 0;
     this.user.password = this.registerForm.controls.password.value;
     this.user.canton = this.registerForm.controls.canton.value;
     if (this.registerForm.valid) {
