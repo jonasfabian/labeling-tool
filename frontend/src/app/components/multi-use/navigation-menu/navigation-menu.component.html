@@ -1,0 +1,45 @@
+<mat-toolbar color="primary" id="navigation-toolbar">
+  <mat-button-toggle (click)="toggleSidenav()"
+                     style="position: absolute; height: 32px; border-radius: 50%; width: 32px; top: 8px; background: none; border: none;" title="Navigation menu">
+    <mat-icon style="position: absolute; top: -19px; left: 0; color: white;">
+      menu
+    </mat-icon>
+  </mat-button-toggle>
+  <div style="margin-left: 45px;">
+    <h1 style="float: left;">Labeling Tool</h1>
+  </div>
+  <span *ngIf="!authService.isAuthenticated && !router.url.includes('login')"
+    [routerLink]="['labeling-tool/login']" style="position: absolute; right: 30px; cursor: pointer;">
+    Login
+  </span>
+  <ng-container *ngIf="authService.isAuthenticated">
+    <app-avatar [borderRadius]="50" [fontSize]="15" [hover]="'pointer'" [matMenuTriggerFor]="menu" [size]="32"
+      style="float: right;"></app-avatar>
+    <mat-menu #menu>
+      <mat-list style="padding: 0;">
+        <mat-list-item [routerLink]="['/labeling-tool/profile']">Profile</mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item (click)="authService.logout(true)">Log Out</mat-list-item>
+      </mat-list>
+    </mat-menu>
+  </ng-container>
+</mat-toolbar>
+<mat-sidenav-container id="sidenav-container">
+  <mat-sidenav #sidenav fixedInViewport mode="over">
+    <div>
+      <mat-list>
+        <ng-container *ngIf="authService.isAuthenticated">
+          <ng-container *ngFor="let naviItem of navigationContainer">
+            <mat-list-item (click)="redirectToPage(naviItem.title.trimLeft().toLocaleLowerCase())" *ngIf="navigationContainer.includes(naviItem)">
+              <mat-icon>{{naviItem.matIcon}}</mat-icon>
+              <span>{{naviItem.title}}</span>
+            </mat-list-item>
+          </ng-container>
+        </ng-container>
+      </mat-list>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content style="overflow-y: hidden; margin-top: 45px;">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

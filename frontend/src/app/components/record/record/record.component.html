@@ -1,0 +1,36 @@
+<div>
+  <mat-card style="margin: 15px 15px 0 15px;">
+    <h1>Record</h1>
+  </mat-card>
+</div>
+<div style="margin: 15px;">
+  <mat-card>
+    <div id="wave" style="border: 1px solid lightgrey; border-radius: 4px;">
+      <div id="waveform" style="cursor: pointer;"></div>
+    </div>
+    <mat-button-toggle-group>
+      <mat-button-toggle (click)="startRecord()">Start</mat-button-toggle>
+      <mat-button-toggle (click)="stopRecord()">Stop</mat-button-toggle>
+      <mat-button-toggle (click)="playRecord()">Play</mat-button-toggle>
+    </mat-button-toggle-group>
+  </mat-card>
+</div>
+<div style="height: calc(100% - 390px);">
+  <mat-card class="content-card" style="height: calc(100% - 30px);">
+    <ng-container *ngIf="showTextArea">
+      <textarea [(ngModel)]="fileContent"
+                style="width: calc(100% - 5px); height: calc(100% - 60px); resize: vertical;"></textarea>
+    </ng-container>
+    <ng-container>
+      <input #uploadTranscript (change)="handleFileInput($event.target.files)" hidden id="file" type="file">
+      <mat-button-toggle-group style="margin-top: 5px;">
+        <mat-button-toggle (click)="uploadTranscript.click()" style="width: 35px;" title="Upload Transcript File">
+          <mat-icon>cloud_upload</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle (click)="openTranscriptPreviewDialog()" [disabled]="fileContent === ''"
+                           style="margin-left: 15px;">Show full Transcript
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </ng-container>
+  </mat-card>
+</div>
