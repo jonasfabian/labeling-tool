@@ -12,6 +12,7 @@
       <mat-button-toggle (click)="startRecord()">Start</mat-button-toggle>
       <mat-button-toggle (click)="stopRecord()">Stop</mat-button-toggle>
       <mat-button-toggle (click)="playRecord()">Play</mat-button-toggle>
+      <mat-button-toggle (click)="submit()" *ngIf="recordingBlob !== undefined && fileContent !== ''">Submit</mat-button-toggle>
     </mat-button-toggle-group>
   </mat-card>
 </div>
