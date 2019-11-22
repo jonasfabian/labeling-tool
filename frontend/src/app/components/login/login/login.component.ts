@@ -24,6 +24,9 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
+    if (this.authService.checkAuthenticated()) {
+      this.router.navigate(['/labeling-tool/overview']);
+    }
   }
 
   initForm(): void {
@@ -41,7 +44,6 @@ export class LoginComponent implements OnInit {
           alert('Unauthorized');
           localStorage.clear();
         }, () => {
-          this.authService.isAuthenticated = true;
           this.router.navigate(['/labeling-tool/overview']);
           this.authService.addToLocalStorage(this.loginForm.controls.email.value, this.loginForm.controls.password.value);
           this.apiService.getUserByEmail(this.loginForm.controls.email.value).subscribe(user => {

@@ -9,7 +9,6 @@ import {BehaviorSubject} from 'rxjs';
 export class AuthService {
 
   static currentUserStore = 'currentUser';
-  isAuthenticated = false;
   loggedInUser = new BehaviorSubject<UserPublicInfo>(new UserPublicInfo(-1, '', '', '', '', 0, ''));
 
   constructor(
@@ -17,9 +16,9 @@ export class AuthService {
   ) {
   }
 
-  checkAuthenticated(): void {
+  checkAuthenticated(): boolean {
     const item = localStorage.getItem(AuthService.currentUserStore);
-    this.isAuthenticated = item != null && item.trim().length > 0;
+    return item != null && item.trim().length > 0;
   }
 
   addToLocalStorage(username, password): void {

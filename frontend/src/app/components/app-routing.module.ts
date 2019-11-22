@@ -8,6 +8,7 @@ import {OverviewComponent} from './overview/overview/overview.component';
 import {CheckComponent} from './check/check/check.component';
 import {LoginComponent} from './login/login/login.component';
 import {RecordComponent} from './record/record/record.component';
+import {HomeComponent} from './home/home.component';
 
 const routes: Routes = [
   {
@@ -16,28 +17,31 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'labeling-tool',
+    path: 'app',
+    component: HomeComponent,
+    canActivate: [AuthGuardService],
     children: [
       {
         path: 'check',
         component: CheckComponent,
-        canActivate: [AuthGuardService]
       },
       {
         path: 'record',
         component: RecordComponent,
-        canActivate: [AuthGuardService]
       },
       {
         path: 'overview',
         component: OverviewComponent,
-        canActivate: [AuthGuardService]
       },
       {
         path: 'profile',
         component: ProfileComponent,
-        canActivate: [AuthGuardService]
       },
+    ]
+  },
+  {
+    path: 'ws',
+    children: [
       {
         path: '404',
         component: ErrorComponent
@@ -53,7 +57,7 @@ const routes: Routes = [
       {
         path: '**',
         redirectTo: '404'
-      }
+      },
     ]
   },
   {
