@@ -17,7 +17,7 @@ export class AuthService {
   }
 
   checkAuthenticated(): boolean {
-    const item = localStorage.getItem(AuthService.currentUserStore);
+    const item = sessionStorage.getItem(AuthService.currentUserStore);
     return item != null && item.trim().length > 0;
   }
 
