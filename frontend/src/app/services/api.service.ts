@@ -70,9 +70,13 @@ export class ApiService {
   getTextAudios(): Observable<Array<TextAudio>> {
     return this.http.get<Array<TextAudio>>(this.url + 'getTextAudios');
   }
-  // FIXME fix
+
   createRecording(recording: Recording): Observable<any> {
-    return this.http.post(this.url + 'createRecording', recording);
+    const formData = new FormData();
+    formData.append(`file`, recording.audio, 'audio');
+    recording.audio = undefined;
+    formData.append('data', JSON.stringify(recording));
+    return this.http.post(this.url + 'createRecording', formData);
   }
 
   getUserByEmail(email: string): Observable<UserPublicInfo> {

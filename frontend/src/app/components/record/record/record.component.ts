@@ -3,6 +3,9 @@ import {TranscriptPreviewComponent} from '../transcript-preview/transcript-previ
 import {MatDialog} from '@angular/material/dialog';
 import WaveSurfer from 'wavesurfer.js';
 import MicrophonesPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.microphone.js';
+import {ApiService} from '../../../services/api.service';
+import {Recording} from '../../../models/Recording';
+import {AuthService} from '../../../services/auth.service';
 
 @Component({
   selector: 'app-record',
@@ -18,9 +21,12 @@ export class RecordComponent implements OnInit {
   processor = this.context.createScriptProcessor(1024, 1, 1);
   // @ts-ignore
   mediaRecorder: MediaRecorder;
+  recordingBlob: Blob;
 
   constructor(
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private apiService: ApiService,
+    private authService: AuthService
   ) {
   }
 
@@ -56,6 +62,8 @@ export class RecordComponent implements OnInit {
         this.mediaRecorder = new MediaRecorder(stream);
         this.mediaRecorder.ondataavailable = event => {
           this.waveSurfer.loadBlob(event.data);
+          console.log(event.data);
+          this.recordingBlob = event.data;
         };
         this.mediaRecorder.start();
       });
@@ -73,6 +81,12 @@ export class RecordComponent implements OnInit {
 
   playRecord(): void {
     this.waveSurfer.play();
+  }
+
+  submit(): void {
+    this.apiService.createRecording(
+      new Recording(-1, this.fileContent.toString(), this.authService.loggedInUser.getValue().id, this.recordingBlob
+      )).subscribe();
   }
 
   handleFileInput(fileList: FileList): void {
