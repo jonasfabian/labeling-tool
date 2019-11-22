@@ -70,13 +70,9 @@ export class ApiService {
   getTextAudios(): Observable<Array<TextAudio>> {
     return this.http.get<Array<TextAudio>>(this.url + 'getTextAudios');
   }
-
+  // FIXME fix
   createRecording(recording: Recording): Observable<any> {
     return this.http.post(this.url + 'createRecording', recording);
-  }
-
-  getAvatar(id: number): Observable<Avatar> {
-    return this.http.get<Avatar>(this.url + 'getAvatar?userId=' + id);
   }
 
   getUserByEmail(email: string): Observable<UserPublicInfo> {
@@ -134,13 +130,6 @@ export class ApiService {
     this.getAudioFile(file.fileId).subscribe(resp => {
       this.blobUrl = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(resp));
       this.uri.next(this.blobUrl);
-    });
-  }
-
-  openSnackBar(snackbarColor: string) {
-    this.snackBar.openFromComponent(SnackBarLogOutComponent, {
-      duration: 5000,
-      panelClass: [snackbarColor]
     });
   }
 }

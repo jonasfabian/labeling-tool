@@ -16,9 +16,7 @@ export class AvatarComponent implements OnInit {
   initials = '';
   color = '';
 
-  constructor(
-    public authService: AuthService
-  ) {
+  constructor(public authService: AuthService) {
   }
 
   ngOnInit() {
