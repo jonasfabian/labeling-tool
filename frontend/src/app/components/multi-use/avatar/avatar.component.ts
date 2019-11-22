@@ -25,7 +25,9 @@ export class AvatarComponent implements OnInit {
   }
 
   generateProfileImage(): void {
-    this.initials = JSON.parse(sessionStorage.getItem('email')).charAt(0).toLocaleUpperCase();
+    if (sessionStorage.getItem('email')) {
+      this.initials = JSON.parse(sessionStorage.getItem('email')).charAt(0).toLocaleUpperCase();
+    }
   }
 
   generateColor() {
