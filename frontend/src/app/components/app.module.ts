@@ -54,7 +54,7 @@ import {ErrorInterceptorService} from '../services/error-interceptor.service';
     HorizontalBarChartComponent,
     SnackBarLogOutComponent,
     RecordComponent,
-    TranscriptPreviewComponent
+    TranscriptPreviewComponent,
   ],
   imports: [
     BrowserModule,

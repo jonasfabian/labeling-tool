@@ -10,7 +10,7 @@ export class AuthHeaderInterceptorService implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const authorizationHeader = localStorage.getItem(AuthService.currentUserStore);
+    const authorizationHeader = sessionStorage.getItem(AuthService.currentUserStore);
     if (authorizationHeader != null && authorizationHeader.trim().length > 0) {
       req = req.clone({
         setHeaders: {

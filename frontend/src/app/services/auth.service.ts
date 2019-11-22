@@ -9,7 +9,6 @@ import {BehaviorSubject} from 'rxjs';
 export class AuthService {
 
   static currentUserStore = 'currentUser';
-  isAuthenticated = false;
   loggedInUser = new BehaviorSubject<UserPublicInfo>(new UserPublicInfo(-1, '', '', '', '', 0, ''));
 
   constructor(
@@ -17,13 +16,13 @@ export class AuthService {
   ) {
   }
 
-  checkAuthenticated(): void {
-    const item = localStorage.getItem(AuthService.currentUserStore);
-    this.isAuthenticated = item != null && item.trim().length > 0;
+  checkAuthenticated(): boolean {
+    const item = sessionStorage.getItem(AuthService.currentUserStore);
+    return item != null && item.trim().length > 0;
   }
 
-  addToLocalStorage(username, password): void {
-    localStorage.setItem(AuthService.currentUserStore, this.buildAuthenticationHeader(username, password));
+  addToSessionStorage(username, password): void {
+    sessionStorage.setItem(AuthService.currentUserStore, this.buildAuthenticationHeader(username, password));
   }
 
   buildAuthenticationHeader(username: string, password: string): string {
@@ -31,7 +30,6 @@ export class AuthService {
   }
 
   logout(b: boolean) {
-    localStorage.clear();
     sessionStorage.clear();
     this.router.navigate(['/labeling-tool/login'])
       .finally(() => {
