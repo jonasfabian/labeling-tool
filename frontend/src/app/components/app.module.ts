@@ -31,6 +31,7 @@ import {RecordComponent} from './record/record/record.component';
 import {CantonIdToCantonPipe} from '../pipes/canton-id-to-canton.pipe';
 import {AuthHeaderInterceptorService} from '../services/auth-header-interceptor.service';
 import {ErrorInterceptorService} from '../services/error-interceptor.service';
+import {RecordingsOverviewComponent} from './overview/recordings-overview/recordings-overview.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import {ErrorInterceptorService} from '../services/error-interceptor.service';
     HorizontalBarChartComponent,
     SnackBarLogOutComponent,
     RecordComponent,
-    TranscriptPreviewComponent
+    TranscriptPreviewComponent,
+    RecordingsOverviewComponent
   ],
   imports: [
     BrowserModule,

@@ -18,6 +18,7 @@ export class OverviewComponent implements OnInit {
   textAudio = new TextAudio(0, 0, 0, '', 0, '', 0, 0, 0);
   audioSnippet = new AudioSnippet(0, 0);
   mapReady = false;
+  showAll = true;
 
   constructor(
     private apiService: ApiService

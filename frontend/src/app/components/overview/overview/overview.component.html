@@ -31,7 +31,11 @@
         </mat-card>
       </mat-grid-tile>
       <mat-grid-tile colspan="12" rowspan="2">
-        <app-table (editAudio)="isEditElement($event)" (textAudio)="setTextAudio($event)"></app-table>
+        <mat-slide-toggle color="primary" style="z-index: 1; position: absolute; right: 30px; top: 15px;"
+                          (toggleChange)="showAll = !showAll">See only recordings
+        </mat-slide-toggle>
+        <app-recordings-overview *ngIf="!showAll"></app-recordings-overview>
+        <app-table [hidden]="!showAll" (editAudio)="isEditElement($event)" (textAudio)="setTextAudio($event)"></app-table>
       </mat-grid-tile>
     </mat-grid-list>
   </div>
