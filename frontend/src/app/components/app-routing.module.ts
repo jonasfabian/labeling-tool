@@ -13,7 +13,7 @@ import {HomeComponent} from './home/home.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/labeling-tool/login',
+    redirectTo: '/labeling-tool/overview',
     pathMatch: 'full'
   },
   {
