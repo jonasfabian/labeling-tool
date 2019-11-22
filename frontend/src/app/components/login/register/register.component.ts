@@ -12,7 +12,7 @@ import {Router} from '@angular/router';
 export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
-  user: User = new User(-1, '', '', '', '', 0, '', '');
+  user: User = new User(-1, '', '', '', '', '', '');
 
   constructor(public apiService: ApiService, private fb: FormBuilder, private router: Router) {
   }
