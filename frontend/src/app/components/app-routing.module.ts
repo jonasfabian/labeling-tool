@@ -17,7 +17,7 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'app',
+    path: 'labeling-tool',
     component: HomeComponent,
     canActivate: [AuthGuardService],
     children: [
@@ -40,7 +40,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'ws',
+    path: 'labeling-tool',
     children: [
       {
         path: '404',
