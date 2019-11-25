@@ -1,6 +1,31 @@
-<table>
-  <th>ID</th>
-  <tr *ngFor="let row of recordings">
-    <td>{{row.id}}</td>
-  </tr>
-</table>
+<ng-container>
+  <table [dataSource]="dataSource" mat-table matSort style="width: 100%; height: calc(100% - 50px);">
+    <ng-container matColumnDef="id">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>ID</th>
+      <td *matCellDef="let element" mat-cell>{{element.id}}</td>
+    </ng-container>
+    <ng-container matColumnDef="text">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>Text</th>
+      <td *matCellDef="let element" mat-cell>{{element.text}}</td>
+    </ng-container>
+    <ng-container matColumnDef="userId">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>User ID</th>
+      <td *matCellDef="let element" mat-cell>{{element.userId}}</td>
+    </ng-container>
+    <tr *matHeaderRowDef="displayedColumns; sticky: true" mat-header-row></tr>
+    <tr (click)="previewElement(row.id)" *matRowDef="let row; columns: displayedColumns;"
+        [class.isSelected]="dummyRecording === row"
+        class="table-row"
+        mat-row style="height: 25px; cursor: pointer;"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons></mat-paginator>
+</ng-container>
+<ng-container>
+  <div id="wave" style="border: 1px solid lightgrey; border-radius: 4px;">
+    <div id="waveform" style="cursor: pointer;"></div>
+  </div>
+  <mat-button-toggle-group>
+    <mat-button-toggle (click)="playRecording()">Play</mat-button-toggle>
+    <mat-button-toggle (click)="pauseRecording()">Pause</mat-button-toggle>
+  </mat-button-toggle-group>
+</ng-container>

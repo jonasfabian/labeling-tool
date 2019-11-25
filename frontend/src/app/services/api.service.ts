@@ -8,7 +8,6 @@ import {EmailPassword} from '../models/EmailPassword';
 import {UserPublicInfo} from '../models/UserPublicInfo';
 import {AuthService} from './auth.service';
 import {Router} from '@angular/router';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import {UserLabeledData} from '../models/UserLabeledData';
 import {Recording} from '../models/Recording';
 import {Canton} from '../models/Canton';
@@ -60,8 +59,7 @@ export class ApiService {
     private http: HttpClient,
     private sanitizer: DomSanitizer,
     private router: Router,
-    private authService: AuthService,
-    private snackBar: MatSnackBar
+    private authService: AuthService
   ) {
   }
 
@@ -77,8 +75,9 @@ export class ApiService {
     return this.http.post(this.url + 'createRecording', formData);
   }
 
-  getRecordingAudioById(id: number): Observable<Blob> {
-    return this.http.get<Blob>(this.url + 'getRecordingAudioById?id=' + id);
+  getRecordingAudioById(id: number): Observable<any> {
+    // @ts-ignore
+    return this.http.get<Blob>(this.url + 'getRecordingAudioById?id=' + id, { responseType: 'blob'});
   }
 
   getRecordingDataById(id: number): Observable<{id: number, text: string, userId: number}> {

@@ -62,7 +62,6 @@ export class RecordComponent implements OnInit {
         this.mediaRecorder = new MediaRecorder(stream);
         this.mediaRecorder.ondataavailable = event => {
           this.waveSurfer.loadBlob(event.data);
-          console.log(event.data);
           this.recordingBlob = event.data;
         };
         this.mediaRecorder.start();
