@@ -27,10 +27,10 @@ export class TableComponent implements OnInit {
   wavesurferIsReady = false;
   dummyTextAudio = new TextAudio(0, 0, 0, '', 0, '', 0, 0, 0);
   dummy = new TextAudio(0, 0, 0, '', 0, '', 0, 0, 0);
-  paused = false;
   toggleVolume = false;
   currentFileId = -1;
   text = '';
+  isPlaying = false;
   data = [];
   options = {
     fieldSeparator: ',',
@@ -78,7 +78,7 @@ export class TableComponent implements OnInit {
         this.createWaveform();
         this.load(textAudio);
       } else {
-        this.pause();
+        this.isPlaying = false;
         if (this.currentFileId !== textAudio.fileId) {
           this.load(textAudio);
         } else {
@@ -126,14 +126,13 @@ export class TableComponent implements OnInit {
     });
   }
 
-  play(): void {
-    this.paused = true;
-    this.waveSurfer.play();
-  }
-
-  pause(): void {
-    this.paused = false;
-    this.waveSurfer.pause();
+  togglePlay(): void {
+    if (this.isPlaying) {
+      this.waveSurfer.pause();
+    } else {
+      this.waveSurfer.play();
+    }
+    this.isPlaying = !this.isPlaying;
   }
 
   setVolume(volume: any): void {
@@ -168,7 +167,7 @@ export class TableComponent implements OnInit {
   }
 
   cancelEdit(): void {
-    this.pause();
+    this.isPlaying = false;
     this.isEditText = false;
     this.addRegion(this.dummy, false);
   }

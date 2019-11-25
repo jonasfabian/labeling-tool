@@ -39,7 +39,8 @@
         <td *matCellDef="let element" mat-cell>{{element.wrong}}</td>
       </ng-container>
       <tr *matHeaderRowDef="displayedColumns; sticky: true" mat-header-row></tr>
-      <tr (click)="previewElement(row)" *matRowDef="let row; columns: displayedColumns;" [class.isSelected]="dummyTextAudio === row"
+      <tr (click)="previewElement(row)" *matRowDef="let row; columns: displayedColumns;"
+          [class.isSelected]="dummyTextAudio === row"
           class="table-row"
           mat-row style="height: 25px; cursor: pointer;"></tr>
     </table>
@@ -51,9 +52,10 @@
 </mat-card>
 <div>
   <mat-card [style.align-items]="(!wavesurferIsReady && waveSurfer == null) ? 'center' : 'initial'"
-            style="width: calc(50% - 245px); height: calc(100% - 35px); position: absolute; top: 0; right: 5px; display: flex; justify-content: center;">
+            style="width: calc(50% - 245px); height: calc(100% - 95px); position: absolute; top: 60px; right: 5px; display: flex; justify-content: center; align-items: center;">
     <mat-button-toggle (click)="edit()"
-                       *ngIf="!isEditText && wavesurferIsReady" style="position: absolute; right: 20px; top: 20px; border-radius: 50%; z-index: 4;">
+                       *ngIf="!isEditText && wavesurferIsReady"
+                       style="position: absolute; right: 20px; top: 20px; border-radius: 50%; z-index: 4;">
       <mat-icon>edit</mat-icon>
     </mat-button-toggle>
     <ng-container *ngIf="!wavesurferIsReady && waveSurfer == null">
@@ -68,10 +70,10 @@
       </div>
       <div id="wave-navigation" style="display: flex; justify-content: left; margin-top: 10px;">
         <mat-button-toggle-group>
-          <mat-button-toggle (click)="play()" *ngIf="!paused" class="audio-nav-button" title="Play">
+          <mat-button-toggle (click)="togglePlay()" *ngIf="!isPlaying" class="audio-nav-button" title="Play">
             <mat-icon>play_arrow</mat-icon>
           </mat-button-toggle>
-          <mat-button-toggle (click)="pause()" *ngIf="paused" class="audio-nav-button" title="Pause">
+          <mat-button-toggle (click)="togglePlay()" *ngIf="isPlaying" class="audio-nav-button" title="Pause">
             <mat-icon>pause</mat-icon>
           </mat-button-toggle>
         </mat-button-toggle-group>

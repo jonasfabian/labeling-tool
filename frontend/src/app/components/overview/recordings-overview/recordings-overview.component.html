@@ -1,4 +1,4 @@
-<ng-container>
+<mat-card style="position: absolute; top: 0; left: 5px; width: calc(50% + 155px); height: calc(100% - 35px);">
   <table [dataSource]="dataSource" mat-table matSort style="width: 100%; height: calc(100% - 50px);">
     <ng-container matColumnDef="id">
       <th *matHeaderCellDef mat-header-cell mat-sort-header>ID</th>
@@ -19,13 +19,23 @@
         mat-row style="height: 25px; cursor: pointer;"></tr>
   </table>
   <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons></mat-paginator>
-</ng-container>
-<ng-container>
-  <div id="wave" style="border: 1px solid lightgrey; border-radius: 4px;">
-    <div id="waveform" style="cursor: pointer;"></div>
+</mat-card>
+<mat-card [style.align-items]="(!waveSurferIsReady) ? 'center' : 'initial'"
+          style="width: calc(50% - 245px); height: calc(100% - 95px); position: absolute; top: 60px; right: 5px; display: flex; justify-content: center;">
+  <ng-container *ngIf="!waveSurferIsReady">
+    Please select an element in the table to view more details
+  </ng-container>
+  <div [hidden]="!waveSurferIsReady">
+    <div id="wave" style="border: 1px solid lightgrey; border-radius: 4px;">
+      <div id="waveform" style="cursor: pointer;"></div>
+    </div>
+    <mat-button-toggle-group>
+      <mat-button-toggle *ngIf="!isPlaying" (click)="togglePlay()">
+        <mat-icon>play_arrow</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle *ngIf="isPlaying" (click)="togglePlay()">
+        <mat-icon>pause</mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
   </div>
-  <mat-button-toggle-group>
-    <mat-button-toggle (click)="playRecording()">Play</mat-button-toggle>
-    <mat-button-toggle (click)="pauseRecording()">Pause</mat-button-toggle>
-  </mat-button-toggle-group>
-</ng-container>
+</mat-card>

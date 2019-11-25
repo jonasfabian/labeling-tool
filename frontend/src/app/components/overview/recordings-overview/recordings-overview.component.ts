@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {ApiService} from '../../../services/api.service';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {Recording} from '../../../models/Recording';
@@ -12,7 +12,8 @@ import WaveSurfer from 'wavesurfer.js';
 export class RecordingsOverviewComponent implements OnInit {
 
   constructor(
-    private apiService: ApiService
+    private apiService: ApiService,
+    private ref: ChangeDetectorRef
   ) {
   }
 
@@ -22,6 +23,8 @@ export class RecordingsOverviewComponent implements OnInit {
   dataSource = new MatTableDataSource<{id: number, text: string, userId: number}>();
   dummyRecording = new Recording(-1, '', -1, null);
   waveSurfer: WaveSurfer = null;
+  isPlaying = false;
+  waveSurferIsReady = false;
 
   ngOnInit() {
     this.createWaveform();
@@ -33,6 +36,10 @@ export class RecordingsOverviewComponent implements OnInit {
   previewElement(recordingId: number): void {
     this.apiService.getRecordingAudioById(recordingId).subscribe(l => {
       this.waveSurfer.load(URL.createObjectURL(l));
+    });
+    this.waveSurfer.on('waveform-ready', () => {
+      this.waveSurferIsReady = true;
+      this.ref.detectChanges();
     });
   }
 
@@ -50,11 +57,12 @@ export class RecordingsOverviewComponent implements OnInit {
     });
   }
 
-  playRecording(): void {
-    this.waveSurfer.play();
-  }
-
-  pauseRecording(): void {
-    this.waveSurfer.pause();
+  togglePlay(): void {
+    if (this.isPlaying) {
+      this.waveSurfer.pause();
+    } else {
+      this.waveSurfer.play();
+    }
+    this.isPlaying = !this.isPlaying;
   }
 }
