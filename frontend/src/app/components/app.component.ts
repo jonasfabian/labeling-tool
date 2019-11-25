@@ -1,18 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {AuthService} from '../services/auth.service';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  template: '<router-outlet></router-outlet>'
 })
-export class AppComponent implements OnInit {
-
-  constructor(private authService: AuthService,) {
-  }
-
-  ngOnInit(): void {
-    // TODO this could be moved into a home-coponent sow we could check the login over a AuthGuard
-    this.authService.checkAuthenticated();
-  }
+export class AppComponent {
 }

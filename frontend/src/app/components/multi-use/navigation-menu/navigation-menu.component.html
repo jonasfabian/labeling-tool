@@ -1,6 +1,7 @@
 <mat-toolbar color="primary" id="navigation-toolbar">
   <mat-button-toggle (click)="toggleSidenav()"
-                     style="position: absolute; height: 32px; border-radius: 50%; width: 32px; top: 8px; background: none; border: none;" title="Navigation menu">
+    style="position: absolute; height: 32px; border-radius: 50%; width: 32px; top: 8px; background: none; border: none;"
+    title="Navigation menu">
     <mat-icon style="position: absolute; top: -19px; left: 0; color: white;">
       menu
     </mat-icon>
@@ -8,11 +9,11 @@
   <div style="margin-left: 45px;">
     <h1 style="float: left;">Labeling Tool</h1>
   </div>
-  <span *ngIf="!authService.isAuthenticated && !router.url.includes('login')"
+  <span *ngIf="!authService.checkAuthenticated() && !router.url.includes('login')"
     [routerLink]="['labeling-tool/login']" style="position: absolute; right: 30px; cursor: pointer;">
     Login
   </span>
-  <ng-container *ngIf="authService.isAuthenticated">
+  <ng-container *ngIf="authService.checkAuthenticated()">
     <app-avatar [borderRadius]="50" [fontSize]="15" [hover]="'pointer'" [matMenuTriggerFor]="menu" [size]="32"
       style="float: right;"></app-avatar>
     <mat-menu #menu>
@@ -28,7 +29,7 @@
   <mat-sidenav #sidenav fixedInViewport mode="over">
     <div>
       <mat-list>
-        <ng-container *ngIf="authService.isAuthenticated">
+        <ng-container *ngIf="authService.checkAuthenticated()">
           <ng-container *ngFor="let naviItem of navigationContainer">
             <mat-list-item (click)="redirectToPage(naviItem.title.trimLeft().toLocaleLowerCase())" *ngIf="navigationContainer.includes(naviItem)">
               <mat-icon>{{naviItem.matIcon}}</mat-icon>
