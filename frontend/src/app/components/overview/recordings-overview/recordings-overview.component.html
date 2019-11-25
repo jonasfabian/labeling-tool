@@ -19,8 +19,13 @@
         mat-row style="height: 25px; cursor: pointer;"></tr>
   </table>
   <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons></mat-paginator>
+  <div style="position: absolute; bottom: 10px; left: 15px;">
+    <mat-button-toggle (click)="generateTable()">Export as CSV</mat-button-toggle>
+  </div>
 </mat-card>
 <mat-card [style.align-items]="(!waveSurferIsReady) ? 'center' : 'initial'"
+          [style.display]="(!waveSurferIsReady) ? 'flex' : 'block'"
+          [style.justify-content]="(!waveSurferIsReady) ? 'center' : 'normal'"
           style="width: calc(50% - 245px); height: calc(100% - 95px); position: absolute; top: 60px; right: 5px;">
   <ng-container *ngIf="!waveSurferIsReady">
     Please select an element in the table to view more details

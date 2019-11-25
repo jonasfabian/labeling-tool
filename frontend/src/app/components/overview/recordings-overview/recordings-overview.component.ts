@@ -3,6 +3,7 @@ import {ApiService} from '../../../services/api.service';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {Recording} from '../../../models/Recording';
 import WaveSurfer from 'wavesurfer.js';
+import {ExportToCsv} from 'export-to-csv';
 
 @Component({
   selector: 'app-recordings-overview',
@@ -25,6 +26,19 @@ export class RecordingsOverviewComponent implements OnInit {
   waveSurfer: WaveSurfer = null;
   isPlaying = false;
   waveSurferIsReady = false;
+  data = [];
+  options = {
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalSeparator: '.',
+    showLabels: true,
+    useTextFile: false,
+    useBom: true,
+    useKeysAsHeaders: true
+  };
+  csvExporter = new ExportToCsv(
+    this.options
+  );
 
   ngOnInit() {
     this.createWaveform();
@@ -66,5 +80,17 @@ export class RecordingsOverviewComponent implements OnInit {
       this.waveSurfer.play();
     }
     this.isPlaying = !this.isPlaying;
+  }
+
+  generateTable(): void {
+    this.apiService.getAllRecordingData().subscribe(data => data.forEach(l => {
+        this.data.push({
+          id: l.id,
+          text: l.text,
+          userId: l.userId
+        });
+      }), () => {
+      }
+      , () => this.csvExporter.generateCsv(this.data));
   }
 }
