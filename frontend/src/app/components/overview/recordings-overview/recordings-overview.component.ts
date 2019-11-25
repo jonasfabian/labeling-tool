@@ -34,6 +34,8 @@ export class RecordingsOverviewComponent implements OnInit {
   }
 
   previewElement(recordingId: number): void {
+    this.waveSurfer.stop();
+    this.isPlaying = false;
     this.apiService.getRecordingAudioById(recordingId).subscribe(l => {
       this.waveSurfer.load(URL.createObjectURL(l));
     });
