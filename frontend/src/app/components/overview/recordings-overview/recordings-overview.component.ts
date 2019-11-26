@@ -21,7 +21,7 @@ export class RecordingsOverviewComponent implements OnInit {
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   displayedColumns = ['id', 'text', 'userId'];
-  dataSource = new MatTableDataSource<{id: number, text: string, userId: number}>();
+  dataSource = new MatTableDataSource<{ id: number, text: string, userId: number }>();
   dummyRecording = new Recording(-1, '', -1, null);
   waveSurfer: WaveSurfer = null;
   isPlaying = false;
@@ -41,21 +41,29 @@ export class RecordingsOverviewComponent implements OnInit {
   );
 
   ngOnInit() {
-    this.createWaveform();
     this.apiService.getAllRecordingData().subscribe(recordings => {
-      this.dataSource = new MatTableDataSource<{id: number, text: string, userId: number}>(recordings);
+      this.dataSource = new MatTableDataSource<{ id: number, text: string, userId: number }>(recordings);
     });
   }
 
   previewElement(recordingId: number): void {
-    this.waveSurfer.stop();
+    if (this.waveSurfer === null) {
+      this.createWaveform();
+    }
+    this.waveSurferIsReady = false;
     this.isPlaying = false;
+    this.waveSurfer.stop();
     this.apiService.getRecordingAudioById(recordingId).subscribe(l => {
       this.waveSurfer.load(URL.createObjectURL(l));
     });
-    this.waveSurfer.on('waveform-ready', () => {
-      this.waveSurferIsReady = true;
-      this.ref.detectChanges();
+    setTimeout(() => {
+      this.waveSurfer.on('waveform-ready', () => {
+        this.waveSurferIsReady = true;
+        this.ref.detectChanges();
+      });
+    }, 0);
+    this.waveSurfer.on('finish', () => {
+      this.isPlaying = false;
     });
   }
 

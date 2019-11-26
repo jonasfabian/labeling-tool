@@ -27,8 +27,11 @@
           [style.display]="(!waveSurferIsReady) ? 'flex' : 'block'"
           [style.justify-content]="(!waveSurferIsReady) ? 'center' : 'normal'"
           style="width: calc(50% - 245px); height: calc(100% - 95px); position: absolute; top: 60px; right: 5px;">
-  <ng-container *ngIf="!waveSurferIsReady">
+  <ng-container *ngIf="!waveSurferIsReady && waveSurfer == null">
     Please select an element in the table to view more details
+  </ng-container>
+  <ng-container *ngIf="!waveSurferIsReady && waveSurfer != null">
+    <mat-spinner></mat-spinner>
   </ng-container>
   <div [hidden]="!waveSurferIsReady">
     <div id="wave" style="border: 1px solid lightgrey; border-radius: 4px;">
