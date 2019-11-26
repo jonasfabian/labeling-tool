@@ -17,7 +17,7 @@ export class ErrorComponent implements OnInit {
   }
 
   goHome(): void {
-    this.router.navigate(['labeling-tool/login']);
+    this.router.navigate(['speech-to-text-labeling-tool/login']);
   }
 
 }

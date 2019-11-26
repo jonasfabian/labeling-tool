@@ -37,7 +37,7 @@ export class NavigationMenuComponent implements OnInit {
   }
 
   redirectToPage(route: string): void {
-    this.router.navigate(['/labeling-tool/' + route]);
+    this.router.navigate(['/speech-to-text-labeling-tool/' + route]);
     this.toggleSidenav();
   }
 }
