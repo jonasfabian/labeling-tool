@@ -4,6 +4,7 @@ import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {Recording} from '../../../models/Recording';
 import WaveSurfer from 'wavesurfer.js';
 import {ExportToCsv} from 'export-to-csv';
+import {log} from 'util';
 
 @Component({
   selector: 'app-recordings-overview',
@@ -47,37 +48,42 @@ export class RecordingsOverviewComponent implements OnInit {
   }
 
   previewElement(recordingId: number): void {
+    this.isPlaying = false;
+    this.waveSurferIsReady = false;
+    this.generateWaveform(recordingId);
+  }
+
+  generateWaveform(recordingId: number): void {
+    this.load(recordingId);
+  }
+
+  private load(recordingId: number) {
     if (this.waveSurfer === null) {
       this.createWaveform();
     }
-    this.waveSurferIsReady = false;
-    this.isPlaying = false;
-    this.waveSurfer.stop();
-    this.apiService.getRecordingAudioById(recordingId).subscribe(l => {
-      this.waveSurfer.load(URL.createObjectURL(l));
-    });
-    setTimeout(() => {
-      this.waveSurfer.on('waveform-ready', () => {
-        this.waveSurferIsReady = true;
-        this.ref.detectChanges();
-      });
-    }, 0);
-    this.waveSurfer.on('finish', () => {
-      this.isPlaying = false;
+    this.apiService.getRecordingAudioById(recordingId).subscribe(resp => {
+      this.waveSurfer.load(URL.createObjectURL(resp));
     });
   }
 
   createWaveform(): void {
-    this.waveSurfer = WaveSurfer.create({
-      container: '#waveform',
-      backend: 'MediaElement',
-      waveColor: 'lightblue',
-      progressColor: 'blue',
-      barHeight: 1,
-      autoCenter: true,
-      partialRender: false,
-      normalize: false,
-      responsive: true
+    Promise.resolve(null).then(() => {
+      this.waveSurfer = WaveSurfer.create({
+        container: '#waveform',
+        backend: 'MediaElement',
+        waveColor: 'lightblue',
+        progressColor: 'blue',
+        barHeight: 1,
+        autoCenter: true,
+        partialRender: false,
+        normalize: false,
+        responsive: true
+      });
+      this.waveSurfer.on('waveform-ready', () => {
+        log('ready');
+        this.waveSurferIsReady = true;
+        this.ref.detectChanges();
+      });
     });
   }
 
