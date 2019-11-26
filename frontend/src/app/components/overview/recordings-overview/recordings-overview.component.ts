@@ -4,7 +4,6 @@ import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {Recording} from '../../../models/Recording';
 import WaveSurfer from 'wavesurfer.js';
 import {ExportToCsv} from 'export-to-csv';
-import {log} from 'util';
 
 @Component({
   selector: 'app-recordings-overview',
@@ -58,9 +57,11 @@ export class RecordingsOverviewComponent implements OnInit {
   }
 
   private load(recordingId: number) {
-    if (this.waveSurfer === null) {
-      this.createWaveform();
+    if (this.waveSurfer) {
+      this.waveSurfer.empty();
+      this.waveSurfer.destroy();
     }
+    this.createWaveform();
     this.apiService.getRecordingAudioById(recordingId).subscribe(resp => {
       this.waveSurfer.load(URL.createObjectURL(resp));
     });
@@ -80,7 +81,6 @@ export class RecordingsOverviewComponent implements OnInit {
         responsive: true
       });
       this.waveSurfer.on('waveform-ready', () => {
-        log('ready');
         this.waveSurferIsReady = true;
         this.ref.detectChanges();
       });
