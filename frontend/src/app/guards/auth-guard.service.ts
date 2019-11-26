@@ -15,7 +15,7 @@ export class AuthGuardService implements CanActivate {
     if (this.authService.checkAuthenticated()) {
       return true;
     } else {
-      this.router.navigate(['/speech-to-text-labeling-tool/login'], {queryParams: {returnUrl: state.url}});
+      this.router.navigate(['/speech-to-text-labeling-tool/app/login'], {queryParams: {returnUrl: state.url}});
     }
   }
 }

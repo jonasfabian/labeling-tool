@@ -23,7 +23,7 @@ export class CheckMoreComponent implements OnInit {
   close(): void {
     this.apiService.showTenMoreQuest = false;
     this.dialogRef.close();
-    this.router.navigate(['/speech-to-text-labeling-tool/overview']);
+    this.router.navigate(['/speech-to-text-labeling-tool/app/overview']);
   }
 
   yes(): void {

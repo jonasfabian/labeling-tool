@@ -13,11 +13,11 @@ import {NavigationMenuComponent} from './multi-use/navigation-menu/navigation-me
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/speech-to-text-labeling-tool/overview',
+    redirectTo: '/speech-to-text-labeling-tool/app/overview',
     pathMatch: 'full'
   },
   {
-    path: 'speech-to-text-labeling-tool',
+    path: 'speech-to-text-labeling-tool/app',
     component: NavigationMenuComponent,
     canActivate: [AuthGuardService],
     children: [
@@ -40,7 +40,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'speech-to-text-labeling-tool',
+    path: 'speech-to-text-labeling-tool/app',
     children: [
       {
         path: '404',
@@ -62,7 +62,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '/speech-to-text-labeling-tool/404'
+    redirectTo: '/speech-to-text-labeling-tool/app/404'
   }
 ];
 

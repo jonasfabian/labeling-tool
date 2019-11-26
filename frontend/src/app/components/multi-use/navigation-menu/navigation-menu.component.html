@@ -10,7 +10,7 @@
     <h1 style="float: left;">Labeling Tool</h1>
   </div>
   <span *ngIf="!authService.checkAuthenticated() && !router.url.includes('login')"
-    [routerLink]="['speech-to-text-labeling-tool/login']" style="position: absolute; right: 30px; cursor: pointer;">
+    [routerLink]="['speech-to-text-labeling-tool/app/login']" style="position: absolute; right: 30px; cursor: pointer;">
     Login
   </span>
   <ng-container *ngIf="authService.checkAuthenticated()">
@@ -18,7 +18,7 @@
       style="float: right;"></app-avatar>
     <mat-menu #menu>
       <mat-list style="padding: 0;">
-        <mat-list-item [routerLink]="['/speech-to-text-labeling-tool/profile']">Profile</mat-list-item>
+        <mat-list-item [routerLink]="['/speech-to-text-labeling-tool/app/profile']">Profile</mat-list-item>
         <mat-divider></mat-divider>
         <mat-list-item (click)="authService.logout(true)">Log Out</mat-list-item>
       </mat-list>

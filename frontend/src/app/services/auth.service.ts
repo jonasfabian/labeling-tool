@@ -31,7 +31,7 @@ export class AuthService {
 
   logout(b: boolean) {
     sessionStorage.clear();
-    this.router.navigate(['/speech-to-text-labeling-tool/login'])
+    this.router.navigate(['/speech-to-text-labeling-tool/app/login'])
       .finally(() => {
         if (b) {
           location.reload();

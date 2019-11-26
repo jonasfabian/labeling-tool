@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.initForm();
     if (this.authService.checkAuthenticated()) {
-      this.router.navigate(['/speech-to-text-labeling-tool/overview']);
+      this.router.navigate(['/speech-to-text-labeling-tool/app/overview']);
     }
   }
 
@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
           alert('Unauthorized');
           sessionStorage.clear();
         }, () => {
-          this.router.navigate(['/speech-to-text-labeling-tool/overview']);
+          this.router.navigate(['/speech-to-text-labeling-tool/app/overview']);
           this.authService.addToSessionStorage(this.loginForm.controls.email.value, this.loginForm.controls.password.value);
           this.apiService.getUserByEmail(this.loginForm.controls.email.value).subscribe(user => {
             this.authService.loggedInUser.next(user);

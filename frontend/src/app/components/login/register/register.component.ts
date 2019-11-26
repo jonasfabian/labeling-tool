@@ -41,12 +41,12 @@ export class RegisterComponent implements OnInit {
     this.user.canton = this.registerForm.controls.canton.value;
     if (this.registerForm.valid) {
       this.apiService.createUser(this.user).subscribe(_ => {
-        this.router.navigate(['speech-to-text-labeling-tool/login']);
+        this.router.navigate(['speech-to-text-labeling-tool/app/login']);
       });
     }
   }
 
   cancel(): void {
-    this.router.navigate(['/speech-to-text-labeling-tool/login']);
+    this.router.navigate(['/speech-to-text-labeling-tool/app/login']);
   }
 }
