@@ -6,7 +6,6 @@ import {MatDialog} from '@angular/material';
 import {ShortcutComponent} from '../../multi-use/shortcut/shortcut.component';
 import {AuthService} from '../../../services/auth.service';
 import {CheckMoreComponent} from '../check-more/check-more.component';
-import {SessionOverviewComponent} from '../session-overview/session-overview.component';
 import WaveSurfer from 'wavesurfer.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
 import {UserAndTextAudio} from '../../../models/UserAndTextAudio';
@@ -263,10 +262,6 @@ export class CheckComponent implements OnInit {
 
   openShortcutDialog(): void {
     this.dialog.open(ShortcutComponent, {width: '500px', disableClose: false});
-  }
-
-  openSessionOverview(): void {
-    this.dialog.open(SessionOverviewComponent, {width: '500px', disableClose: false});
   }
 
   openCheckMoreDialog(): void {
