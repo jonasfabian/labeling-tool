@@ -1,0 +1,123 @@
+<div>
+  <mat-card id="header-card">
+    <h1 style="margin: 0;">Overview</h1>
+    <mat-slide-toggle labelPosition="before" color="primary" style="position: absolute; right: 15px; top: 16px;"
+                      (toggleChange)="toggleChangeView()">
+      <span>See only recordings</span>
+    </mat-slide-toggle>
+  </mat-card>
+</div>
+<div id="content" style="margin: 15px 6px 15px 6px;">
+  <div style="height: 100%;">
+    <mat-grid-list cols="12" gutterSize="5" id="graph-list" rowHeight="fit" style="height: 100%;">
+      <mat-grid-tile colspan="12" rowspan="2">
+        <mat-card style="position: absolute; top: 0; left: 5px; width: calc(50% + 155px); height: calc(100% - 35px);">
+          <ng-container>
+            <table [dataSource]="dataSource" id="overview-table" mat-table matSort
+                   style="width: 100%; height: calc(100% - 50px); padding: 0; text-align: inherit;">
+              <ng-container matColumnDef="id">
+                <th *matHeaderCellDef mat-header-cell mat-sort-header>ID</th>
+                <td *matCellDef="let element" mat-cell>{{element.id}}</td>
+              </ng-container>
+              <ng-container matColumnDef="audioStart">
+                <th *matHeaderCellDef mat-header-cell mat-sort-header>AudioStart</th>
+                <td *matCellDef="let element" mat-cell>{{element.audioStart | number : '1.2-5'}}</td>
+              </ng-container>
+              <ng-container matColumnDef="audioEnd">
+                <th *matHeaderCellDef mat-header-cell mat-sort-header>AudioEnd</th>
+                <td *matCellDef="let element" mat-cell>{{element.audioEnd | number : '1.2-5'}}</td>
+              </ng-container>
+              <ng-container matColumnDef="text">
+                <th *matHeaderCellDef mat-header-cell mat-sort-header>Text</th>
+                <td *matCellDef="let element" mat-cell>{{element.text}}</td>
+              </ng-container>
+              <ng-container matColumnDef="fileId">
+                <th *matHeaderCellDef mat-header-cell mat-sort-header>FileId</th>
+                <td *matCellDef="let element" mat-cell>{{element.fileId}}</td>
+              </ng-container>
+              <ng-container matColumnDef="speaker">
+                <th *matHeaderCellDef mat-header-cell mat-sort-header>Speaker</th>
+                <td *matCellDef="let element" mat-cell>{{element.speaker}}</td>
+              </ng-container>
+              <ng-container matColumnDef="labeled">
+                <th *matHeaderCellDef mat-header-cell mat-sort-header>Labeled</th>
+                <td *matCellDef="let element" mat-cell>{{element.labeled | IntToBooleanPipe}}</td>
+              </ng-container>
+              <ng-container matColumnDef="correct">
+                <th *matHeaderCellDef mat-header-cell mat-sort-header>Correct</th>
+                <td *matCellDef="let element" mat-cell>{{element.correct}}</td>
+              </ng-container>
+              <ng-container matColumnDef="wrong">
+                <th *matHeaderCellDef mat-header-cell mat-sort-header>Wrong</th>
+                <td *matCellDef="let element" mat-cell>{{element.wrong}}</td>
+              </ng-container>
+              <ng-container matColumnDef="userId">
+                <th *matHeaderCellDef mat-header-cell mat-sort-header>User ID</th>
+                <td *matCellDef="let element" mat-cell>{{element.userId}}</td>
+              </ng-container>
+              <tr *matHeaderRowDef="showAll ? allColumns : recordingColumns; sticky: true" mat-header-row></tr>
+              <tr (click)="previewElement(row)" *matRowDef="let row; columns: showAll ? allColumns : recordingColumns;"
+                  class="table-row"
+                  mat-row style="height: 25px; cursor: pointer;"></tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[20]" showFirstLastButtons></mat-paginator>
+          </ng-container>
+          <div style="position: absolute; bottom: 10px; left: 15px;">
+            <mat-button-toggle (click)="generateTable()">Export as CSV</mat-button-toggle>
+          </div>
+        </mat-card>
+        <div>
+          <mat-card [style.align-items]="(!wavesurferIsReady && waveSurfer == null) ? 'center' : 'initial'"
+                    style="width: calc(50% - 245px); height: calc(100% - 35px); position: absolute; top: 0; right: 5px;">
+            <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
+              <mat-button-toggle (click)="edit()"
+                                 *ngIf="!isEditText && wavesurferIsReady"
+                                 style="position: absolute; right: 20px; top: 20px; border-radius: 50%; z-index: 4;">
+                <mat-icon>edit</mat-icon>
+              </mat-button-toggle>
+              <ng-container *ngIf="!wavesurferIsReady">
+                Please select an element in the table to view more details
+              </ng-container>
+              <div [hidden]="!wavesurferIsReady" style="width: 100%;">
+                <div id="wave" style="border: 1px solid lightgrey; border-radius: 4px;">
+                  <div id="waveform" style="cursor: pointer;"></div>
+                </div>
+                <div id="wave-navigation" style="display: flex; justify-content: left; margin-top: 10px;">
+                  <mat-button-toggle-group>
+                    <mat-button-toggle (click)="togglePlay()" *ngIf="!isPlaying" class="audio-nav-button" title="Play">
+                      <mat-icon>play_arrow</mat-icon>
+                    </mat-button-toggle>
+                    <mat-button-toggle (click)="togglePlay()" *ngIf="isPlaying" class="audio-nav-button" title="Pause">
+                      <mat-icon>pause</mat-icon>
+                    </mat-button-toggle>
+                  </mat-button-toggle-group>
+                  <mat-button-toggle (click)="toggleVolume = !toggleVolume" class="audio-nav-button" title="Volume">
+                    <mat-icon>volume_up</mat-icon>
+                  </mat-button-toggle>
+                  <mat-button-toggle (click)="cancelEdit()" *ngIf="isEditText" class="audio-nav-button">Cancel
+                  </mat-button-toggle>
+                  <mat-button-toggle (click)="submitChange()" *ngIf="isEditText" class="audio-nav-button">Submit
+                  </mat-button-toggle>
+                  <mat-slider (input)="setVolume($event)" *ngIf="toggleVolume" max="100" min="0" step="1"
+                              value="25"></mat-slider>
+                </div>
+                <div style="height: calc(100% - 210px);">
+                  <div *ngIf="!isEditText"
+                       style="border: 1px solid lightgrey; border-radius: 4px; height: 100%; margin-top: 10px; font-size: 16px;">
+                    {{text}}
+                  </div>
+                  <div *ngIf="isEditText"
+                       style="border-radius: 4px; height: 100%; margin-top: 10px;">
+          <textarea #textAreaText
+                    [value]="text"
+                    style="height: calc(100% - 50px); width: 100%; font-family: Roboto, 'Helvetica Neue', sans-serif; font-size: 16px;"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+</div>

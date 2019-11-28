@@ -1,27 +1,29 @@
-import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {ApiService} from '../../services/api.service';
+import {TextAudio} from '../../models/TextAudio';
+import {AudioSnippet} from '../../models/AudioSnippet';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
-import {ApiService} from '../../../services/api.service';
-import {TextAudio} from '../../../models/TextAudio';
 import WaveSurfer from 'wavesurfer.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 import {DomSanitizer} from '@angular/platform-browser';
 import {ExportToCsv} from 'export-to-csv';
 
 @Component({
-  selector: 'app-table',
-  templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss']
+  selector: 'app-overview',
+  templateUrl: './overview.component.html',
+  styleUrls: ['./overview.component.scss']
 })
-export class TableComponent implements OnInit {
+export class OverviewComponent implements OnInit {
 
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
-  @ViewChild('textAreaText', {static: false}) textAreaText: ElementRef<HTMLTextAreaElement>;
-  @Input() vale: string;
-  @Output() editAudio = new EventEmitter<boolean>();
-  @Output() textAudio = new EventEmitter<TextAudio>();
-  displayedColumns = ['id', 'audioStart', 'audioEnd', 'text', 'fileId', 'speaker', 'labeled', 'correct', 'wrong'];
-  dataSource = new MatTableDataSource<TextAudio>();
+  editElement = false;
+  textAudio = new TextAudio(0, 0, 0, '', 0, '', 0, 0, 0);
+  audioSnippet = new AudioSnippet(0, 0);
+  showAll = true;
+
+  dataSource = new MatTableDataSource<TextAudio | { id: number, text: string, userId: number }>();
+  allColumns = ['id', 'audioStart', 'audioEnd', 'text', 'fileId', 'speaker', 'labeled', 'correct', 'wrong'];
+  recordingColumns = ['id', 'text', 'userId'];
+
   waveSurfer: WaveSurfer = null;
   isEditText = false;
   wavesurferIsReady = false;
@@ -31,6 +33,11 @@ export class TableComponent implements OnInit {
   currentFileId = -1;
   text = '';
   isPlaying = false;
+
+  @ViewChild('textAreaText', {static: false}) textAreaText: ElementRef<HTMLTextAreaElement>;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+
   data = [];
   options = {
     fieldSeparator: ',',
@@ -57,22 +64,46 @@ export class TableComponent implements OnInit {
       this.dataSource = new MatTableDataSource<TextAudio>(textAudio);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-    }, () => {
-    }, () => {
-      this.dataSource.filterPredicate = (data, filter: string): boolean => {
-        return data.labeled.toString().toLowerCase().includes(filter);
-      };
     });
   }
 
-  previewElement(textAudio: TextAudio): void {
-    this.isEditText = false;
-    this.dummyTextAudio = textAudio;
-    this.wavesurferIsReady = false;
-    this.generateWaveform(textAudio);
+  isEditElement(isEdit: boolean): void {
+    this.editElement = isEdit;
   }
 
-  generateWaveform(textAudio: TextAudio): void {
+  setTextAudio(tA: TextAudio): void {
+    this.textAudio = tA;
+    this.audioSnippet.startTime = tA.audioStart;
+    this.audioSnippet.endTime = tA.audioEnd;
+  }
+
+  previewElement(row: any): void {
+    this.isEditText = false;
+    if (row.audioStart !== undefined) {
+      this.dummyTextAudio = row;
+    }
+    this.wavesurferIsReady = false;
+    this.generateWaveform(row);
+  }
+
+  toggleChangeView(): void {
+    this.showAll = !this.showAll;
+    if (!this.showAll) {
+      this.apiService.getAllRecordingData().subscribe(recordings => {
+        this.dataSource = new MatTableDataSource<{ id: number, text: string, userId: number }>(recordings);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      });
+    } else {
+      this.apiService.getTextAudios().subscribe(textAudio => {
+        this.dataSource = new MatTableDataSource<TextAudio>(textAudio);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      });
+    }
+  }
+
+  generateWaveform(textAudio: any): void {
     Promise.resolve(null).then(() => {
       if (this.waveSurfer === null) {
         this.createWaveform();
@@ -148,9 +179,15 @@ export class TableComponent implements OnInit {
   }
 
   loadAudioBlob(fileId: number): void {
-    this.apiService.getAudioFile(fileId).subscribe(resp => {
-      this.waveSurfer.load(URL.createObjectURL(resp));
-    });
+    if (this.showAll) {
+      this.apiService.getAudioFile(fileId).subscribe(resp => {
+        this.waveSurfer.load(URL.createObjectURL(resp));
+      });
+    } else {
+      this.apiService.getRecordingAudioById(fileId).subscribe(resp => {
+        this.waveSurfer.load(URL.createObjectURL(resp));
+      });
+    }
   }
 
   edit(): void {
@@ -191,13 +228,24 @@ export class TableComponent implements OnInit {
   }
 
   private load(textAudio) {
-    this.currentFileId = textAudio.fileId;
-    this.loadAudioBlob(textAudio.fileId);
-    this.waveSurfer.on('ready', () => {
-      this.addRegion(textAudio, false);
-      this.setViewToRegion(textAudio);
-      this.text = textAudio.text;
-    });
+    if (textAudio.audioStart !== undefined) {
+      this.currentFileId = textAudio.fileId;
+      this.loadAudioBlob(textAudio.fileId);
+      this.waveSurfer.on('ready', () => {
+        this.addRegion(textAudio, false);
+        this.setViewToRegion(textAudio);
+        this.text = textAudio.text;
+      });
+    } else {
+      this.currentFileId = textAudio.id;
+      this.loadAudioBlob(textAudio.id);
+      this.waveSurfer.on('ready', () => {
+        this.waveSurfer.clearRegions();
+        this.text = textAudio.text;
+        this.dummy.text = textAudio.text;
+        this.dummyTextAudio.text = textAudio.text;
+      });
+    }
     this.waveSurfer.on('waveform-ready', () => {
       this.wavesurferIsReady = true;
       this.ref.detectChanges();

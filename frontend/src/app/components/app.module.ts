@@ -3,7 +3,6 @@ import {AppComponent} from './app.component';
 import {NavigationMenuComponent} from './multi-use/navigation-menu/navigation-menu.component';
 import {ShortcutComponent} from './multi-use/shortcut/shortcut.component';
 import {IntToBooleanPipe} from '../pipes/int-to-boolean.pipe';
-import {TableComponent} from './overview/table/table.component';
 import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -18,7 +17,7 @@ import {ProfileComponent} from './multi-use/profile/profile.component';
 import {AvatarComponent} from './multi-use/avatar/avatar.component';
 import {CheckMoreComponent} from './check/check-more/check-more.component';
 import {SnackBarLogOutComponent} from './login/snack-bar-log-out/snack-bar-log-out.component';
-import {OverviewComponent} from './overview/overview/overview.component';
+import {OverviewComponent} from './overview/overview.component';
 import {CheckComponent} from './check/check/check.component';
 import {LoginComponent} from './login/login/login.component';
 import {TranscriptPreviewComponent} from './record/transcript-preview/transcript-preview.component';
@@ -26,7 +25,7 @@ import {RecordComponent} from './record/record/record.component';
 import {CantonIdToCantonPipe} from '../pipes/canton-id-to-canton.pipe';
 import {AuthHeaderInterceptorService} from '../services/auth-header-interceptor.service';
 import {ErrorInterceptorService} from '../services/error-interceptor.service';
-import {RecordingsOverviewComponent} from './overview/recordings-overview/recordings-overview.component';
+import {LoadingInterceptorService} from '../services/loading-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -37,7 +36,6 @@ import {RecordingsOverviewComponent} from './overview/recordings-overview/record
     IntToBooleanPipe,
     CantonIdToCantonPipe,
     CheckComponent,
-    TableComponent,
     ErrorComponent,
     RegisterComponent,
     LoginComponent,
@@ -46,8 +44,7 @@ import {RecordingsOverviewComponent} from './overview/recordings-overview/record
     CheckMoreComponent,
     SnackBarLogOutComponent,
     RecordComponent,
-    TranscriptPreviewComponent,
-    RecordingsOverviewComponent
+    TranscriptPreviewComponent
   ],
   imports: [
     BrowserModule,
@@ -72,7 +69,11 @@ import {RecordingsOverviewComponent} from './overview/recordings-overview/record
       useClass: AuthHeaderInterceptorService,
       multi: true
     },
-
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingInterceptorService,
+      multi: true
+    }
   ],
   bootstrap: [
     AppComponent
