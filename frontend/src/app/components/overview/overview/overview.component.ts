@@ -19,7 +19,6 @@ export class OverviewComponent implements OnInit {
   audioSnippet = new AudioSnippet(0, 0);
   mapReady = false;
   showAll = true;
-  checkedToggleSlider = false;
 
   constructor(
     private apiService: ApiService
@@ -36,10 +35,6 @@ export class OverviewComponent implements OnInit {
 
   isEditElement(isEdit: boolean): void {
     this.editElement = isEdit;
-  }
-
-  logThis(bool: any): void {
-    this.checkedToggleSlider = bool;
   }
 
   setTextAudio(tA: TextAudio): void {

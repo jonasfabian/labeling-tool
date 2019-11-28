@@ -77,15 +77,11 @@ export class ApiService {
 
   getRecordingAudioById(id: number): Observable<any> {
     // @ts-ignore
-    return this.http.get<Blob>(this.url + 'getRecordingAudioById?id=' + id, { responseType: 'blob'});
+    return this.http.get<Blob>(this.url + 'getRecordingAudioById?id=' + id, {responseType: 'blob'});
   }
 
-  getRecordingDataById(id: number): Observable<{id: number, text: string, userId: number}> {
-    return this.http.get<{id: number, text: string, userId: number}>(this.url + 'getRecordingDataById?id=' + id);
-  }
-
-  getAllRecordingData(): Observable<[{id: number, text: string, userId: number}]> {
-    return this.http.get<[{id: number, text: string, userId: number}]>(this.url + 'getAllRecordingData');
+  getAllRecordingData(): Observable<[{ id: number, text: string, userId: number }]> {
+    return this.http.get<[{ id: number, text: string, userId: number }]>(this.url + 'getAllRecordingData');
   }
 
   getUserByEmail(email: string): Observable<UserPublicInfo> {
