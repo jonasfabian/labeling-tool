@@ -62,7 +62,7 @@
             </table>
             <mat-paginator [pageSizeOptions]="[20]" showFirstLastButtons></mat-paginator>
           </ng-container>
-          <div style="position: absolute; bottom: 10px; left: 15px;">
+          <div *ngIf="showAll" style="position: absolute; bottom: 10px; left: 15px;">
             <mat-button-toggle (click)="generateTable()">Export as CSV</mat-button-toggle>
           </div>
         </mat-card>
@@ -71,11 +71,9 @@
             [style.align-items]="(!waveSurferIsReady && waveSurfer == null) ? 'center' : 'initial'"
             style="width: calc(50% - 245px); height: calc(100% - 35px); position: absolute; top: 0; right: 5px;">
             <div style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0;">
-
               <div *ngIf="!waveSurferIsReady && waveSurfer === null">
                 Please select an element in the table to view more details
               </div>
-
               <div style="width: 100%; height: 100%;" [hidden]="!waveSurferIsReady">
                 <mat-button-toggle (click)="edit()"
                                    style="position: absolute; right: 20px; top: 20px; border-radius: 50%; z-index: 4;">
@@ -120,11 +118,9 @@
                   </div>
                 </div>
               </div>
-
               <div *ngIf="!waveSurferIsReady && this.waveSurfer !== null">
                 <mat-spinner></mat-spinner>
               </div>
-
             </div>
           </mat-card>
         </div>
