@@ -25,7 +25,6 @@ import {RecordComponent} from './record/record/record.component';
 import {CantonIdToCantonPipe} from '../pipes/canton-id-to-canton.pipe';
 import {AuthHeaderInterceptorService} from '../services/auth-header-interceptor.service';
 import {ErrorInterceptorService} from '../services/error-interceptor.service';
-import {LoadingInterceptorService} from '../services/loading-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -67,11 +66,6 @@ import {LoadingInterceptorService} from '../services/loading-interceptor.service
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthHeaderInterceptorService,
-      multi: true
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: LoadingInterceptorService,
       multi: true
     }
   ],

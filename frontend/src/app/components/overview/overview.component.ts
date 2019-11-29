@@ -5,15 +5,12 @@ import {AudioSnippet} from '../../models/AudioSnippet';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import WaveSurfer from 'wavesurfer.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
-import {DomSanitizer} from '@angular/platform-browser';
 import {ExportToCsv} from 'export-to-csv';
-import {LoadingInterceptorService} from '../../services/loading-interceptor.service';
 
 @Component({
   selector: 'app-overview',
   templateUrl: './overview.component.html',
-  styleUrls: ['./overview.component.scss'],
-  providers: [LoadingInterceptorService]
+  styleUrls: ['./overview.component.scss']
 })
 export class OverviewComponent implements OnInit {
 
@@ -49,10 +46,11 @@ export class OverviewComponent implements OnInit {
     this.options
   );
 
+  waveSurferIsReady = false;
+
   constructor(
     private apiService: ApiService,
-    private sanitizer: DomSanitizer,
-    public loadingInterceptorService: LoadingInterceptorService
+    private det: ChangeDetectorRef
   ) {
   }
 
@@ -79,12 +77,15 @@ export class OverviewComponent implements OnInit {
     if (row.audioStart !== undefined) {
       this.dummyTextAudio = row;
     }
-    this.loadingInterceptorService.wavesurferIsReady.next(false);
     this.generateWaveform(row);
   }
 
   toggleChangeView(): void {
-    this.loadingInterceptorService.wavesurferIsReady.next(false);
+    this.waveSurferIsReady = false;
+    if (this.waveSurfer !== null) {
+      this.waveSurfer.destroy();
+      this.waveSurfer = null;
+    }
     this.showAll = !this.showAll;
     if (!this.showAll) {
       this.apiService.getAllRecordingData().subscribe(recordings => {
@@ -114,7 +115,6 @@ export class OverviewComponent implements OnInit {
           this.addRegion(textAudio, false);
           this.setViewToRegion(textAudio);
           this.text = textAudio.text;
-          this.loadingInterceptorService.wavesurferIsReady.next(true);
         }
       }
     });
@@ -234,7 +234,6 @@ export class OverviewComponent implements OnInit {
           this.setViewToRegion(textAudio);
         }
         this.text = textAudio.text;
-        this.loadingInterceptorService.wavesurferIsReady.next(true);
       });
     } else {
       this.currentFileId = textAudio.id;
@@ -247,7 +246,8 @@ export class OverviewComponent implements OnInit {
       });
     }
     this.waveSurfer.on('waveform-ready', () => {
-      this.loadingInterceptorService.wavesurferIsReady.next(true);
+      this.waveSurferIsReady = true;
+      this.det.detectChanges();
     });
   }
 }
