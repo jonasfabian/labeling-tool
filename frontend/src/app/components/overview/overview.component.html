@@ -67,19 +67,22 @@
           </div>
         </mat-card>
         <div>
-          <mat-card [style.align-items]="(!this.loadingInterceptorService.wavesurferIsReady.getValue() && waveSurfer == null) ? 'center' : 'initial'"
-                    style="width: calc(50% - 245px); height: calc(100% - 35px); position: absolute; top: 0; right: 5px;">
-            <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
+          <mat-card
+            [style.align-items]="(!loadingInterceptorService.wavesurferIsReady.getValue() && waveSurfer == null) ? 'center' : 'initial'"
+            style="width: calc(50% - 245px); height: calc(100% - 35px); position: absolute; top: 0; right: 5px;">
+            <div style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0;">
 
-              <div *ngIf="!this.loadingInterceptorService.wavesurferIsReady.getValue() && waveSurfer === null">
+              <div *ngIf="!loadingInterceptorService.wavesurferIsReady.getValue() && waveSurfer === null">
                 Please select an element in the table to view more details
               </div>
 
-              <div style="width: 100%; height: 100%;" [hidden]="!this.loadingInterceptorService.wavesurferIsReady.getValue()">
-                <mat-button-toggle (click)="edit()" style="position: absolute; right: 20px; top: 20px; border-radius: 50%; z-index: 4;">
+              <div style="width: 100%; height: 100%;"
+                   [hidden]="!loadingInterceptorService.wavesurferIsReady.getValue()">
+                <mat-button-toggle (click)="edit()"
+                                   style="position: absolute; right: 20px; top: 20px; border-radius: 50%; z-index: 4;">
                   <mat-icon>edit</mat-icon>
                 </mat-button-toggle>
-                <div style="width: 100%;">
+                <div style="width: 100%; height: 100%;">
                   <div id="wave" style="border: 1px solid lightgrey; border-radius: 4px;">
                     <div id="waveform" style="cursor: pointer;"></div>
                   </div>
@@ -104,9 +107,9 @@
                     <mat-slider (input)="setVolume($event)" *ngIf="toggleVolume" max="100" min="0" step="1"
                                 value="25"></mat-slider>
                   </div>
-                  <div style="height: calc(100% - 210px);">
+                  <div style="height: calc(100% - 200px);">
                     <div *ngIf="!isEditText"
-                         style="border: 1px solid lightgrey; border-radius: 4px; height: 100%; margin-top: 10px; font-size: 16px;">
+                         style="border: 1px solid lightgrey; border-radius: 4px; height: 100%; margin-top: 10px; font-size: 16px; text-align: initial; padding: 5px;">
                       {{text}}
                     </div>
                     <div *ngIf="isEditText"
