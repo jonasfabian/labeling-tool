@@ -52,7 +52,7 @@ export class OverviewComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private sanitizer: DomSanitizer,
-    private loadingInterceptorService: LoadingInterceptorService
+    public loadingInterceptorService: LoadingInterceptorService
   ) {
   }
 
