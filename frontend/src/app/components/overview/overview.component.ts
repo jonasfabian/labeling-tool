@@ -7,37 +7,34 @@ import WaveSurfer from 'wavesurfer.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 import {DomSanitizer} from '@angular/platform-browser';
 import {ExportToCsv} from 'export-to-csv';
+import {LoadingInterceptorService} from '../../services/loading-interceptor.service';
 
 @Component({
   selector: 'app-overview',
   templateUrl: './overview.component.html',
-  styleUrls: ['./overview.component.scss']
+  styleUrls: ['./overview.component.scss'],
+  providers: [LoadingInterceptorService]
 })
 export class OverviewComponent implements OnInit {
 
+  @ViewChild('textAreaText', {static: false}) textAreaText: ElementRef<HTMLTextAreaElement>;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
   editElement = false;
   textAudio = new TextAudio(0, 0, 0, '', 0, '', 0, 0, 0);
   audioSnippet = new AudioSnippet(0, 0);
   showAll = true;
-
   dataSource = new MatTableDataSource<TextAudio | { id: number, text: string, userId: number }>();
   allColumns = ['id', 'audioStart', 'audioEnd', 'text', 'fileId', 'speaker', 'labeled', 'correct', 'wrong'];
   recordingColumns = ['id', 'text', 'userId'];
-
   waveSurfer: WaveSurfer = null;
   isEditText = false;
-  wavesurferIsReady = false;
   dummyTextAudio = new TextAudio(0, 0, 0, '', 0, '', 0, 0, 0);
   dummy = new TextAudio(0, 0, 0, '', 0, '', 0, 0, 0);
   toggleVolume = false;
   currentFileId = -1;
   text = '';
   isPlaying = false;
-
-  @ViewChild('textAreaText', {static: false}) textAreaText: ElementRef<HTMLTextAreaElement>;
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
-
   data = [];
   options = {
     fieldSeparator: ',',
@@ -55,7 +52,7 @@ export class OverviewComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private sanitizer: DomSanitizer,
-    private ref: ChangeDetectorRef
+    private loadingInterceptorService: LoadingInterceptorService
   ) {
   }
 
@@ -82,11 +79,12 @@ export class OverviewComponent implements OnInit {
     if (row.audioStart !== undefined) {
       this.dummyTextAudio = row;
     }
-    this.wavesurferIsReady = false;
+    this.loadingInterceptorService.wavesurferIsReady.next(false);
     this.generateWaveform(row);
   }
 
   toggleChangeView(): void {
+    this.loadingInterceptorService.wavesurferIsReady.next(false);
     this.showAll = !this.showAll;
     if (!this.showAll) {
       this.apiService.getAllRecordingData().subscribe(recordings => {
@@ -116,8 +114,7 @@ export class OverviewComponent implements OnInit {
           this.addRegion(textAudio, false);
           this.setViewToRegion(textAudio);
           this.text = textAudio.text;
-          this.wavesurferIsReady = true;
-          this.ref.detectChanges();
+          this.loadingInterceptorService.wavesurferIsReady.next(true);
         }
       }
     });
@@ -233,8 +230,11 @@ export class OverviewComponent implements OnInit {
       this.loadAudioBlob(textAudio.fileId);
       this.waveSurfer.on('ready', () => {
         this.addRegion(textAudio, false);
-        this.setViewToRegion(textAudio);
+        if (this.showAll) {
+          this.setViewToRegion(textAudio);
+        }
         this.text = textAudio.text;
+        this.loadingInterceptorService.wavesurferIsReady.next(true);
       });
     } else {
       this.currentFileId = textAudio.id;
@@ -247,8 +247,7 @@ export class OverviewComponent implements OnInit {
       });
     }
     this.waveSurfer.on('waveform-ready', () => {
-      this.wavesurferIsReady = true;
-      this.ref.detectChanges();
+      this.loadingInterceptorService.wavesurferIsReady.next(true);
     });
   }
 }
