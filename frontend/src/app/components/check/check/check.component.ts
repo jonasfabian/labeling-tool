@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {CarouselComponent} from 'ngx-carousel-lib';
 import {ApiService} from '../../../services/api.service';
 import {CheckIndex} from '../../../models/CheckIndex';
@@ -39,7 +39,7 @@ export class CheckComponent implements OnInit {
   testVar = [];
   noDataYet = true;
 
-  constructor(public apiService: ApiService, private dialog: MatDialog, private authService: AuthService) {
+  constructor(public apiService: ApiService, private dialog: MatDialog, private authService: AuthService, private detector: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -81,6 +81,10 @@ export class CheckComponent implements OnInit {
       this.loadAudioBlob(fileId);
       this.waveSurfer.on('ready', () => {
         this.isReady = true;
+      });
+      this.waveSurfer.on('finish', () => {
+        this.isPlaying = false;
+        this.detector.detectChanges();
       });
     });
   }
