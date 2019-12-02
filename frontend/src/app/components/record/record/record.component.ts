@@ -24,6 +24,7 @@ export class RecordComponent implements OnInit {
   mediaRecorder: MediaRecorder;
   recordingBlob: Blob;
   hasStartedRecording = false;
+  isRecording = false;
 
   constructor(
     public dialog: MatDialog,
@@ -72,13 +73,23 @@ export class RecordComponent implements OnInit {
     }
   }
 
+  isRecordingM(): string {
+    if (this.isRecording) {
+      return 'recording';
+    } else {
+      return '';
+    }
+  }
+
   startRecord(): void {
     this.hasStartedRecording = true;
+    this.isRecording = true;
     this.waveSurfer.microphone.start();
   }
 
   stopRecord(): void {
     this.mediaRecorder.stop();
+    this.isRecording = false;
     this.waveSurfer.microphone.pause();
   }
 
