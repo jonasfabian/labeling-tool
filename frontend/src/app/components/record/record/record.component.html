@@ -12,8 +12,9 @@
       <mat-button-toggle (click)="stopRecord()">
         <mat-icon>stop</mat-icon>
       </mat-button-toggle>
-      <mat-button-toggle (click)="playRecord()">
-        <mat-icon>play_arrow</mat-icon>
+      <mat-button-toggle (click)="togglePlayRecord()">
+        <mat-icon *ngIf="!isPlaying">play_arrow</mat-icon>
+        <mat-icon *ngIf="isPlaying">pause</mat-icon>
       </mat-button-toggle>
       <mat-button-toggle (click)="submit()" *ngIf="recordingBlob !== undefined && fileContent !== ''">Submit
       </mat-button-toggle>

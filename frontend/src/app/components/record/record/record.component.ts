@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {TranscriptPreviewComponent} from '../transcript-preview/transcript-preview.component';
 import {MatDialog} from '@angular/material/dialog';
 import WaveSurfer from 'wavesurfer.js';
@@ -6,7 +6,7 @@ import MicrophonesPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.microphone.j
 import {ApiService} from '../../../services/api.service';
 import {Recording} from '../../../models/Recording';
 import {AuthService} from '../../../services/auth.service';
-import {MatSnackBar, MatSnackBarConfig} from '@angular/material';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-record',
@@ -25,12 +25,14 @@ export class RecordComponent implements OnInit {
   recordingBlob: Blob;
   hasStartedRecording = false;
   isRecording = false;
+  isPlaying = false;
 
   constructor(
     public dialog: MatDialog,
     private apiService: ApiService,
     private authService: AuthService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private detector: ChangeDetectorRef
   ) {
   }
 
@@ -61,6 +63,10 @@ export class RecordComponent implements OnInit {
           })
         ]
       });
+      this.waveSurfer.on('finish', () => {
+        this.isPlaying = false;
+        this.detector.detectChanges();
+      });
       this.waveSurfer.microphone.on('deviceReady', stream => {
         // @ts-ignore
         this.mediaRecorder = new MediaRecorder(stream);
@@ -88,13 +94,24 @@ export class RecordComponent implements OnInit {
   }
 
   stopRecord(): void {
-    this.mediaRecorder.stop();
-    this.isRecording = false;
-    this.waveSurfer.microphone.pause();
+    if (this.isRecording) {
+      this.mediaRecorder.stop();
+      this.isRecording = false;
+      this.waveSurfer.microphone.pause();
+    }
   }
 
   playRecord(): void {
     this.waveSurfer.play();
+  }
+
+  togglePlayRecord(): void {
+    this.isPlaying = !this.isPlaying;
+    if (this.waveSurfer.isPlaying()) {
+      this.waveSurfer.pause();
+    } else {
+      this.waveSurfer.play();
+    }
   }
 
   submit(): void {
