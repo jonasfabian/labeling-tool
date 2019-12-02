@@ -6,6 +6,7 @@ import MicrophonesPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.microphone.j
 import {ApiService} from '../../../services/api.service';
 import {Recording} from '../../../models/Recording';
 import {AuthService} from '../../../services/auth.service';
+import {MatSnackBar, MatSnackBarConfig} from '@angular/material';
 
 @Component({
   selector: 'app-record',
@@ -22,11 +23,13 @@ export class RecordComponent implements OnInit {
   // @ts-ignore
   mediaRecorder: MediaRecorder;
   recordingBlob: Blob;
+  hasStartedRecording = false;
 
   constructor(
     public dialog: MatDialog,
     private apiService: ApiService,
-    private authService: AuthService
+    private authService: AuthService,
+    private snackBar: MatSnackBar
   ) {
   }
 
@@ -70,6 +73,7 @@ export class RecordComponent implements OnInit {
   }
 
   startRecord(): void {
+    this.hasStartedRecording = true;
     this.waveSurfer.microphone.start();
   }
 
@@ -85,7 +89,11 @@ export class RecordComponent implements OnInit {
   submit(): void {
     this.apiService.createRecording(
       new Recording(-1, this.fileContent.toString(), this.authService.loggedInUser.getValue().id, this.recordingBlob
-      )).subscribe();
+      )).subscribe(() => {
+    }, () => {
+    }, () => {
+      this.snackBar.open('Successfully created new Recording', '', {duration: 3000, panelClass: ['background-white']});
+    });
   }
 
   handleFileInput(fileList: FileList): void {
