@@ -249,5 +249,8 @@ export class OverviewComponent implements OnInit {
       this.waveSurferIsReady = true;
       this.det.detectChanges();
     });
+    this.waveSurfer.on('finish', () => {
+      this.isPlaying = false;
+    });
   }
 }
