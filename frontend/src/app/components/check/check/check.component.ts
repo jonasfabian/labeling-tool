@@ -36,6 +36,8 @@ export class CheckComponent implements OnInit {
   snippet: any;
   isReady = false;
   waveSurfer: WaveSurfer = null;
+  testVar = [];
+  noDataYet = true;
 
   constructor(public apiService: ApiService, private dialog: MatDialog, private authService: AuthService) {
   }
@@ -43,13 +45,21 @@ export class CheckComponent implements OnInit {
   ngOnInit() {
     let fileId = 0;
     this.apiService.getTenNonLabeledTextAudios().subscribe(r => {
-      fileId = r[0].fileId;
+      this.testVar = r;
+      if (r.length !== 0) {
+        fileId = r[0].fileId;
+        this.noDataYet = false;
+      }
     }, () => {
     }, () => {
-      this.initCarousel();
-      this.initSessionCheckData();
-      if (!this.waveSurfer) {
-        this.generateWaveform(fileId);
+      if (this.testVar.length !== 0) {
+        this.initCarousel();
+        this.initSessionCheckData();
+        if (!this.waveSurfer) {
+          this.generateWaveform(fileId);
+        }
+      } else {
+        this.noDataYet = true;
       }
     });
   }

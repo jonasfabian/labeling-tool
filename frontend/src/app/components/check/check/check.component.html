@@ -6,8 +6,10 @@
 <div hidden id="wave">
   <div id="waveform"></div>
 </div>
-<div [hidden]="available" style="height: calc(100% - 100px)">
-  <mat-spinner style="margin-left: auto; margin-right: auto; top: calc(50% - 150px);"></mat-spinner>
+<div [hidden]="available"
+     style="height: calc(100% - 100px);">
+  <mat-spinner style="margin-left: auto; margin-right: auto; top: calc(50% - 150px);" *ngIf="!noDataYet"></mat-spinner>
+  <div *ngIf="noDataYet">No Data yet</div>
 </div>
 <div style="position: absolute; right: 15px; height: calc(100% - 280px); z-index: 1;">
   <mat-expansion-panel>
@@ -49,7 +51,8 @@
           </mat-card>
           <mat-progress-bar *ngIf="te.id === carousel.carousel.activeIndex"
                             [value]="progress"
-                            mode="determinate" style="margin-left: auto; margin-right: auto; transition: none; height: 8px; border-radius: 0 0 10px 10px;"></mat-progress-bar>
+                            mode="determinate"
+                            style="margin-left: auto; margin-right: auto; transition: none; height: 8px; border-radius: 0 0 10px 10px;"></mat-progress-bar>
         </div>
       </carousel-component>
       <div *ngIf="apiService.blobUrl != ''">
