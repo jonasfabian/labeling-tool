@@ -17,12 +17,14 @@
         <mat-icon *ngIf="isPlaying">pause</mat-icon>
       </mat-button-toggle>
     </mat-button-toggle-group>
-    <button style="margin-left: 5px; line-height: 50px; padding: 0 12px; position: absolute;" mat-flat-button color="primary"
+    <button style="margin-left: 5px; line-height: 50px; padding: 0 12px; position: absolute;" mat-flat-button
+            color="primary"
             title="Submit your recording and transcript" (click)="submit()"
             *ngIf="recordingBlob !== undefined && fileContent !== ''">
       Submit
     </button>
-    <button style="margin-left: 5px; line-height: 50px; padding: 0 12px; position: absolute;" mat-flat-button color="accent"
+    <button style="margin-left: 5px; line-height: 50px; padding: 0 12px; position: absolute; left: 238px;"
+            mat-flat-button color="accent"
             title="Record another one" (click)="recordAnotherOne()"
             *ngIf="recordingBlob !== undefined && fileContent !== ''">
       Record another one
