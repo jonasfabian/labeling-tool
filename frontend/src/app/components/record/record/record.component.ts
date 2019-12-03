@@ -105,6 +105,13 @@ export class RecordComponent implements OnInit {
     this.waveSurfer.play();
   }
 
+  recordAnotherOne(): void {
+    this.fileContent = '';
+    this.recordingBlob = null;
+    this.waveSurfer.empty();
+    this.hasStartedRecording = false;
+  }
+
   togglePlayRecord(): void {
     this.isPlaying = !this.isPlaying;
     if (this.waveSurfer.isPlaying()) {
