@@ -43,7 +43,10 @@ export class ProfileComponent implements OnInit {
       username: [this.authService.loggedInUser.getValue().username, [Validators.required]],
       firstName: [this.authService.loggedInUser.getValue().firstName, [Validators.required]],
       lastName: [this.authService.loggedInUser.getValue().lastName, [Validators.required]],
-      email: [this.authService.loggedInUser.getValue().email, [Validators.required, Validators.email]],
+      email: [this.authService.loggedInUser.getValue().email, Validators.compose([
+        Validators.required,
+        Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
+      ])],
       canton: [this.authService.loggedInUser.getValue().canton, [Validators.required]]
     });
   }
@@ -51,7 +54,11 @@ export class ProfileComponent implements OnInit {
   initPasswordForm(): void {
     this.changePasswordForm = this.fb.group({
       password: ['', [Validators.required]],
-      newPassword: ['', [Validators.required]]
+      newPassword: ['', Validators.compose([
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(50)
+      ])]
     });
   }
 
