@@ -84,13 +84,13 @@ export class RegisterComponent implements OnInit {
 
   getUsernameErrorMessage(): string {
     if (this.registerForm.controls.username.hasError('required')) {
-      return 'Please enter your email or username';
+      return 'Please enter your username';
     }
   }
 
   getPasswordErrorMessage(): string {
     if (this.registerForm.controls.password.hasError('required')) {
-      return 'Please enter your email or username';
+      return 'Please enter your password';
     } else if (this.registerForm.controls.password.hasError('minlength')) {
       return 'At least 8 characters';
     } else if (this.registerForm.controls.password.hasError('maxlength')) {

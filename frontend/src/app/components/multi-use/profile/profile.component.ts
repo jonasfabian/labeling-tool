@@ -94,6 +94,54 @@ export class ProfileComponent implements OnInit {
       this.authService.logout(true);
     });
   }
+
+  getOldPasswordErrorMessage(): string {
+    if (this.changePasswordForm.controls.password.hasError('required')) {
+      return 'Please enter your old password';
+    }
+  }
+
+  getNewPasswordErrorMessage(): string {
+    if (this.changePasswordForm.controls.newPassword.hasError('required')) {
+      return 'Please enter your new password';
+    } else if (this.changePasswordForm.controls.newPassword.hasError('minlength')) {
+      return 'At least 8 characters';
+    } else if (this.changePasswordForm.controls.newPassword.hasError('maxlength')) {
+      return 'Maximum 50 characters';
+    }
+  }
+
+  getFirstNameErrorMessage(): string {
+    if (this.changeProfileForm.controls.firstName.hasError('required')) {
+      return 'Please enter your first name';
+    }
+  }
+
+  getLastNameErrorMessage(): string {
+    if (this.changeProfileForm.controls.lastName.hasError('required')) {
+      return 'Please enter your last name';
+    }
+  }
+
+  getEmailErrorMessage(): string {
+    if (this.changeProfileForm.controls.email.hasError('required')) {
+      return 'Please enter your email or username';
+    } else if (this.changeProfileForm.controls.email.hasError('pattern')) {
+      return 'Please enter a valid email adress';
+    }
+  }
+
+  getUsernameErrorMessage(): string {
+    if (this.changeProfileForm.controls.username.hasError('required')) {
+      return 'Please enter your username';
+    }
+  }
+
+  getCantonErrorMessage(): string {
+    if (this.changeProfileForm.controls.canton.hasError('required')) {
+      return 'Please select a canton';
+    }
+  }
 }
 
 export enum ProfileView {
