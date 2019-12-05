@@ -106,7 +106,7 @@
     </div>
     <div style="width: 30%; float: right; height: 90%; margin-top: 15px;">
       <ng-container *ngIf="currentView === profileView.ProfileView">
-        <app-avatar [borderRadius]="0" [fontSize]="100" [hover]="'default'" [size]="260"
+        <app-avatar [username]="this.authService.loggedInUser.getValue().username" [borderRadius]="0" [fontSize]="100" [hover]="'default'" [size]="260"
                     style="float: left;"></app-avatar>
         <div style="text-align: center; padding: 15px;">
           <span style="font-size: 25px;">{{authService.loggedInUser.getValue().username}}</span>

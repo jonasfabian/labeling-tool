@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import stringToColor from '../../../calculations/stringToColor';
 import {AuthService} from '../../../services/auth.service';
 
@@ -7,9 +7,10 @@ import {AuthService} from '../../../services/auth.service';
   templateUrl: './avatar.component.html',
   styleUrls: ['./avatar.component.scss']
 })
-export class AvatarComponent implements OnInit {
+export class AvatarComponent implements OnInit, OnChanges {
 
   @Input() size: number;
+  @Input() username: string;
   @Input() fontSize: number;
   @Input() borderRadius: number;
   @Input() hover: string;
@@ -20,17 +21,20 @@ export class AvatarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.generateProfileImage();
-    this.generateColor();
   }
 
-  generateProfileImage(): void {
-    if (sessionStorage.getItem('email')) {
-      this.initials = JSON.parse(sessionStorage.getItem('email')).charAt(0).toLocaleUpperCase();
+  ngOnChanges(): void {
+    if (this.username !== undefined) {
+      this.generateProfileImage();
+      this.generateColor();
     }
   }
 
+  generateProfileImage(): void {
+    this.initials = this.username.charAt(0).toLocaleUpperCase();
+  }
+
   generateColor() {
-    this.color = stringToColor(this.authService.loggedInUser.getValue().firstName + this.authService.loggedInUser.getValue().lastName);
+    this.color = stringToColor(this.username);
   }
 }
