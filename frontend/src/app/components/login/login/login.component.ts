@@ -46,10 +46,17 @@ export class LoginComponent implements OnInit {
         }, () => {
           this.router.navigate(['/speech-to-text-labeling-tool/app/overview']);
           this.authService.addToSessionStorage(this.loginForm.controls.email.value, this.loginForm.controls.password.value);
-          this.apiService.getUserByEmail(this.loginForm.controls.email.value).subscribe(user => {
-            this.authService.loggedInUser.next(user);
-          });
-          sessionStorage.setItem('email', JSON.stringify(this.loginForm.controls.email.value));
+          if (this.loginForm.controls.email.value.toString().includes('@')) {
+            this.apiService.getUserByEmail(this.loginForm.controls.email.value).subscribe(user => {
+              this.authService.loggedInUser.next(user);
+              sessionStorage.setItem('email', JSON.stringify(user.email));
+            });
+          } else {
+            this.apiService.getUserByUsername(this.loginForm.controls.email.value).subscribe(user => {
+              this.authService.loggedInUser.next(user);
+              sessionStorage.setItem('email', JSON.stringify(user.email));
+            });
+          }
         });
     }
   }

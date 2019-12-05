@@ -88,6 +88,10 @@ export class ApiService {
     return this.http.get<UserPublicInfo>(this.url + 'getUserByEmail?email=' + email);
   }
 
+  getUserByUsername(username: string): Observable<UserPublicInfo> {
+    return this.http.get<UserPublicInfo>(this.url + 'getUserByUsername?email=' + username);
+  }
+
   createUser(user: User): Observable<any> {
     return this.http.post(this.url + 'createUser', user);
   }
