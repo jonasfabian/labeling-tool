@@ -23,7 +23,7 @@ export class OverviewComponent implements OnInit {
   showAll = true;
   dataSource = new MatTableDataSource<TextAudio | { id: number, text: string, username: string, time: string }>();
   allColumns = ['id', 'audioStart', 'audioEnd', 'text', 'fileId', 'speaker', 'labeled', 'correct', 'wrong'];
-  recordingColumns = ['id', 'text', 'username', 'time'];
+  recordingColumns = ['id', 'text', 'time', 'username'];
   waveSurfer: WaveSurfer = null;
   isEditText = false;
   dummyTextAudio = new TextAudio(0, 0, 0, '', 0, '', 0, 0, 0);

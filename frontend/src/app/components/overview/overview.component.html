@@ -51,16 +51,16 @@
                 <th *matHeaderCellDef mat-header-cell mat-sort-header>Wrong</th>
                 <td *matCellDef="let element" mat-cell>{{element.wrong}}</td>
               </ng-container>
-              <ng-container matColumnDef="time">
-                <th *matHeaderCellDef mat-header-cell mat-sort-header>Time</th>
-                <td *matCellDef="let element" mat-cell>{{element.time}}</td>
-              </ng-container>
               <ng-container matColumnDef="username">
                 <th *matHeaderCellDef mat-header-cell mat-sort-header>User</th>
                 <td *matCellDef="let element" mat-cell>
                   <app-avatar [username]="element.username" [hover]="'default'" [borderRadius]="50" [fontSize]="15"
                               [size]="32"></app-avatar>
                 </td>
+              </ng-container>
+              <ng-container matColumnDef="time">
+                <th *matHeaderCellDef mat-header-cell mat-sort-header>Time</th>
+                <td *matCellDef="let element" mat-cell>{{element.time}}</td>
               </ng-container>
               <tr *matHeaderRowDef="showAll ? allColumns : recordingColumns; sticky: true" mat-header-row></tr>
               <tr (click)="previewElement(row)" *matRowDef="let row; columns: showAll ? allColumns : recordingColumns;"
