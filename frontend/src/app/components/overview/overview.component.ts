@@ -21,9 +21,9 @@ export class OverviewComponent implements OnInit {
   textAudio = new TextAudio(0, 0, 0, '', 0, '', 0, 0, 0);
   audioSnippet = new AudioSnippet(0, 0);
   showAll = true;
-  dataSource = new MatTableDataSource<TextAudio | { id: number, text: string, userId: number }>();
+  dataSource = new MatTableDataSource<TextAudio | { id: number, text: string, username: string, time: string }>();
   allColumns = ['id', 'audioStart', 'audioEnd', 'text', 'fileId', 'speaker', 'labeled', 'correct', 'wrong'];
-  recordingColumns = ['id', 'text', 'username'];
+  recordingColumns = ['id', 'text', 'username', 'time'];
   waveSurfer: WaveSurfer = null;
   isEditText = false;
   dummyTextAudio = new TextAudio(0, 0, 0, '', 0, '', 0, 0, 0);
@@ -89,7 +89,7 @@ export class OverviewComponent implements OnInit {
     this.showAll = !this.showAll;
     if (!this.showAll) {
       this.apiService.getAllRecordingData().subscribe(recordings => {
-        this.dataSource = new MatTableDataSource<{ id: number, text: string, userId: number }>(recordings);
+        this.dataSource = new MatTableDataSource<{ id: number, text: string, username: string, time: string }>(recordings);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       });

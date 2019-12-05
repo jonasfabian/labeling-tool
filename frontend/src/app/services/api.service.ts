@@ -80,8 +80,8 @@ export class ApiService {
     return this.http.get<Blob>(this.url + 'getRecordingAudioById?id=' + id, {responseType: 'blob'});
   }
 
-  getAllRecordingData(): Observable<[{ id: number, text: string, userId: number }]> {
-    return this.http.get<[{ id: number, text: string, userId: number }]>(this.url + 'getAllRecordingData');
+  getAllRecordingData(): Observable<[{ id: number, text: string, username: string, time: string }]> {
+    return this.http.get<[{ id: number, text: string, username: string, time: string }]>(this.url + 'getAllRecordingData');
   }
 
   getUserByEmail(email: string): Observable<UserPublicInfo> {
