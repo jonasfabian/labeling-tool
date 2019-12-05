@@ -1,7 +1,6 @@
 import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ApiService} from '../../services/api.service';
 import {TextAudio} from '../../models/TextAudio';
-import {AudioSnippet} from '../../models/AudioSnippet';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import WaveSurfer from 'wavesurfer.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';

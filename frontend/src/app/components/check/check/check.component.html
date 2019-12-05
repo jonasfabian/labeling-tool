@@ -9,7 +9,11 @@
 <div [hidden]="available"
      style="height: calc(100% - 100px);">
   <mat-spinner style="margin-left: auto; margin-right: auto; top: calc(50% - 150px);" *ngIf="!noDataYet"></mat-spinner>
-  <div *ngIf="noDataYet">No Data yet</div>
+  <div *ngIf="noDataYet" style="height: calc(100% - 90px);">
+    <mat-card style="margin: 15px; height: 100%; display: flex; align-items: center; justify-content: center;">
+      <div style="font-weight: bold; font-size: 36px;">No Data to display</div>
+    </mat-card>
+  </div>
 </div>
 <div style="position: absolute; right: 15px; height: calc(100% - 280px); z-index: 1;">
   <mat-expansion-panel>
