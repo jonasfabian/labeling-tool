@@ -103,16 +103,12 @@
                       <mat-button-toggle (click)="togglePlay()" *ngIf="isPlaying" title="Pause">
                         <mat-icon>pause</mat-icon>
                       </mat-button-toggle>
-                      <mat-button-toggle (click)="toggleVolume = !toggleVolume" class="audio-nav-button" title="Volume">
-                        <mat-icon>volume_up</mat-icon>
-                      </mat-button-toggle>
                       <mat-button-toggle (click)="cancelEdit()" *ngIf="isEditText" class="audio-nav-button">Cancel
                       </mat-button-toggle>
                       <mat-button-toggle (click)="submitChange()" *ngIf="isEditText" class="audio-nav-button">Submit
                       </mat-button-toggle>
                     </mat-button-toggle-group>
-                    <mat-slider (input)="setVolume($event)" *ngIf="toggleVolume" max="100" min="0" step="1"
-                                value="25"></mat-slider>
+                    <mat-slider #volumeSlider (input)="setVolume($event)" max="100" min="0" step="1" value="100"></mat-slider>
                   </div>
                   <div style="height: calc(100% - 200px);">
                     <div *ngIf="!isEditText"

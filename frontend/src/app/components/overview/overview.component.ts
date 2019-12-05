@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ApiService} from '../../services/api.service';
 import {TextAudio} from '../../models/TextAudio';
-import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
+import {MatPaginator, MatSlider, MatSort, MatTableDataSource} from '@angular/material';
 import WaveSurfer from 'wavesurfer.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 import {ExportToCsv} from 'export-to-csv';
@@ -16,6 +16,7 @@ export class OverviewComponent implements OnInit {
   @ViewChild('textAreaText', {static: false}) textAreaText: ElementRef<HTMLTextAreaElement>;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild('volumeSlider', {static: false}) volumeSlider: MatSlider;
   showAll = true;
   dataSource = new MatTableDataSource<TextAudio | { id: number, text: string, username: string, time: string }>();
   allColumns = ['id', 'audioStart', 'audioEnd', 'text', 'fileId', 'speaker', 'labeled', 'correct', 'wrong'];
