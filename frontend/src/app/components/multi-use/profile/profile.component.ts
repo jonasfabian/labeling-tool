@@ -64,6 +64,10 @@ export class ProfileComponent implements OnInit {
     if (this.changeProfileForm.valid) {
       this.apiService.updateUser(this.authService.loggedInUser.getValue()).subscribe(_ => {
         this.currentView = this.profileView.ProfileView;
+      }, (err) => {
+        if (err === 'NOT ACCEPTABLE') {
+          alert('Username must not contain @');
+        }
       });
     }
   }
