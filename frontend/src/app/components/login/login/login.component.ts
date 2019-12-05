@@ -60,4 +60,16 @@ export class LoginComponent implements OnInit {
         });
     }
   }
+
+  getEmailErrorMessage(): string {
+    if (this.loginForm.controls.email.hasError('required')) {
+      return 'Please enter your email or username';
+    }
+  }
+
+  getPasswordErrorMessage(): string {
+    if (this.loginForm.controls.password.hasError('required')) {
+      return 'Please enter a password';
+    }
+  }
 }

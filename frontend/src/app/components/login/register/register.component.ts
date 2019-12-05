@@ -61,4 +61,46 @@ export class RegisterComponent implements OnInit {
   cancel(): void {
     this.router.navigate(['/speech-to-text-labeling-tool/app/login']);
   }
+
+  getFirstNameErrorMessage(): string {
+    if (this.registerForm.controls.firstName.hasError('required')) {
+      return 'Please enter your first name';
+    }
+  }
+
+  getLastNameErrorMessage(): string {
+    if (this.registerForm.controls.lastName.hasError('required')) {
+      return 'Please enter your last name';
+    }
+  }
+
+  getEmailErrorMessage(): string {
+    if (this.registerForm.controls.email.hasError('required')) {
+      return 'Please enter your email or username';
+    } else if (this.registerForm.controls.email.hasError('pattern')) {
+      return 'Please enter a valid email adress';
+    }
+  }
+
+  getUsernameErrorMessage(): string {
+    if (this.registerForm.controls.username.hasError('required')) {
+      return 'Please enter your email or username';
+    }
+  }
+
+  getPasswordErrorMessage(): string {
+    if (this.registerForm.controls.password.hasError('required')) {
+      return 'Please enter your email or username';
+    } else if (this.registerForm.controls.password.hasError('minlength')) {
+      return 'At least 8 characters';
+    } else if (this.registerForm.controls.password.hasError('maxlength')) {
+      return 'Maximum 50 characters';
+    }
+  }
+
+  getCantonErrorMessage(): string {
+    if (this.registerForm.controls.canton.hasError('required')) {
+      return 'Please select a canton';
+    }
+  }
 }
