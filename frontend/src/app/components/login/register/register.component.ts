@@ -3,6 +3,7 @@ import {ApiService} from '../../../services/api.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {User} from '../../../models/User';
 import {Router} from '@angular/router';
+import {error} from 'util';
 
 @Component({
   selector: 'app-register',
@@ -42,6 +43,10 @@ export class RegisterComponent implements OnInit {
     if (this.registerForm.valid) {
       this.apiService.createUser(this.user).subscribe(_ => {
         this.router.navigate(['speech-to-text-labeling-tool/app/login']);
+      }, (err) => {
+        if (err === 'NOT ACCEPTABLE') {
+          alert('Username must not contain @');
+        }
       });
     }
   }
