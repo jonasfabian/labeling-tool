@@ -25,7 +25,7 @@ export class OverviewComponent implements OnInit {
   isEditText = false;
   dummyTextAudio = new TextAudio(0, 0, 0, '', 0, '', 0, 0, 0);
   dummy = new TextAudio(0, 0, 0, '', 0, '', 0, 0, 0);
-  toggleVolume = false;
+  dummyRecording: { id: number, text: string, username: string, time: string };
   currentFileId = -1;
   text = '';
   isPlaying = false;
@@ -62,6 +62,8 @@ export class OverviewComponent implements OnInit {
     this.isEditText = false;
     if (row.audioStart !== undefined) {
       this.dummyTextAudio = row;
+    } else {
+      this.dummyRecording = row;
     }
     this.generateWaveform(row);
   }
@@ -75,7 +77,7 @@ export class OverviewComponent implements OnInit {
     this.showAll = !this.showAll;
     if (!this.showAll) {
       this.apiService.getAllRecordingData().subscribe(recordings => {
-        this.dataSource = new MatTableDataSource<{ id: number, text: string, username: string, time: string }>(recordings);
+        this.dataSource = new MatTableDataSource<{ id: number, text: string, time: string, username: string }>(recordings);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       });
@@ -183,15 +185,22 @@ export class OverviewComponent implements OnInit {
 
   edit(): void {
     this.isEditText = true;
-    this.addRegion(this.dummyTextAudio, true);
-    this.dummy = this.dummyTextAudio;
+    if (this.showAll) {
+      this.addRegion(this.dummyTextAudio, true);
+      this.dummy = this.dummyTextAudio;
+    }
   }
 
   submitChange(): void {
-    this.dummyTextAudio.text = this.text = this.textAreaText.nativeElement.value;
-    this.apiService.updateTextAudio(this.dummyTextAudio).subscribe();
+    if (this.showAll) {
+      this.dummyTextAudio.text = this.text = this.textAreaText.nativeElement.value;
+      this.apiService.updateTextAudio(this.dummyTextAudio).subscribe();
+      this.addRegion(this.dummyTextAudio, false);
+    } else {
+      this.dummyRecording.text = this.text = this.textAreaText.nativeElement.value;
+      this.apiService.updateRecording(this.dummyRecording.id, this.dummyRecording.text).subscribe();
+    }
     this.isEditText = !this.isEditText;
-    this.addRegion(this.dummyTextAudio, false);
   }
 
   cancelEdit(): void {

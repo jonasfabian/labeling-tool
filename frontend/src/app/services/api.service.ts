@@ -115,6 +115,10 @@ export class ApiService {
     return this.http.post(this.url + 'updateTextAudio', textAudio);
   }
 
+  updateRecording(id: number, text: string): Observable<any> {
+    return this.http.post(this.url + 'updateRecording', { id, text });
+  }
+
   updateUser(user: UserPublicInfo): Observable<any> {
     return this.http.post(this.url + 'updateUser', user);
   }
