@@ -17,9 +17,6 @@ export class OverviewComponent implements OnInit {
   @ViewChild('textAreaText', {static: false}) textAreaText: ElementRef<HTMLTextAreaElement>;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
-  editElement = false;
-  textAudio = new TextAudio(0, 0, 0, '', 0, '', 0, 0, 0);
-  audioSnippet = new AudioSnippet(0, 0);
   showAll = true;
   dataSource = new MatTableDataSource<TextAudio | { id: number, text: string, username: string, time: string }>();
   allColumns = ['id', 'audioStart', 'audioEnd', 'text', 'fileId', 'speaker', 'labeled', 'correct', 'wrong'];
@@ -32,6 +29,7 @@ export class OverviewComponent implements OnInit {
   currentFileId = -1;
   text = '';
   isPlaying = false;
+  waveSurferIsReady = false;
   data = [];
   options = {
     fieldSeparator: ',',
@@ -46,8 +44,6 @@ export class OverviewComponent implements OnInit {
     this.options
   );
 
-  waveSurferIsReady = false;
-
   constructor(
     private apiService: ApiService,
     private det: ChangeDetectorRef
@@ -60,16 +56,6 @@ export class OverviewComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
-  }
-
-  isEditElement(isEdit: boolean): void {
-    this.editElement = isEdit;
-  }
-
-  setTextAudio(tA: TextAudio): void {
-    this.textAudio = tA;
-    this.audioSnippet.startTime = tA.audioStart;
-    this.audioSnippet.endTime = tA.audioEnd;
   }
 
   previewElement(row: any): void {
