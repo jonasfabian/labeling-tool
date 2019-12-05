@@ -88,6 +88,14 @@ export class OverviewComponent implements OnInit {
     }
   }
 
+  toggleEdit(): void {
+    if (this.isEditText) {
+      this.cancelEdit();
+    } else {
+      this.edit();
+    }
+  }
+
   generateWaveform(textAudio: any): void {
     Promise.resolve(null).then(() => {
       if (this.waveSurfer === null) {
@@ -187,7 +195,6 @@ export class OverviewComponent implements OnInit {
   }
 
   cancelEdit(): void {
-    this.isPlaying = false;
     this.isEditText = false;
     this.addRegion(this.dummy, false);
   }

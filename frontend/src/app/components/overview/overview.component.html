@@ -82,7 +82,7 @@
                 Please select an element in the table to view more details
               </div>
               <div style="width: 100%; height: 100%;" [hidden]="!waveSurferIsReady">
-                <mat-button-toggle (click)="edit()"
+                <mat-button-toggle title="Toggle Edit" *ngIf="showAll" (click)="toggleEdit()"
                                    style="position: absolute; right: 20px; top: 20px; border-radius: 50%; z-index: 4;">
                   <mat-icon>edit</mat-icon>
                 </mat-button-toggle>
@@ -92,22 +92,20 @@
                   </div>
                   <div id="wave-navigation" style="display: flex; justify-content: left; margin-top: 10px;">
                     <mat-button-toggle-group>
-                      <mat-button-toggle (click)="togglePlay()" *ngIf="!isPlaying" class="audio-nav-button"
-                                         title="Play">
+                      <mat-button-toggle (click)="togglePlay()" *ngIf="!isPlaying" title="Play">
                         <mat-icon>play_arrow</mat-icon>
                       </mat-button-toggle>
-                      <mat-button-toggle (click)="togglePlay()" *ngIf="isPlaying" class="audio-nav-button"
-                                         title="Pause">
+                      <mat-button-toggle (click)="togglePlay()" *ngIf="isPlaying" title="Pause">
                         <mat-icon>pause</mat-icon>
                       </mat-button-toggle>
+                      <mat-button-toggle (click)="toggleVolume = !toggleVolume" class="audio-nav-button" title="Volume">
+                        <mat-icon>volume_up</mat-icon>
+                      </mat-button-toggle>
+                      <mat-button-toggle (click)="cancelEdit()" *ngIf="isEditText" class="audio-nav-button">Cancel
+                      </mat-button-toggle>
+                      <mat-button-toggle (click)="submitChange()" *ngIf="isEditText" class="audio-nav-button">Submit
+                      </mat-button-toggle>
                     </mat-button-toggle-group>
-                    <mat-button-toggle (click)="toggleVolume = !toggleVolume" class="audio-nav-button" title="Volume">
-                      <mat-icon>volume_up</mat-icon>
-                    </mat-button-toggle>
-                    <mat-button-toggle (click)="cancelEdit()" *ngIf="isEditText" class="audio-nav-button">Cancel
-                    </mat-button-toggle>
-                    <mat-button-toggle (click)="submitChange()" *ngIf="isEditText" class="audio-nav-button">Submit
-                    </mat-button-toggle>
                     <mat-slider (input)="setVolume($event)" *ngIf="toggleVolume" max="100" min="0" step="1"
                                 value="25"></mat-slider>
                   </div>
@@ -120,7 +118,7 @@
                          style="border-radius: 4px; height: 100%; margin-top: 10px;">
           <textarea #textAreaText
                     [value]="text"
-                    style="height: calc(100% - 50px); width: 100%; font-family: Roboto, 'Helvetica Neue', sans-serif; font-size: 16px;"></textarea>
+                    style="height: calc(100% - 5px); resize: none; width: 100%; font-family: Roboto, 'Helvetica Neue', sans-serif; font-size: 16px;"></textarea>
                     </div>
                   </div>
                 </div>
