@@ -29,7 +29,8 @@
               </ng-container>
               <ng-container matColumnDef="text">
                 <th *matHeaderCellDef mat-header-cell mat-sort-header>Text</th>
-                <td *matCellDef="let element" mat-cell>{{element.text}}</td>
+                <td *matCellDef="let element" mat-cell
+                    style="max-width: 400px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; padding-right: 15px;">{{element.text}}</td>
               </ng-container>
               <ng-container matColumnDef="fileId">
                 <th *matHeaderCellDef mat-header-cell mat-sort-header>FileId</th>
@@ -111,7 +112,7 @@
                   </div>
                   <div style="height: calc(100% - 200px);">
                     <div *ngIf="!isEditText"
-                         style="border: 1px solid lightgrey; border-radius: 4px; height: calc(100% - 10px); margin-top: 10px; font-size: 16px; text-align: initial; padding: 5px;">
+                         style="overflow-y: scroll; border: 1px solid lightgrey; border-radius: 4px; height: calc(100% - 10px); margin-top: 10px; font-size: 16px; text-align: initial; padding: 5px;">
                       {{text}}
                     </div>
                     <div *ngIf="isEditText"
