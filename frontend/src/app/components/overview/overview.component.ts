@@ -60,6 +60,10 @@ export class OverviewComponent implements OnInit {
 
   previewElement(row: any): void {
     this.isEditText = false;
+    if (this.waveSurfer !== null) {
+      this.waveSurfer.pause();
+      this.isPlaying = false;
+    }
     if (row.audioStart !== undefined) {
       this.dummyTextAudio = row;
     } else {
