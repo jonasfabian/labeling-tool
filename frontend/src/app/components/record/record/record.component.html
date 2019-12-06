@@ -40,7 +40,8 @@
 </div>
 <div style="height: calc(100% - 390px);">
   <mat-card class="content-card" style="height: calc(100% - 44px);">
-    <ng-container>
+    <h3>Transcription</h3>
+    <div style="padding: 0; margin: 0;">
       <input #uploadTranscript (change)="handleFileInput($event.target.files)" hidden id="file" type="file" accept="text/plain">
       <mat-button-toggle style="margin: 0 0 15px 0;" (click)="uploadTranscript.click()" title="Upload Transcript File">
         <mat-icon>cloud_upload</mat-icon>
@@ -48,10 +49,10 @@
       <mat-button-toggle style="margin: 0 0 15px 5px;" (click)="openTranscriptPreviewDialog()">
         Show full Transcript
       </mat-button-toggle>
-    </ng-container>
-    <ng-container *ngIf="showTextArea">
+    </div>
+    <div style="padding: 0; margin: 0; height: calc(100% - 70px);" *ngIf="showTextArea">
       <textarea [(ngModel)]="fileContent"
-                style="width: calc(100% - 5px); height: calc(100% - 70px); resize: none; border: 1px solid lightgrey; border-radius: 5px;"></textarea>
-    </ng-container>
+                style="width: calc(100% - 5px); height: calc(100% - 40px); resize: none; border: 1px solid lightgrey; border-radius: 5px;"></textarea>
+    </div>
   </mat-card>
 </div>
