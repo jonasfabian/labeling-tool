@@ -102,7 +102,7 @@
                     </mat-button-toggle-group>
                     <mat-slider #volumeSlider (input)="setVolume($event)" max="100" min="0" step="1"
                                 value="100"></mat-slider>
-                    <mat-button-toggle style="position: absolute; right: 120px; line-height: 49px;"
+                    <mat-button-toggle *ngIf="showAll" style="position: absolute; right: 120px; line-height: 49px;"
                                        title="Seek selected audio passage" (click)="setViewToRegion(dummyTextAudio)">
                       <mat-icon>my_location</mat-icon>
                     </mat-button-toggle>
