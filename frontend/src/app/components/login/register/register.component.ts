@@ -3,7 +3,6 @@ import {ApiService} from '../../../services/api.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {User} from '../../../models/User';
 import {Router} from '@angular/router';
-import {error} from 'util';
 
 @Component({
   selector: 'app-register',

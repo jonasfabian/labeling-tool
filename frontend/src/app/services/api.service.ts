@@ -1,14 +1,12 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {Sums} from '../models/Sums';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {User} from '../models/User';
 import {EmailPassword} from '../models/EmailPassword';
 import {UserPublicInfo} from '../models/UserPublicInfo';
 import {AuthService} from './auth.service';
 import {Router} from '@angular/router';
-import {UserLabeledData} from '../models/UserLabeledData';
 import {Recording} from '../models/Recording';
 import {Canton} from '../models/Canton';
 import {ChangePassword} from '../models/ChangePassword';
@@ -129,14 +127,6 @@ export class ApiService {
 
   getTenNonLabeledTextAudios(): Observable<Array<TextAudio>> {
     return this.http.get<Array<TextAudio>>(this.url + 'getTenNonLabeledTextAudios');
-  }
-
-  getLabeledSums(): Observable<Sums> {
-    return this.http.get<Sums>(this.url + 'getLabeledSums');
-  }
-
-  getTopFiveUsersLabeledCount(): Observable<Array<UserLabeledData>> {
-    return this.http.get<Array<UserLabeledData>>(this.url + 'getTopFive');
   }
 
   changePassword(changePassword: ChangePassword): Observable<any> {

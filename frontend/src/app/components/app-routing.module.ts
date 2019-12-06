@@ -1,6 +1,5 @@
 import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
-import {ErrorComponent} from './multi-use/error/error.component';
 import {RegisterComponent} from './login/register/register.component';
 import {AuthGuardService} from '../guards/auth-guard.service';
 import {ProfileComponent} from './multi-use/profile/profile.component';
@@ -42,10 +41,6 @@ const routes: Routes = [
   {
     path: 'speech-to-text-labeling-tool/app',
     children: [
-      {
-        path: '404',
-        component: ErrorComponent
-      },
       {
         path: 'register',
         component: RegisterComponent

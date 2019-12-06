@@ -101,10 +101,6 @@ export class RecordComponent implements OnInit {
     }
   }
 
-  playRecord(): void {
-    this.waveSurfer.play();
-  }
-
   recordAnotherOne(): void {
     this.fileContent = '';
     this.recordingBlob = null;
@@ -133,11 +129,15 @@ export class RecordComponent implements OnInit {
 
   handleFileInput(fileList: FileList): void {
     const file = fileList[0];
-    const fileReader: FileReader = new FileReader();
-    fileReader.onloadend = () => {
-      this.fileContent = fileReader.result;
-    };
-    fileReader.readAsText(file);
+    if (file.name.includes('.txt')) {
+      const fileReader: FileReader = new FileReader();
+      fileReader.onloadend = () => {
+        this.fileContent = fileReader.result;
+      };
+      fileReader.readAsText(file);
+    } else {
+      alert('Can only upload .txt files');
+    }
   }
 
   openTranscriptPreviewDialog(): void {

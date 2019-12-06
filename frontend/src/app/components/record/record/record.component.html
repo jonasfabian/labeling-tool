@@ -41,7 +41,7 @@
 <div style="height: calc(100% - 390px);">
   <mat-card class="content-card" style="height: calc(100% - 44px);">
     <ng-container>
-      <input #uploadTranscript (change)="handleFileInput($event.target.files)" hidden id="file" type="file" accept="text/*">
+      <input #uploadTranscript (change)="handleFileInput($event.target.files)" hidden id="file" type="file" accept="text/plain">
       <mat-button-toggle style="margin: 0 0 15px 0;" (click)="uploadTranscript.click()" title="Upload Transcript File">
         <mat-icon>cloud_upload</mat-icon>
       </mat-button-toggle>

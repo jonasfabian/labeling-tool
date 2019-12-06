@@ -39,7 +39,12 @@ export class CheckComponent implements OnInit {
   testVar = [];
   noDataYet = true;
 
-  constructor(public apiService: ApiService, private dialog: MatDialog, private authService: AuthService, private detector: ChangeDetectorRef) {
+  constructor(
+    public apiService: ApiService,
+    private dialog: MatDialog,
+    private authService: AuthService,
+    private detector: ChangeDetectorRef
+  ) {
   }
 
   ngOnInit() {

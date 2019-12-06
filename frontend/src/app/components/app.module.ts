@@ -9,7 +9,6 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MaterialModule} from './material.module';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import {CarouselModule} from 'ngx-carousel-lib';
-import {ErrorComponent} from './multi-use/error/error.component';
 import {RegisterComponent} from './login/register/register.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AuthGuardService} from '../guards/auth-guard.service';
@@ -35,7 +34,6 @@ import {ErrorInterceptorService} from '../services/error-interceptor.service';
     IntToBooleanPipe,
     CantonIdToCantonPipe,
     CheckComponent,
-    ErrorComponent,
     RegisterComponent,
     LoginComponent,
     ProfileComponent,
