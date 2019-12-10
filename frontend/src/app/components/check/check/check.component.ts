@@ -263,6 +263,16 @@ export class CheckComponent implements OnInit {
     }
   }
 
+  setColor(checkedType: number): string {
+    if (checkedType === 1) {
+      return 'green';
+    } else if (checkedType === 2) {
+      return 'red';
+    } else {
+      return 'lightgray';
+    }
+  }
+
   addRegion(startPos: number, endPos: number): void {
     this.waveSurfer.clearRegions();
     this.snippet = this.waveSurfer.addRegion({

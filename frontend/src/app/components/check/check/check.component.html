@@ -16,22 +16,18 @@
   </div>
 </div>
 <div style="position: absolute; right: 15px; height: calc(100% - 280px); z-index: 1;">
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Checked set
-      </mat-panel-title>
+  <mat-expansion-panel hideToggle="true" style="width: 50px;">
+    <mat-expansion-panel-header style="width: 50px; padding: 0;">
+        <mat-icon style="width: 100%; display: flex; justify-content: center;">info</mat-icon>
     </mat-expansion-panel-header>
     <mat-list style="padding: 0;">
       <ng-container *ngFor="let entry of checkIndexArray; let i = index;">
         <mat-divider *ngIf="i > 0"></mat-divider>
-        <mat-list-item>
-          <mat-chip>
-            <mat-icon *ngIf="entry.checkedType === 1" style="color: green; float: left;">check</mat-icon>
-            <mat-icon *ngIf="entry.checkedType === 2" style="color: red; float: left;">clear</mat-icon>
-            <mat-icon *ngIf="entry.checkedType === 3" style="color: gray; float: left;">redo</mat-icon>
+        <mat-list-item style="display: flex; justify-content: center;">
+          <div [style.background-color]="setColor(entry.checkedType)"
+               style="padding: 5px; border: 1px solid black; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;">
             <span style="float: left;">{{entry.textAudio.id}}</span>
-          </mat-chip>
+          </div>
         </mat-list-item>
       </ng-container>
     </mat-list>
