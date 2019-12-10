@@ -171,6 +171,7 @@ export class CheckComponent implements OnInit {
   }
 
   prepareNextSlide(labeledType: number): void {
+    this.isPlaying = false;
     this.waveSurfer.stop();
     this.resetAudioProgress();
     this.updateSessionCheckData();
