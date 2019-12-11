@@ -21,11 +21,6 @@ const routes: Routes = [
     canActivate: [AuthGuardService],
     children: [
       {
-        path: '',
-        pathMatch: 'full',
-        redirectTo: 'overview'
-      },
-      {
         path: 'check',
         component: CheckComponent,
       },
@@ -45,7 +40,6 @@ const routes: Routes = [
   },
   {
     path: 'speech-to-text-labeling-tool/app',
-    component: LoginComponent,
     children: [
       {
         path: 'register',
