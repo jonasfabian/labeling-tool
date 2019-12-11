@@ -1,0 +1,22 @@
+<mat-card>
+  <div id="grid-container">
+    <table>
+      <ng-container *ngFor="let row of grid">
+        <tr>
+          <ng-container *ngFor="let column of row">
+            <td [style.pointer-events]="column.value === '' ? 'auto' : 'none'" (click)="changeValue(column)">
+              <div>
+                <span>{{column.value}}</span>
+              </div>
+            </td>
+          </ng-container>
+        </tr>
+      </ng-container>
+    </table>
+  </div>
+  <div style="position: absolute; top: 15px; right: 15px;">
+    <mat-button-toggle-group>
+      <mat-button-toggle (click)="clear()">Clear</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+</mat-card>

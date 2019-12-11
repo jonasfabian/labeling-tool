@@ -15,7 +15,7 @@ import {AuthGuardService} from '../guards/auth-guard.service';
 import {ProfileComponent} from './multi-use/profile/profile.component';
 import {AvatarComponent} from './multi-use/avatar/avatar.component';
 import {CheckMoreComponent} from './check/check-more/check-more.component';
-import {SnackBarComponent} from './multi-use/snack-bar-log-out/snack-bar.component';
+import {SnackBarComponent} from './multi-use/snackbar/snack-bar.component';
 import {OverviewComponent} from './overview/overview.component';
 import {CheckComponent} from './check/check/check.component';
 import {LoginComponent} from './login/login/login.component';
@@ -24,6 +24,8 @@ import {RecordComponent} from './record/record/record.component';
 import {CantonIdToCantonPipe} from '../pipes/canton-id-to-canton.pipe';
 import {AuthHeaderInterceptorService} from '../services/auth-header-interceptor.service';
 import {ErrorInterceptorService} from '../services/error-interceptor.service';
+import {TicTacToeComponent} from './tic-tac-toe/tic-tac-toe.component';
+import {WinDialogComponent} from './tic-tac-toe/win-dialog.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,9 @@ import {ErrorInterceptorService} from '../services/error-interceptor.service';
     CheckMoreComponent,
     SnackBarComponent,
     RecordComponent,
-    TranscriptPreviewComponent
+    TranscriptPreviewComponent,
+    TicTacToeComponent,
+    WinDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -74,7 +78,8 @@ import {ErrorInterceptorService} from '../services/error-interceptor.service';
     ShortcutComponent,
     CheckMoreComponent,
     SnackBarComponent,
-    TranscriptPreviewComponent
+    TranscriptPreviewComponent,
+    WinDialogComponent
   ]
 })
 export class AppModule {
