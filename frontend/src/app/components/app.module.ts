@@ -24,6 +24,7 @@ import {RecordComponent} from './record/record/record.component';
 import {CantonIdToCantonPipe} from '../pipes/canton-id-to-canton.pipe';
 import {AuthHeaderInterceptorService} from '../services/auth-header-interceptor.service';
 import {ErrorInterceptorService} from '../services/error-interceptor.service';
+import {SnakeComponent} from './snake/snake.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import {ErrorInterceptorService} from '../services/error-interceptor.service';
     CheckMoreComponent,
     SnackBarComponent,
     RecordComponent,
-    TranscriptPreviewComponent
+    TranscriptPreviewComponent,
+    SnakeComponent
   ],
   imports: [
     BrowserModule,

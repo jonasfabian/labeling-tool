@@ -8,6 +8,7 @@ import {CheckComponent} from './check/check/check.component';
 import {LoginComponent} from './login/login/login.component';
 import {RecordComponent} from './record/record/record.component';
 import {NavigationMenuComponent} from './multi-use/navigation-menu/navigation-menu.component';
+import {SnakeComponent} from './snake/snake.component';
 
 const routes: Routes = [
   {
@@ -35,6 +36,10 @@ const routes: Routes = [
       {
         path: 'profile',
         component: ProfileComponent,
+      },
+      {
+        path: 'snake',
+        component: SnakeComponent,
       }
     ]
   },
