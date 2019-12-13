@@ -48,13 +48,14 @@ export class SnakeComponent implements OnInit {
     const cellArray: Array<Point> = [];
     const maxLength = 10;
     setInterval(() => {
-      this.clear();
       if (cellArray.length === 0) {
         const point = new Point((this.ctx.canvas.width / 2) / this.cellSize, (this.ctx.canvas.height / 2) / this.cellSize);
         this.drawCell(point, 'blue');
         cellArray.push(point);
       } else {
-        if (cellArray[cellArray.length - 1].x * this.cellSize < this.ctx.canvas.width) {
+        const headX = cellArray[cellArray.length - 1].x * this.cellSize;
+        const headY = cellArray[cellArray.length - 1].y * this.cellSize;
+        if (headX < this.ctx.canvas.width && headX >= 0 && headY < this.ctx.canvas.height && headY >= 0) {
           cellArray.forEach(cell => {
             this.drawCell(cell, 'blue');
           });
@@ -69,11 +70,12 @@ export class SnakeComponent implements OnInit {
           }
           cellArray.push(new Point(this.xCoord, this.yCoord));
           if (cellArray.length > maxLength) {
+            this.drawCell(cellArray[0], 'white');
             cellArray.splice(0, 1);
           }
         }
       }
-    }, 100);
+    }, 200);
   }
 
   clear(): void {
