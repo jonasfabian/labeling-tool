@@ -13,16 +13,20 @@ export class SnakeComponent implements OnInit {
   constructor() {
   }
 
-  cellSize = 20;
+  cellSize = 40;
   yCoord = 0;
   xCoord = 0;
   currentDirection = '';
+  cellArray: Array<Point> = [];
+  randomItemArray: Array<Point> = [];
+  maxLength = 3;
+  interval: any;
 
   ngOnInit(): void {
     this.ctx = this.canvas.nativeElement.getContext('2d');
   }
 
-  @HostListener('window:keyup', ['$event'])
+  @HostListener('window:keydown', ['$event'])
   keyEvent(event: KeyboardEvent) {
     if (event.key === 'ArrowLeft') {
       this.currentDirection = 'left';
@@ -45,18 +49,32 @@ export class SnakeComponent implements OnInit {
   }
 
   play(): void {
-    const cellArray: Array<Point> = [];
-    const maxLength = 10;
-    setInterval(() => {
-      if (cellArray.length === 0) {
-        const point = new Point((this.ctx.canvas.width / 2) / this.cellSize, (this.ctx.canvas.height / 2) / this.cellSize);
-        this.drawCell(point, 'blue');
-        cellArray.push(point);
+    const randomItem = this.generateRandomItem();
+    if (this.randomItemArray.length === 0) {
+      this.drawCell(randomItem, 'green');
+      this.randomItemArray.push(randomItem);
+    } else {
+      this.randomItemArray.forEach(rItem => {
+        this.drawCell(rItem, 'green');
+      });
+    }
+    this.createInterval();
+  }
+
+  createInterval(): void {
+    this.interval = setInterval(() => {
+      if (this.cellArray.length === 0) {
+        const firstCell = this.generateRandomItem();
+        this.drawCell(firstCell, 'blue');
+        this.cellArray.push(firstCell);
       } else {
-        const headX = cellArray[cellArray.length - 1].x * this.cellSize;
-        const headY = cellArray[cellArray.length - 1].y * this.cellSize;
+        const headX = this.cellArray[this.cellArray.length - 1].x * this.cellSize;
+        const headY = this.cellArray[this.cellArray.length - 1].y * this.cellSize;
+        if (this.checkOwnCollision(this.cellArray) && this.cellArray.length > 4) {
+          this.clear();
+        }
         if (headX < this.ctx.canvas.width && headX >= 0 && headY < this.ctx.canvas.height && headY >= 0) {
-          cellArray.forEach(cell => {
+          this.cellArray.forEach(cell => {
             this.drawCell(cell, 'blue');
           });
           if (this.currentDirection === 'left') {
@@ -68,27 +86,57 @@ export class SnakeComponent implements OnInit {
           } else if (this.currentDirection === 'down') {
             this.yCoord++;
           }
-          cellArray.push(new Point(this.xCoord, this.yCoord));
-          if (cellArray.length > maxLength) {
-            this.drawCell(cellArray[0], 'white');
-            cellArray.splice(0, 1);
+          this.cellArray.push(new Point(false, this.xCoord, this.yCoord));
+          if (((this.cellArray[this.cellArray.length - 1].x * this.cellSize) === this.randomItemArray[0].x * this.cellSize) && ((this.cellArray[this.cellArray.length - 1].y * this.cellSize) === this.randomItemArray[0].y * this.cellSize)) {
+            this.randomItemArray.splice(0, 1);
+            this.maxLength++;
+            let newRandom = this.generateRandomItem();
+            if (this.cellArray.includes(newRandom)) {
+              newRandom = this.generateRandomItem();
+            }
+            this.drawCell(newRandom, 'green');
+            this.randomItemArray.push(newRandom);
+          }
+          if (this.cellArray.length > this.maxLength) {
+            this.drawCell(this.cellArray[0], 'white');
+            this.cellArray.splice(0, 1);
           }
         }
       }
     }, 200);
   }
 
+  roundToPrecision(x, precision): number {
+    const y = +x + (precision === undefined ? 0.5 : precision / 2);
+    return y - (y % (precision === undefined ? 1 : +precision));
+  }
+
+  checkOwnCollision(array: Array<Point>): boolean {
+    return (new Set(array)).size !== array.length;
+  }
+
+  generateRandomItem(): Point {
+    const min = Math.ceil(0);
+    const max = Math.floor(this.ctx.canvas.width);
+    return new Point(true, this.roundToPrecision(Math.floor(Math.random() * (max - min + 1)) + min / this.cellSize, this.cellSize) /
+      this.cellSize, this.roundToPrecision(Math.floor(Math.random() * (max - min + 1)) + min / this.cellSize, this.cellSize) / this.cellSize);
+  }
+
   clear(): void {
-    this.ctx.fillStyle = 'white';
-    this.ctx.fillRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+    clearInterval(this.interval);
+    this.cellArray = [];
+    this.randomItemArray = [];
+    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
   }
 }
 
 export class Point {
+  isItem: boolean;
   x: number;
   y: number;
 
-  constructor(x: number, y: number) {
+  constructor(isItem: boolean, x: number, y: number) {
+    this.isItem = isItem;
     this.x = x;
     this.y = y;
   }

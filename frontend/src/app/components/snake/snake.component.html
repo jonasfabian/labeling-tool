@@ -1,5 +1,6 @@
-<mat-card style="margin: 15px; display: flex; align-items: center; justify-content: center;">
-  <canvas #canvas id="canvas" width="400" height="400" style="border: 1px solid black; margin: 15px;"></canvas>
+<mat-card style="margin: 15px; display: grid; align-items: center; justify-content: center; height: calc(100% - 105px);">
+  <h1 style="text-align: center;">Easter Egg!</h1>
+  <canvas #canvas id="canvas" width="800" height="800" style="border: 1px solid black; margin: 15px;"></canvas>
   <mat-button-toggle-group>
     <mat-button-toggle (click)="play()">Play</mat-button-toggle>
     <mat-button-toggle (click)="clear()">Clear</mat-button-toggle>
