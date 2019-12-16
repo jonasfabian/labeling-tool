@@ -21,6 +21,9 @@ export class SnakeComponent implements OnInit {
   randomItemArray: Array<Point> = [];
   maxLength = 3;
   interval: any;
+  score = 0;
+  lost = false;
+  @ViewChild('audioPlayer', {static: true}) audioPlayer: ElementRef<HTMLAudioElement>;
 
   ngOnInit(): void {
     this.ctx = this.canvas.nativeElement.getContext('2d');
@@ -88,6 +91,7 @@ export class SnakeComponent implements OnInit {
           }
           this.cellArray.push(new Point(false, this.xCoord, this.yCoord));
           if (((this.cellArray[this.cellArray.length - 1].x * this.cellSize) === this.randomItemArray[0].x * this.cellSize) && ((this.cellArray[this.cellArray.length - 1].y * this.cellSize) === this.randomItemArray[0].y * this.cellSize)) {
+            this.score = this.score + 10;
             this.randomItemArray.splice(0, 1);
             this.maxLength++;
             let newRandom = this.generateRandomItem();
@@ -101,6 +105,11 @@ export class SnakeComponent implements OnInit {
             this.drawCell(this.cellArray[0], 'white');
             this.cellArray.splice(0, 1);
           }
+        } else {
+          this.lost = true;
+          clearInterval(this.interval);
+          this.audioPlayer.nativeElement.src = '../../../../assets/oof.mp3';
+          this.audioPlayer.nativeElement.play();
         }
       }
     }, 200);
@@ -123,6 +132,7 @@ export class SnakeComponent implements OnInit {
   }
 
   clear(): void {
+    this.lost = false;
     clearInterval(this.interval);
     this.cellArray = [];
     this.randomItemArray = [];

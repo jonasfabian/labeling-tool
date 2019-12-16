@@ -52,7 +52,8 @@
                       style="border: lightgray 1px solid; padding: 0 12px; line-height: 48px; bottom: 0;"
                       type="submit">Submit
               </button>
-              <button (click)="currentView = profileView.ProfileView" mat-button style="border: lightgray 1px solid; padding: 0 12px; line-height: 48px; bottom: 0;"
+              <button (click)="currentView = profileView.ProfileView" mat-button
+                      style="border: lightgray 1px solid; padding: 0 12px; line-height: 48px; bottom: 0;"
                       type="button">
                 Cancel
               </button>
@@ -113,7 +114,8 @@
     </div>
     <div style="width: 30%; float: right; height: 90%; margin-top: 15px;">
       <ng-container *ngIf="currentView === profileView.ProfileView">
-        <app-avatar [username]="this.authService.loggedInUser.getValue().username" [borderRadius]="0" [fontSize]="100" [hover]="'default'" [size]="260"
+        <app-avatar [username]="this.authService.loggedInUser.getValue().username" [borderRadius]="0" [fontSize]="100"
+                    [hover]="'default'" [size]="260"
                     style="float: left;"></app-avatar>
         <div style="text-align: center; padding: 15px;">
           <span style="font-size: 25px;">{{authService.loggedInUser.getValue().username}}</span>
@@ -123,9 +125,12 @@
                              style="position: absolute; bottom: 15px; width: calc(30% - 10px);">Edit Profile Information
           </mat-button-toggle>
         </div>
+        <mat-button-toggle style="position: absolute; top: 25px; right: 15px;"
+                           [routerLink]="['/speech-to-text-labeling-tool/app/snake']">
+          <mat-icon>videogame_asset</mat-icon>
+        </mat-button-toggle>
       </ng-container>
     </div>
   </mat-card>
-  <mat-button-toggle [routerLink]="['/speech-to-text-labeling-tool/app/snake']"></mat-button-toggle>
 </div>
 <div style="height: 60%;"></div>
