@@ -1,15 +1,20 @@
-<mat-card style="margin: 15px; height: calc(100% - 105px);">
-  <h1 style="position: absolute;">Score: {{score}}</h1>
-  <div style="display: grid; align-items: center; justify-content: center;">
-    <h1 style="text-align: center;" *ngIf="!lost">Easter Egg!</h1>
-    <audio hidden controls #audioPlayer>
-      <source>
-    </audio>
-    <h1 style="text-align: center;" *ngIf="lost">Oooooooooooooooooooooooooof!</h1>
-    <canvas #canvas id="canvas" width="800" height="800" style="border: 1px solid black; margin: 15px;"></canvas>
-    <mat-button-toggle-group>
-      <mat-button-toggle (click)="play()">Play</mat-button-toggle>
-      <mat-button-toggle (click)="clear()">Clear</mat-button-toggle>
-    </mat-button-toggle-group>
-  </div>
-</mat-card>
+<div style="float: left; width: 80%; height: calc(100% - 105px);">
+  <mat-card #canvasCard style="margin: 15px 5px 15px 15px; height: 100%">
+    <h1 style="position: absolute;">Score: {{score}}</h1>
+    <div style="display: grid; align-items: center; justify-content: center;">
+      <h1 style="text-align: center;" *ngIf="!lost">Easter Egg!</h1>
+      <audio hidden controls #audioPlayer>
+        <source>
+      </audio>
+      <h1 style="text-align: center;" *ngIf="lost">Oooooooooooooooooooooooooof!</h1>
+      <canvas #canvas id="canvas" width="800" height="800" style="border: 1px solid black; margin: 15px;"></canvas>
+      <mat-button-toggle-group>
+        <mat-button-toggle (click)="play()">Play</mat-button-toggle>
+        <mat-button-toggle (click)="clear()">Clear</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+  </mat-card>
+</div>
+<div style="float: right; width: 20%; height: calc(100% - 105px);">
+  <app-scoreboard></app-scoreboard>
+</div>

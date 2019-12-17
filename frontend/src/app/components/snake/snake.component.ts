@@ -1,4 +1,6 @@
 import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
+import {ApiService} from '../../services/api.service';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-snake',
@@ -7,10 +9,11 @@ import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/c
 })
 
 export class SnakeComponent implements OnInit {
-  @ViewChild('canvas', {static: true}) canvas: ElementRef<HTMLCanvasElement>;
-  ctx: CanvasRenderingContext2D;
 
-  constructor() {
+  constructor(
+    private apiService: ApiService,
+    private authService: AuthService
+  ) {
   }
 
   cellSize = 40;
@@ -23,7 +26,10 @@ export class SnakeComponent implements OnInit {
   interval: any;
   score = 0;
   lost = false;
+  ctx: CanvasRenderingContext2D;
   @ViewChild('audioPlayer', {static: true}) audioPlayer: ElementRef<HTMLAudioElement>;
+  @ViewChild('canvas', {static: true}) canvas: ElementRef<HTMLCanvasElement>;
+  @ViewChild('canvasCard', {static: true}) canvasCard: ElementRef;
 
   ngOnInit(): void {
     this.ctx = this.canvas.nativeElement.getContext('2d');
@@ -52,20 +58,16 @@ export class SnakeComponent implements OnInit {
   }
 
   play(): void {
-    const randomItem = this.generateRandomItem();
-    if (this.randomItemArray.length === 0) {
-      this.drawCell(randomItem, 'green');
-      this.randomItemArray.push(randomItem);
-    } else {
-      this.randomItemArray.forEach(rItem => {
-        this.drawCell(rItem, 'green');
-      });
-    }
-    this.createInterval();
-  }
-
-  createInterval(): void {
     this.interval = setInterval(() => {
+      const randomItem = this.generateRandomItem();
+      if (this.randomItemArray.length === 0) {
+        this.drawCell(randomItem, 'green');
+        this.randomItemArray.push(randomItem);
+      } else {
+        this.randomItemArray.forEach(rItem => {
+          this.drawCell(rItem, 'green');
+        });
+      }
       if (this.cellArray.length === 0) {
         const firstCell = this.generateRandomItem();
         this.drawCell(firstCell, 'blue');
@@ -106,10 +108,17 @@ export class SnakeComponent implements OnInit {
             this.cellArray.splice(0, 1);
           }
         } else {
-          this.lost = true;
           clearInterval(this.interval);
-          this.audioPlayer.nativeElement.src = '../../../../assets/oof.mp3';
-          this.audioPlayer.nativeElement.play();
+          this.apiService.createScore(this.authService.loggedInUser.getValue().id, this.score).subscribe(() => {
+          }, () => {
+          }, () => {
+            this.xCoord = 0;
+            this.yCoord = 0;
+            this.score = 0;
+            this.lost = true;
+            this.audioPlayer.nativeElement.src = '../../../../assets/oof.mp3';
+            this.audioPlayer.nativeElement.play();
+          });
         }
       }
     }, 200);
@@ -132,8 +141,8 @@ export class SnakeComponent implements OnInit {
   }
 
   clear(): void {
-    this.lost = false;
     clearInterval(this.interval);
+    this.lost = false;
     this.cellArray = [];
     this.randomItemArray = [];
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
