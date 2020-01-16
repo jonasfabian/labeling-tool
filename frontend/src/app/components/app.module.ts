@@ -15,7 +15,6 @@ import {AuthGuardService} from '../guards/auth-guard.service';
 import {ProfileComponent} from './multi-use/profile/profile.component';
 import {AvatarComponent} from './multi-use/avatar/avatar.component';
 import {CheckMoreComponent} from './check/check-more/check-more.component';
-import {SnackBarComponent} from './multi-use/snack-bar-log-out/snack-bar.component';
 import {OverviewComponent} from './overview/overview.component';
 import {CheckComponent} from './check/check/check.component';
 import {LoginComponent} from './login/login/login.component';
@@ -39,7 +38,6 @@ import {ErrorInterceptorService} from '../services/error-interceptor.service';
     ProfileComponent,
     AvatarComponent,
     CheckMoreComponent,
-    SnackBarComponent,
     RecordComponent,
     TranscriptPreviewComponent
   ],
@@ -73,7 +71,6 @@ import {ErrorInterceptorService} from '../services/error-interceptor.service';
   entryComponents: [
     ShortcutComponent,
     CheckMoreComponent,
-    SnackBarComponent,
     TranscriptPreviewComponent
   ]
 })
