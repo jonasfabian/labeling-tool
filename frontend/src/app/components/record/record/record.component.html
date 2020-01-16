@@ -13,8 +13,8 @@
         <mat-icon>stop</mat-icon>
       </mat-button-toggle>
       <mat-button-toggle title="Play/Pause recording replay" (click)="togglePlayRecord()">
-        <mat-icon *ngIf="!isPlaying">play_arrow</mat-icon>
-        <mat-icon *ngIf="isPlaying">pause</mat-icon>
+        <mat-icon *ngIf="!isPlaying()">play_arrow</mat-icon>
+        <mat-icon *ngIf="isPlaying()">pause</mat-icon>
       </mat-button-toggle>
     </mat-button-toggle-group>
     <button style="margin-left: 5px; line-height: 50px; padding: 0 12px; position: absolute;" mat-flat-button
@@ -51,7 +51,7 @@
         Show full Transcript
       </mat-button-toggle>
     </div>
-    <div style="padding: 0; margin: 0; height: calc(100% - 70px);" *ngIf="showTextArea">
+    <div style="padding: 0; margin: 0; height: calc(100% - 70px);" >
       <textarea placeholder="Put the transcript for your recording here" [(ngModel)]="fileContent"
                 style="width: calc(100% - 5px); height: calc(100% - 40px); resize: none; border: 1px solid lightgrey; border-radius: 5px;"></textarea>
     </div>

@@ -14,21 +14,16 @@ import {MatSnackBar} from '@angular/material';
   styleUrls: ['./record.component.scss']
 })
 export class RecordComponent implements OnInit {
-
   fileContent: string | ArrayBuffer = '';
-  showTextArea = true;
-  waveSurfer: WaveSurfer = null;
-  context = new AudioContext();
-  processor = this.context.createScriptProcessor(1024, 1, 1);
-  // @ts-ignore
-  mediaRecorder: MediaRecorder;
   recordingBlob: Blob;
   hasStartedRecording = false;
-  isRecording = false;
-  isPlaying = false;
+  private isRecording = false;
+  private waveSurfer: WaveSurfer = null;
+  // @ts-ignore
+  private mediaRecorder: MediaRecorder;
 
   constructor(
-    public dialog: MatDialog,
+    private dialog: MatDialog,
     private apiService: ApiService,
     private authService: AuthService,
     private snackBar: MatSnackBar,
@@ -38,6 +33,8 @@ export class RecordComponent implements OnInit {
 
   ngOnInit() {
     if (this.waveSurfer === null) {
+      const context = new AudioContext();
+      const processor = context.createScriptProcessor(1024, 1, 1);
       this.waveSurfer = WaveSurfer.create({
         container: '#waveform',
         waveColor: 'lightblue',
@@ -49,8 +46,8 @@ export class RecordComponent implements OnInit {
         responsive: true,
         interact: false,
         cursorWidth: 0,
-        audioContext: this.context || null,
-        audioScriptProcessor: this.processor || null,
+        audioContext: context,
+        audioScriptProcessor: processor,
         plugins: [
           MicrophonesPlugin.create({
             bufferSize: 4096,
@@ -64,7 +61,6 @@ export class RecordComponent implements OnInit {
         ]
       });
       this.waveSurfer.on('finish', () => {
-        this.isPlaying = false;
         this.detector.detectChanges();
       });
       this.waveSurfer.microphone.on('deviceReady', stream => {
@@ -79,13 +75,8 @@ export class RecordComponent implements OnInit {
     }
   }
 
-  isRecordingM(): string {
-    if (this.isRecording) {
-      return 'recording';
-    } else {
-      return '';
-    }
-  }
+  isRecordingM = (): string => this.isRecording ? 'recording' : '';
+  isPlaying = () => this.waveSurfer ? this.waveSurfer.isPlaying() : false;
 
   startRecord(): void {
     this.hasStartedRecording = true;
@@ -109,7 +100,6 @@ export class RecordComponent implements OnInit {
   }
 
   togglePlayRecord(): void {
-    this.isPlaying = !this.isPlaying;
     if (this.waveSurfer.isPlaying()) {
       this.waveSurfer.pause();
     } else {
@@ -121,8 +111,6 @@ export class RecordComponent implements OnInit {
     this.apiService.createRecording(
       new Recording(-1, this.fileContent.toString(), this.authService.loggedInUser.getValue().id, this.recordingBlob
       )).subscribe(() => {
-    }, () => {
-    }, () => {
       this.snackBar.open('Successfully created new Recording', '', {duration: 3000, panelClass: ['background-white']});
     });
   }
@@ -136,6 +124,7 @@ export class RecordComponent implements OnInit {
       };
       fileReader.readAsText(file);
     } else {
+      // FIXME why no snackbar?
       alert('Can only upload .txt files');
     }
   }
