@@ -9,8 +9,8 @@ import {environment} from '../../../../environments/environment';
 interface Excerpt {
   excerpt: string;
   id: number;
-  skipped: number;
-  private: number;
+  isSkipped: number;
+  isPrivate: number;
   orginal_text_id: number;
 }
 
