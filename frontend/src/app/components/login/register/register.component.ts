@@ -10,7 +10,8 @@ import {Router} from '@angular/router';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-
+  // TODO we also need a group/cooperation registration form => not sure if we add it under profile e.g. every user can create his own group
+  //  or only the super admin can?
   registerForm: FormGroup;
   user: User = new User(-1, '', '', '', '', '', '');
 

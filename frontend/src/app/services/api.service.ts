@@ -4,7 +4,6 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {User} from '../models/User';
 import {UserPublicInfo} from '../models/UserPublicInfo';
-import {Recording} from '../models/Recording';
 import {Canton} from '../models/Canton';
 import {ChangePassword} from '../models/ChangePassword';
 import {TextAudio} from '../models/TextAudio';
@@ -57,14 +56,6 @@ export class ApiService {
     return this.http.get<Array<TextAudio>>(this.url + 'getTextAudios');
   }
 
-  createRecording(recording: Recording): Observable<any> {
-    const formData = new FormData();
-    formData.append(`file`, recording.audio, 'audio');
-    recording.audio = undefined;
-    formData.append('data', JSON.stringify(recording));
-    return this.http.post(this.url + 'createRecording', formData);
-  }
-
   getRecordingAudioById(id: number): Observable<any> {
     // @ts-ignore
     return this.http.get<Blob>(this.url + 'getRecordingAudioById?id=' + id, {responseType: 'blob'});
@@ -76,7 +67,7 @@ export class ApiService {
 
 
   createUser(user: User): Observable<any> {
-    return this.http.post(this.url + 'createUser', user);
+    return this.http.post(this.url + 'api/user', user);
   }
 
   createUserAndTextAudioIndex(userAndTextAudio: UserAndTextAudio): Observable<any> {

@@ -1,13 +1,16 @@
 export class Recording {
   id: number;
-  text: string;
-  userId: number;
+  excerpt_id: number;
+  user_id: number;
   audio: Blob;
+  time: Date;
 
-  constructor(id: number, text: string, userId: number, audio: Blob) {
+
+  constructor(id: number, excerpt_id: number, user_id: number, audio: Blob, time: Date) {
     this.id = id;
-    this.text = text;
-    this.userId = userId;
+    this.excerpt_id = excerpt_id;
+    this.user_id = user_id;
     this.audio = audio;
+    this.time = time;
   }
 }

@@ -54,11 +54,14 @@ some additional packages needed (Ubuntu 18.04.3 ):
             location / {
                 proxy_pass http://127.0.0.1:8080/;
             }
+           location /swisstext-2020 {
+                proxy_pass http://127.0.0.1:8083/;
+           }
         }
     }
     
     ```
-1. `nano /lib/systemd/system/labelin-tool.service`
+1. `nano /lib/systemd/system/labeling-tool.service`
     ```
     [Unit]
     Description=Flask for labeling tool
@@ -71,6 +74,7 @@ some additional packages needed (Ubuntu 18.04.3 ):
     [Install]
     WantedBy=multi-user.target
     ```
+1. `systemctl enable labeling-tool.service`
 
 
 # Create an Account

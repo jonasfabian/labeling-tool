@@ -1,13 +1,18 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {TranscriptPreviewComponent} from '../transcript-preview/transcript-preview.component';
-import {MatDialog} from '@angular/material/dialog';
 import WaveSurfer from 'wavesurfer.js';
 import MicrophonesPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.microphone.js';
-import {ApiService} from '../../../services/api.service';
 import {Recording} from '../../../models/Recording';
-import {AuthService} from '../../../services/auth.service';
 import {MatSnackBar} from '@angular/material';
-import {UserPublicInfo} from '../../../models/UserPublicInfo';
+import {HttpClient} from '@angular/common/http';
+import {environment} from '../../../../environments/environment';
+
+interface Excerpt {
+  excerpt: string;
+  id: number;
+  skipped: number;
+  private: number;
+  orginal_text_id: number;
+}
 
 @Component({
   selector: 'app-record',
@@ -18,24 +23,18 @@ export class RecordComponent implements OnInit {
   fileContent: string | ArrayBuffer = '';
   recordingBlob: Blob;
   hasStartedRecording = false;
+  excerpt: Excerpt;
   private isRecording = false;
   private waveSurfer: WaveSurfer = null;
   // @ts-ignore
   private mediaRecorder: MediaRecorder;
-  private user: UserPublicInfo;
 
-  constructor(
-    private dialog: MatDialog,
-    private apiService: ApiService,
-    private authService: AuthService,
-    private snackBar: MatSnackBar,
-    private detector: ChangeDetectorRef
-  ) {
+  constructor(private snackBar: MatSnackBar, private detector: ChangeDetectorRef, private httpClient: HttpClient) {
   }
 
   ngOnInit() {
+    this.httpClient.get<Excerpt>(environment.url + 'api/excerpt').subscribe(value => this.excerpt = value);
     if (this.waveSurfer === null) {
-      this.authService.getUser().subscribe(user => this.user = user);
       const context = new AudioContext();
       const processor = context.createScriptProcessor(1024, 1, 1);
       this.waveSurfer = WaveSurfer.create({
@@ -72,6 +71,7 @@ export class RecordComponent implements OnInit {
         this.mediaRecorder.ondataavailable = event => {
           this.waveSurfer.loadBlob(event.data);
           this.recordingBlob = event.data;
+          this.detector.detectChanges();
         };
         this.mediaRecorder.start();
       });
@@ -95,13 +95,6 @@ export class RecordComponent implements OnInit {
     }
   }
 
-  recordAnotherOne(): void {
-    this.fileContent = '';
-    this.recordingBlob = null;
-    this.waveSurfer.empty();
-    this.hasStartedRecording = false;
-  }
-
   togglePlayRecord(): void {
     if (this.waveSurfer.isPlaying()) {
       this.waveSurfer.pause();
@@ -111,35 +104,17 @@ export class RecordComponent implements OnInit {
   }
 
   submit(): void {
-    this.apiService.createRecording(
-      new Recording(-1, this.fileContent.toString(), this.user.id, this.recordingBlob
-      )).subscribe(() => {
-      this.snackBar.open('Successfully created new Recording', '', {duration: 3000, panelClass: ['background-white']});
+    const recording = new Recording(undefined, this.excerpt.id, undefined, undefined, undefined);
+    const formData = new FormData();
+    formData.append(`file`, this.recordingBlob, 'audio');
+    formData.append('data', JSON.stringify(recording));
+    this.httpClient.post(environment.url + 'api/recording', formData).subscribe(() => {
+      this.fileContent = '';
+      this.recordingBlob = null;
+      this.waveSurfer.empty();
+      this.hasStartedRecording = false;
+      this.snackBar.open('Successfully uploaded recording', 'close', {duration: 3000});
     });
-  }
 
-  handleFileInput(fileList: FileList): void {
-    const file = fileList[0];
-    if (file.name.includes('.txt')) {
-      const fileReader: FileReader = new FileReader();
-      fileReader.onloadend = () => {
-        this.fileContent = fileReader.result;
-      };
-      fileReader.readAsText(file);
-    } else {
-      // FIXME why no snackbar?
-      alert('Can only upload .txt files');
-    }
-  }
-
-  openTranscriptPreviewDialog(): void {
-    this.dialog.open(TranscriptPreviewComponent, {
-      width: 'calc(100% - 1px)',
-      height: 'calc(100% - 200px)',
-      disableClose: false,
-      data: {
-        transcript: this.fileContent
-      }
-    });
   }
 }
