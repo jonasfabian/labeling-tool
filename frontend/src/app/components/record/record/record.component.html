@@ -7,10 +7,10 @@
 <div class="margin">
   <mat-card>
     <mat-button-toggle-group>
-      <mat-button-toggle (click)="startRecord()" title="Start recording">
+      <mat-button-toggle (click)="startRecord()" *ngIf="!this.isRecording" title="Start recording">
         <mat-icon [ngClass]="isRecordingM()">fiber_manual_record</mat-icon>
       </mat-button-toggle>
-      <mat-button-toggle (click)="stopRecord()" title="Stop recording">
+      <mat-button-toggle (click)="stopRecord()" *ngIf="this.isRecording" title="Stop recording">
         <mat-icon>stop</mat-icon>
       </mat-button-toggle>
       <mat-button-toggle (click)="togglePlayRecord()" title="Play/Pause recording replay">

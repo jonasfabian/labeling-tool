@@ -24,7 +24,7 @@ export class RecordComponent implements OnInit {
   recordingBlob: Blob;
   hasStartedRecording = false;
   excerpt: Excerpt;
-  private isRecording = false;
+  isRecording = false;
   private waveSurfer: WaveSurfer = null;
   // @ts-ignore
   private mediaRecorder: MediaRecorder;
@@ -73,7 +73,6 @@ export class RecordComponent implements OnInit {
           this.recordingBlob = event.data;
           this.detector.detectChanges();
         };
-        this.mediaRecorder.start();
       });
     }
   }
@@ -88,11 +87,10 @@ export class RecordComponent implements OnInit {
   }
 
   stopRecord(): void {
-    if (this.isRecording) {
-      this.mediaRecorder.stop();
-      this.isRecording = false;
-      this.waveSurfer.microphone.pause();
-    }
+    this.mediaRecorder.start();
+    this.mediaRecorder.stop();
+    this.isRecording = false;
+    this.waveSurfer.microphone.pause();
   }
 
   togglePlayRecord(): void {
