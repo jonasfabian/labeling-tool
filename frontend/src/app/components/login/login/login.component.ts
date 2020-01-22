@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {EmailPassword} from '../../../models/EmailPassword';
 import {AuthService} from '../../../services/auth.service';
 import {Router} from '@angular/router';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -38,25 +39,13 @@ export class LoginComponent implements OnInit {
 
   login(): void {
     if (this.loginForm.valid) {
-      this.apiService.login(new EmailPassword(this.loginForm.controls.email.value, this.loginForm.controls.password.value))
+      this.authService.login(new EmailPassword(this.loginForm.controls.email.value, this.loginForm.controls.password.value))
         .subscribe(() => {
+          this.router.navigate(['/speech-to-text-labeling-tool/app/overview']);
+          this.authService.addToSessionStorage(this.loginForm.controls.email.value, this.loginForm.controls.password.value);
         }, () => {
           alert('Unauthorized');
           sessionStorage.clear();
-        }, () => {
-          this.router.navigate(['/speech-to-text-labeling-tool/app/overview']);
-          this.authService.addToSessionStorage(this.loginForm.controls.email.value, this.loginForm.controls.password.value);
-          if (this.loginForm.controls.email.value.toString().includes('@')) {
-            this.apiService.getUserByEmail(this.loginForm.controls.email.value).subscribe(user => {
-              this.authService.loggedInUser.next(user);
-              sessionStorage.setItem('email', JSON.stringify(user.email));
-            });
-          } else {
-            this.apiService.getUserByUsername(this.loginForm.controls.email.value).subscribe(user => {
-              this.authService.loggedInUser.next(user);
-              sessionStorage.setItem('email', JSON.stringify(user.email));
-            });
-          }
         });
     }
   }

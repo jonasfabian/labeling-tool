@@ -1,12 +1,9 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {User} from '../models/User';
-import {EmailPassword} from '../models/EmailPassword';
 import {UserPublicInfo} from '../models/UserPublicInfo';
-import {AuthService} from './auth.service';
-import {Router} from '@angular/router';
 import {Recording} from '../models/Recording';
 import {Canton} from '../models/Canton';
 import {ChangePassword} from '../models/ChangePassword';
@@ -53,12 +50,7 @@ export class ApiService {
     {cantonId: 'zh', cantonName: 'Zürich'}
   ];
 
-  constructor(
-    private http: HttpClient,
-    private sanitizer: DomSanitizer,
-    private router: Router,
-    private authService: AuthService
-  ) {
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {
   }
 
   getTextAudios(): Observable<Array<TextAudio>> {
@@ -82,13 +74,6 @@ export class ApiService {
     return this.http.get<[{ id: number, text: string, username: string, time: string }]>(this.url + 'getAllRecordingData');
   }
 
-  getUserByEmail(email: string): Observable<UserPublicInfo> {
-    return this.http.get<UserPublicInfo>(this.url + 'getUserByEmail?email=' + email);
-  }
-
-  getUserByUsername(username: string): Observable<UserPublicInfo> {
-    return this.http.get<UserPublicInfo>(this.url + 'getUserByUsername?email=' + username);
-  }
 
   createUser(user: User): Observable<any> {
     return this.http.post(this.url + 'createUser', user);
@@ -98,15 +83,8 @@ export class ApiService {
     return this.http.post(this.url + 'createUserAndTextAudio', userAndTextAudio);
   }
 
-  login(emailPassword: EmailPassword): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest',
-        Authorization: this.authService.buildAuthenticationHeader(emailPassword.email, emailPassword.password)
-      })
-    };
-    return this.http.post(this.url + 'login', emailPassword, httpOptions);
+  getUser(): Observable<UserPublicInfo> {
+    return this.http.get<UserPublicInfo>(this.url + '/api/user');
   }
 
   updateTextAudio(textAudio: TextAudio): Observable<any> {
@@ -114,7 +92,7 @@ export class ApiService {
   }
 
   updateRecording(id: number, text: string): Observable<any> {
-    return this.http.post(this.url + 'updateRecording', { id, text });
+    return this.http.post(this.url + 'updateRecording', {id, text});
   }
 
   updateUser(user: UserPublicInfo): Observable<any> {

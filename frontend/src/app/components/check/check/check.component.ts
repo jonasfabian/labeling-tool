@@ -10,6 +10,7 @@ import WaveSurfer from 'wavesurfer.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
 import {UserAndTextAudio} from '../../../models/UserAndTextAudio';
 import {AudioSnippet} from '../../../models/AudioSnippet';
+import {UserPublicInfo} from '../../../models/UserPublicInfo';
 
 @Component({
   selector: 'app-check',
@@ -38,6 +39,7 @@ export class CheckComponent implements OnInit {
   waveSurfer: WaveSurfer = null;
   testVar = [];
   noDataYet = true;
+  private user: UserPublicInfo;
 
   constructor(
     public apiService: ApiService,
@@ -48,6 +50,7 @@ export class CheckComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.authService.getUser().subscribe(user => this.user = user);
     let fileId = 0;
     this.apiService.getTenNonLabeledTextAudios().subscribe(r => {
       this.testVar = r;
@@ -186,7 +189,7 @@ export class CheckComponent implements OnInit {
     }
     this.apiService.updateTextAudio(currentCheckIndex).subscribe(_ => {
       this.apiService.createUserAndTextAudioIndex(
-        new UserAndTextAudio(-1, this.authService.loggedInUser.getValue().id, currentCheckIndex.id)
+        new UserAndTextAudio(-1, this.user.id, currentCheckIndex.id)
       ).subscribe(() => {
       }, () => {
       }, () => {
@@ -242,7 +245,8 @@ export class CheckComponent implements OnInit {
 
   playRegion(): void {
     this.waveSurfer.clearRegions();
-    const region = new AudioSnippet(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.audioStart, this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.audioEnd);
+    const region = new AudioSnippet(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.audioStart,
+      this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.audioEnd);
     this.addRegion(region.startTime, region.endTime);
     this.waveSurfer.on('audioprocess', () => {
       if (this.waveSurfer.getCurrentTime() === region.endTime) {

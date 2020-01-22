@@ -10,19 +10,19 @@
         <mat-list>
           <mat-list-item>
             <span>First name:</span>&nbsp;
-            <span class="info-input">{{authService.loggedInUser.getValue().firstName}}</span>
+            <span class="info-input">{{user.firstName}}</span>
           </mat-list-item>
           <mat-list-item>
             <span>Last name:</span>&nbsp;
-            <span class="info-input">{{authService.loggedInUser.getValue().lastName}}</span>
+            <span class="info-input">{{user.lastName}}</span>
           </mat-list-item>
           <mat-list-item>
             <span>Email:</span>&nbsp;
-            <span class="info-input">{{authService.loggedInUser.getValue().email}}</span>
+            <span class="info-input">{{user.email}}</span>
           </mat-list-item>
           <mat-list-item>
             <span>Canton:</span>&nbsp;
-            <span class="info-input">{{authService.loggedInUser.getValue().canton | CantonIdToCanton}}</span>
+            <span class="info-input">{{user.canton | CantonIdToCanton}}</span>
           </mat-list-item>
           <mat-list-item>
             <span>Password:</span>&nbsp;
@@ -52,7 +52,8 @@
                       style="border: lightgray 1px solid; padding: 0 12px; line-height: 48px; bottom: 0;"
                       type="submit">Submit
               </button>
-              <button (click)="currentView = profileView.ProfileView" mat-button style="border: lightgray 1px solid; padding: 0 12px; line-height: 48px; bottom: 0;"
+              <button (click)="currentView = profileView.ProfileView" mat-button
+                      style="border: lightgray 1px solid; padding: 0 12px; line-height: 48px; bottom: 0;"
                       type="button">
                 Cancel
               </button>
@@ -113,10 +114,10 @@
     </div>
     <div style="width: 30%; float: right; height: 90%; margin-top: 15px;">
       <ng-container *ngIf="currentView === profileView.ProfileView">
-        <app-avatar [username]="this.authService.loggedInUser.getValue().username" [borderRadius]="0" [fontSize]="100" [hover]="'default'" [size]="260"
+        <app-avatar [borderRadius]="0" [fontSize]="100" [hover]="'default'" [size]="260" [username]="this.user.username"
                     style="float: left;"></app-avatar>
         <div style="text-align: center; padding: 15px;">
-          <span style="font-size: 25px;">{{authService.loggedInUser.getValue().username}}</span>
+          <span style="font-size: 25px;">{{user.username}}</span>
         </div>
         <div>
           <mat-button-toggle (click)="currentView = profileView.ProfileEdit"

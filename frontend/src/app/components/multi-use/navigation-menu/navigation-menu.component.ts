@@ -1,6 +1,5 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {AuthService} from '../../../services/auth.service';
-import {ApiService} from '../../../services/api.service';
 import {MatSidenav} from '@angular/material';
 import {MatMenu} from '@angular/material/menu';
 import {Router} from '@angular/router';
@@ -11,7 +10,7 @@ import {NavigationItem} from '../../../models/NavigationItem';
   templateUrl: './navigation-menu.component.html',
   styleUrls: ['./navigation-menu.component.scss']
 })
-export class NavigationMenuComponent implements OnInit {
+export class NavigationMenuComponent {
 
   @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
   @ViewChild('menu', {static: true}) menu: MatMenu;
@@ -20,16 +19,10 @@ export class NavigationMenuComponent implements OnInit {
     new NavigationItem(2, 'Record', 'record_voice_over'),
     new NavigationItem(3, 'Overview', 'view_list')
   ];
+  user = '';
 
-  constructor(private apiService: ApiService, public authService: AuthService, public router: Router) {
-  }
-
-  ngOnInit() {
-    if (JSON.parse(sessionStorage.getItem('email'))) {
-      this.apiService.getUserByEmail(JSON.parse(sessionStorage.getItem('email'))).subscribe(user => {
-        this.authService.loggedInUser.next(user);
-      });
-    }
+  constructor(public authService: AuthService, public router: Router) {
+    authService.getUser().subscribe(user => this.user = user.username);
   }
 
   toggleSidenav(): void {

@@ -9,7 +9,7 @@
       <form (ngSubmit)="login()" [formGroup]="loginForm">
         <div>
           <mat-form-field style="width: 100%;">
-            <input formControlName="email" matInput placeholder="Email or Username" type="email">
+            <input formControlName="email" matInput placeholder="Username" type="username">
             <mat-error *ngIf="loginForm.invalid">{{getEmailErrorMessage()}}</mat-error>
           </mat-form-field>
         </div>

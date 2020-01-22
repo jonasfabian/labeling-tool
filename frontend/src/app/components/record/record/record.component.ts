@@ -7,6 +7,7 @@ import {ApiService} from '../../../services/api.service';
 import {Recording} from '../../../models/Recording';
 import {AuthService} from '../../../services/auth.service';
 import {MatSnackBar} from '@angular/material';
+import {UserPublicInfo} from '../../../models/UserPublicInfo';
 
 @Component({
   selector: 'app-record',
@@ -21,6 +22,7 @@ export class RecordComponent implements OnInit {
   private waveSurfer: WaveSurfer = null;
   // @ts-ignore
   private mediaRecorder: MediaRecorder;
+  private user: UserPublicInfo;
 
   constructor(
     private dialog: MatDialog,
@@ -33,6 +35,7 @@ export class RecordComponent implements OnInit {
 
   ngOnInit() {
     if (this.waveSurfer === null) {
+      this.authService.getUser().subscribe(user => this.user = user);
       const context = new AudioContext();
       const processor = context.createScriptProcessor(1024, 1, 1);
       this.waveSurfer = WaveSurfer.create({
@@ -109,7 +112,7 @@ export class RecordComponent implements OnInit {
 
   submit(): void {
     this.apiService.createRecording(
-      new Recording(-1, this.fileContent.toString(), this.authService.loggedInUser.getValue().id, this.recordingBlob
+      new Recording(-1, this.fileContent.toString(), this.user.id, this.recordingBlob
       )).subscribe(() => {
       this.snackBar.open('Successfully created new Recording', '', {duration: 3000, panelClass: ['background-white']});
     });

@@ -7,6 +7,7 @@ import {MatSort} from '@angular/material/sort';
 import {HttpClient} from '@angular/common/http';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ChangePassword} from '../../../models/ChangePassword';
+import {UserPublicInfo} from '../../../models/UserPublicInfo';
 
 @Component({
   selector: 'app-profile',
@@ -22,6 +23,7 @@ export class ProfileComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   profileView = ProfileView;
   currentView = this.profileView.ProfileView;
+  private user: UserPublicInfo;
 
   constructor(
     private apiService: ApiService,
@@ -33,21 +35,23 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.authService.checkAuthenticated();
-    this.initForm();
-    this.initPasswordForm();
+    this.authService.getUser().subscribe(user => {
+      return this.user = user;
+      this.initForm();
+      this.initPasswordForm();
+    });
   }
 
   initForm(): void {
     this.changeProfileForm = this.fb.group({
-      username: [this.authService.loggedInUser.getValue().username, [Validators.required]],
-      firstName: [this.authService.loggedInUser.getValue().firstName, [Validators.required]],
-      lastName: [this.authService.loggedInUser.getValue().lastName, [Validators.required]],
-      email: [this.authService.loggedInUser.getValue().email, Validators.compose([
+      username: [this.user.username, [Validators.required]],
+      firstName: [this.user.firstName, [Validators.required]],
+      lastName: [this.user.lastName, [Validators.required]],
+      email: [this.user.email, Validators.compose([
         Validators.required,
         Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
       ])],
-      canton: [this.authService.loggedInUser.getValue().canton, [Validators.required]]
+      canton: [this.user.canton, [Validators.required]]
     });
   }
 
@@ -63,13 +67,13 @@ export class ProfileComponent implements OnInit {
   }
 
   changeProfile(): void {
-    this.authService.loggedInUser.getValue().username = this.changeProfileForm.controls.username.value;
-    this.authService.loggedInUser.getValue().firstName = this.changeProfileForm.controls.firstName.value;
-    this.authService.loggedInUser.getValue().lastName = this.changeProfileForm.controls.lastName.value;
-    this.authService.loggedInUser.getValue().email = this.changeProfileForm.controls.email.value;
-    this.authService.loggedInUser.getValue().canton = this.changeProfileForm.controls.canton.value;
+    this.user.username = this.changeProfileForm.controls.username.value;
+    this.user.firstName = this.changeProfileForm.controls.firstName.value;
+    this.user.lastName = this.changeProfileForm.controls.lastName.value;
+    this.user.email = this.changeProfileForm.controls.email.value;
+    this.user.canton = this.changeProfileForm.controls.canton.value;
     if (this.changeProfileForm.valid) {
-      this.apiService.updateUser(this.authService.loggedInUser.getValue()).subscribe(_ => {
+      this.apiService.updateUser(this.user).subscribe(_ => {
         this.currentView = this.profileView.ProfileView;
       }, (err) => {
         if (err === 'NOT ACCEPTABLE') {
@@ -82,7 +86,7 @@ export class ProfileComponent implements OnInit {
   changePassword(): void {
     this.apiService.changePassword(
       new ChangePassword(
-        this.authService.loggedInUser.getValue().id,
+        this.user.id,
         this.changePasswordForm.controls.password.value,
         this.changePasswordForm.controls.newPassword.value)
     ).subscribe(() => {
