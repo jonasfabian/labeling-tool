@@ -45,8 +45,8 @@ export class ProfileComponent implements OnInit {
   initForm(): void {
     this.changeProfileForm = this.fb.group({
       username: [this.user.username, [Validators.required]],
-      firstName: [this.user.firstName, [Validators.required]],
-      lastName: [this.user.lastName, [Validators.required]],
+      firstName: [this.user.first_name, [Validators.required]],
+      lastName: [this.user.last_name, [Validators.required]],
       email: [this.user.email, Validators.compose([
         Validators.required,
         Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
@@ -68,8 +68,8 @@ export class ProfileComponent implements OnInit {
 
   changeProfile(): void {
     this.user.username = this.changeProfileForm.controls.username.value;
-    this.user.firstName = this.changeProfileForm.controls.firstName.value;
-    this.user.lastName = this.changeProfileForm.controls.lastName.value;
+    this.user.first_name = this.changeProfileForm.controls.firstName.value;
+    this.user.last_name = this.changeProfileForm.controls.lastName.value;
     this.user.email = this.changeProfileForm.controls.email.value;
     this.user.canton = this.changeProfileForm.controls.canton.value;
     if (this.changeProfileForm.valid) {

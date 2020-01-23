@@ -1,0 +1,62 @@
+<!--TODO not sure about the height-->
+<mat-card style=" width: 500px; height: 600px;">
+  <mat-card-header>
+    <mat-toolbar *ngIf="isNewUser" class="minus-margin" color="primary">Register</mat-toolbar>
+    <mat-toolbar *ngIf="!isNewUser" class="minus-margin" color="primary">Edit</mat-toolbar>
+  </mat-card-header>
+  <mat-card-content style="position: absolute; top: 80px; width: calc(100% - 30px); height: 200px;">
+    <form (ngSubmit)="register()" [formGroup]="registerForm">
+      <mat-form-field class="max-width">
+        <input formControlName="firstName" matInput placeholder="First Name" type="text">
+        <mat-error *ngIf="isFNError('required')">Please enter your first name</mat-error>
+      </mat-form-field>
+      <mat-form-field class="max-width">
+        <input formControlName="lastName" matInput placeholder="Last Name" type="text">
+        <mat-error *ngIf="isLNError('required')">Please enter your last name</mat-error>
+      </mat-form-field>
+      <mat-form-field class="max-width">
+        <input formControlName="email" matInput placeholder="Email" type="email">
+        <mat-error *ngIf="isEmailError('required')">Please enter your email or username</mat-error>
+        <mat-error *ngIf="isEmailError('pattern')">Please enter a valid email adress</mat-error>
+      </mat-form-field>
+      <mat-form-field class="max-width">
+        <input formControlName="username" matInput placeholder="Username" type="username">
+        <mat-error *ngIf="isUNError('required')">Please enter your username</mat-error>
+        <mat-error *ngIf="isUNError('pattern')">Username may not contain any special characters</mat-error>
+      </mat-form-field>
+      <mat-form-field class="max-width">
+        <input formControlName="password" matInput placeholder="Password" type="password">
+        <mat-error *ngIf="isPwError('required')">Please enter your password</mat-error>
+        <mat-error *ngIf="isPwError('minlength')">At least 8 characters</mat-error>
+        <mat-error *ngIf="isPwError('maxlength')">Maximum 50 characters</mat-error>
+      </mat-form-field>
+      <mat-form-field class="max-width">
+        <mat-label>Canton</mat-label>
+        <mat-select formControlName="canton">
+          <mat-option *ngFor="let canton of apiService.cantons"
+                      [value]="canton.cantonId">{{canton.cantonName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="max-width">
+        <mat-label>Sex</mat-label>
+        <mat-select formControlName="sex">
+          <mat-option value="none">None</mat-option>
+          <mat-option value="m">m</mat-option>
+          <mat-option value="f">f</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="max-width">
+        <!--TODO probably add a link/disclaimer here what the difference is-->
+        <mat-label>Terms of Usage</mat-label>
+        <mat-select formControlName="licence">
+          <mat-option value="academic">Academic</mat-option>
+          <mat-option value="public">Public</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div>
+        <button class="custom-button" mat-button type="submit">Save</button>
+        <button (click)="cancel()" class="custom-button" mat-button type="button">Cancel</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

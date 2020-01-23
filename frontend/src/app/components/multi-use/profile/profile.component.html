@@ -11,11 +11,11 @@
         <mat-list>
           <mat-list-item>
             <span>First name:</span>&nbsp;
-            <span class="info-input">{{user.firstName}}</span>
+            <span class="info-input">{{user.first_name}}</span>
           </mat-list-item>
           <mat-list-item>
             <span>Last name:</span>&nbsp;
-            <span class="info-input">{{user.lastName}}</span>
+            <span class="info-input">{{user.last_name}}</span>
           </mat-list-item>
           <mat-list-item>
             <span>Email:</span>&nbsp;
@@ -93,7 +93,8 @@
             <mat-form-field style="width: 100%;">
               <mat-label>Canton</mat-label>
               <mat-select formControlName="canton">
-                <mat-option>None</mat-option>
+                <!--TODO not -->
+                <mat-option value="none">None</mat-option>
                 <mat-option *ngFor="let canton of apiService.cantons"
                             [value]="canton.cantonId">{{canton.cantonName}}</mat-option>
               </mat-select>

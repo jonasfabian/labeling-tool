@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
-import {User} from '../models/User';
 import {UserPublicInfo} from '../models/UserPublicInfo';
 import {Canton} from '../models/Canton';
 import {ChangePassword} from '../models/ChangePassword';
@@ -20,6 +19,7 @@ export class ApiService {
   blobUrl: SafeUrl | string = '';
   uri: BehaviorSubject<SafeUrl> = new BehaviorSubject<SafeUrl>('');
   showTenMoreQuest = false;
+  // TODO maybe move into a sperate model class?
   cantons: Canton[] = [
     {cantonId: 'ag', cantonName: 'Aargau'},
     {cantonId: 'ai', cantonName: 'Appenzell Innerrhoden'},
@@ -65,10 +65,6 @@ export class ApiService {
     return this.http.get<[{ id: number, text: string, username: string, time: string }]>(this.url + 'getAllRecordingData');
   }
 
-
-  createUser(user: User): Observable<any> {
-    return this.http.post(this.url + 'api/user', user);
-  }
 
   createUserAndTextAudioIndex(userAndTextAudio: UserAndTextAudio): Observable<any> {
     return this.http.post(this.url + 'createUserAndTextAudio', userAndTextAudio);

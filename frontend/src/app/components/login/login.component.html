@@ -1,5 +1,5 @@
 <div style="display: flex; align-items: center; justify-content: center; height: calc(100% - 70px);">
-  <mat-card style="margin: 15px; width: 500px; height: 300px;">
+  <mat-card *ngIf="isLogin" style="margin: 15px; width: 500px; height: 300px;">
     <mat-card-header>
       <mat-toolbar color="primary" style="position: absolute; left: 0; top: 0;">
         Login
@@ -30,9 +30,11 @@
     <mat-card-footer style="position: absolute; bottom: 35px; left: 30px;">
       <div>
         <span>Not registered yet? Register </span>
-        <a [routerLink]="['/speech-to-text-labeling-tool/app/register']">here</a>
+        <a (click)="toggleIsLogin()" href="#">here</a>
         <span>!</span>
       </div>
     </mat-card-footer>
   </mat-card>
+  <app-profile-editor (output)="toggleIsLogin()" *ngIf="!isLogin" [isNewUser]="true"></app-profile-editor>
 </div>
+

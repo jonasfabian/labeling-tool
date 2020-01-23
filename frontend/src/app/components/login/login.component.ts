@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {ApiService} from '../../../services/api.service';
+import {ApiService} from '../../services/api.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {EmailPassword} from '../../../models/EmailPassword';
-import {AuthService} from '../../../services/auth.service';
+import {EmailPassword} from '../../models/EmailPassword';
+import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +13,7 @@ import {HttpClient} from '@angular/common/http';
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
+  isLogin = true;
 
   constructor(
     private fb: FormBuilder,
@@ -61,4 +61,6 @@ export class LoginComponent implements OnInit {
       return 'Please enter a password';
     }
   }
+
+  toggleIsLogin = () => this.isLogin = !this.isLogin;
 }

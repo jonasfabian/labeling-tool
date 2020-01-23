@@ -1,13 +1,12 @@
 import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
-import {RegisterComponent} from './login/register/register.component';
-import {AuthGuardService} from '../guards/auth-guard.service';
-import {ProfileComponent} from './multi-use/profile/profile.component';
-import {OverviewComponent} from './overview/overview.component';
-import {CheckComponent} from './check/check/check.component';
-import {LoginComponent} from './login/login/login.component';
-import {RecordComponent} from './record/record/record.component';
-import {NavigationMenuComponent} from './multi-use/navigation-menu/navigation-menu.component';
+import {AuthGuardService} from './guards/auth-guard.service';
+import {ProfileComponent} from './components/multi-use/profile/profile.component';
+import {OverviewComponent} from './components/overview/overview.component';
+import {CheckComponent} from './components/check/check/check.component';
+import {LoginComponent} from './components/login/login.component';
+import {RecordComponent} from './components/record/record.component';
+import {NavigationMenuComponent} from './components/multi-use/navigation-menu/navigation-menu.component';
 
 const routes: Routes = [
   {
@@ -41,10 +40,6 @@ const routes: Routes = [
   {
     path: 'speech-to-text-labeling-tool/app',
     children: [
-      {
-        path: 'register',
-        component: RegisterComponent
-      },
       {
         path: 'login',
         component: LoginComponent

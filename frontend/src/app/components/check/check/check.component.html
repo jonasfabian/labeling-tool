@@ -8,7 +8,7 @@
 </div>
 <div [hidden]="available"
      style="height: calc(100% - 100px);">
-  <mat-spinner style="margin-left: auto; margin-right: auto; top: calc(50% - 150px);" *ngIf="!noDataYet"></mat-spinner>
+  <mat-spinner *ngIf="!noDataYet" style="margin-left: auto; margin-right: auto; top: calc(50% - 150px);"></mat-spinner>
   <div *ngIf="noDataYet" style="height: calc(100% - 90px);">
     <mat-card style="margin: 15px; height: 100%; display: flex; align-items: center; justify-content: center;">
       <div style="font-weight: bold; font-size: 36px;">No Data to display</div>
@@ -17,8 +17,8 @@
 </div>
 <div style="position: absolute; right: 15px; height: calc(100% - 280px); z-index: 1;">
   <mat-expansion-panel hideToggle="true" style="width: 50px;">
-    <mat-expansion-panel-header title="Labeling chunk overview" style="width: 50px; padding: 0;">
-        <mat-icon style="width: 100%; display: flex; justify-content: center;">info</mat-icon>
+    <mat-expansion-panel-header style="width: 50px; padding: 0;" title="Labeling chunk overview">
+      <mat-icon style="width: 100%; display: flex; justify-content: center;">info</mat-icon>
     </mat-expansion-panel-header>
     <mat-list style="padding: 0;">
       <ng-container *ngFor="let entry of checkIndexArray; let i = index;">
