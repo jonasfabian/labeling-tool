@@ -1,4 +1,4 @@
-import {TextAudio} from './TextAudio';
+import {TextAudio} from './text-audio';
 
 export class CheckIndex {
   id: number;

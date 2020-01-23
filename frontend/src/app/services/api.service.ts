@@ -2,9 +2,9 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
-import {Canton} from '../models/Canton';
-import {TextAudio} from '../models/TextAudio';
-import {UserAndTextAudio} from '../models/UserAndTextAudio';
+import {Canton} from '../models/canton';
+import {TextAudio} from '../models/text-audio';
+import {UserAndTextAudio} from '../models/user-and-text-audio';
 import {environment} from '../../environments/environment';
 
 @Injectable({

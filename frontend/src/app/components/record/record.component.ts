@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import WaveSurfer from 'wavesurfer.js';
 import MicrophonesPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.microphone.js';
-import {Recording} from '../../models/Recording';
+import {Recording} from '../../models/recording';
 import {MatSnackBar} from '@angular/material';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';

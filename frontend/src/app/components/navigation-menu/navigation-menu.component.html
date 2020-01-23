@@ -30,12 +30,27 @@
     <div>
       <mat-list>
         <ng-container *ngIf="authService.checkAuthenticated()">
-          <ng-container *ngFor="let naviItem of navigationContainer">
-            <mat-list-item (click)="redirectToPage(naviItem.title.trimLeft().toLocaleLowerCase())" *ngIf="navigationContainer.includes(naviItem)">
-              <mat-icon>{{naviItem.matIcon}}</mat-icon>
-              <span>{{naviItem.title}}</span>
-            </mat-list-item>
-          </ng-container>
+          <mat-list-item routerLink="/check">
+            <mat-icon>check</mat-icon>
+            <span>Check</span>
+          </mat-list-item>
+          <mat-list-item routerLink="/record">
+            <mat-icon>record_voice_over</mat-icon>
+            <span>Record</span>
+          </mat-list-item>
+          <mat-list-item routerLink="/overview">
+            <mat-icon>view_list</mat-icon>
+            <span>Overview</span>
+          </mat-list-item>
+          <mat-list-item *ngIf="isGroupAdmin()" routerLink="/admin/user_group">
+            <mat-icon>people</mat-icon>
+            <span>User Group</span>
+          </mat-list-item>
+          <mat-list-item *ngIf="isAdmin()" routerLink="/admin/user_groups">
+            <mat-icon>supervised_user_circle</mat-icon>
+            <span>User Groups</span>
+          </mat-list-item>
+
         </ng-container>
       </mat-list>
     </div>

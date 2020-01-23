@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
-import {NavigationMenuComponent} from './components/multi-use/navigation-menu/navigation-menu.component';
-import {ShortcutComponent} from './components/multi-use/shortcut/shortcut.component';
+import {NavigationMenuComponent} from './components/navigation-menu/navigation-menu.component';
+import {ShortcutComponent} from './components/check/shortcut/shortcut.component';
 import {IntToBooleanPipe} from './pipes/int-to-boolean.pipe';
 import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
@@ -10,7 +10,7 @@ import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/h
 import {CarouselModule} from 'ngx-carousel-lib';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AuthGuardService} from './guards/auth-guard.service';
-import {ProfileComponent} from './components/multi-use/profile/profile.component';
+import {ProfileComponent} from './components/profile/profile.component';
 import {AvatarComponent} from './components/multi-use/avatar/avatar.component';
 import {CheckMoreComponent} from './components/check/check-more/check-more.component';
 import {OverviewComponent} from './components/overview/overview.component';
@@ -44,6 +44,8 @@ import {
   MatTableModule,
   MatToolbarModule
 } from '@angular/material';
+import { GroupsAdminComponent } from './components/admin/groups-admin/groups-admin.component';
+import { GroupAdminComponent } from './components/admin/group-admin/group-admin.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +61,9 @@ import {
     AvatarComponent,
     CheckMoreComponent,
     RecordComponent,
-    ProfileEditorComponent
+    ProfileEditorComponent,
+    GroupsAdminComponent,
+    GroupAdminComponent
   ],
   imports: [
     BrowserModule,

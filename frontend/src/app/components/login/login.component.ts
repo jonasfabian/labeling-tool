@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiService} from '../../services/api.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {EmailPassword} from '../../models/EmailPassword';
+import {EmailPassword} from '../../models/email-password';
 import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
 

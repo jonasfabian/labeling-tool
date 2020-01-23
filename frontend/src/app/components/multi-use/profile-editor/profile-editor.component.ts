@@ -1,12 +1,12 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Licence, Sex, UserPublicInfo} from '../../../models/UserPublicInfo';
+import {Licence, Sex, UserPublicInfo} from '../../../models/user-public-info';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from '../../../services/api.service';
 import {MatSnackBar} from '@angular/material';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
 import {AuthService} from '../../../services/auth.service';
-import {EmailPassword} from '../../../models/EmailPassword';
+import {EmailPassword} from '../../../models/email-password';
 
 @Component({
   selector: 'app-profile-editor',

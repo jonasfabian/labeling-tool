@@ -1,21 +1,23 @@
 import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
 import {AuthGuardService} from './guards/auth-guard.service';
-import {ProfileComponent} from './components/multi-use/profile/profile.component';
+import {ProfileComponent} from './components/profile/profile.component';
 import {OverviewComponent} from './components/overview/overview.component';
 import {CheckComponent} from './components/check/check/check.component';
 import {LoginComponent} from './components/login/login.component';
 import {RecordComponent} from './components/record/record.component';
-import {NavigationMenuComponent} from './components/multi-use/navigation-menu/navigation-menu.component';
+import {NavigationMenuComponent} from './components/navigation-menu/navigation-menu.component';
+import {GroupAdminComponent} from './components/admin/group-admin/group-admin.component';
+import {GroupsAdminComponent} from './components/admin/groups-admin/groups-admin.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/speech-to-text-labeling-tool/app/overview',
+    redirectTo: '/overview',
     pathMatch: 'full'
   },
   {
-    path: 'speech-to-text-labeling-tool/app',
+    path: '',
     component: NavigationMenuComponent,
     canActivate: [AuthGuardService],
     children: [
@@ -38,7 +40,30 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'speech-to-text-labeling-tool/app',
+    path: 'admin',
+    component: NavigationMenuComponent,
+    canActivate: [AuthGuardService],
+    children: [
+      {
+        path: 'check',
+        component: GroupAdminComponent,
+      },
+      {
+        path: 'user_group',
+        component: GroupsAdminComponent,
+      },
+      {
+        path: 'overview',
+        component: OverviewComponent,
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent,
+      }
+    ]
+  },
+  {
+    path: '',
     children: [
       {
         path: 'login',
@@ -52,7 +77,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '/speech-to-text-labeling-tool/app/404'
+    redirectTo: '/404'
   }
 ];
 

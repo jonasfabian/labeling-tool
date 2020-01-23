@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthService} from '../../../services/auth.service';
-import {UserPublicInfo} from '../../../models/UserPublicInfo';
+import {AuthService} from '../../services/auth.service';
+import {UserPublicInfo} from '../../models/user-public-info';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
-import {environment} from '../../../../environments/environment';
+import {environment} from '../../../environments/environment';
 
 class ChangePassword {
   password: string;

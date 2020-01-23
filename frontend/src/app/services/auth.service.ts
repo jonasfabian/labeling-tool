@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
-import {UserPublicInfo} from '../models/UserPublicInfo';
+import {UserPublicInfo} from '../models/user-public-info';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {ApiService} from './api.service';
-import {EmailPassword} from '../models/EmailPassword';
+import {EmailPassword} from '../models/email-password';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 

@@ -1,16 +1,16 @@
 import {ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {CarouselComponent} from 'ngx-carousel-lib';
 import {ApiService} from '../../../services/api.service';
-import {CheckIndex} from '../../../models/CheckIndex';
+import {CheckIndex} from '../../../models/check-index';
 import {MatDialog} from '@angular/material';
-import {ShortcutComponent} from '../../multi-use/shortcut/shortcut.component';
+import {ShortcutComponent} from '../shortcut/shortcut.component';
 import {AuthService} from '../../../services/auth.service';
 import {CheckMoreComponent} from '../check-more/check-more.component';
 import WaveSurfer from 'wavesurfer.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
-import {UserAndTextAudio} from '../../../models/UserAndTextAudio';
-import {AudioSnippet} from '../../../models/AudioSnippet';
-import {UserPublicInfo} from '../../../models/UserPublicInfo';
+import {UserAndTextAudio} from '../../../models/user-and-text-audio';
+import {AudioSnippet} from '../../../models/audio-snippet';
+import {UserPublicInfo} from '../../../models/user-public-info';
 
 @Component({
   selector: 'app-check',
