@@ -2,9 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
-import {UserPublicInfo} from '../models/UserPublicInfo';
 import {Canton} from '../models/Canton';
-import {ChangePassword} from '../models/ChangePassword';
 import {TextAudio} from '../models/TextAudio';
 import {UserAndTextAudio} from '../models/UserAndTextAudio';
 import {environment} from '../../environments/environment';
@@ -65,13 +63,8 @@ export class ApiService {
     return this.http.get<[{ id: number, text: string, username: string, time: string }]>(this.url + 'getAllRecordingData');
   }
 
-
   createUserAndTextAudioIndex(userAndTextAudio: UserAndTextAudio): Observable<any> {
     return this.http.post(this.url + 'createUserAndTextAudio', userAndTextAudio);
-  }
-
-  getUser(): Observable<UserPublicInfo> {
-    return this.http.get<UserPublicInfo>(this.url + '/api/user');
   }
 
   updateTextAudio(textAudio: TextAudio): Observable<any> {
@@ -82,20 +75,12 @@ export class ApiService {
     return this.http.post(this.url + 'updateRecording', {id, text});
   }
 
-  updateUser(user: UserPublicInfo): Observable<any> {
-    return this.http.post(this.url + 'updateUser', user);
-  }
-
   getAudioFile(fileId: number): Observable<any> {
     return this.http.get(this.url + 'getAudio?id=' + fileId, {responseType: 'blob'});
   }
 
   getTenNonLabeledTextAudios(): Observable<Array<TextAudio>> {
     return this.http.get<Array<TextAudio>>(this.url + 'getTenNonLabeledTextAudios');
-  }
-
-  changePassword(changePassword: ChangePassword): Observable<any> {
-    return this.http.post(this.url + 'changePassword', changePassword);
   }
 
   loadAudioBlob(file: TextAudio): void {

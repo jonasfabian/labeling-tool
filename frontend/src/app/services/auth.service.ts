@@ -29,7 +29,7 @@ export class AuthService {
     return item != null && item.trim().length > 0;
   }
 
-  login(emailPassword: EmailPassword): Observable<any> {
+  login(emailPassword: EmailPassword) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -37,7 +37,14 @@ export class AuthService {
         Authorization: this.buildAuthenticationHeader(emailPassword.email, emailPassword.password)
       })
     };
-    return this.httpClient.post<any>(environment.url + 'login', emailPassword, httpOptions);
+    this.httpClient.post<any>(environment.url + 'login', emailPassword, httpOptions).subscribe(() => {
+      this.router.navigate(['/speech-to-text-labeling-tool/app/overview']);
+      this.addToSessionStorage(emailPassword.email, emailPassword.password);
+    }, () => {
+      // TODO replace all alerts with MatSnackBars => maybe add a service so it could be styled
+      alert('Unauthorized');
+      sessionStorage.clear();
+    });
   }
 
   addToSessionStorage(username, password): void {

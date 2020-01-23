@@ -1,13 +1,13 @@
 <!--TODO add missing fields etc -> maybe reuse component for registration etc.-->
 <div style="height: 40%; margin-top: -12px; background-color: #303f9f; display: flex; justify-content: center;">
-  <mat-card [style.height]="currentView === profileView.ProfileEdit ? '500px' : 'calc(100% - 130px)'"
+  <mat-card [style.height]="'calc(100% - 130px)'"
             id="header-card" style="margin: 15px; width: 50%; position: absolute;">
     <div style="height: 10%; display: flex; align-items: center; margin-top: -15px;">
       <h1 style="margin: 0;">Account Settings</h1>
     </div>
     <mat-divider></mat-divider>
     <div style="width: 70%; float: left; height: 90%;">
-      <ng-container *ngIf="currentView === profileView.ProfileView">
+      <ng-container *ngIf="!isProfileEdit&&!isPasswordEdit">
         <mat-list>
           <mat-list-item>
             <span>First name:</span>&nbsp;
@@ -26,26 +26,32 @@
             <span class="info-input">{{user.canton | CantonIdToCanton}}</span>
           </mat-list-item>
           <mat-list-item>
-            <span>Password:</span>&nbsp;
-            <mat-button-toggle (click)="currentView = profileView.PasswordEdit"
-                               style="position: absolute; left: 200px;">Change
-            </mat-button-toggle>
+            <span>Licence:</span>&nbsp;
+            <span class="info-input">{{user.licence}}</span>
+          </mat-list-item>
+          <mat-list-item>
+            <span>Sex:</span>&nbsp;
+            <span class="info-input">{{user.sex}}</span>
           </mat-list-item>
         </mat-list>
+        <mat-button-toggle (click)="toggleProfileEdit()" class="edit-button">Edit Profile</mat-button-toggle>
+        <mat-button-toggle (click)="togglePasswordEdit()" class="edit-button">Edit Password</mat-button-toggle>
       </ng-container>
-      <ng-container *ngIf="currentView === profileView.PasswordEdit">
+      <ng-container *ngIf="isPasswordEdit">
         <form (ngSubmit)="changePassword()" [formGroup]="changePasswordForm">
           <div>
             <div>
               <mat-form-field style="width: 100%;">
                 <input formControlName="password" matInput placeholder="Old Password" type="password">
-                <mat-error *ngIf="changePasswordForm.invalid">{{getOldPasswordErrorMessage()}}</mat-error>
+                <mat-error *ngIf="isOldPwError('required')">Please enter your old password</mat-error>
               </mat-form-field>
             </div>
             <div>
               <mat-form-field style="width: 100%;">
                 <input formControlName="newPassword" matInput placeholder="New Password" type="password">
-                <mat-error *ngIf="changePasswordForm.invalid">{{getNewPasswordErrorMessage()}}</mat-error>
+                <mat-error *ngIf="isNewPwError('required')">Please enter your new password</mat-error>
+                <mat-error *ngIf="isNewPwError('minlength')">At least 8 characters</mat-error>
+                <mat-error *ngIf="isNewPwError('maxlength')">Maximum 50 characters</mat-error>
               </mat-form-field>
             </div>
             <div>
@@ -53,7 +59,7 @@
                       style="border: lightgray 1px solid; padding: 0 12px; line-height: 48px; bottom: 0;"
                       type="submit">Submit
               </button>
-              <button (click)="currentView = profileView.ProfileView" mat-button
+              <button (click)="togglePasswordEdit()" mat-button
                       style="border: lightgray 1px solid; padding: 0 12px; line-height: 48px; bottom: 0;"
                       type="button">
                 Cancel
@@ -62,71 +68,17 @@
           </div>
         </form>
       </ng-container>
-      <ng-container *ngIf="currentView === profileView.ProfileEdit">
-        <form (ngSubmit)="changeProfile()" [formGroup]="changeProfileForm"
-              style="margin: 30px;">
-          <div>
-            <mat-form-field style="width: 100%;">
-              <input formControlName="username" matInput placeholder="Username" type="text">
-              <mat-error *ngIf="changePasswordForm.invalid">{{getUsernameErrorMessage()}}</mat-error>
-            </mat-form-field>
-          </div>
-          <div>
-            <mat-form-field style="width: 100%;">
-              <input formControlName="firstName" matInput placeholder="First Name" type="text">
-              <mat-error *ngIf="changePasswordForm.invalid">{{getFirstNameErrorMessage()}}</mat-error>
-            </mat-form-field>
-          </div>
-          <div>
-            <mat-form-field style="width: 100%;">
-              <input formControlName="lastName" matInput placeholder="Last Name" type="text">
-              <mat-error *ngIf="changePasswordForm.invalid">{{getLastNameErrorMessage()}}</mat-error>
-            </mat-form-field>
-          </div>
-          <div>
-            <mat-form-field style="width: 100%;">
-              <input formControlName="email" matInput placeholder="Email" type="email">
-              <mat-error *ngIf="changePasswordForm.invalid">{{getEmailErrorMessage()}}</mat-error>
-            </mat-form-field>
-          </div>
-          <div>
-            <mat-form-field style="width: 100%;">
-              <mat-label>Canton</mat-label>
-              <mat-select formControlName="canton">
-                <!--TODO not -->
-                <mat-option value="none">None</mat-option>
-                <mat-option *ngFor="let canton of apiService.cantons"
-                            [value]="canton.cantonId">{{canton.cantonName}}</mat-option>
-              </mat-select>
-              <mat-error *ngIf="changePasswordForm.invalid">{{getCantonErrorMessage()}}</mat-error>
-            </mat-form-field>
-          </div>
-          <div>
-            <button mat-button
-                    style="border: lightgray 1px solid; padding: 0 12px; line-height: 48px;"
-                    type="submit">Submit change Profile
-            </button>
-            <button (click)="currentView = profileView.ProfileView"
-                    mat-button
-                    style="border: lightgray 1px solid; padding: 0 12px; line-height: 48px; margin-left: 5px;">Cancel
-            </button>
-          </div>
-        </form>
-      </ng-container>
+      <app-profile-editor (output)="toggleProfileEdit()" *ngIf="isProfileEdit" [isNewUser]="false"
+                          [user]="copyUser()"></app-profile-editor>
+
     </div>
+    <!--TODO not sure how much sense this makes anymore? as we cannot edit the profile pricture anyway-->
     <div style="width: 30%; float: right; height: 90%; margin-top: 15px;">
-      <ng-container *ngIf="currentView === profileView.ProfileView">
-        <app-avatar [borderRadius]="0" [fontSize]="100" [hover]="'default'" [size]="260" [username]="this.user.username"
-                    style="float: left;"></app-avatar>
-        <div style="text-align: center; padding: 15px;">
-          <span style="font-size: 25px;">{{user.username}}</span>
-        </div>
-        <div>
-          <mat-button-toggle (click)="currentView = profileView.ProfileEdit"
-                             style="position: absolute; bottom: 15px; width: calc(30% - 10px);">Edit Profile Information
-          </mat-button-toggle>
-        </div>
-      </ng-container>
+      <app-avatar [borderRadius]="0" [fontSize]="100" [hover]="'default'" [size]="260" [username]="this.user.username"
+                  style="float: left;"></app-avatar>
+      <div style="text-align: center; padding: 15px;">
+        <span style="font-size: 25px;">{{user.username}}</span>
+      </div>
     </div>
   </mat-card>
 </div>

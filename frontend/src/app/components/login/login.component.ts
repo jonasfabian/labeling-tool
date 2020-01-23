@@ -39,14 +39,7 @@ export class LoginComponent implements OnInit {
 
   login(): void {
     if (this.loginForm.valid) {
-      this.authService.login(new EmailPassword(this.loginForm.controls.email.value, this.loginForm.controls.password.value))
-        .subscribe(() => {
-          this.router.navigate(['/speech-to-text-labeling-tool/app/overview']);
-          this.authService.addToSessionStorage(this.loginForm.controls.email.value, this.loginForm.controls.password.value);
-        }, () => {
-          alert('Unauthorized');
-          sessionStorage.clear();
-        });
+      this.authService.login(new EmailPassword(this.loginForm.controls.email.value, this.loginForm.controls.password.value));
     }
   }
 
