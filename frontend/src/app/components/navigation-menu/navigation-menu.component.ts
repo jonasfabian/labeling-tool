@@ -24,7 +24,7 @@ export class NavigationMenuComponent {
   }
 
   redirectToPage(route: string): void {
-    this.router.navigate(['/speech-to-text-labeling-tool/app/' + route]);
+    this.router.navigate(['/' + route]);
     this.toggleSidenav();
   }
 

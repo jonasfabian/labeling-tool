@@ -12,9 +12,27 @@ import {GroupsAdminComponent} from './components/admin/groups-admin/groups-admin
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: '/overview',
-    pathMatch: 'full'
+    path: 'admin',
+    component: NavigationMenuComponent,
+    canActivate: [AuthGuardService],
+    children: [
+      {
+        path: 'check',
+        component: GroupAdminComponent,
+      },
+      {
+        path: 'user_group',
+        component: GroupsAdminComponent,
+      },
+      {
+        path: 'overview',
+        component: OverviewComponent,
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent,
+      }
+    ]
   },
   {
     path: '',
@@ -40,44 +58,12 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'admin',
-    component: NavigationMenuComponent,
-    canActivate: [AuthGuardService],
-    children: [
-      {
-        path: 'check',
-        component: GroupAdminComponent,
-      },
-      {
-        path: 'user_group',
-        component: GroupsAdminComponent,
-      },
-      {
-        path: 'overview',
-        component: OverviewComponent,
-      },
-      {
-        path: 'profile',
-        component: ProfileComponent,
-      }
-    ]
-  },
-  {
-    path: '',
-    children: [
-      {
-        path: 'login',
-        component: LoginComponent
-      },
-      {
-        path: '**',
-        redirectTo: '404'
-      },
-    ]
+    path: 'login',
+    component: LoginComponent
   },
   {
     path: '**',
-    redirectTo: '/404'
+    redirectTo: '/overview'
   }
 ];
 

@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.initForm();
     if (this.authService.checkAuthenticated()) {
-      this.router.navigate(['/speech-to-text-labeling-tool/app/overview']);
+      this.router.navigate(['/overview']);
     }
   }
 

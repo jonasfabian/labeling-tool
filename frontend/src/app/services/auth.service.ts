@@ -38,7 +38,7 @@ export class AuthService {
       })
     };
     this.httpClient.post<any>(environment.url + 'login', emailPassword, httpOptions).subscribe(() => {
-      this.router.navigate(['/speech-to-text-labeling-tool/app/overview']);
+      this.router.navigate(['/overview']);
       this.addToSessionStorage(emailPassword.email, emailPassword.password);
     }, () => {
       // TODO replace all alerts with MatSnackBars => maybe add a service so it could be styled
@@ -57,7 +57,7 @@ export class AuthService {
 
   logout(b: boolean) {
     sessionStorage.clear();
-    this.router.navigate(['/speech-to-text-labeling-tool/app/login'])
+    this.router.navigate(['/login'])
       .finally(() => {
         if (b) {
           location.reload();
