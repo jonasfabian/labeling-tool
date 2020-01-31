@@ -5,4 +5,4 @@ spring:
     url: jdbc:mysql://localhost/labeling-tool
     driver-class-name: org.mariadb.jdbc.Driver
 server:
-  port: 8083
+  port: 8084
