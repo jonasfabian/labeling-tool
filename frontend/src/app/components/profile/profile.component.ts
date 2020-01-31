@@ -25,7 +25,7 @@ export class ProfileComponent implements OnInit {
   isProfileEdit = false;
   isPasswordEdit = false;
   changePasswordForm: FormGroup;
-  private user: UserPublicInfo;
+  user: UserPublicInfo;
 
   constructor(private authService: AuthService, private httpClient: HttpClient, private fb: FormBuilder) {
   }

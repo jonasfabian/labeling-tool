@@ -1,3 +1,3 @@
-rootProject.name = 'kaggle-clone'
+rootProject.name = 'labeling-tool'
 include 'backend'
 include 'frontend'
