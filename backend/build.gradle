@@ -1,0 +1,85 @@
+import org.springframework.boot.gradle.tasks.run.BootRun
+
+apply plugin: 'nu.studer.jooq'
+apply plugin: 'org.springframework.boot'
+
+description 'module containing the whole spring framework logic'
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-jooq'
+    compile 'org.springframework.boot:spring-boot-starter-security'
+    compile 'org.flywaydb:flyway-core'
+    compile 'org.mariadb.jdbc:mariadb-java-client'
+    compile 'com.google.guava:guava'
+    compile 'org.apache.commons:commons-csv'
+    compile 'org.apache.commons:commons-math3'
+
+    jooqRuntime 'org.mariadb.jdbc:mariadb-java-client'
+    //logging libraries
+    compile 'ch.qos.logback:logback-classic'
+    compile 'org.slf4j:slf4j-api'
+    compile 'org.slf4j:log4j-over-slf4j'
+    compile 'org.slf4j:jcl-over-slf4j'
+    compile 'org.slf4j:jul-to-slf4j'
+
+    testCompile 'org.springframework.boot:spring-boot-devtools'
+    testCompile 'commons-io:commons-io:2.6'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
+}
+task devBootRun(type: BootRun) {
+    main = 'ch.fhnw.labeling_tool.DevTestApplication'
+    classpath += test.classpath
+}
+
+jooq {
+    version = '3.11.11' // the default (can be omitted)
+    edition = 'OSS'
+    sample(sourceSets.main) {
+        jdbc {
+            driver = 'org.mariadb.jdbc.Driver'
+            url = 'jdbc:mysql://localhost/labeling-tool'
+            user = 'labeling-tool'
+            password = 'labeling-tool'
+        }
+        generator {
+            name = 'org.jooq.codegen.DefaultGenerator'
+            database {
+                inputSchema = 'labeling-tool'
+                forcedTypes {
+                    forcedType {
+                        name = 'BOOLEAN'
+                        expression = ".*\\.published|finished"
+                    }
+                }
+            }
+            generate {
+                comments = false
+                daos = true
+                immutablePojos = true
+                javadoc = false
+                generatedAnnotation = false
+                validationAnnotations = true
+                springAnnotations = true
+                records = true
+            }
+            target {
+                packageName = 'ch.fhnw.labeling_tool.jooq'
+                directory = 'src/main/java'
+            }
+        }
+    }
+}
+test {
+    useJUnitPlatform()
+}
+task buildProd {
+    dependsOn ':frontend:npmBuild'
+    finalizedBy 'build'
+}
+
+//angular resources
+processResources {
+    from('../frontend/dist/frontend') { into 'public' }
+}

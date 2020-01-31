@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    password: labeling-tool
+    username: labeling-tool
+    url: jdbc:mysql://localhost/labeling-tool
+    driver-class-name: org.mariadb.jdbc.Driver
+server:
+  port: 8083
