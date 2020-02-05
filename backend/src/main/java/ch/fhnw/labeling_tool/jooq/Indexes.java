@@ -43,9 +43,11 @@ public class Indexes {
     public static final Index TEXT_AUDIO_PRIMARY = Indexes0.TEXT_AUDIO_PRIMARY;
     public static final Index USER_EMAIL = Indexes0.USER_EMAIL;
     public static final Index USER_PRIMARY = Indexes0.USER_PRIMARY;
+    public static final Index USER_USERNAME = Indexes0.USER_USERNAME;
     public static final Index USER_AND_TEXT_AUDIO_PRIMARY = Indexes0.USER_AND_TEXT_AUDIO_PRIMARY;
     public static final Index USER_AND_TEXT_AUDIO_UNI = Indexes0.USER_AND_TEXT_AUDIO_UNI;
     public static final Index USER_GROUP_PRIMARY = Indexes0.USER_GROUP_PRIMARY;
+    public static final Index USER_GROUP_ROLE_PRIMARY = Indexes0.USER_GROUP_ROLE_PRIMARY;
     public static final Index USER_GROUP_ROLE_USER_GROUP_ID = Indexes0.USER_GROUP_ROLE_USER_GROUP_ID;
     public static final Index USER_GROUP_ROLE_USER_ID = Indexes0.USER_GROUP_ROLE_USER_ID;
 
@@ -69,9 +71,11 @@ public class Indexes {
         public static Index TEXT_AUDIO_PRIMARY = Internal.createIndex("PRIMARY", TextAudio.TEXT_AUDIO, new OrderField[] { TextAudio.TEXT_AUDIO.ID }, true);
         public static Index USER_EMAIL = Internal.createIndex("email", User.USER, new OrderField[] { User.USER.EMAIL }, true);
         public static Index USER_PRIMARY = Internal.createIndex("PRIMARY", User.USER, new OrderField[] { User.USER.ID }, true);
+        public static Index USER_USERNAME = Internal.createIndex("username", User.USER, new OrderField[] { User.USER.USERNAME }, true);
         public static Index USER_AND_TEXT_AUDIO_PRIMARY = Internal.createIndex("PRIMARY", UserAndTextAudio.USER_AND_TEXT_AUDIO, new OrderField[] { UserAndTextAudio.USER_AND_TEXT_AUDIO.ID }, true);
         public static Index USER_AND_TEXT_AUDIO_UNI = Internal.createIndex("uni", UserAndTextAudio.USER_AND_TEXT_AUDIO, new OrderField[] { UserAndTextAudio.USER_AND_TEXT_AUDIO.USER_ID, UserAndTextAudio.USER_AND_TEXT_AUDIO.TEXT_AUDIO_ID }, true);
         public static Index USER_GROUP_PRIMARY = Internal.createIndex("PRIMARY", UserGroup.USER_GROUP, new OrderField[] { UserGroup.USER_GROUP.ID }, true);
+        public static Index USER_GROUP_ROLE_PRIMARY = Internal.createIndex("PRIMARY", UserGroupRole.USER_GROUP_ROLE, new OrderField[] { UserGroupRole.USER_GROUP_ROLE.ID }, true);
         public static Index USER_GROUP_ROLE_USER_GROUP_ID = Internal.createIndex("user_group_id", UserGroupRole.USER_GROUP_ROLE, new OrderField[] { UserGroupRole.USER_GROUP_ROLE.USER_GROUP_ID }, false);
         public static Index USER_GROUP_ROLE_USER_ID = Internal.createIndex("user_id", UserGroupRole.USER_GROUP_ROLE, new OrderField[] { UserGroupRole.USER_GROUP_ROLE.USER_ID }, false);
     }

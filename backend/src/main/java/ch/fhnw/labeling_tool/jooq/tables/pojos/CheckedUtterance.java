@@ -15,13 +15,15 @@ import javax.validation.constraints.NotNull;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CheckedUtterance implements Serializable {
 
-    private static final long serialVersionUID = -944215990;
+    private static final long serialVersionUID = 1016652664;
 
-    private final Long                  id;
-    private final Long                  utteranceId;
-    private final Long                  userId;
-    private final CheckedUtteranceLabel label;
-    private final Timestamp             time;
+    private Long                  id;
+    private Long                  utteranceId;
+    private Long                  userId;
+    private CheckedUtteranceLabel label;
+    private Timestamp             time;
+
+    public CheckedUtterance() {}
 
     public CheckedUtterance(CheckedUtterance value) {
         this.id = value.id;
@@ -49,9 +51,17 @@ public class CheckedUtterance implements Serializable {
         return this.id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @NotNull
     public Long getUtteranceId() {
         return this.utteranceId;
+    }
+
+    public void setUtteranceId(Long utteranceId) {
+        this.utteranceId = utteranceId;
     }
 
     @NotNull
@@ -59,12 +69,24 @@ public class CheckedUtterance implements Serializable {
         return this.userId;
     }
 
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     public CheckedUtteranceLabel getLabel() {
         return this.label;
     }
 
+    public void setLabel(CheckedUtteranceLabel label) {
+        this.label = label;
+    }
+
     public Timestamp getTime() {
         return this.time;
+    }
+
+    public void setTime(Timestamp time) {
+        this.time = time;
     }
 
     @Override

@@ -15,12 +15,14 @@ import java.util.List;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
+import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
+import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.TableImpl;
 
@@ -28,7 +30,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class UserGroupRole extends TableImpl<UserGroupRoleRecord> {
 
-    private static final long serialVersionUID = -511005216;
+    private static final long serialVersionUID = -102863134;
 
     public static final UserGroupRole USER_GROUP_ROLE = new UserGroupRole();
 
@@ -36,6 +38,8 @@ public class UserGroupRole extends TableImpl<UserGroupRoleRecord> {
     public Class<UserGroupRoleRecord> getRecordType() {
         return UserGroupRoleRecord.class;
     }
+
+    public final TableField<UserGroupRoleRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     public final TableField<UserGroupRoleRecord, UserGroupRoleRole> ROLE = createField("role", org.jooq.impl.SQLDataType.VARCHAR(11).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.UserGroupRoleRole.class), this, "");
 
@@ -74,7 +78,22 @@ public class UserGroupRole extends TableImpl<UserGroupRoleRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.USER_GROUP_ROLE_USER_GROUP_ID, Indexes.USER_GROUP_ROLE_USER_ID);
+        return Arrays.<Index>asList(Indexes.USER_GROUP_ROLE_PRIMARY, Indexes.USER_GROUP_ROLE_USER_GROUP_ID, Indexes.USER_GROUP_ROLE_USER_ID);
+    }
+
+    @Override
+    public Identity<UserGroupRoleRecord, Long> getIdentity() {
+        return Keys.IDENTITY_USER_GROUP_ROLE;
+    }
+
+    @Override
+    public UniqueKey<UserGroupRoleRecord> getPrimaryKey() {
+        return Keys.KEY_USER_GROUP_ROLE_PRIMARY;
+    }
+
+    @Override
+    public List<UniqueKey<UserGroupRoleRecord>> getKeys() {
+        return Arrays.<UniqueKey<UserGroupRoleRecord>>asList(Keys.KEY_USER_GROUP_ROLE_PRIMARY);
     }
 
     @Override

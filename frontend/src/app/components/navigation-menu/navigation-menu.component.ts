@@ -13,10 +13,10 @@ export class NavigationMenuComponent {
   // TODO add selection(dropdown) for  group here...
   @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
   @ViewChild('menu', {static: true}) menu: MatMenu;
-  user = '';
+  username = '';
 
   constructor(public authService: AuthService, public router: Router) {
-    authService.getUser().subscribe(user => this.user = user.username);
+    authService.getUser().subscribe(user => this.username = user.principal.username);
   }
 
   toggleSidenav(): void {

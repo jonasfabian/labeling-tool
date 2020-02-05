@@ -11,3 +11,12 @@ body {
 .card {
   margin: 0 0 15px 0;
 }
+
+snack-bar-container.snack-bar-error {
+  color: red;
+  background-color: whitesmoke;
+}
+
+snack-bar-container.snack-bar-message {
+  background-color: whitesmoke;
+}

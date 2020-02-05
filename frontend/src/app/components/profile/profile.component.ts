@@ -4,16 +4,8 @@ import {UserPublicInfo} from '../../models/user-public-info';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
-
-class ChangePassword {
-  password: string;
-  new_password: string;
-
-  constructor(password: string, new_password: string) {
-    this.password = password;
-    this.new_password = new_password;
-  }
-}
+import {ChangePassword} from '../../models/change-password';
+import {SnackBarService} from '../../services/snack-bar.service';
 
 @Component({
   selector: 'app-profile',
@@ -27,12 +19,14 @@ export class ProfileComponent implements OnInit {
   changePasswordForm: FormGroup;
   user: UserPublicInfo;
 
-  constructor(private authService: AuthService, private httpClient: HttpClient, private fb: FormBuilder) {
+  constructor(private authService: AuthService, private httpClient: HttpClient, private fb: FormBuilder, private snackBarService: SnackBarService) {
   }
 
   ngOnInit() {
-    this.authService.getUser().subscribe(user => {
-      this.user = user;
+    this.authService.getUser().subscribe(sp => {
+      this.httpClient.get<UserPublicInfo>(environment.url + 'user/' + sp.principal.id).subscribe(user => {
+        this.user = user;
+      });
     });
     this.changePasswordForm = this.fb.group({
       password: ['', [Validators.required]],
@@ -51,13 +45,13 @@ export class ProfileComponent implements OnInit {
   isNewPwError = (errorCode: string) => this.changePasswordForm.controls.newPassword.hasError(errorCode);
 
   changePassword() {
-    this.httpClient.put(environment.url + 'api/user/password',
+    this.httpClient.put(environment.url + 'user/password',
       new ChangePassword(this.changePasswordForm.controls.password.value, this.changePasswordForm.controls.newPassword.value)
     ).subscribe(() => {
       this.authService.logout(true);
     }, err => {
       if (err === 'BAD REQUEST') {
-        alert('Wrong password');
+        this.snackBarService.openError('Wrong password');
       }
     });
   }

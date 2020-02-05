@@ -10,124 +10,164 @@ import ch.fhnw.labeling_tool.jooq.tables.UserGroupRole;
 import javax.validation.constraints.NotNull;
 
 import org.jooq.Field;
-import org.jooq.Record3;
-import org.jooq.Row3;
-import org.jooq.impl.TableRecordImpl;
+import org.jooq.Record1;
+import org.jooq.Record4;
+import org.jooq.Row4;
+import org.jooq.impl.UpdatableRecordImpl;
 
 
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class UserGroupRoleRecord extends TableRecordImpl<UserGroupRoleRecord> implements Record3<UserGroupRoleRole, Long, Long> {
+public class UserGroupRoleRecord extends UpdatableRecordImpl<UserGroupRoleRecord> implements Record4<Long, UserGroupRoleRole, Long, Long> {
 
-    private static final long serialVersionUID = 1514617219;
+    private static final long serialVersionUID = -938944232;
 
-    public void setRole(UserGroupRoleRole value) {
+    public void setId(Long value) {
         set(0, value);
     }
 
-    public UserGroupRoleRole getRole() {
-        return (UserGroupRoleRole) get(0);
+    public Long getId() {
+        return (Long) get(0);
     }
 
-    public void setUserId(Long value) {
+    public void setRole(UserGroupRoleRole value) {
         set(1, value);
     }
 
-    @NotNull
-    public Long getUserId() {
-        return (Long) get(1);
+    public UserGroupRoleRole getRole() {
+        return (UserGroupRoleRole) get(1);
     }
 
-    public void setUserGroupId(Long value) {
+    public void setUserId(Long value) {
         set(2, value);
     }
 
     @NotNull
-    public Long getUserGroupId() {
+    public Long getUserId() {
         return (Long) get(2);
     }
 
+    public void setUserGroupId(Long value) {
+        set(3, value);
+    }
+
+    @NotNull
+    public Long getUserGroupId() {
+        return (Long) get(3);
+    }
+
     // -------------------------------------------------------------------------
-    // Record3 type implementation
+    // Primary key information
     // -------------------------------------------------------------------------
 
     @Override
-    public Row3<UserGroupRoleRole, Long, Long> fieldsRow() {
-        return (Row3) super.fieldsRow();
+    public Record1<Long> key() {
+        return (Record1) super.key();
+    }
+
+    // -------------------------------------------------------------------------
+    // Record4 type implementation
+    // -------------------------------------------------------------------------
+
+    @Override
+    public Row4<Long, UserGroupRoleRole, Long, Long> fieldsRow() {
+        return (Row4) super.fieldsRow();
     }
 
     @Override
-    public Row3<UserGroupRoleRole, Long, Long> valuesRow() {
-        return (Row3) super.valuesRow();
+    public Row4<Long, UserGroupRoleRole, Long, Long> valuesRow() {
+        return (Row4) super.valuesRow();
     }
 
     @Override
-    public Field<UserGroupRoleRole> field1() {
+    public Field<Long> field1() {
+        return UserGroupRole.USER_GROUP_ROLE.ID;
+    }
+
+    @Override
+    public Field<UserGroupRoleRole> field2() {
         return UserGroupRole.USER_GROUP_ROLE.ROLE;
     }
 
     @Override
-    public Field<Long> field2() {
+    public Field<Long> field3() {
         return UserGroupRole.USER_GROUP_ROLE.USER_ID;
     }
 
     @Override
-    public Field<Long> field3() {
+    public Field<Long> field4() {
         return UserGroupRole.USER_GROUP_ROLE.USER_GROUP_ID;
     }
 
     @Override
-    public UserGroupRoleRole component1() {
-        return getRole();
+    public Long component1() {
+        return getId();
     }
 
     @Override
-    public Long component2() {
-        return getUserId();
+    public UserGroupRoleRole component2() {
+        return getRole();
     }
 
     @Override
     public Long component3() {
-        return getUserGroupId();
-    }
-
-    @Override
-    public UserGroupRoleRole value1() {
-        return getRole();
-    }
-
-    @Override
-    public Long value2() {
         return getUserId();
     }
 
     @Override
-    public Long value3() {
+    public Long component4() {
         return getUserGroupId();
     }
 
     @Override
-    public UserGroupRoleRecord value1(UserGroupRoleRole value) {
+    public Long value1() {
+        return getId();
+    }
+
+    @Override
+    public UserGroupRoleRole value2() {
+        return getRole();
+    }
+
+    @Override
+    public Long value3() {
+        return getUserId();
+    }
+
+    @Override
+    public Long value4() {
+        return getUserGroupId();
+    }
+
+    @Override
+    public UserGroupRoleRecord value1(Long value) {
+        setId(value);
+        return this;
+    }
+
+    @Override
+    public UserGroupRoleRecord value2(UserGroupRoleRole value) {
         setRole(value);
         return this;
     }
 
     @Override
-    public UserGroupRoleRecord value2(Long value) {
+    public UserGroupRoleRecord value3(Long value) {
         setUserId(value);
         return this;
     }
 
     @Override
-    public UserGroupRoleRecord value3(Long value) {
+    public UserGroupRoleRecord value4(Long value) {
         setUserGroupId(value);
         return this;
     }
 
     @Override
-    public UserGroupRoleRecord values(UserGroupRoleRole value1, Long value2, Long value3) {
+    public UserGroupRoleRecord values(Long value1, UserGroupRoleRole value2, Long value3, Long value4) {
         value1(value1);
         value2(value2);
         value3(value3);
+        value4(value4);
         return this;
     }
 
@@ -139,11 +179,12 @@ public class UserGroupRoleRecord extends TableRecordImpl<UserGroupRoleRecord> im
         super(UserGroupRole.USER_GROUP_ROLE);
     }
 
-    public UserGroupRoleRecord(UserGroupRoleRole role, Long userId, Long userGroupId) {
+    public UserGroupRoleRecord(Long id, UserGroupRoleRole role, Long userId, Long userGroupId) {
         super(UserGroupRole.USER_GROUP_ROLE);
 
-        set(0, role);
-        set(1, userId);
-        set(2, userGroupId);
+        set(0, id);
+        set(1, role);
+        set(2, userId);
+        set(3, userGroupId);
     }
 }

@@ -63,6 +63,10 @@ public class UserDao extends DAOImpl<UserRecord, ch.fhnw.labeling_tool.jooq.tabl
         return fetch(User.USER.USERNAME, values);
     }
 
+    public ch.fhnw.labeling_tool.jooq.tables.pojos.User fetchOneByUsername(String value) {
+        return fetchOne(User.USER.USERNAME, value);
+    }
+
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.User> fetchByPassword(String... values) {
         return fetch(User.USER.PASSWORD, values);
     }

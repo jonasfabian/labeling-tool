@@ -24,9 +24,9 @@ dependencies {
     compile 'org.slf4j:jul-to-slf4j'
 
     testCompile 'org.springframework.boot:spring-boot-devtools'
-    testCompile 'commons-io:commons-io:2.6'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
+    testCompile 'commons-io:commons-io'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
 task devBootRun(type: BootRun) {
     main = 'ch.fhnw.labeling_tool.DevTestApplication'
@@ -57,7 +57,7 @@ jooq {
             generate {
                 comments = false
                 daos = true
-                immutablePojos = true
+                immutablePojos = false
                 javadoc = false
                 generatedAnnotation = false
                 validationAnnotations = true

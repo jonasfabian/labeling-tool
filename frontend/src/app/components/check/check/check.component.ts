@@ -10,7 +10,6 @@ import WaveSurfer from 'wavesurfer.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
 import {UserAndTextAudio} from '../../../models/user-and-text-audio';
 import {AudioSnippet} from '../../../models/audio-snippet';
-import {UserPublicInfo} from '../../../models/user-public-info';
 
 @Component({
   selector: 'app-check',
@@ -39,7 +38,7 @@ export class CheckComponent implements OnInit {
   waveSurfer: WaveSurfer = null;
   testVar = [];
   noDataYet = true;
-  private user: UserPublicInfo;
+  private userId: number;
 
   constructor(
     public apiService: ApiService,
@@ -50,7 +49,7 @@ export class CheckComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.authService.getUser().subscribe(user => this.user = user);
+    this.authService.getUser().subscribe(user => this.userId = user.principal.id);
     let fileId = 0;
     this.apiService.getTenNonLabeledTextAudios().subscribe(r => {
       this.testVar = r;
@@ -189,7 +188,7 @@ export class CheckComponent implements OnInit {
     }
     this.apiService.updateTextAudio(currentCheckIndex).subscribe(_ => {
       this.apiService.createUserAndTextAudioIndex(
-        new UserAndTextAudio(-1, this.user.id, currentCheckIndex.id)
+        new UserAndTextAudio(-1, this.userId, currentCheckIndex.id)
       ).subscribe(() => {
       }, () => {
       }, () => {

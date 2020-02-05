@@ -14,30 +14,48 @@ import javax.validation.constraints.NotNull;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class UserGroupRole implements Serializable {
 
-    private static final long serialVersionUID = -710998947;
+    private static final long serialVersionUID = 139027262;
 
-    private final UserGroupRoleRole role;
-    private final Long              userId;
-    private final Long              userGroupId;
+    private Long              id;
+    private UserGroupRoleRole role;
+    private Long              userId;
+    private Long              userGroupId;
+
+    public UserGroupRole() {}
 
     public UserGroupRole(UserGroupRole value) {
+        this.id = value.id;
         this.role = value.role;
         this.userId = value.userId;
         this.userGroupId = value.userGroupId;
     }
 
     public UserGroupRole(
+        Long              id,
         UserGroupRoleRole role,
         Long              userId,
         Long              userGroupId
     ) {
+        this.id = id;
         this.role = role;
         this.userId = userId;
         this.userGroupId = userGroupId;
     }
 
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public UserGroupRoleRole getRole() {
         return this.role;
+    }
+
+    public void setRole(UserGroupRoleRole role) {
+        this.role = role;
     }
 
     @NotNull
@@ -45,16 +63,25 @@ public class UserGroupRole implements Serializable {
         return this.userId;
     }
 
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     @NotNull
     public Long getUserGroupId() {
         return this.userGroupId;
+    }
+
+    public void setUserGroupId(Long userGroupId) {
+        this.userGroupId = userGroupId;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("UserGroupRole (");
 
-        sb.append(role);
+        sb.append(id);
+        sb.append(", ").append(role);
         sb.append(", ").append(userId);
         sb.append(", ").append(userGroupId);
 

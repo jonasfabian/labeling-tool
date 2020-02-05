@@ -12,12 +12,14 @@ import javax.validation.constraints.Size;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Speaker implements Serializable {
 
-    private static final long serialVersionUID = -2014517703;
+    private static final long serialVersionUID = -534141375;
 
-    private final Long   id;
-    private final String speakerId;
-    private final String languageUsed;
-    private final String dialect;
+    private Long   id;
+    private String speakerId;
+    private String languageUsed;
+    private String dialect;
+
+    public Speaker() {}
 
     public Speaker(Speaker value) {
         this.id = value.id;
@@ -42,9 +44,17 @@ public class Speaker implements Serializable {
         return this.id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @Size(max = 45)
     public String getSpeakerId() {
         return this.speakerId;
+    }
+
+    public void setSpeakerId(String speakerId) {
+        this.speakerId = speakerId;
     }
 
     @Size(max = 45)
@@ -52,9 +62,17 @@ public class Speaker implements Serializable {
         return this.languageUsed;
     }
 
+    public void setLanguageUsed(String languageUsed) {
+        this.languageUsed = languageUsed;
+    }
+
     @Size(max = 45)
     public String getDialect() {
         return this.dialect;
+    }
+
+    public void setDialect(String dialect) {
+        this.dialect = dialect;
     }
 
     @Override

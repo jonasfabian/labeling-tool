@@ -15,16 +15,16 @@
         <mat-error *ngIf="isLNError('required')">Please enter your last name</mat-error>
       </mat-form-field>
       <mat-form-field class="max-width">
+        <input formControlName="username" matInput placeholder="Username" type="text">
+        <mat-error *ngIf="isUNError('required')">Please enter your username</mat-error>
+        <mat-error *ngIf="isUNError('pattern')">Username may not contain any special characters</mat-error>
+      </mat-form-field>
+      <mat-form-field class="max-width">
         <input formControlName="email" matInput placeholder="Email" type="email">
         <mat-error *ngIf="isEmailError('required')">Please enter your email or username</mat-error>
         <mat-error *ngIf="isEmailError('pattern')">Please enter a valid email adress</mat-error>
       </mat-form-field>
-      <mat-form-field class="max-width">
-        <input formControlName="username" matInput placeholder="Username" type="username">
-        <mat-error *ngIf="isUNError('required')">Please enter your username</mat-error>
-        <mat-error *ngIf="isUNError('pattern')">Username may not contain any special characters</mat-error>
-      </mat-form-field>
-      <mat-form-field *ngIf="!isNewUser" class="max-width">
+      <mat-form-field *ngIf="isNewUser" class="max-width">
         <input formControlName="password" matInput placeholder="Password" type="password">
         <mat-error *ngIf="isPwError('required')">Please enter your password</mat-error>
         <mat-error *ngIf="isPwError('minlength')">At least 8 characters</mat-error>

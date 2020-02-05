@@ -2,9 +2,9 @@ import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import WaveSurfer from 'wavesurfer.js';
 import MicrophonesPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.microphone.js';
 import {Recording} from '../../models/recording';
-import {MatSnackBar} from '@angular/material';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
+import {SnackBarService} from '../../services/snack-bar.service';
 
 interface Excerpt {
   excerpt: string;
@@ -29,11 +29,12 @@ export class RecordComponent implements OnInit {
   // @ts-ignore
   private mediaRecorder: MediaRecorder;
 
-  constructor(private snackBar: MatSnackBar, private detector: ChangeDetectorRef, private httpClient: HttpClient) {
+  constructor(private snackBarService: SnackBarService, private detector: ChangeDetectorRef, private httpClient: HttpClient) {
   }
 
   ngOnInit() {
-    this.httpClient.get<Excerpt>(environment.url + 'api/excerpt').subscribe(value => this.excerpt = value);
+    //TODO not sure how we want to access the groupid => url based or just sessionstorage?
+    this.httpClient.get<Excerpt>(environment.url + 'excerpt').subscribe(value => this.excerpt = value);
     if (this.waveSurfer === null) {
       const context = new AudioContext();
       const processor = context.createScriptProcessor(1024, 1, 1);
@@ -105,13 +106,13 @@ export class RecordComponent implements OnInit {
     const recording = new Recording(undefined, this.excerpt.id, undefined, undefined, undefined);
     const formData = new FormData();
     formData.append(`file`, this.recordingBlob, 'audio');
-    formData.append('data', JSON.stringify(recording));
-    this.httpClient.post(environment.url + 'api/recording', formData).subscribe(() => {
+    formData.append('excerptId', recording.excerptId + '');
+    this.httpClient.post(environment.url + 'recording', formData).subscribe(() => {
       this.fileContent = '';
       this.recordingBlob = null;
       this.waveSurfer.empty();
       this.hasStartedRecording = false;
-      this.snackBar.open('Successfully uploaded recording', 'close', {duration: 3000});
+      this.snackBarService.openMessage('Successfully uploaded recording');
     });
 
   }

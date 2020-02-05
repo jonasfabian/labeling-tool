@@ -13,12 +13,14 @@ import javax.validation.constraints.Size;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class OriginalText implements Serializable {
 
-    private static final long serialVersionUID = 1315665437;
+    private static final long serialVersionUID = 248758684;
 
-    private final Long   id;
-    private final Long   userGroupId;
-    private final byte[] originalText;
-    private final String extractedText;
+    private Long   id;
+    private Long   userGroupId;
+    private byte[] originalText;
+    private String extractedText;
+
+    public OriginalText() {}
 
     public OriginalText(OriginalText value) {
         this.id = value.id;
@@ -43,9 +45,17 @@ public class OriginalText implements Serializable {
         return this.id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @NotNull
     public Long getUserGroupId() {
         return this.userGroupId;
+    }
+
+    public void setUserGroupId(Long userGroupId) {
+        this.userGroupId = userGroupId;
     }
 
     @NotNull
@@ -54,10 +64,18 @@ public class OriginalText implements Serializable {
         return this.originalText;
     }
 
+    public void setOriginalText(byte... originalText) {
+        this.originalText = originalText;
+    }
+
     @NotNull
     @Size(max = 16777215)
     public String getExtractedText() {
         return this.extractedText;
+    }
+
+    public void setExtractedText(String extractedText) {
+        this.extractedText = extractedText;
     }
 
     @Override

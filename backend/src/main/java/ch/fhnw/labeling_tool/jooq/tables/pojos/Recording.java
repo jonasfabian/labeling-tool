@@ -14,13 +14,15 @@ import javax.validation.constraints.Size;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Recording implements Serializable {
 
-    private static final long serialVersionUID = 473325205;
+    private static final long serialVersionUID = 63487342;
 
-    private final Long      id;
-    private final Long      excerptId;
-    private final Long      userId;
-    private final byte[]    audio;
-    private final Timestamp time;
+    private Long      id;
+    private Long      excerptId;
+    private Long      userId;
+    private byte[]    audio;
+    private Timestamp time;
+
+    public Recording() {}
 
     public Recording(Recording value) {
         this.id = value.id;
@@ -48,9 +50,17 @@ public class Recording implements Serializable {
         return this.id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @NotNull
     public Long getExcerptId() {
         return this.excerptId;
+    }
+
+    public void setExcerptId(Long excerptId) {
+        this.excerptId = excerptId;
     }
 
     @NotNull
@@ -58,13 +68,25 @@ public class Recording implements Serializable {
         return this.userId;
     }
 
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     @Size(max = 16777215)
     public byte[] getAudio() {
         return this.audio;
     }
 
+    public void setAudio(byte... audio) {
+        this.audio = audio;
+    }
+
     public Timestamp getTime() {
         return this.time;
+    }
+
+    public void setTime(Timestamp time) {
+        this.time = time;
     }
 
     @Override

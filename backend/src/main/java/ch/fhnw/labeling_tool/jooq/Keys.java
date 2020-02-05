@@ -49,6 +49,7 @@ public class Keys {
     public static final Identity<UserRecord, Long> IDENTITY_USER = Identities0.IDENTITY_USER;
     public static final Identity<UserAndTextAudioRecord, Long> IDENTITY_USER_AND_TEXT_AUDIO = Identities0.IDENTITY_USER_AND_TEXT_AUDIO;
     public static final Identity<UserGroupRecord, Long> IDENTITY_USER_GROUP = Identities0.IDENTITY_USER_GROUP;
+    public static final Identity<UserGroupRoleRecord, Long> IDENTITY_USER_GROUP_ROLE = Identities0.IDENTITY_USER_GROUP_ROLE;
 
     // -------------------------------------------------------------------------
     // UNIQUE and PRIMARY KEY definitions
@@ -63,9 +64,11 @@ public class Keys {
     public static final UniqueKey<TextAudioRecord> KEY_TEXT_AUDIO_PRIMARY = UniqueKeys0.KEY_TEXT_AUDIO_PRIMARY;
     public static final UniqueKey<UserRecord> KEY_USER_PRIMARY = UniqueKeys0.KEY_USER_PRIMARY;
     public static final UniqueKey<UserRecord> KEY_USER_EMAIL = UniqueKeys0.KEY_USER_EMAIL;
+    public static final UniqueKey<UserRecord> KEY_USER_USERNAME = UniqueKeys0.KEY_USER_USERNAME;
     public static final UniqueKey<UserAndTextAudioRecord> KEY_USER_AND_TEXT_AUDIO_PRIMARY = UniqueKeys0.KEY_USER_AND_TEXT_AUDIO_PRIMARY;
     public static final UniqueKey<UserAndTextAudioRecord> KEY_USER_AND_TEXT_AUDIO_UNI = UniqueKeys0.KEY_USER_AND_TEXT_AUDIO_UNI;
     public static final UniqueKey<UserGroupRecord> KEY_USER_GROUP_PRIMARY = UniqueKeys0.KEY_USER_GROUP_PRIMARY;
+    public static final UniqueKey<UserGroupRoleRecord> KEY_USER_GROUP_ROLE_PRIMARY = UniqueKeys0.KEY_USER_GROUP_ROLE_PRIMARY;
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
@@ -93,6 +96,7 @@ public class Keys {
         public static Identity<UserRecord, Long> IDENTITY_USER = Internal.createIdentity(User.USER, User.USER.ID);
         public static Identity<UserAndTextAudioRecord, Long> IDENTITY_USER_AND_TEXT_AUDIO = Internal.createIdentity(UserAndTextAudio.USER_AND_TEXT_AUDIO, UserAndTextAudio.USER_AND_TEXT_AUDIO.ID);
         public static Identity<UserGroupRecord, Long> IDENTITY_USER_GROUP = Internal.createIdentity(UserGroup.USER_GROUP, UserGroup.USER_GROUP.ID);
+        public static Identity<UserGroupRoleRecord, Long> IDENTITY_USER_GROUP_ROLE = Internal.createIdentity(UserGroupRole.USER_GROUP_ROLE, UserGroupRole.USER_GROUP_ROLE.ID);
     }
 
     private static class UniqueKeys0 {
@@ -105,9 +109,11 @@ public class Keys {
         public static final UniqueKey<TextAudioRecord> KEY_TEXT_AUDIO_PRIMARY = Internal.createUniqueKey(TextAudio.TEXT_AUDIO, "KEY_text_audio_PRIMARY", TextAudio.TEXT_AUDIO.ID);
         public static final UniqueKey<UserRecord> KEY_USER_PRIMARY = Internal.createUniqueKey(User.USER, "KEY_user_PRIMARY", User.USER.ID);
         public static final UniqueKey<UserRecord> KEY_USER_EMAIL = Internal.createUniqueKey(User.USER, "KEY_user_email", User.USER.EMAIL);
+        public static final UniqueKey<UserRecord> KEY_USER_USERNAME = Internal.createUniqueKey(User.USER, "KEY_user_username", User.USER.USERNAME);
         public static final UniqueKey<UserAndTextAudioRecord> KEY_USER_AND_TEXT_AUDIO_PRIMARY = Internal.createUniqueKey(UserAndTextAudio.USER_AND_TEXT_AUDIO, "KEY_user_and_text_audio_PRIMARY", UserAndTextAudio.USER_AND_TEXT_AUDIO.ID);
         public static final UniqueKey<UserAndTextAudioRecord> KEY_USER_AND_TEXT_AUDIO_UNI = Internal.createUniqueKey(UserAndTextAudio.USER_AND_TEXT_AUDIO, "KEY_user_and_text_audio_uni", UserAndTextAudio.USER_AND_TEXT_AUDIO.USER_ID, UserAndTextAudio.USER_AND_TEXT_AUDIO.TEXT_AUDIO_ID);
         public static final UniqueKey<UserGroupRecord> KEY_USER_GROUP_PRIMARY = Internal.createUniqueKey(UserGroup.USER_GROUP, "KEY_user_group_PRIMARY", UserGroup.USER_GROUP.ID);
+        public static final UniqueKey<UserGroupRoleRecord> KEY_USER_GROUP_ROLE_PRIMARY = Internal.createUniqueKey(UserGroupRole.USER_GROUP_ROLE, "KEY_user_group_role_PRIMARY", UserGroupRole.USER_GROUP_ROLE.ID);
     }
 
     private static class ForeignKeys0 {

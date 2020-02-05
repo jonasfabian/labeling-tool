@@ -14,18 +14,20 @@ import javax.validation.constraints.Size;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class FlywaySchemaHistory implements Serializable {
 
-    private static final long serialVersionUID = -163050274;
+    private static final long serialVersionUID = -1095809862;
 
-    private final Integer   installedRank;
-    private final String    version;
-    private final String    description;
-    private final String    type;
-    private final String    script;
-    private final Integer   checksum;
-    private final String    installedBy;
-    private final Timestamp installedOn;
-    private final Integer   executionTime;
-    private final Byte      success;
+    private Integer   installedRank;
+    private String    version;
+    private String    description;
+    private String    type;
+    private String    script;
+    private Integer   checksum;
+    private String    installedBy;
+    private Timestamp installedOn;
+    private Integer   executionTime;
+    private Byte      success;
+
+    public FlywaySchemaHistory() {}
 
     public FlywaySchemaHistory(FlywaySchemaHistory value) {
         this.installedRank = value.installedRank;
@@ -69,9 +71,17 @@ public class FlywaySchemaHistory implements Serializable {
         return this.installedRank;
     }
 
+    public void setInstalledRank(Integer installedRank) {
+        this.installedRank = installedRank;
+    }
+
     @Size(max = 50)
     public String getVersion() {
         return this.version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
     }
 
     @NotNull
@@ -80,10 +90,18 @@ public class FlywaySchemaHistory implements Serializable {
         return this.description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @NotNull
     @Size(max = 20)
     public String getType() {
         return this.type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @NotNull
@@ -92,8 +110,16 @@ public class FlywaySchemaHistory implements Serializable {
         return this.script;
     }
 
+    public void setScript(String script) {
+        this.script = script;
+    }
+
     public Integer getChecksum() {
         return this.checksum;
+    }
+
+    public void setChecksum(Integer checksum) {
+        this.checksum = checksum;
     }
 
     @NotNull
@@ -102,8 +128,16 @@ public class FlywaySchemaHistory implements Serializable {
         return this.installedBy;
     }
 
+    public void setInstalledBy(String installedBy) {
+        this.installedBy = installedBy;
+    }
+
     public Timestamp getInstalledOn() {
         return this.installedOn;
+    }
+
+    public void setInstalledOn(Timestamp installedOn) {
+        this.installedOn = installedOn;
     }
 
     @NotNull
@@ -111,9 +145,17 @@ public class FlywaySchemaHistory implements Serializable {
         return this.executionTime;
     }
 
+    public void setExecutionTime(Integer executionTime) {
+        this.executionTime = executionTime;
+    }
+
     @NotNull
     public Byte getSuccess() {
         return this.success;
+    }
+
+    public void setSuccess(Byte success) {
+        this.success = success;
     }
 
     @Override

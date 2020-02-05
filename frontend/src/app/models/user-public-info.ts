@@ -8,8 +8,8 @@ export enum Licence {
 
 export class UserPublicInfo {
   id: number;
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   username: string;
   password: string;
@@ -17,11 +17,10 @@ export class UserPublicInfo {
   sex: Sex;
   licence: Licence;
 
-
-  constructor(id: number, first_name: string, last_name: string, email: string, username: string, password: string, canton: string, sex: Sex, licence: Licence) {
+  constructor(id: number, firstName: string, lastName: string, email: string, username: string, password: string, canton: string, sex: Sex, licence: Licence) {
     this.id = id;
-    this.first_name = first_name;
-    this.last_name = last_name;
+    this.firstName = firstName;
+    this.lastName = lastName;
     this.email = email;
     this.username = username;
     this.password = password;

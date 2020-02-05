@@ -13,17 +13,19 @@ import javax.validation.constraints.Size;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TextAudio implements Serializable {
 
-    private static final long serialVersionUID = 958750013;
+    private static final long serialVersionUID = -546214904;
 
-    private final Long    id;
-    private final Double  audioStart;
-    private final Double  audioEnd;
-    private final String  text;
-    private final Integer fileid;
-    private final String  speaker;
-    private final Integer labeled;
-    private final Long    correct;
-    private final Long    wrong;
+    private Long    id;
+    private Double  audioStart;
+    private Double  audioEnd;
+    private String  text;
+    private Integer fileid;
+    private String  speaker;
+    private Integer labeled;
+    private Long    correct;
+    private Long    wrong;
+
+    public TextAudio() {}
 
     public TextAudio(TextAudio value) {
         this.id = value.id;
@@ -63,9 +65,17 @@ public class TextAudio implements Serializable {
         return this.id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @NotNull
     public Double getAudioStart() {
         return this.audioStart;
+    }
+
+    public void setAudioStart(Double audioStart) {
+        this.audioStart = audioStart;
     }
 
     @NotNull
@@ -73,9 +83,17 @@ public class TextAudio implements Serializable {
         return this.audioEnd;
     }
 
+    public void setAudioEnd(Double audioEnd) {
+        this.audioEnd = audioEnd;
+    }
+
     @Size(max = 16777215)
     public String getText() {
         return this.text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     @NotNull
@@ -83,21 +101,41 @@ public class TextAudio implements Serializable {
         return this.fileid;
     }
 
+    public void setFileid(Integer fileid) {
+        this.fileid = fileid;
+    }
+
     @Size(max = 45)
     public String getSpeaker() {
         return this.speaker;
+    }
+
+    public void setSpeaker(String speaker) {
+        this.speaker = speaker;
     }
 
     public Integer getLabeled() {
         return this.labeled;
     }
 
+    public void setLabeled(Integer labeled) {
+        this.labeled = labeled;
+    }
+
     public Long getCorrect() {
         return this.correct;
     }
 
+    public void setCorrect(Long correct) {
+        this.correct = correct;
+    }
+
     public Long getWrong() {
         return this.wrong;
+    }
+
+    public void setWrong(Long wrong) {
+        this.wrong = wrong;
     }
 
     @Override

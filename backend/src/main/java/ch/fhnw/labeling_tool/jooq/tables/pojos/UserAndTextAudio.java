@@ -11,12 +11,14 @@ import java.sql.Timestamp;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class UserAndTextAudio implements Serializable {
 
-    private static final long serialVersionUID = 1077483854;
+    private static final long serialVersionUID = -1352887047;
 
-    private final Long      id;
-    private final Long      userId;
-    private final Integer   textAudioId;
-    private final Timestamp time;
+    private Long      id;
+    private Long      userId;
+    private Integer   textAudioId;
+    private Timestamp time;
+
+    public UserAndTextAudio() {}
 
     public UserAndTextAudio(UserAndTextAudio value) {
         this.id = value.id;
@@ -41,16 +43,32 @@ public class UserAndTextAudio implements Serializable {
         return this.id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Long getUserId() {
         return this.userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public Integer getTextAudioId() {
         return this.textAudioId;
     }
 
+    public void setTextAudioId(Integer textAudioId) {
+        this.textAudioId = textAudioId;
+    }
+
     public Timestamp getTime() {
         return this.time;
+    }
+
+    public void setTime(Timestamp time) {
+        this.time = time;
     }
 
     @Override

@@ -17,18 +17,22 @@ CREATE TABLE user
     canton     VARCHAR(45)  NOT NULL,
     sex        ENUM ('none','m','f')      DEFAULT 'none',
     licence    ENUM ('public','academic') DEFAULT 'academic',
+    enabled    BOOLEAN                    DEFAULT true,
     PRIMARY KEY (id),
+    UNIQUE KEY username (username),
     UNIQUE KEY email (email)
 ) ENGINE = INNODB
   DEFAULT CHARSET = UTF8MB4;
 
 CREATE TABLE user_group_role
 (
+    id            BIGINT NOT NULL AUTO_INCREMENT,
     role          ENUM ('ADMIN', 'GROUP_ADMIN', 'USER'),
     user_id       BIGINT NOT NULL,
     user_group_id BIGINT NOT NULL,
-    FOREIGN KEY (user_group_id) REFERENCES user_group (id),
-    FOREIGN KEY (user_id) REFERENCES user (id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_group_id) REFERENCES user_group (id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE
 
 ) ENGINE = INNODB
   DEFAULT CHARSET = UTF8MB4;
@@ -40,7 +44,7 @@ CREATE TABLE original_text
     original_text  BLOB       NOT NULL,
     extracted_text MEDIUMTEXT NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (user_group_id) REFERENCES user_group (id)
+    FOREIGN KEY (user_group_id) REFERENCES user_group (id) ON DELETE CASCADE
 );
 CREATE TABLE excerpt
 (
@@ -50,7 +54,7 @@ CREATE TABLE excerpt
     isSkipped        INT     DEFAULT 0,
     isPrivate        BOOLEAN DEFAULT FALSE,
     PRIMARY KEY (id),
-    FOREIGN KEY (original_text_id) REFERENCES original_text (id)
+    FOREIGN KEY (original_text_id) REFERENCES original_text (id) ON DELETE CASCADE
 );
 CREATE TABLE recording
 (
@@ -60,8 +64,8 @@ CREATE TABLE recording
     audio      MEDIUMBLOB,
     time       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES user (id),
-    FOREIGN KEY (excerpt_id) REFERENCES excerpt (id)
+    FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE,
+    FOREIGN KEY (excerpt_id) REFERENCES excerpt (id) ON DELETE CASCADE
 ) ENGINE = INNODB
   DEFAULT CHARSET = UTF8MB4;
 
@@ -73,7 +77,7 @@ CREATE TABLE checked_utterance
     label        ENUM ('SKIPPED', 'CORRECT', 'WRONG'),
     time         DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES user (id)
+    FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE
 ) ENGINE = INNODB
   DEFAULT CHARSET = UTF8MB4;
 

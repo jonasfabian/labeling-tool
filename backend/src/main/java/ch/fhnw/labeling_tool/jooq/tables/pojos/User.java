@@ -16,17 +16,19 @@ import javax.validation.constraints.Size;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User implements Serializable {
 
-    private static final long serialVersionUID = -1894335027;
+    private static final long serialVersionUID = -712549939;
 
-    private final Long        id;
-    private final String      firstName;
-    private final String      lastName;
-    private final String      email;
-    private final String      username;
-    private final String      password;
-    private final String      canton;
-    private final UserSex     sex;
-    private final UserLicence licence;
+    private Long        id;
+    private String      firstName;
+    private String      lastName;
+    private String      email;
+    private String      username;
+    private String      password;
+    private String      canton;
+    private UserSex     sex;
+    private UserLicence licence;
+
+    public User() {}
 
     public User(User value) {
         this.id = value.id;
@@ -66,10 +68,18 @@ public class User implements Serializable {
         return this.id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @NotNull
     @Size(max = 100)
     public String getFirstName() {
         return this.firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     @NotNull
@@ -78,10 +88,18 @@ public class User implements Serializable {
         return this.lastName;
     }
 
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     @NotNull
     @Size(max = 100)
     public String getEmail() {
         return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @NotNull
@@ -90,10 +108,18 @@ public class User implements Serializable {
         return this.username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     @NotNull
     @Size(max = 100)
     public String getPassword() {
         return this.password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @NotNull
@@ -102,12 +128,24 @@ public class User implements Serializable {
         return this.canton;
     }
 
+    public void setCanton(String canton) {
+        this.canton = canton;
+    }
+
     public UserSex getSex() {
         return this.sex;
     }
 
+    public void setSex(UserSex sex) {
+        this.sex = sex;
+    }
+
     public UserLicence getLicence() {
         return this.licence;
+    }
+
+    public void setLicence(UserLicence licence) {
+        this.licence = licence;
     }
 
     @Override

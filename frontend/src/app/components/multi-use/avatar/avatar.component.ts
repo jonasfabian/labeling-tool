@@ -6,7 +6,6 @@ import {Component, Input, OnChanges} from '@angular/core';
   styleUrls: ['./avatar.component.scss']
 })
 export class AvatarComponent implements OnChanges {
-
   @Input() size: number;
   @Input() username: string;
   @Input() fontSize: number;
@@ -16,7 +15,7 @@ export class AvatarComponent implements OnChanges {
   color = '';
 
   ngOnChanges(): void {
-    if (this.username !== undefined) {
+    if (this.username) {
       this.initials = this.username.charAt(0).toLocaleUpperCase();
       this.color = this.stringToColor(this.username);
     }
