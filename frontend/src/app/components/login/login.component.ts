@@ -4,7 +4,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {EmailPassword} from '../../models/email-password';
 import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
-import {Licence, Sex, UserPublicInfo} from '../../models/user-public-info';
+import {Licence, Sex, User} from '../../models/user';
 
 @Component({
   selector: 'app-login',
@@ -57,5 +57,5 @@ export class LoginComponent implements OnInit {
   }
 
   toggleIsLogin = () => this.isLogin = !this.isLogin;
-  newUser = () => new UserPublicInfo(undefined, '', '', '', '', '', '', Sex.NONE, Licence.ACADEMIC);
+  newUser = () => new User(undefined, '', '', '', '', '', '', Sex.NONE, Licence.ACADEMIC);
 }

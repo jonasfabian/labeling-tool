@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {UserPublicInfo} from '../../../models/user-public-info';
+import {User} from '../../../models/user';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from '../../../services/api.service';
 import {HttpClient} from '@angular/common/http';
@@ -15,7 +15,7 @@ import {SnackBarService} from '../../../services/snack-bar.service';
 })
 export class ProfileEditorComponent implements OnInit {
   @Input() isNewUser;
-  @Input() user: UserPublicInfo;
+  @Input() user: User;
   @Output() output = new EventEmitter();
   registerForm: FormGroup;
 

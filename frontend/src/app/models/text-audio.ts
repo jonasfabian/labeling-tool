@@ -3,18 +3,18 @@ export class TextAudio {
   audioStart: number;
   audioEnd: number;
   text: string;
-  fileId: number;
+  fileid: number;
   speaker: string;
-  labeled: number;
+  labeled: boolean;
   correct: number;
   wrong: number;
 
-  constructor(id: number, audioStart: number, audioEnd: number, text: string, fileId: number, speaker: string, labeled: number, correct: number, wrong: number) {
+  constructor(id: number, audioStart: number, audioEnd: number, text: string, fileId: number, speaker: string, labeled: boolean, correct: number, wrong: number) {
     this.id = id;
     this.audioStart = audioStart;
     this.audioEnd = audioEnd;
     this.text = text;
-    this.fileId = fileId;
+    this.fileid = fileId;
     this.speaker = speaker;
     this.labeled = labeled;
     this.correct = correct;

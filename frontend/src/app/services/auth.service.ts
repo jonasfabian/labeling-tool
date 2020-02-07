@@ -5,7 +5,7 @@ import {ApiService} from './api.service';
 import {EmailPassword} from '../models/email-password';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../environments/environment';
-import {SpringPrincipal} from './spring-principal';
+import {SpringPrincipal} from '../models/spring-principal';
 import {SnackBarService} from './snack-bar.service';
 
 @Injectable({

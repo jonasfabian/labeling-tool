@@ -1,39 +1,13 @@
 <mat-icon (click)="close()" id="shortcut-icon">close</mat-icon>
-<div id="shortcuts-title">
-  <h2>Shortcuts</h2>
-</div>
+<div id="shortcuts-title"><h2>Shortcuts</h2></div>
 <hr id="break">
-<mat-grid-list [cols]="cols" rowHeight="75px">
-  <mat-grid-tile *ngIf="!isInLabeling">
-    <div class="shortcut-key">
-      <span>P</span>
-    </div>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <div class="shortcut-key">
-      <span>C</span>
-    </div>
-  </mat-grid-tile>
-  <mat-grid-tile *ngIf="!isInLabeling">
-    <div class="shortcut-key">
-      <span>W</span>
-    </div>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <div class="shortcut-key">
-      <span>S</span>
-    </div>
-  </mat-grid-tile>
-  <mat-grid-tile *ngIf="!isInLabeling">
-    <span class="shortcut-description">Play/Stop</span>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <span class="shortcut-description">Correct</span>
-  </mat-grid-tile>
-  <mat-grid-tile *ngIf="!isInLabeling">
-    <span class="shortcut-description">Wrong</span>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <span class="shortcut-description">Skip</span>
-  </mat-grid-tile>
+<mat-grid-list [cols]="4" rowHeight="75px">
+  <mat-grid-tile><span class="shortcut-key">P</span></mat-grid-tile>
+  <mat-grid-tile><span class="shortcut-key">C</span></mat-grid-tile>
+  <mat-grid-tile><span class="shortcut-key">W</span></mat-grid-tile>
+  <mat-grid-tile><span class="shortcut-key">S</span></mat-grid-tile>
+  <mat-grid-tile><span class="shortcut-description">Play/Stop</span></mat-grid-tile>
+  <mat-grid-tile><span class="shortcut-description">Correct</span></mat-grid-tile>
+  <mat-grid-tile><span class="shortcut-description">Wrong</span></mat-grid-tile>
+  <mat-grid-tile><span class="shortcut-description">Skip</span></mat-grid-tile>
 </mat-grid-list>

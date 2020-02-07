@@ -1,5 +1,6 @@
 import {Component, Input, OnChanges} from '@angular/core';
 
+//TODO not sure if this is needed - as we cannot change it anyway
 @Component({
   selector: 'app-avatar',
   templateUrl: './avatar.component.html',

@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import {Component} from '@angular/core';
+import {MatDialogRef} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {ApiService} from '../../../services/api.service';
 
@@ -8,26 +8,19 @@ import {ApiService} from '../../../services/api.service';
   templateUrl: './check-more.component.html',
   styleUrls: ['./check-more.component.scss']
 })
-export class CheckMoreComponent implements OnInit {
+export class CheckMoreComponent {
 
-  constructor(
-    public dialogRef: MatDialogRef<CheckMoreComponent>,
-    private router: Router,
-    private apiService: ApiService
-  ) {
+  constructor(public dialogRef: MatDialogRef<CheckMoreComponent>, private router: Router, private apiService: ApiService) {
   }
 
-  ngOnInit() {
-  }
-
-  close(): void {
-    this.apiService.showTenMoreQuest = false;
-    this.dialogRef.close();
+  no(): void {
+    this.close();
     this.router.navigate(['/overview']);
   }
 
-  yes(): void {
+  close(): void {
     this.dialogRef.close();
+    // TODO not sure this component makes sense as we ignore the response anyway and instead go over the service.
     this.apiService.showTenMoreQuest = false;
   }
 }

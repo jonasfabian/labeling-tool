@@ -84,7 +84,7 @@ export class ApiService {
   }
 
   loadAudioBlob(file: TextAudio): void {
-    this.getAudioFile(file.fileId).subscribe(resp => {
+    this.getAudioFile(file.fileid).subscribe(resp => {
       this.blobUrl = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(resp));
       this.uri.next(this.blobUrl);
     });

@@ -1,6 +1,6 @@
 <div style="height: 40%; margin-top: -12px; background-color: #303f9f; display: flex; justify-content: center;">
-  <mat-card [style.height]="'calc(100% - 130px)'"
-            id="header-card" style="margin: 15px; width: 50%; position: absolute;">
+  <mat-card *ngIf="user" [style.height]="'calc(100% - 130px)'" id="header-card"
+            style="margin: 15px; width: 50%; position: absolute;">
     <div style="height: 10%; display: flex; align-items: center; margin-top: -15px;">
       <h1 style="margin: 0;">Account Settings</h1>
     </div>
@@ -10,27 +10,27 @@
         <mat-list>
           <mat-list-item>
             <span>First name:</span>&nbsp;
-            <span class="info-input">{{user?.firstName}}</span>
+            <span class="info-input">{{user.firstName}}</span>
           </mat-list-item>
           <mat-list-item>
             <span>Last name:</span>&nbsp;
-            <span class="info-input">{{user?.lastName}}</span>
+            <span class="info-input">{{user.lastName}}</span>
           </mat-list-item>
           <mat-list-item>
             <span>Email:</span>&nbsp;
-            <span class="info-input">{{user?.email}}</span>
+            <span class="info-input">{{user.email}}</span>
           </mat-list-item>
           <mat-list-item>
             <span>Canton:</span>&nbsp;
-            <span class="info-input">{{user?.canton | CantonIdToCanton}}</span>
+            <span class="info-input">{{getCanton()}}</span>
           </mat-list-item>
           <mat-list-item>
             <span>Licence:</span>&nbsp;
-            <span class="info-input">{{user?.licence}}</span>
+            <span class="info-input">{{user.licence}}</span>
           </mat-list-item>
           <mat-list-item>
             <span>Sex:</span>&nbsp;
-            <span class="info-input">{{user?.sex}}</span>
+            <span class="info-input">{{user.sex}}</span>
           </mat-list-item>
         </mat-list>
         <mat-button-toggle (click)="toggleProfileEdit()" class="edit-button">Edit Profile</mat-button-toggle>
@@ -73,12 +73,11 @@
     </div>
     <!--TODO not sure how much sense this makes anymore? as we cannot edit the profile picture anyway-->
     <div style="width: 30%; float: right; height: 90%; margin-top: 15px;">
-      <app-avatar [borderRadius]="0" [fontSize]="100" [hover]="'default'" [size]="260" [username]="this.user?.username"
+      <app-avatar [borderRadius]="0" [fontSize]="100" [hover]="'default'" [size]="260" [username]="this.user.username"
                   style="float: left;"></app-avatar>
       <div style="text-align: center; padding: 15px;">
-        <span style="font-size: 25px;">{{user?.username}}</span>
+        <span style="font-size: 25px;">{{user.username}}</span>
       </div>
     </div>
   </mat-card>
 </div>
-<div style="height: 60%;"></div>

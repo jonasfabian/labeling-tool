@@ -2,7 +2,6 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {NavigationMenuComponent} from './components/navigation-menu/navigation-menu.component';
 import {ShortcutComponent} from './components/check/shortcut/shortcut.component';
-import {IntToBooleanPipe} from './pipes/int-to-boolean.pipe';
 import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -17,7 +16,6 @@ import {OverviewComponent} from './components/overview/overview.component';
 import {CheckComponent} from './components/check/check/check.component';
 import {LoginComponent} from './components/login/login.component';
 import {RecordComponent} from './components/record/record.component';
-import {CantonIdToCantonPipe} from './pipes/canton-id-to-canton.pipe';
 import {AuthHeaderInterceptorService} from './services/auth-header-interceptor.service';
 import {ErrorInterceptorService} from './services/error-interceptor.service';
 import {ProfileEditorComponent} from './components/multi-use/profile-editor/profile-editor.component';
@@ -45,6 +43,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {GroupsAdminComponent} from './components/admin/groups-admin/groups-admin.component';
 import {GroupAdminComponent} from './components/admin/group-admin/group-admin.component';
 import {MatDialogModule} from '@angular/material/dialog';
+import {UserAdminComponent} from './components/admin/user-admin/user-admin.component';
 
 @NgModule({
   declarations: [
@@ -52,8 +51,6 @@ import {MatDialogModule} from '@angular/material/dialog';
     NavigationMenuComponent,
     OverviewComponent,
     ShortcutComponent,
-    IntToBooleanPipe,
-    CantonIdToCantonPipe,
     CheckComponent,
     LoginComponent,
     ProfileComponent,
@@ -62,7 +59,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     RecordComponent,
     ProfileEditorComponent,
     GroupsAdminComponent,
-    GroupAdminComponent
+    GroupAdminComponent,
+    UserAdminComponent
   ],
   imports: [
     BrowserModule,
