@@ -2,7 +2,7 @@ import {ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChil
 import {CarouselComponent} from 'ngx-carousel-lib';
 import {ApiService} from '../../../services/api.service';
 import {CheckIndex} from '../../../models/check-index';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {ShortcutComponent} from '../shortcut/shortcut.component';
 import {AuthService} from '../../../services/auth.service';
 import {CheckMoreComponent} from '../check-more/check-more.component';
@@ -18,8 +18,8 @@ import {AudioSnippet} from '../../../models/audio-snippet';
 })
 export class CheckComponent implements OnInit {
 
-  @ViewChild('carousel', {static: false}) carousel: CarouselComponent;
-  @ViewChild('audioPlayer', {static: false}) audioPlayer: ElementRef;
+  @ViewChild('carousel') carousel: CarouselComponent;
+  @ViewChild('audioPlayer') audioPlayer: ElementRef;
   checkIndexArray: Array<CheckIndex> = [];
   available = false;
   isPlaying = false;
