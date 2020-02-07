@@ -28,13 +28,16 @@ export class RecordComponent implements OnInit {
   private waveSurfer: WaveSurfer = null;
   // @ts-ignore
   private mediaRecorder: MediaRecorder;
+  // TODO not sure how we want to access the groupid => url based or just sessionstorage?
+  // probalby just get all avaible and then select one or just forward to public one -> url based e.g /1,2,3 etc.
+  // NOTE: for now we just set the public group access
+  private groupId = 1;
 
   constructor(private snackBarService: SnackBarService, private detector: ChangeDetectorRef, private httpClient: HttpClient) {
   }
 
   ngOnInit() {
-    //TODO not sure how we want to access the groupid => url based or just sessionstorage?
-    this.httpClient.get<Excerpt>(environment.url + 'excerpt').subscribe(value => this.excerpt = value);
+    this.httpClient.get<Excerpt>(`${environment.url}user_group/${this.groupId}/excerpt`).subscribe(value => this.excerpt = value);
     if (this.waveSurfer === null) {
       const context = new AudioContext();
       const processor = context.createScriptProcessor(1024, 1, 1);
@@ -107,13 +110,12 @@ export class RecordComponent implements OnInit {
     const formData = new FormData();
     formData.append(`file`, this.recordingBlob, 'audio');
     formData.append('excerptId', recording.excerptId + '');
-    this.httpClient.post(environment.url + 'recording', formData).subscribe(() => {
+    this.httpClient.post(`${environment.url}user_group/${this.groupId}/recording`, formData).subscribe(() => {
       this.fileContent = '';
       this.recordingBlob = null;
       this.waveSurfer.empty();
       this.hasStartedRecording = false;
       this.snackBarService.openMessage('Successfully uploaded recording');
     });
-
   }
 }

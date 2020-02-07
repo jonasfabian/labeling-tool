@@ -19,7 +19,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> implements Record4<Long, Long, byte[], String> {
 
-    private static final long serialVersionUID = 1852016684;
+    private static final long serialVersionUID = -1456549288;
 
     public void setId(Long value) {
         set(0, value);
@@ -43,7 +43,7 @@ public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> 
     }
 
     @NotNull
-    @Size(max = 65535)
+    @Size(max = 16777215)
     public byte[] getOriginalText() {
         return (byte[]) get(2);
     }

@@ -1,1 +1,8 @@
-<p>group-admin works!</p>
+<div>
+  <mat-label (click)="projectSetupFile.click()" class="click-me">select submission</mat-label>
+  <input #projectSetupFile (change)="handleFileInput($event.target.files)" hidden id="projectSetupFile" multiple
+         type="file">
+  <button (click)="projectSetupFile.click()" mat-icon-button title="Upload File">
+    <mat-icon>cloud_upload</mat-icon>
+  </button>
+</div>

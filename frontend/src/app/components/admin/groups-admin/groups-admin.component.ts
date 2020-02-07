@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-groups-admin',
@@ -6,8 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./groups-admin.component.scss']
 })
 export class GroupsAdminComponent implements OnInit {
-
-  constructor() { }
+  //TODO add ability to manage,create,update,delete user groups
+  constructor() {
+  }
 
   ngOnInit() {
   }

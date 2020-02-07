@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
 
-@RestController("/api/")
+@RestController
+@RequestMapping("/api/")
 public class RestApiController {
     private final UserGroupDao userGroupDao;
     private final RecordingDao recordingDao;
@@ -30,7 +31,7 @@ public class RestApiController {
 
     //    TODO rest-endpoints taken from flask => replace and move to sub modules
 
-    //    TODO not sure how to handle public logins etc.
+
     @PostMapping("register")
     public void register(@RequestBody User user) {
         customUserDetailsService.register(user);
@@ -59,7 +60,7 @@ public class RestApiController {
         customUserDetailsService.putUser(user);
     }
 
-    @PostMapping("user/password")
+    @PutMapping("user/password")
     public void putPassword(@RequestBody ChangePassword changePassword) {
         customUserDetailsService.putPassword(changePassword);
     }
@@ -74,7 +75,5 @@ public class RestApiController {
         userGroupDao.insert(userGroup);
     }
 
-    //TODO add endpoints for user_group_role etc. not sure how we want to handle these
-    //TODO maybe add ids
-//    TODO change logic based on old flask once everything is ready
+
 }

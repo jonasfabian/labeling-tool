@@ -41,7 +41,7 @@ CREATE TABLE original_text
 (
     id             BIGINT     NOT NULL AUTO_INCREMENT,
     user_group_id  BIGINT     NOT NULL,
-    original_text  BLOB       NOT NULL,
+    original_text  MEDIUMBLOB NOT NULL,
     extracted_text MEDIUMTEXT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (user_group_id) REFERENCES user_group (id) ON DELETE CASCADE
@@ -99,6 +99,7 @@ VALUES (1, 'Hallo Welt', 0, 0),
 
 ### OLD TABLES
 # TODO replace with new data structure once everything else is clear/done
+# TOOD not sure how we want to import/export the data e.g. maybe just import a dump from the other database?
 CREATE TABLE speaker
 (
     id            BIGINT NOT NULL AUTO_INCREMENT,

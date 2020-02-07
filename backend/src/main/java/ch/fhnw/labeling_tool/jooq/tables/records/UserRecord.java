@@ -13,15 +13,15 @@ import javax.validation.constraints.Size;
 
 import org.jooq.Field;
 import org.jooq.Record1;
-import org.jooq.Record9;
-import org.jooq.Row9;
+import org.jooq.Record10;
+import org.jooq.Row10;
 import org.jooq.impl.UpdatableRecordImpl;
 
 
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Record9<Long, String, String, String, String, String, String, UserSex, UserLicence> {
+public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Record10<Long, String, String, String, String, String, String, UserSex, UserLicence, Boolean> {
 
-    private static final long serialVersionUID = -197725586;
+    private static final long serialVersionUID = 136783133;
 
     public void setId(Long value) {
         set(0, value);
@@ -107,6 +107,14 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
         return (UserLicence) get(8);
     }
 
+    public void setEnabled(Boolean value) {
+        set(9, value);
+    }
+
+    public Boolean getEnabled() {
+        return (Boolean) get(9);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -117,17 +125,17 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
     }
 
     // -------------------------------------------------------------------------
-    // Record9 type implementation
+    // Record10 type implementation
     // -------------------------------------------------------------------------
 
     @Override
-    public Row9<Long, String, String, String, String, String, String, UserSex, UserLicence> fieldsRow() {
-        return (Row9) super.fieldsRow();
+    public Row10<Long, String, String, String, String, String, String, UserSex, UserLicence, Boolean> fieldsRow() {
+        return (Row10) super.fieldsRow();
     }
 
     @Override
-    public Row9<Long, String, String, String, String, String, String, UserSex, UserLicence> valuesRow() {
-        return (Row9) super.valuesRow();
+    public Row10<Long, String, String, String, String, String, String, UserSex, UserLicence, Boolean> valuesRow() {
+        return (Row10) super.valuesRow();
     }
 
     @Override
@@ -176,6 +184,11 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
     }
 
     @Override
+    public Field<Boolean> field10() {
+        return User.USER.ENABLED;
+    }
+
+    @Override
     public Long component1() {
         return getId();
     }
@@ -221,6 +234,11 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
     }
 
     @Override
+    public Boolean component10() {
+        return getEnabled();
+    }
+
+    @Override
     public Long value1() {
         return getId();
     }
@@ -263,6 +281,11 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
     @Override
     public UserLicence value9() {
         return getLicence();
+    }
+
+    @Override
+    public Boolean value10() {
+        return getEnabled();
     }
 
     @Override
@@ -320,7 +343,13 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
     }
 
     @Override
-    public UserRecord values(Long value1, String value2, String value3, String value4, String value5, String value6, String value7, UserSex value8, UserLicence value9) {
+    public UserRecord value10(Boolean value) {
+        setEnabled(value);
+        return this;
+    }
+
+    @Override
+    public UserRecord values(Long value1, String value2, String value3, String value4, String value5, String value6, String value7, UserSex value8, UserLicence value9, Boolean value10) {
         value1(value1);
         value2(value2);
         value3(value3);
@@ -330,6 +359,7 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
         value7(value7);
         value8(value8);
         value9(value9);
+        value10(value10);
         return this;
     }
 
@@ -341,7 +371,7 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
         super(User.USER);
     }
 
-    public UserRecord(Long id, String firstName, String lastName, String email, String username, String password, String canton, UserSex sex, UserLicence licence) {
+    public UserRecord(Long id, String firstName, String lastName, String email, String username, String password, String canton, UserSex sex, UserLicence licence, Boolean enabled) {
         super(User.USER);
 
         set(0, id);
@@ -353,5 +383,6 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
         set(6, canton);
         set(7, sex);
         set(8, licence);
+        set(9, enabled);
     }
 }

@@ -17,21 +17,13 @@ const routes: Routes = [
     canActivate: [AuthGuardService],
     children: [
       {
-        path: 'check',
+        path: 'user_group',
         component: GroupAdminComponent,
       },
       {
-        path: 'user_group',
+        path: 'user_groups',
         component: GroupsAdminComponent,
       },
-      {
-        path: 'overview',
-        component: OverviewComponent,
-      },
-      {
-        path: 'profile',
-        component: ProfileComponent,
-      }
     ]
   },
   {

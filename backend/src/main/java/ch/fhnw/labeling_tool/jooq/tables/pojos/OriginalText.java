@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class OriginalText implements Serializable {
 
-    private static final long serialVersionUID = 248758684;
+    private static final long serialVersionUID = 1561243368;
 
     private Long   id;
     private Long   userGroupId;
@@ -59,7 +59,7 @@ public class OriginalText implements Serializable {
     }
 
     @NotNull
-    @Size(max = 65535)
+    @Size(max = 16777215)
     public byte[] getOriginalText() {
         return this.originalText;
     }

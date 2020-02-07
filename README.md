@@ -17,6 +17,9 @@ run `gradle devBootRun` && `npm start` to run the development version
 ## Deployment
 some additional packages may be needed (Ubuntu 18.04.3 ):
 * `sudo apt install default-libmysqlclient-dev python3 mariadb-client libssl-dev nginx`
+* mariadb 10.4 see https://downloads.mariadb.org/mariadb/repositories/#distro=Ubuntu&distro_release=bionic--ubuntu_bionic&mirror=cnrs&version=10.4
+
+**NOTE:** for deployments the default admin password should be changed.
 
 1. run `gradle buildProd` to build the production jar
 1. `rsync backend/build/libs/backend-1.0.0-SNAPSHOT.jar s1042:~/labeling-tool/backend-1.0.0-SNAPSHOT.jar`
@@ -34,13 +37,13 @@ some additional packages may be needed (Ubuntu 18.04.3 ):
             location / {
                 proxy_pass http://127.0.0.1:8080/;
             }
-            location /app-v2/ {
+            location /v2//app/ {
                 proxy_pass http://localhost:8084/;
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_set_header X-Forwarded-Proto $scheme;
                 proxy_set_header X-Forwarded-Port $server_port;
             }
-            location /app-v2 {
+            location /v2/app/ {
                 return 301 https://www.cs.technik.fhnw.ch/speech-to-text-labeling-tool/app-v2/;
             }
 

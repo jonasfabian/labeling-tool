@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Licence, Sex, UserPublicInfo} from '../../../models/user-public-info';
+import {UserPublicInfo} from '../../../models/user-public-info';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from '../../../services/api.service';
 import {HttpClient} from '@angular/common/http';
@@ -15,27 +15,26 @@ import {SnackBarService} from '../../../services/snack-bar.service';
 })
 export class ProfileEditorComponent implements OnInit {
   @Input() isNewUser;
-  @Input() user: UserPublicInfo = new UserPublicInfo(undefined, '', '', '', '', '', '', Sex.NONE, Licence.ACADEMIC);
+  @Input() user: UserPublicInfo;
   @Output() output = new EventEmitter();
   registerForm: FormGroup;
 
-  constructor(public apiService: ApiService, private fb: FormBuilder, private snackBarService: SnackBarService, private httpClient: HttpClient,
-              private authService: AuthService) {
+  constructor(public apiService: ApiService, private fb: FormBuilder, private snackBarService: SnackBarService, private httpClient: HttpClient, private authService: AuthService) {
   }
 
   ngOnInit() {
     const cc = {
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      email: ['', Validators.compose([
+      firstName: [this.user.firstName, [Validators.required]],
+      lastName: [this.user.lastName, [Validators.required]],
+      email: [this.user.email, Validators.compose([
         Validators.required,
         Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
       ])],
-      username: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9-.]+$')]],
-      canton: ['ag', [Validators.required]],
+      username: [this.user.username, [Validators.required, Validators.pattern('^[a-zA-Z0-9-.]+$')]],
+      canton: [this.user.canton, [Validators.required]],
       password: undefined,
-      sex: ['none', [Validators.required]],
-      licence: ['academic', [Validators.required]],
+      sex: [this.user.sex, [Validators.required]],
+      licence: [this.user.licence, [Validators.required]],
     };
     if (this.isNewUser) {
       cc.password = ['', Validators.compose([

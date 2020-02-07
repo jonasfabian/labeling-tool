@@ -6,6 +6,7 @@ import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {ChangePassword} from '../../models/change-password';
 import {SnackBarService} from '../../services/snack-bar.service';
+import {log} from 'util';
 
 @Component({
   selector: 'app-profile',
@@ -41,10 +42,13 @@ export class ProfileComponent implements OnInit {
   copyUser = () => JSON.parse(JSON.stringify(this.user));
   toggleProfileEdit = () => this.isProfileEdit = !this.isProfileEdit;
   togglePasswordEdit = () => this.isPasswordEdit = !this.isPasswordEdit;
-  isOldPwError = (errorCode: string) => this.changePasswordForm.controls.newPassword.hasError(errorCode);
+  isOldPwError = (errorCode: string) => this.changePasswordForm.controls.password.hasError(errorCode);
   isNewPwError = (errorCode: string) => this.changePasswordForm.controls.newPassword.hasError(errorCode);
 
   changePassword() {
+    log('changePassword');
+    log(this.changePasswordForm.controls.password.value);
+    log(this.changePasswordForm.controls.newPassword.value);
     this.httpClient.put(environment.url + 'user/password',
       new ChangePassword(this.changePasswordForm.controls.password.value, this.changePasswordForm.controls.newPassword.value)
     ).subscribe(() => {

@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User implements Serializable {
 
-    private static final long serialVersionUID = -712549939;
+    private static final long serialVersionUID = -1905675456;
 
     private Long        id;
     private String      firstName;
@@ -27,6 +27,7 @@ public class User implements Serializable {
     private String      canton;
     private UserSex     sex;
     private UserLicence licence;
+    private Boolean     enabled;
 
     public User() {}
 
@@ -40,6 +41,7 @@ public class User implements Serializable {
         this.canton = value.canton;
         this.sex = value.sex;
         this.licence = value.licence;
+        this.enabled = value.enabled;
     }
 
     public User(
@@ -51,7 +53,8 @@ public class User implements Serializable {
         String      password,
         String      canton,
         UserSex     sex,
-        UserLicence licence
+        UserLicence licence,
+        Boolean     enabled
     ) {
         this.id = id;
         this.firstName = firstName;
@@ -62,6 +65,7 @@ public class User implements Serializable {
         this.canton = canton;
         this.sex = sex;
         this.licence = licence;
+        this.enabled = enabled;
     }
 
     public Long getId() {
@@ -148,6 +152,14 @@ public class User implements Serializable {
         this.licence = licence;
     }
 
+    public Boolean getEnabled() {
+        return this.enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("User (");
@@ -161,6 +173,7 @@ public class User implements Serializable {
         sb.append(", ").append(canton);
         sb.append(", ").append(sex);
         sb.append(", ").append(licence);
+        sb.append(", ").append(enabled);
 
         sb.append(")");
         return sb.toString();

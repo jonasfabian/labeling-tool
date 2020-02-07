@@ -7,15 +7,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-//TODO not sure if the whole user group makes sense or if we just want to deploy it multiple times? with dedicated sub urls
-//and dedicated databases
-//TODO hard code everything for the pubic api now etc.
-@RestController("/api/user_group/{groupId}/")
+@RestController
+@RequestMapping("/api/user_group/{groupId}/")
 public class UserGroupRestApiController {
     private final UserGroupService userGroupService;
 
     @Autowired
     public UserGroupRestApiController(UserGroupService userGroupService) {
+        System.out.println("this is actually used?");
         this.userGroupService = userGroupService;
     }
 

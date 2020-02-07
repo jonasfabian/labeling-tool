@@ -10,9 +10,7 @@ import {Router} from '@angular/router';
   styleUrls: ['./navigation-menu.component.scss']
 })
 export class NavigationMenuComponent {
-  // TODO add selection(dropdown) for  group here...
   @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
-  @ViewChild('menu', {static: true}) menu: MatMenu;
   username = '';
 
   constructor(public authService: AuthService, public router: Router) {

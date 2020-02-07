@@ -6,14 +6,15 @@ apply plugin: 'org.springframework.boot'
 description 'module containing the whole spring framework logic'
 
 dependencies {
-    compile 'org.springframework.boot:spring-boot-starter-web'
-    compile 'org.springframework.boot:spring-boot-starter-jooq'
-    compile 'org.springframework.boot:spring-boot-starter-security'
-    compile 'org.flywaydb:flyway-core'
-    compile 'org.mariadb.jdbc:mariadb-java-client'
     compile 'com.google.guava:guava'
     compile 'org.apache.commons:commons-csv'
     compile 'org.apache.commons:commons-math3'
+    compile 'org.apache.tika:tika-parsers'
+    compile 'org.flywaydb:flyway-core'
+    compile 'org.mariadb.jdbc:mariadb-java-client'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-jooq'
+    compile 'org.springframework.boot:spring-boot-starter-security'
 
     jooqRuntime 'org.mariadb.jdbc:mariadb-java-client'
     //logging libraries
@@ -25,8 +26,6 @@ dependencies {
 
     testCompile 'org.springframework.boot:spring-boot-devtools'
     testCompile 'commons-io:commons-io'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
 task devBootRun(type: BootRun) {
     main = 'ch.fhnw.labeling_tool.DevTestApplication'
@@ -50,7 +49,7 @@ jooq {
                 forcedTypes {
                     forcedType {
                         name = 'BOOLEAN'
-                        expression = ".*\\.published|finished"
+                        expression = ".*\\.published|finished|enabled"
                     }
                 }
             }
@@ -71,9 +70,6 @@ jooq {
         }
     }
 }
-test {
-    useJUnitPlatform()
-}
 task buildProd {
     dependsOn ':frontend:npmBuild'
     finalizedBy 'build'
@@ -81,5 +77,5 @@ task buildProd {
 
 //angular resources
 processResources {
-    from('../frontend/dist/frontend') { into 'public' }
+    from('../frontend/dist/labeling-tool') { into 'public' }
 }

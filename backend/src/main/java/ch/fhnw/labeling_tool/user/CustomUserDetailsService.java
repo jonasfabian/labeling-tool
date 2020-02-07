@@ -39,7 +39,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .map(user -> {
                     var userGroupRoles = userGroupRoleDao.fetchByUserId(user.getId());
                     var authorities = userGroupRoles.stream().map(userGroupRole -> userGroupRole.getRole().toString()).distinct().toArray(String[]::new);
-                    return new CustomUserDetails(user.getUsername(), user.getPassword(), AuthorityUtils.createAuthorityList(authorities), user.getId(), userGroupRoles);
+                    return new CustomUserDetails(user, AuthorityUtils.createAuthorityList(authorities), userGroupRoles);
                 })
                 .orElseThrow(() -> new UsernameNotFoundException(username));
     }
@@ -80,6 +80,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public void putPassword(ChangePassword changePassword) {
         User user = userDao.fetchOneById(getLoggedInUserId());
+        System.out.println("putPassword");
+        System.out.println(changePassword.getPassword());
+        System.out.println(changePassword.getNewPassword());
         if (passwordEncoder.matches(changePassword.getPassword(), user.getPassword())) {
             user.setPassword(passwordEncoder.encode(changePassword.getNewPassword()));
             userDao.update(user);
@@ -92,6 +95,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.insert(user);
         Long id = userDao.fetchOneByUsername(user.getUsername()).getId();
+        //    TODO not sure how to handle public logins for now we just add them to the public group
         //add user to public group
         userGroupRoleDao.insert(new UserGroupRole(null, UserGroupRoleRole.USER, id, 1L));
 
