@@ -44,6 +44,7 @@ import {GroupsAdminComponent} from './components/admin/groups-admin/groups-admin
 import {GroupAdminComponent} from './components/admin/group-admin/group-admin.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {UserAdminComponent} from './components/admin/user-admin/user-admin.component';
+import {MatSortModule} from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -92,6 +93,7 @@ import {UserAdminComponent} from './components/admin/user-admin/user-admin.compo
     MatSelectModule,
     MatSnackBarModule,
     MatDialogModule,
+    MatSortModule,
   ],
   providers: [
     HttpClient,

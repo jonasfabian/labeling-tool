@@ -13,38 +13,12 @@
       <mat-grid-tile colspan="12" rowspan="2">
         <mat-card style="position: absolute; top: 0; left: 5px; width: calc(50% + 155px); height: calc(100% - 35px);">
           <div [hidden]="showAll && dataSource.data.length === 0" style="width: 100%; height: 100%; padding: 0;">
-            <!--TODO not sure if all the sorting makes sense as this overview should only show the 100% correct/wrong ones so they can be marked as done?-->
-            <!--TODO not sure all info here is really needed i.e. speaker,id etc.-->
             <table [dataSource]="dataSource" id="overview-table" mat-table matSort
                    style="width: 100%; height: calc(100% - 50px); padding: 0; text-align: initial;">
-              <ng-container matColumnDef="id">
-                <th *matHeaderCellDef mat-header-cell mat-sort-header>ID</th>
-                <td *matCellDef="let element" mat-cell>{{element.id}}</td>
-              </ng-container>
-              <ng-container matColumnDef="audioStart">
-                <th *matHeaderCellDef mat-header-cell mat-sort-header>AudioStart</th>
-                <td *matCellDef="let element" mat-cell>{{element.audioStart | number : '1.2-5'}}</td>
-              </ng-container>
-              <ng-container matColumnDef="audioEnd">
-                <th *matHeaderCellDef mat-header-cell mat-sort-header>AudioEnd</th>
-                <td *matCellDef="let element" mat-cell>{{element.audioEnd | number : '1.2-5'}}</td>
-              </ng-container>
               <ng-container matColumnDef="text">
                 <th *matHeaderCellDef mat-header-cell mat-sort-header>Text</th>
                 <td *matCellDef="let element" [title]="element.text" mat-cell
                     style="max-width: 400px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; padding-right: 15px;">{{element.text}}</td>
-              </ng-container>
-              <ng-container matColumnDef="fileId">
-                <th *matHeaderCellDef mat-header-cell mat-sort-header>FileId</th>
-                <td *matCellDef="let element" mat-cell>{{element.fileId}}</td>
-              </ng-container>
-              <ng-container matColumnDef="speaker">
-                <th *matHeaderCellDef mat-header-cell mat-sort-header>Speaker</th>
-                <td *matCellDef="let element" mat-cell>{{element.speaker}}</td>
-              </ng-container>
-              <ng-container matColumnDef="labeled">
-                <th *matHeaderCellDef mat-header-cell mat-sort-header>Labeled</th>
-                <td *matCellDef="let element" mat-cell>{{element.labeled }}</td>
               </ng-container>
               <ng-container matColumnDef="correct">
                 <th *matHeaderCellDef mat-header-cell mat-sort-header>Correct</th>

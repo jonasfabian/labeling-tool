@@ -20,8 +20,8 @@ export class OverviewComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   showAll = true;
   dataSource = new MatTableDataSource<TextAudio | { id: number, text: string, username: string, time: string }>();
-  allColumns = ['id', 'audioStart', 'audioEnd', 'text', 'fileId', 'speaker', 'labeled', 'correct', 'wrong'];
-  recordingColumns = ['id', 'text', 'time', 'username'];
+  allColumns = ['text', 'correct', 'wrong'];
+  recordingColumns = ['text', 'time', 'username'];
   waveSurfer: WaveSurfer = null;
   isEditText = false;
   // TODO not sure this make sense
