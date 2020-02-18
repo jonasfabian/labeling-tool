@@ -4,7 +4,7 @@
 package ch.fhnw.labeling_tool.jooq.tables.pojos;
 
 
-import ch.fhnw.labeling_tool.jooq.enums.CheckedUtteranceLabel;
+import ch.fhnw.labeling_tool.jooq.enums.CheckedRecordingLabel;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -13,35 +13,35 @@ import javax.validation.constraints.NotNull;
 
 
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class CheckedUtterance implements Serializable {
+public class CheckedRecording implements Serializable {
 
-    private static final long serialVersionUID = 1016652664;
+    private static final long serialVersionUID = 1651105656;
 
     private Long                  id;
-    private Long                  utteranceId;
+    private Long                  recordingId;
     private Long                  userId;
-    private CheckedUtteranceLabel label;
+    private CheckedRecordingLabel label;
     private Timestamp             time;
 
-    public CheckedUtterance() {}
+    public CheckedRecording() {}
 
-    public CheckedUtterance(CheckedUtterance value) {
+    public CheckedRecording(CheckedRecording value) {
         this.id = value.id;
-        this.utteranceId = value.utteranceId;
+        this.recordingId = value.recordingId;
         this.userId = value.userId;
         this.label = value.label;
         this.time = value.time;
     }
 
-    public CheckedUtterance(
+    public CheckedRecording(
         Long                  id,
-        Long                  utteranceId,
+        Long                  recordingId,
         Long                  userId,
-        CheckedUtteranceLabel label,
+        CheckedRecordingLabel label,
         Timestamp             time
     ) {
         this.id = id;
-        this.utteranceId = utteranceId;
+        this.recordingId = recordingId;
         this.userId = userId;
         this.label = label;
         this.time = time;
@@ -56,12 +56,12 @@ public class CheckedUtterance implements Serializable {
     }
 
     @NotNull
-    public Long getUtteranceId() {
-        return this.utteranceId;
+    public Long getRecordingId() {
+        return this.recordingId;
     }
 
-    public void setUtteranceId(Long utteranceId) {
-        this.utteranceId = utteranceId;
+    public void setRecordingId(Long recordingId) {
+        this.recordingId = recordingId;
     }
 
     @NotNull
@@ -73,11 +73,11 @@ public class CheckedUtterance implements Serializable {
         this.userId = userId;
     }
 
-    public CheckedUtteranceLabel getLabel() {
+    public CheckedRecordingLabel getLabel() {
         return this.label;
     }
 
-    public void setLabel(CheckedUtteranceLabel label) {
+    public void setLabel(CheckedRecordingLabel label) {
         this.label = label;
     }
 
@@ -91,10 +91,10 @@ public class CheckedUtterance implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("CheckedUtterance (");
+        StringBuilder sb = new StringBuilder("CheckedRecording (");
 
         sb.append(id);
-        sb.append(", ").append(utteranceId);
+        sb.append(", ").append(recordingId);
         sb.append(", ").append(userId);
         sb.append(", ").append(label);
         sb.append(", ").append(time);

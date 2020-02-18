@@ -4,15 +4,16 @@
 package ch.fhnw.labeling_tool.jooq;
 
 
-import ch.fhnw.labeling_tool.jooq.tables.CheckedUtterance;
+import ch.fhnw.labeling_tool.jooq.tables.CheckedRecording;
+import ch.fhnw.labeling_tool.jooq.tables.CheckedTextAudio;
 import ch.fhnw.labeling_tool.jooq.tables.Excerpt;
 import ch.fhnw.labeling_tool.jooq.tables.FlywaySchemaHistory;
 import ch.fhnw.labeling_tool.jooq.tables.OriginalText;
 import ch.fhnw.labeling_tool.jooq.tables.Recording;
+import ch.fhnw.labeling_tool.jooq.tables.Source;
 import ch.fhnw.labeling_tool.jooq.tables.Speaker;
 import ch.fhnw.labeling_tool.jooq.tables.TextAudio;
 import ch.fhnw.labeling_tool.jooq.tables.User;
-import ch.fhnw.labeling_tool.jooq.tables.UserAndTextAudio;
 import ch.fhnw.labeling_tool.jooq.tables.UserGroup;
 import ch.fhnw.labeling_tool.jooq.tables.UserGroupRole;
 
@@ -20,7 +21,9 @@ import ch.fhnw.labeling_tool.jooq.tables.UserGroupRole;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
 
-    public static final CheckedUtterance CHECKED_UTTERANCE = ch.fhnw.labeling_tool.jooq.tables.CheckedUtterance.CHECKED_UTTERANCE;
+    public static final CheckedRecording CHECKED_RECORDING = ch.fhnw.labeling_tool.jooq.tables.CheckedRecording.CHECKED_RECORDING;
+
+    public static final CheckedTextAudio CHECKED_TEXT_AUDIO = ch.fhnw.labeling_tool.jooq.tables.CheckedTextAudio.CHECKED_TEXT_AUDIO;
 
     public static final Excerpt EXCERPT = ch.fhnw.labeling_tool.jooq.tables.Excerpt.EXCERPT;
 
@@ -30,13 +33,13 @@ public class Tables {
 
     public static final Recording RECORDING = ch.fhnw.labeling_tool.jooq.tables.Recording.RECORDING;
 
+    public static final Source SOURCE = ch.fhnw.labeling_tool.jooq.tables.Source.SOURCE;
+
     public static final Speaker SPEAKER = ch.fhnw.labeling_tool.jooq.tables.Speaker.SPEAKER;
 
     public static final TextAudio TEXT_AUDIO = ch.fhnw.labeling_tool.jooq.tables.TextAudio.TEXT_AUDIO;
 
     public static final User USER = ch.fhnw.labeling_tool.jooq.tables.User.USER;
-
-    public static final UserAndTextAudio USER_AND_TEXT_AUDIO = ch.fhnw.labeling_tool.jooq.tables.UserAndTextAudio.USER_AND_TEXT_AUDIO;
 
     public static final UserGroup USER_GROUP = ch.fhnw.labeling_tool.jooq.tables.UserGroup.USER_GROUP;
 

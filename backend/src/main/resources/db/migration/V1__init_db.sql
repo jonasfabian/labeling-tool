@@ -37,6 +37,8 @@ CREATE TABLE user_group_role
 ) ENGINE = INNODB
   DEFAULT CHARSET = UTF8MB4;
 
+### Recoding/Upload Functionality
+
 CREATE TABLE original_text
 (
     id             BIGINT     NOT NULL AUTO_INCREMENT,
@@ -69,20 +71,73 @@ CREATE TABLE recording
 ) ENGINE = INNODB
   DEFAULT CHARSET = UTF8MB4;
 
-CREATE TABLE checked_utterance
+CREATE TABLE checked_recording
 (
     id           BIGINT   NOT NULL AUTO_INCREMENT,
-    utterance_id BIGINT   NOT NULL,
+    recording_id BIGINT   NOT NULL,
     user_id      BIGINT   NOT NULL,
     label        ENUM ('SKIPPED', 'CORRECT', 'WRONG'),
     time         DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE,
+    FOREIGN KEY (recording_id) REFERENCES recording (id) ON DELETE CASCADE
 ) ENGINE = INNODB
   DEFAULT CHARSET = UTF8MB4;
 
-### TEST VALUES
-# TODO remove test values once everything else is done
+### Trancript Import with auto aligned audio etc.
+
+CREATE TABLE speaker
+(
+    id       BIGINT NOT NULL AUTO_INCREMENT,
+    name     VARCHAR(45),
+    language VARCHAR(45),
+    dialect  VARCHAR(45),
+    sex      ENUM ('none','m','f') DEFAULT 'none',
+    PRIMARY KEY (id)
+) ENGINE = INNODB
+  DEFAULT CHARSET = UTF8MB4;
+
+CREATE TABLE source
+(
+    id             BIGINT       NOT NULL AUTO_INCREMENT,
+    description    TEXT         NOT NULL,
+    name           varchar(45)  NOT NULL,
+    raw_audio_path varchar(255) NOT NULL,
+    raw_file_path  varchar(255) NOT NULL,
+    PRIMARY KEY (id)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 8
+  DEFAULT CHARSET = utf8;
+
+# TODO change frontend so it only loads the orginal file on edit and else loads a pre-clipped version
+CREATE TABLE text_audio
+(
+    id           BIGINT     NOT NULL AUTO_INCREMENT,
+    audio_start  FLOAT      NOT NULL,
+    audio_end    FLOAT      NOT NULL,
+    text         MEDIUMTEXT NOT NULL,
+    path_to_file varchar(255) DEFAULT NULL,
+    speaker_id   BIGINT     NOT NULL,
+    source_id    BIGINT     NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (speaker_id) REFERENCES speaker (id) ON DELETE CASCADE,
+    FOREIGN KEY (source_id) REFERENCES source (id) ON DELETE CASCADE
+) ENGINE = INNODB
+  DEFAULT CHARSET = UTF8MB4;
+
+CREATE TABLE checked_text_audio
+(
+    id            BIGINT   NOT NULL AUTO_INCREMENT,
+    text_audio_id BIGINT   NOT NULL,
+    user_id       BIGINT   NOT NULL,
+    label         ENUM ('SKIPPED', 'CORRECT', 'WRONG'),
+    time          DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE,
+    FOREIGN KEY (text_audio_id) REFERENCES text_audio (id) ON DELETE CASCADE
+) ENGINE = INNODB
+  DEFAULT CHARSET = UTF8MB4;
+
 
 # password admin
 INSERT INTO user(id, first_name, last_name, email, username, password, canton)
@@ -91,47 +146,12 @@ INSERT INTO user_group(id, name) VALUE (1, 'public test group');
 INSERT INTO user_group_role(role, user_id, user_group_id)
 VALUES ('ADMIN', 1, 1),
        ('GROUP_ADMIN', 1, 1);
+
+### TEST VALUES
+# TODO remove test values once everything else is done
+
 INSERT INTO original_text(id, original_text, extracted_text, user_group_id) VALUE (1, 'none', 'none', 1);
 INSERT INTO excerpt(original_text_id, excerpt, isSkipped, isPrivate)
 VALUES (1, 'Hallo Welt', 0, 0),
        (1, 'Guten Morgen', 0, 0),
        (1, 'Guten Abend', 0, 0);
-
-### OLD TABLES
-# TODO replace with new data structure once everything else is clear/done
-# TOOD not sure how we want to import/export the data e.g. maybe just import a dump from the other database?
-CREATE TABLE speaker
-(
-    id            BIGINT NOT NULL AUTO_INCREMENT,
-    speaker_id    VARCHAR(45),
-    language_used VARCHAR(45),
-    dialect       VARCHAR(45),
-    PRIMARY KEY (id)
-) ENGINE = INNODB
-  DEFAULT CHARSET = UTF8MB4;
-
-CREATE TABLE text_audio
-(
-    id          BIGINT NOT NULL AUTO_INCREMENT,
-    audio_start FLOAT  NOT NULL,
-    audio_end   FLOAT  NOT NULL,
-    text        MEDIUMTEXT,
-    fileId      INT    NOT NULL,
-    speaker     VARCHAR(45),
-    labeled     INT,
-    correct     BIGINT,
-    wrong       BIGINT,
-    PRIMARY KEY (id)
-) ENGINE = INNODB
-  DEFAULT CHARSET = UTF8MB4;
-
-CREATE TABLE user_and_text_audio
-(
-    id            BIGINT   NOT NULL AUTO_INCREMENT,
-    user_id       BIGINT,
-    text_audio_id INT,
-    time          DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id),
-    CONSTRAINT uni UNIQUE (user_id, text_audio_id)
-) ENGINE = INNODB
-  DEFAULT CHARSET = UTF8MB4;

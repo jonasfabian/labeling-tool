@@ -31,8 +31,9 @@ export class AuthService {
   }
 
   login(emailPassword: EmailPassword) {
-    this.loginUser(emailPassword).subscribe(() => {
-      this.router.navigate(['/overview']);
+    this.loginUser(emailPassword).subscribe(user => {
+      // TODO change redirect based on user permission
+      this.router.navigate(['/check']);
       sessionStorage.setItem(AuthService.currentUserStore, this.buildAuthenticationHeader(emailPassword.email, emailPassword.password));
     }, () => {
       this.snackBarService.openError('Unauthorized');

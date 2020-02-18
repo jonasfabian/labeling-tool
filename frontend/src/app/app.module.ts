@@ -45,6 +45,7 @@ import {GroupAdminComponent} from './components/admin/group-admin/group-admin.co
 import {MatDialogModule} from '@angular/material/dialog';
 import {UserAdminComponent} from './components/admin/user-admin/user-admin.component';
 import {MatSortModule} from '@angular/material/sort';
+import {LoadingInterceptorService} from './services/loading-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -107,7 +108,12 @@ import {MatSortModule} from '@angular/material/sort';
       provide: HTTP_INTERCEPTORS,
       useClass: AuthHeaderInterceptorService,
       multi: true
-    }
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingInterceptorService,
+      multi: true
+    },
   ],
   bootstrap: [
     AppComponent

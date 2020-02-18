@@ -29,7 +29,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TextAudio extends TableImpl<TextAudioRecord> {
 
-    private static final long serialVersionUID = -339186872;
+    private static final long serialVersionUID = -1070336699;
 
     public static final TextAudio TEXT_AUDIO = new TextAudio();
 
@@ -44,17 +44,13 @@ public class TextAudio extends TableImpl<TextAudioRecord> {
 
     public final TableField<TextAudioRecord, Double> AUDIO_END = createField("audio_end", org.jooq.impl.SQLDataType.FLOAT.nullable(false), this, "");
 
-    public final TableField<TextAudioRecord, String> TEXT = createField("text", org.jooq.impl.SQLDataType.CLOB.defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.CLOB)), this, "");
+    public final TableField<TextAudioRecord, String> TEXT = createField("text", org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "");
 
-    public final TableField<TextAudioRecord, Integer> FILEID = createField("fileId", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<TextAudioRecord, String> PATH_TO_FILE = createField("path_to_file", org.jooq.impl.SQLDataType.VARCHAR(255).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
-    public final TableField<TextAudioRecord, String> SPEAKER = createField("speaker", org.jooq.impl.SQLDataType.VARCHAR(45).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<TextAudioRecord, Long> SPEAKER_ID = createField("speaker_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
-    public final TableField<TextAudioRecord, Integer> LABELED = createField("labeled", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.INTEGER)), this, "");
-
-    public final TableField<TextAudioRecord, Long> CORRECT = createField("correct", org.jooq.impl.SQLDataType.BIGINT.defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.BIGINT)), this, "");
-
-    public final TableField<TextAudioRecord, Long> WRONG = createField("wrong", org.jooq.impl.SQLDataType.BIGINT.defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.BIGINT)), this, "");
+    public final TableField<TextAudioRecord, Long> SOURCE_ID = createField("source_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
     public TextAudio() {
         this(DSL.name("text_audio"), null);
@@ -87,7 +83,7 @@ public class TextAudio extends TableImpl<TextAudioRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.TEXT_AUDIO_PRIMARY);
+        return Arrays.<Index>asList(Indexes.TEXT_AUDIO_PRIMARY, Indexes.TEXT_AUDIO_SOURCE_ID, Indexes.TEXT_AUDIO_SPEAKER_ID);
     }
 
     @Override
@@ -103,6 +99,19 @@ public class TextAudio extends TableImpl<TextAudioRecord> {
     @Override
     public List<UniqueKey<TextAudioRecord>> getKeys() {
         return Arrays.<UniqueKey<TextAudioRecord>>asList(Keys.KEY_TEXT_AUDIO_PRIMARY);
+    }
+
+    @Override
+    public List<ForeignKey<TextAudioRecord, ?>> getReferences() {
+        return Arrays.<ForeignKey<TextAudioRecord, ?>>asList(Keys.TEXT_AUDIO_IBFK_1, Keys.TEXT_AUDIO_IBFK_2);
+    }
+
+    public Speaker speaker() {
+        return new Speaker(this, Keys.TEXT_AUDIO_IBFK_1);
+    }
+
+    public Source source() {
+        return new Source(this, Keys.TEXT_AUDIO_IBFK_2);
     }
 
     @Override

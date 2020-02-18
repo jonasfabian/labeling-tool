@@ -24,6 +24,10 @@ const routes: Routes = [
         path: 'user_groups',
         component: GroupsAdminComponent,
       },
+      {
+        path: 'overview',
+        component: OverviewComponent,
+      },
     ]
   },
   {
@@ -38,10 +42,6 @@ const routes: Routes = [
       {
         path: 'record',
         component: RecordComponent,
-      },
-      {
-        path: 'overview',
-        component: OverviewComponent,
       },
       {
         path: 'profile',

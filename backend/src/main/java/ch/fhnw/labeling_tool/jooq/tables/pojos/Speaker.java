@@ -4,6 +4,8 @@
 package ch.fhnw.labeling_tool.jooq.tables.pojos;
 
 
+import ch.fhnw.labeling_tool.jooq.enums.SpeakerSex;
+
 import java.io.Serializable;
 
 import javax.validation.constraints.Size;
@@ -12,32 +14,36 @@ import javax.validation.constraints.Size;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Speaker implements Serializable {
 
-    private static final long serialVersionUID = -534141375;
+    private static final long serialVersionUID = -1090121822;
 
-    private Long   id;
-    private String speakerId;
-    private String languageUsed;
-    private String dialect;
+    private Long       id;
+    private String     name;
+    private String     language;
+    private String     dialect;
+    private SpeakerSex sex;
 
     public Speaker() {}
 
     public Speaker(Speaker value) {
         this.id = value.id;
-        this.speakerId = value.speakerId;
-        this.languageUsed = value.languageUsed;
+        this.name = value.name;
+        this.language = value.language;
         this.dialect = value.dialect;
+        this.sex = value.sex;
     }
 
     public Speaker(
-        Long   id,
-        String speakerId,
-        String languageUsed,
-        String dialect
+        Long       id,
+        String     name,
+        String     language,
+        String     dialect,
+        SpeakerSex sex
     ) {
         this.id = id;
-        this.speakerId = speakerId;
-        this.languageUsed = languageUsed;
+        this.name = name;
+        this.language = language;
         this.dialect = dialect;
+        this.sex = sex;
     }
 
     public Long getId() {
@@ -49,21 +55,21 @@ public class Speaker implements Serializable {
     }
 
     @Size(max = 45)
-    public String getSpeakerId() {
-        return this.speakerId;
+    public String getName() {
+        return this.name;
     }
 
-    public void setSpeakerId(String speakerId) {
-        this.speakerId = speakerId;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Size(max = 45)
-    public String getLanguageUsed() {
-        return this.languageUsed;
+    public String getLanguage() {
+        return this.language;
     }
 
-    public void setLanguageUsed(String languageUsed) {
-        this.languageUsed = languageUsed;
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     @Size(max = 45)
@@ -75,14 +81,23 @@ public class Speaker implements Serializable {
         this.dialect = dialect;
     }
 
+    public SpeakerSex getSex() {
+        return this.sex;
+    }
+
+    public void setSex(SpeakerSex sex) {
+        this.sex = sex;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Speaker (");
 
         sb.append(id);
-        sb.append(", ").append(speakerId);
-        sb.append(", ").append(languageUsed);
+        sb.append(", ").append(name);
+        sb.append(", ").append(language);
         sb.append(", ").append(dialect);
+        sb.append(", ").append(sex);
 
         sb.append(")");
         return sb.toString();

@@ -53,23 +53,15 @@ public class TextAudioDao extends DAOImpl<TextAudioRecord, ch.fhnw.labeling_tool
         return fetch(TextAudio.TEXT_AUDIO.TEXT, values);
     }
 
-    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchByFileid(Integer... values) {
-        return fetch(TextAudio.TEXT_AUDIO.FILEID, values);
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchByPathToFile(String... values) {
+        return fetch(TextAudio.TEXT_AUDIO.PATH_TO_FILE, values);
     }
 
-    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchBySpeaker(String... values) {
-        return fetch(TextAudio.TEXT_AUDIO.SPEAKER, values);
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchBySpeakerId(Long... values) {
+        return fetch(TextAudio.TEXT_AUDIO.SPEAKER_ID, values);
     }
 
-    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchByLabeled(Integer... values) {
-        return fetch(TextAudio.TEXT_AUDIO.LABELED, values);
-    }
-
-    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchByCorrect(Long... values) {
-        return fetch(TextAudio.TEXT_AUDIO.CORRECT, values);
-    }
-
-    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchByWrong(Long... values) {
-        return fetch(TextAudio.TEXT_AUDIO.WRONG, values);
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchBySourceId(Long... values) {
+        return fetch(TextAudio.TEXT_AUDIO.SOURCE_ID, values);
     }
 }

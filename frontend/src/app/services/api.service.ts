@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
+import {Observable} from 'rxjs';
+import {SafeUrl} from '@angular/platform-browser';
 import {Canton} from '../models/canton';
 import {TextAudio} from '../models/text-audio';
-import {UserAndTextAudio} from '../models/user-and-text-audio';
 import {environment} from '../../environments/environment';
 
 @Injectable({
@@ -15,7 +14,6 @@ export class ApiService {
 
   url = environment.url;
   blobUrl: SafeUrl | string = '';
-  uri: BehaviorSubject<SafeUrl> = new BehaviorSubject<SafeUrl>('');
   showTenMoreQuest = false;
   // TODO maybe move into a sperate model class?
   cantons: Canton[] = [
@@ -47,9 +45,10 @@ export class ApiService {
     {cantonId: 'zh', cantonName: 'Zürich'}
   ];
 
-  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {
+  constructor(private http: HttpClient) {
   }
 
+  // TODO replace calls to new backend one by one.
   getTextAudios(): Observable<Array<TextAudio>> {
     return this.http.get<Array<TextAudio>>(this.url + 'getTextAudios');
   }
@@ -63,10 +62,6 @@ export class ApiService {
     return this.http.get<[{ id: number, text: string, username: string, time: string }]>(this.url + 'getAllRecordingData');
   }
 
-  createUserAndTextAudioIndex(userAndTextAudio: UserAndTextAudio): Observable<any> {
-    return this.http.post(this.url + 'createUserAndTextAudio', userAndTextAudio);
-  }
-
   updateTextAudio(textAudio: TextAudio): Observable<any> {
     return this.http.post(this.url + 'updateTextAudio', textAudio);
   }
@@ -77,16 +72,5 @@ export class ApiService {
 
   getAudioFile(fileId: number): Observable<any> {
     return this.http.get(this.url + 'getAudio?id=' + fileId, {responseType: 'blob'});
-  }
-
-  getTenNonLabeledTextAudios(): Observable<Array<TextAudio>> {
-    return this.http.get<Array<TextAudio>>(this.url + 'getTenNonLabeledTextAudios');
-  }
-
-  loadAudioBlob(file: TextAudio): void {
-    this.getAudioFile(file.fileid).subscribe(resp => {
-      this.blobUrl = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(resp));
-      this.uri.next(this.blobUrl);
-    });
   }
 }

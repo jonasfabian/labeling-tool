@@ -1,5 +1,5 @@
 <div>
-  <mat-label (click)="projectSetupFile.click()" class="click-me">select submission</mat-label>
+  <mat-label (click)="projectSetupFile.click()" class="click-me">select files for uploading</mat-label>
   <input #projectSetupFile (change)="handleFileInput($event.target.files)" hidden id="projectSetupFile" multiple
          type="file">
   <button (click)="projectSetupFile.click()" mat-icon-button title="Upload File">

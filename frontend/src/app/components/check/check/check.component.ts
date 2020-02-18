@@ -1,15 +1,17 @@
 import {ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {CarouselComponent} from 'ngx-carousel-lib';
 import {ApiService} from '../../../services/api.service';
-import {CheckIndex} from '../../../models/check-index';
 import {MatDialog} from '@angular/material/dialog';
 import {AuthService} from '../../../services/auth.service';
 import {CheckMoreComponent} from '../check-more/check-more.component';
 import WaveSurfer from 'wavesurfer.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
-import {UserAndTextAudio} from '../../../models/user-and-text-audio';
 import {AudioSnippet} from '../../../models/audio-snippet';
 import {ShortcutComponent} from '../shortcut/shortcut.component';
+import {HttpClient} from '@angular/common/http';
+import {TextAudio} from '../../../models/text-audio';
+import {environment} from '../../../../environments/environment';
+import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-check',
@@ -17,33 +19,37 @@ import {ShortcutComponent} from '../shortcut/shortcut.component';
   styleUrls: ['./check.component.scss']
 })
 export class CheckComponent implements OnInit {
+
+//  TODO simplifiy whole component
+
 // TODO why do we use both audioplayer and waveform?
   @ViewChild('carousel') carousel: CarouselComponent;
   @ViewChild('audioPlayer') audioPlayer: ElementRef;
-  checkIndexArray: Array<CheckIndex> = [];
-  available = false;
   isPlaying = false;
   skip = 3;
   correct = 1;
   wrong = 2;
   progress = 0;
   isReady = false;
-  noDataYet = true;
+  textAudios: Array<TextAudio> = [];
+  blobUrl: SafeUrl = '';
   private carouselIndex = 0;
-  private audioFileId = 0;
   private snippet: any;
   private waveSurfer: WaveSurfer = null;
   private userId: number;
+  // TODO replace dummy id with real one
+  private groupId = 1;
 
-  constructor(public apiService: ApiService, private dialog: MatDialog, private authService: AuthService, private detector: ChangeDetectorRef) {
+  constructor(private apiService: ApiService, private httpClient: HttpClient, private dialog: MatDialog, private authService: AuthService,
+              private detector: ChangeDetectorRef, private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
     this.authService.getUser().subscribe(user => this.userId = user.principal.id);
-    this.apiService.getTenNonLabeledTextAudios().subscribe(r => {
-      if (r.length > 0) {
-        this.noDataYet = false;
-        this.initCarousel();
+    // TODO load audio only once
+    this.getTenNonLabeledTextAudios().subscribe(textAudios => {
+      this.textAudios = textAudios;
+      if (textAudios.length > 0) {
         if (!this.waveSurfer) {
           // generateWaveform
           Promise.resolve(null).then(() => {
@@ -59,7 +65,7 @@ export class CheckComponent implements OnInit {
                 })
               ]
             });
-            this.loadAudioBlob(r[0].fileid);
+            this.loadAudioBlob(textAudios[0].fileid);
             this.waveSurfer.on('ready', () => {
               this.isReady = true;
             });
@@ -69,8 +75,6 @@ export class CheckComponent implements OnInit {
             });
           });
         }
-      } else {
-        this.noDataYet = true;
       }
     });
   }
@@ -88,65 +92,46 @@ export class CheckComponent implements OnInit {
     }
   }
 
+  /**
+   * set the checked type and prepare the next carousel
+   */
   setCheckedType(checkType: number): void {
-    this.checkIndexArray[this.carousel.carousel.activeIndex].checkedType = checkType;
-    this.prepareNextSlide(checkType);
-    this.carousel.slideNext();
-    if (this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.fileid !== this.audioFileId) {
-      this.loadNextAudioFile();
-    }
-  }
+    // TODO replace checkType nuber with enum
+    // TODO move to prepare and only load the required audio blob
 
-  prepareNextSlide(labeledType: number): void {
+    // TODO only trigger this method if the user has played the audio at least once to prevent accidental button presses
+
     this.isPlaying = false;
     this.waveSurfer.stop();
     this.resetAudioProgress();
+
+    const textAudio = this.textAudios[this.carousel.carousel.activeIndex];
+    // TODO correcly save that the label
+    // this.httpClient.post(`${environment.url}user_group/${this.groupId}/text_audio/next`, {textAudioId: textAudio.id});
+
     // checkIfFinishedChunk
-    if (this.carousel.carousel.activeIndex === this.checkIndexArray.length - 1) {
+    if (this.carousel.carousel.activeIndex === this.textAudios.length - 1) {
       this.apiService.showTenMoreQuest = true;
       // TODO not sure this component makes sense as we ignore the respone anyway and instead go over the service.
       this.dialog.open(CheckMoreComponent, {width: '500px', disableClose: true}).afterClosed().subscribe(() => {
         // reset carousel
         this.progress = 0;
         this.carouselIndex = 0;
-        this.checkIndexArray = [];
-        this.initCarousel();
+        this.textAudios = [];
+        // TODO load new  ones -> this is ignored anyway as we force a reload
         this.carousel.carousel.activeIndex = 0;
       });
-    }
-    const currentCheckIndex = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio;
-    currentCheckIndex.labeled = true;
-    if (labeledType === this.correct) {
-      currentCheckIndex.correct++;
-    } else if (labeledType === this.wrong) {
-      currentCheckIndex.wrong++;
-    }
-    this.apiService.updateTextAudio(currentCheckIndex).subscribe(() => {
-      this.apiService.createUserAndTextAudioIndex(new UserAndTextAudio(-1, this.userId, currentCheckIndex.id)).subscribe(() => {
-        if (this.audioFileId !== currentCheckIndex.fileid) {
-          this.loadNextAudioFile();
-        }
-        this.audioFileId = currentCheckIndex.fileid;
-      });
-    });
-  }
-
-  onSlideChange() {
-    if (this.carousel.carousel.activeIndex === this.checkIndexArray.length) {
-      this.apiService.getTenNonLabeledTextAudios().subscribe(r => {
-        r.forEach(labeledTextAudioIndex => {
-          this.checkIndexArray.push(new CheckIndex(this.carouselIndex, labeledTextAudioIndex, 0));
-          this.carouselIndex++;
-        });
-        this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio);
-      });
+    } else {
+      this.loadNextAudioFile();
+      this.carousel.slideNext();
     }
   }
 
+  // TODO replace with html audio
   playRegion() {
     this.waveSurfer.clearRegions();
-    const region = new AudioSnippet(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.audioStart,
-      this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.audioEnd);
+    const region = new AudioSnippet(this.textAudios[this.carousel.carousel.activeIndex].audioStart,
+      this.textAudios[this.carousel.carousel.activeIndex].audioEnd);
     this.addRegion(region.startTime, region.endTime);
     this.waveSurfer.on('audioprocess', () => {
       if (this.waveSurfer.getCurrentTime() === region.endTime) {
@@ -167,14 +152,20 @@ export class CheckComponent implements OnInit {
     }
   }
 
-  getColor = (checkedType: number): string => checkedType === 1 ? 'green' : checkedType === 2 ? 'red' : 'lightgray';
   openShortcutDialog = () => this.dialog.open(ShortcutComponent, {width: '500px', disableClose: false});
-  private loadNextAudioFile = () => this.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.fileid);
+  private loadNextAudioFile = () => this.loadAudioBlob(this.textAudios[this.carousel.carousel.activeIndex].fileid);
   private resetAudioProgress = () => this.progress = 0;
 
+  // TODO do we really need to poll them 3 times? -> simplify logic
+  private getTenNonLabeledTextAudios() {
+    return this.httpClient.get<Array<TextAudio>>(`${environment.url}user_group/${this.groupId}/text_audio/next`);
+  }
+
   private loadAudioBlob(fileId: number): void {
+    // TODO maybe just use html5 audio? -> loading symbol does not make any sense anymore as we do not wait for the loaded audio.
     this.apiService.getAudioFile(fileId).subscribe(resp => {
       this.waveSurfer.load(URL.createObjectURL(resp));
+      this.blobUrl = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(resp));
     });
   }
 
@@ -196,29 +187,6 @@ export class CheckComponent implements OnInit {
       start: startPos,
       end: endPos,
       resize: false
-    });
-  }
-
-  private initCarousel() {
-    this.apiService.getTenNonLabeledTextAudios().subscribe(r => {
-      r.forEach(l => {
-        if (r.length !== 0) {
-          this.available = true;
-          this.checkIndexArray.push(new CheckIndex(this.carouselIndex, l, 0));
-          this.carouselIndex++;
-        } else {
-          this.available = false;
-        }
-      });
-      if (this.checkIndexArray.length !== 0) {
-        this.progress = 0;
-        this.audioFileId = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.fileid;
-        this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio);
-        this.addRegion(
-          this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.audioStart,
-          this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.audioEnd
-        );
-      }
     });
   }
 }

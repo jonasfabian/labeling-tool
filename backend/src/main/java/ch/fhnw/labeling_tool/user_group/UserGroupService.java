@@ -79,10 +79,10 @@ public class UserGroupService {
                 OriginalTextRecord textRecord = dslContext.newRecord(ORIGINAL_TEXT, originalText);
                 textRecord.store();
                 var exps = Arrays.stream(sentences).map(s -> new Excerpt(null, textRecord.getId(), s, 0, (byte) 0)).collect(Collectors.toList());
-                //TODO probably return result for validation / post processing before saving/publishing
+                //TODO probably return result for validation / post processing before saving & publishing
                 excerptDao.insert(exps);
             } catch (IOException | TikaException | SAXException ex) {
-                //TODO not sure how we want to handle this e.g. maybe add a succes wrapper for each file? and return them afterwards?
+                //TODO not sure how we want to handle this e.g. maybe add a success wrapper for each file? and return them afterwards?
             }
 
         }

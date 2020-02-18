@@ -4,8 +4,8 @@
 package ch.fhnw.labeling_tool.jooq.tables.records;
 
 
-import ch.fhnw.labeling_tool.jooq.enums.CheckedUtteranceLabel;
-import ch.fhnw.labeling_tool.jooq.tables.CheckedUtterance;
+import ch.fhnw.labeling_tool.jooq.enums.CheckedRecordingLabel;
+import ch.fhnw.labeling_tool.jooq.tables.CheckedRecording;
 
 import java.sql.Timestamp;
 
@@ -19,9 +19,9 @@ import org.jooq.impl.UpdatableRecordImpl;
 
 
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class CheckedUtteranceRecord extends UpdatableRecordImpl<CheckedUtteranceRecord> implements Record5<Long, Long, Long, CheckedUtteranceLabel, Timestamp> {
+public class CheckedRecordingRecord extends UpdatableRecordImpl<CheckedRecordingRecord> implements Record5<Long, Long, Long, CheckedRecordingLabel, Timestamp> {
 
-    private static final long serialVersionUID = -2046476303;
+    private static final long serialVersionUID = -1895188751;
 
     public void setId(Long value) {
         set(0, value);
@@ -31,12 +31,12 @@ public class CheckedUtteranceRecord extends UpdatableRecordImpl<CheckedUtterance
         return (Long) get(0);
     }
 
-    public void setUtteranceId(Long value) {
+    public void setRecordingId(Long value) {
         set(1, value);
     }
 
     @NotNull
-    public Long getUtteranceId() {
+    public Long getRecordingId() {
         return (Long) get(1);
     }
 
@@ -49,12 +49,12 @@ public class CheckedUtteranceRecord extends UpdatableRecordImpl<CheckedUtterance
         return (Long) get(2);
     }
 
-    public void setLabel(CheckedUtteranceLabel value) {
+    public void setLabel(CheckedRecordingLabel value) {
         set(3, value);
     }
 
-    public CheckedUtteranceLabel getLabel() {
-        return (CheckedUtteranceLabel) get(3);
+    public CheckedRecordingLabel getLabel() {
+        return (CheckedRecordingLabel) get(3);
     }
 
     public void setTime(Timestamp value) {
@@ -79,38 +79,38 @@ public class CheckedUtteranceRecord extends UpdatableRecordImpl<CheckedUtterance
     // -------------------------------------------------------------------------
 
     @Override
-    public Row5<Long, Long, Long, CheckedUtteranceLabel, Timestamp> fieldsRow() {
+    public Row5<Long, Long, Long, CheckedRecordingLabel, Timestamp> fieldsRow() {
         return (Row5) super.fieldsRow();
     }
 
     @Override
-    public Row5<Long, Long, Long, CheckedUtteranceLabel, Timestamp> valuesRow() {
+    public Row5<Long, Long, Long, CheckedRecordingLabel, Timestamp> valuesRow() {
         return (Row5) super.valuesRow();
     }
 
     @Override
     public Field<Long> field1() {
-        return CheckedUtterance.CHECKED_UTTERANCE.ID;
+        return CheckedRecording.CHECKED_RECORDING.ID;
     }
 
     @Override
     public Field<Long> field2() {
-        return CheckedUtterance.CHECKED_UTTERANCE.UTTERANCE_ID;
+        return CheckedRecording.CHECKED_RECORDING.RECORDING_ID;
     }
 
     @Override
     public Field<Long> field3() {
-        return CheckedUtterance.CHECKED_UTTERANCE.USER_ID;
+        return CheckedRecording.CHECKED_RECORDING.USER_ID;
     }
 
     @Override
-    public Field<CheckedUtteranceLabel> field4() {
-        return CheckedUtterance.CHECKED_UTTERANCE.LABEL;
+    public Field<CheckedRecordingLabel> field4() {
+        return CheckedRecording.CHECKED_RECORDING.LABEL;
     }
 
     @Override
     public Field<Timestamp> field5() {
-        return CheckedUtterance.CHECKED_UTTERANCE.TIME;
+        return CheckedRecording.CHECKED_RECORDING.TIME;
     }
 
     @Override
@@ -120,7 +120,7 @@ public class CheckedUtteranceRecord extends UpdatableRecordImpl<CheckedUtterance
 
     @Override
     public Long component2() {
-        return getUtteranceId();
+        return getRecordingId();
     }
 
     @Override
@@ -129,7 +129,7 @@ public class CheckedUtteranceRecord extends UpdatableRecordImpl<CheckedUtterance
     }
 
     @Override
-    public CheckedUtteranceLabel component4() {
+    public CheckedRecordingLabel component4() {
         return getLabel();
     }
 
@@ -145,7 +145,7 @@ public class CheckedUtteranceRecord extends UpdatableRecordImpl<CheckedUtterance
 
     @Override
     public Long value2() {
-        return getUtteranceId();
+        return getRecordingId();
     }
 
     @Override
@@ -154,7 +154,7 @@ public class CheckedUtteranceRecord extends UpdatableRecordImpl<CheckedUtterance
     }
 
     @Override
-    public CheckedUtteranceLabel value4() {
+    public CheckedRecordingLabel value4() {
         return getLabel();
     }
 
@@ -164,37 +164,37 @@ public class CheckedUtteranceRecord extends UpdatableRecordImpl<CheckedUtterance
     }
 
     @Override
-    public CheckedUtteranceRecord value1(Long value) {
+    public CheckedRecordingRecord value1(Long value) {
         setId(value);
         return this;
     }
 
     @Override
-    public CheckedUtteranceRecord value2(Long value) {
-        setUtteranceId(value);
+    public CheckedRecordingRecord value2(Long value) {
+        setRecordingId(value);
         return this;
     }
 
     @Override
-    public CheckedUtteranceRecord value3(Long value) {
+    public CheckedRecordingRecord value3(Long value) {
         setUserId(value);
         return this;
     }
 
     @Override
-    public CheckedUtteranceRecord value4(CheckedUtteranceLabel value) {
+    public CheckedRecordingRecord value4(CheckedRecordingLabel value) {
         setLabel(value);
         return this;
     }
 
     @Override
-    public CheckedUtteranceRecord value5(Timestamp value) {
+    public CheckedRecordingRecord value5(Timestamp value) {
         setTime(value);
         return this;
     }
 
     @Override
-    public CheckedUtteranceRecord values(Long value1, Long value2, Long value3, CheckedUtteranceLabel value4, Timestamp value5) {
+    public CheckedRecordingRecord values(Long value1, Long value2, Long value3, CheckedRecordingLabel value4, Timestamp value5) {
         value1(value1);
         value2(value2);
         value3(value3);
@@ -207,15 +207,15 @@ public class CheckedUtteranceRecord extends UpdatableRecordImpl<CheckedUtterance
     // Constructors
     // -------------------------------------------------------------------------
 
-    public CheckedUtteranceRecord() {
-        super(CheckedUtterance.CHECKED_UTTERANCE);
+    public CheckedRecordingRecord() {
+        super(CheckedRecording.CHECKED_RECORDING);
     }
 
-    public CheckedUtteranceRecord(Long id, Long utteranceId, Long userId, CheckedUtteranceLabel label, Timestamp time) {
-        super(CheckedUtterance.CHECKED_UTTERANCE);
+    public CheckedRecordingRecord(Long id, Long recordingId, Long userId, CheckedRecordingLabel label, Timestamp time) {
+        super(CheckedRecording.CHECKED_RECORDING);
 
         set(0, id);
-        set(1, utteranceId);
+        set(1, recordingId);
         set(2, userId);
         set(3, label);
         set(4, time);

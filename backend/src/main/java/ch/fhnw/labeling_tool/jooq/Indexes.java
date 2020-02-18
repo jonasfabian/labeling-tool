@@ -4,15 +4,16 @@
 package ch.fhnw.labeling_tool.jooq;
 
 
-import ch.fhnw.labeling_tool.jooq.tables.CheckedUtterance;
+import ch.fhnw.labeling_tool.jooq.tables.CheckedRecording;
+import ch.fhnw.labeling_tool.jooq.tables.CheckedTextAudio;
 import ch.fhnw.labeling_tool.jooq.tables.Excerpt;
 import ch.fhnw.labeling_tool.jooq.tables.FlywaySchemaHistory;
 import ch.fhnw.labeling_tool.jooq.tables.OriginalText;
 import ch.fhnw.labeling_tool.jooq.tables.Recording;
+import ch.fhnw.labeling_tool.jooq.tables.Source;
 import ch.fhnw.labeling_tool.jooq.tables.Speaker;
 import ch.fhnw.labeling_tool.jooq.tables.TextAudio;
 import ch.fhnw.labeling_tool.jooq.tables.User;
-import ch.fhnw.labeling_tool.jooq.tables.UserAndTextAudio;
 import ch.fhnw.labeling_tool.jooq.tables.UserGroup;
 import ch.fhnw.labeling_tool.jooq.tables.UserGroupRole;
 
@@ -28,8 +29,12 @@ public class Indexes {
     // INDEX definitions
     // -------------------------------------------------------------------------
 
-    public static final Index CHECKED_UTTERANCE_PRIMARY = Indexes0.CHECKED_UTTERANCE_PRIMARY;
-    public static final Index CHECKED_UTTERANCE_USER_ID = Indexes0.CHECKED_UTTERANCE_USER_ID;
+    public static final Index CHECKED_RECORDING_PRIMARY = Indexes0.CHECKED_RECORDING_PRIMARY;
+    public static final Index CHECKED_RECORDING_RECORDING_ID = Indexes0.CHECKED_RECORDING_RECORDING_ID;
+    public static final Index CHECKED_RECORDING_USER_ID = Indexes0.CHECKED_RECORDING_USER_ID;
+    public static final Index CHECKED_TEXT_AUDIO_PRIMARY = Indexes0.CHECKED_TEXT_AUDIO_PRIMARY;
+    public static final Index CHECKED_TEXT_AUDIO_TEXT_AUDIO_ID = Indexes0.CHECKED_TEXT_AUDIO_TEXT_AUDIO_ID;
+    public static final Index CHECKED_TEXT_AUDIO_USER_ID = Indexes0.CHECKED_TEXT_AUDIO_USER_ID;
     public static final Index EXCERPT_ORIGINAL_TEXT_ID = Indexes0.EXCERPT_ORIGINAL_TEXT_ID;
     public static final Index EXCERPT_PRIMARY = Indexes0.EXCERPT_PRIMARY;
     public static final Index FLYWAY_SCHEMA_HISTORY_FLYWAY_SCHEMA_HISTORY_S_IDX = Indexes0.FLYWAY_SCHEMA_HISTORY_FLYWAY_SCHEMA_HISTORY_S_IDX;
@@ -39,13 +44,14 @@ public class Indexes {
     public static final Index RECORDING_EXCERPT_ID = Indexes0.RECORDING_EXCERPT_ID;
     public static final Index RECORDING_PRIMARY = Indexes0.RECORDING_PRIMARY;
     public static final Index RECORDING_USER_ID = Indexes0.RECORDING_USER_ID;
+    public static final Index SOURCE_PRIMARY = Indexes0.SOURCE_PRIMARY;
     public static final Index SPEAKER_PRIMARY = Indexes0.SPEAKER_PRIMARY;
     public static final Index TEXT_AUDIO_PRIMARY = Indexes0.TEXT_AUDIO_PRIMARY;
+    public static final Index TEXT_AUDIO_SOURCE_ID = Indexes0.TEXT_AUDIO_SOURCE_ID;
+    public static final Index TEXT_AUDIO_SPEAKER_ID = Indexes0.TEXT_AUDIO_SPEAKER_ID;
     public static final Index USER_EMAIL = Indexes0.USER_EMAIL;
     public static final Index USER_PRIMARY = Indexes0.USER_PRIMARY;
     public static final Index USER_USERNAME = Indexes0.USER_USERNAME;
-    public static final Index USER_AND_TEXT_AUDIO_PRIMARY = Indexes0.USER_AND_TEXT_AUDIO_PRIMARY;
-    public static final Index USER_AND_TEXT_AUDIO_UNI = Indexes0.USER_AND_TEXT_AUDIO_UNI;
     public static final Index USER_GROUP_PRIMARY = Indexes0.USER_GROUP_PRIMARY;
     public static final Index USER_GROUP_ROLE_PRIMARY = Indexes0.USER_GROUP_ROLE_PRIMARY;
     public static final Index USER_GROUP_ROLE_USER_GROUP_ID = Indexes0.USER_GROUP_ROLE_USER_GROUP_ID;
@@ -56,8 +62,12 @@ public class Indexes {
     // -------------------------------------------------------------------------
 
     private static class Indexes0 {
-        public static Index CHECKED_UTTERANCE_PRIMARY = Internal.createIndex("PRIMARY", CheckedUtterance.CHECKED_UTTERANCE, new OrderField[] { CheckedUtterance.CHECKED_UTTERANCE.ID }, true);
-        public static Index CHECKED_UTTERANCE_USER_ID = Internal.createIndex("user_id", CheckedUtterance.CHECKED_UTTERANCE, new OrderField[] { CheckedUtterance.CHECKED_UTTERANCE.USER_ID }, false);
+        public static Index CHECKED_RECORDING_PRIMARY = Internal.createIndex("PRIMARY", CheckedRecording.CHECKED_RECORDING, new OrderField[] { CheckedRecording.CHECKED_RECORDING.ID }, true);
+        public static Index CHECKED_RECORDING_RECORDING_ID = Internal.createIndex("recording_id", CheckedRecording.CHECKED_RECORDING, new OrderField[] { CheckedRecording.CHECKED_RECORDING.RECORDING_ID }, false);
+        public static Index CHECKED_RECORDING_USER_ID = Internal.createIndex("user_id", CheckedRecording.CHECKED_RECORDING, new OrderField[] { CheckedRecording.CHECKED_RECORDING.USER_ID }, false);
+        public static Index CHECKED_TEXT_AUDIO_PRIMARY = Internal.createIndex("PRIMARY", CheckedTextAudio.CHECKED_TEXT_AUDIO, new OrderField[] { CheckedTextAudio.CHECKED_TEXT_AUDIO.ID }, true);
+        public static Index CHECKED_TEXT_AUDIO_TEXT_AUDIO_ID = Internal.createIndex("text_audio_id", CheckedTextAudio.CHECKED_TEXT_AUDIO, new OrderField[] { CheckedTextAudio.CHECKED_TEXT_AUDIO.TEXT_AUDIO_ID }, false);
+        public static Index CHECKED_TEXT_AUDIO_USER_ID = Internal.createIndex("user_id", CheckedTextAudio.CHECKED_TEXT_AUDIO, new OrderField[] { CheckedTextAudio.CHECKED_TEXT_AUDIO.USER_ID }, false);
         public static Index EXCERPT_ORIGINAL_TEXT_ID = Internal.createIndex("original_text_id", Excerpt.EXCERPT, new OrderField[] { Excerpt.EXCERPT.ORIGINAL_TEXT_ID }, false);
         public static Index EXCERPT_PRIMARY = Internal.createIndex("PRIMARY", Excerpt.EXCERPT, new OrderField[] { Excerpt.EXCERPT.ID }, true);
         public static Index FLYWAY_SCHEMA_HISTORY_FLYWAY_SCHEMA_HISTORY_S_IDX = Internal.createIndex("flyway_schema_history_s_idx", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, new OrderField[] { FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.SUCCESS }, false);
@@ -67,13 +77,14 @@ public class Indexes {
         public static Index RECORDING_EXCERPT_ID = Internal.createIndex("excerpt_id", Recording.RECORDING, new OrderField[] { Recording.RECORDING.EXCERPT_ID }, false);
         public static Index RECORDING_PRIMARY = Internal.createIndex("PRIMARY", Recording.RECORDING, new OrderField[] { Recording.RECORDING.ID }, true);
         public static Index RECORDING_USER_ID = Internal.createIndex("user_id", Recording.RECORDING, new OrderField[] { Recording.RECORDING.USER_ID }, false);
+        public static Index SOURCE_PRIMARY = Internal.createIndex("PRIMARY", Source.SOURCE, new OrderField[] { Source.SOURCE.ID }, true);
         public static Index SPEAKER_PRIMARY = Internal.createIndex("PRIMARY", Speaker.SPEAKER, new OrderField[] { Speaker.SPEAKER.ID }, true);
         public static Index TEXT_AUDIO_PRIMARY = Internal.createIndex("PRIMARY", TextAudio.TEXT_AUDIO, new OrderField[] { TextAudio.TEXT_AUDIO.ID }, true);
+        public static Index TEXT_AUDIO_SOURCE_ID = Internal.createIndex("source_id", TextAudio.TEXT_AUDIO, new OrderField[] { TextAudio.TEXT_AUDIO.SOURCE_ID }, false);
+        public static Index TEXT_AUDIO_SPEAKER_ID = Internal.createIndex("speaker_id", TextAudio.TEXT_AUDIO, new OrderField[] { TextAudio.TEXT_AUDIO.SPEAKER_ID }, false);
         public static Index USER_EMAIL = Internal.createIndex("email", User.USER, new OrderField[] { User.USER.EMAIL }, true);
         public static Index USER_PRIMARY = Internal.createIndex("PRIMARY", User.USER, new OrderField[] { User.USER.ID }, true);
         public static Index USER_USERNAME = Internal.createIndex("username", User.USER, new OrderField[] { User.USER.USERNAME }, true);
-        public static Index USER_AND_TEXT_AUDIO_PRIMARY = Internal.createIndex("PRIMARY", UserAndTextAudio.USER_AND_TEXT_AUDIO, new OrderField[] { UserAndTextAudio.USER_AND_TEXT_AUDIO.ID }, true);
-        public static Index USER_AND_TEXT_AUDIO_UNI = Internal.createIndex("uni", UserAndTextAudio.USER_AND_TEXT_AUDIO, new OrderField[] { UserAndTextAudio.USER_AND_TEXT_AUDIO.USER_ID, UserAndTextAudio.USER_AND_TEXT_AUDIO.TEXT_AUDIO_ID }, true);
         public static Index USER_GROUP_PRIMARY = Internal.createIndex("PRIMARY", UserGroup.USER_GROUP, new OrderField[] { UserGroup.USER_GROUP.ID }, true);
         public static Index USER_GROUP_ROLE_PRIMARY = Internal.createIndex("PRIMARY", UserGroupRole.USER_GROUP_ROLE, new OrderField[] { UserGroupRole.USER_GROUP_ROLE.ID }, true);
         public static Index USER_GROUP_ROLE_USER_GROUP_ID = Internal.createIndex("user_group_id", UserGroupRole.USER_GROUP_ROLE, new OrderField[] { UserGroupRole.USER_GROUP_ROLE.USER_GROUP_ID }, false);

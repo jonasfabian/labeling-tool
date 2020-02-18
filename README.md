@@ -1,4 +1,4 @@
-# Requirements
+## Requirements
 **Required**
 * Java 11 
 * MariaDB 10.4
@@ -9,7 +9,7 @@ Note: Other versions might work, but have not been tested yet
 **Optional**
 * npm: @angular/cli
 * IntelliJ Idea
-
+## Data Structure
 ## Development
 run `gradle generateSampleJooqSchemaSource --rerun-tasks` to update the jooq database classes
 run `gradle devBootRun` && `npm start` to run the development version

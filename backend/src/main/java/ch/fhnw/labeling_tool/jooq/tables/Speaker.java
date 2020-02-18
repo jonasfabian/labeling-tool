@@ -7,6 +7,7 @@ package ch.fhnw.labeling_tool.jooq.tables;
 import ch.fhnw.labeling_tool.jooq.Indexes;
 import ch.fhnw.labeling_tool.jooq.Keys;
 import ch.fhnw.labeling_tool.jooq.LabelingTool;
+import ch.fhnw.labeling_tool.jooq.enums.SpeakerSex;
 import ch.fhnw.labeling_tool.jooq.tables.records.SpeakerRecord;
 
 import java.util.Arrays;
@@ -29,7 +30,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Speaker extends TableImpl<SpeakerRecord> {
 
-    private static final long serialVersionUID = -273526594;
+    private static final long serialVersionUID = 1526483309;
 
     public static final Speaker SPEAKER = new Speaker();
 
@@ -40,11 +41,13 @@ public class Speaker extends TableImpl<SpeakerRecord> {
 
     public final TableField<SpeakerRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
-    public final TableField<SpeakerRecord, String> SPEAKER_ID = createField("speaker_id", org.jooq.impl.SQLDataType.VARCHAR(45).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<SpeakerRecord, String> NAME = createField("name", org.jooq.impl.SQLDataType.VARCHAR(45).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
-    public final TableField<SpeakerRecord, String> LANGUAGE_USED = createField("language_used", org.jooq.impl.SQLDataType.VARCHAR(45).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<SpeakerRecord, String> LANGUAGE = createField("language", org.jooq.impl.SQLDataType.VARCHAR(45).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     public final TableField<SpeakerRecord, String> DIALECT = createField("dialect", org.jooq.impl.SQLDataType.VARCHAR(45).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+
+    public final TableField<SpeakerRecord, SpeakerSex> SEX = createField("sex", org.jooq.impl.SQLDataType.VARCHAR(4).defaultValue(org.jooq.impl.DSL.inline("'none'", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.SpeakerSex.class), this, "");
 
     public Speaker() {
         this(DSL.name("speaker"), null);

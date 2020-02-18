@@ -55,9 +55,9 @@ public class CustomUserDetailsService implements UserDetailsService {
         return getLoggedInUser().id;
     }
 
-    public boolean isAllowedOnProject(long userGroupId, boolean admin) {
+    public boolean isAllowedOnProject(long userGroupId, boolean checkAdminPermission) {
         return isAdmin() || getLoggedInUser().userGroupRoles.stream()
-                .anyMatch(userGroupRole -> userGroupRole.getUserGroupId() == userGroupId && (!admin || userGroupRole.getRole() == UserGroupRoleRole.GROUP_ADMIN));
+                .anyMatch(userGroupRole -> userGroupRole.getUserGroupId() == userGroupId && (!checkAdminPermission || userGroupRole.getRole() == UserGroupRoleRole.GROUP_ADMIN));
     }
 
     private CustomUserDetails getLoggedInUser() {
@@ -96,6 +96,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         userDao.insert(user);
         Long id = userDao.fetchOneByUsername(user.getUsername()).getId();
         //    TODO not sure how to handle public logins for now we just add them to the public group
+        // TODO afterwards they can be added to the groups by the admins
         //add user to public group
         userGroupRoleDao.insert(new UserGroupRole(null, UserGroupRoleRole.USER, id, 1L));
 

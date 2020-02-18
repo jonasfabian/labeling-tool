@@ -4,6 +4,7 @@
 package ch.fhnw.labeling_tool.jooq.tables.daos;
 
 
+import ch.fhnw.labeling_tool.jooq.enums.SpeakerSex;
 import ch.fhnw.labeling_tool.jooq.tables.Speaker;
 import ch.fhnw.labeling_tool.jooq.tables.records.SpeakerRecord;
 
@@ -41,15 +42,19 @@ public class SpeakerDao extends DAOImpl<SpeakerRecord, ch.fhnw.labeling_tool.joo
         return fetchOne(Speaker.SPEAKER.ID, value);
     }
 
-    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Speaker> fetchBySpeakerId(String... values) {
-        return fetch(Speaker.SPEAKER.SPEAKER_ID, values);
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Speaker> fetchByName(String... values) {
+        return fetch(Speaker.SPEAKER.NAME, values);
     }
 
-    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Speaker> fetchByLanguageUsed(String... values) {
-        return fetch(Speaker.SPEAKER.LANGUAGE_USED, values);
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Speaker> fetchByLanguage(String... values) {
+        return fetch(Speaker.SPEAKER.LANGUAGE, values);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Speaker> fetchByDialect(String... values) {
         return fetch(Speaker.SPEAKER.DIALECT, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Speaker> fetchBySex(SpeakerSex... values) {
+        return fetch(Speaker.SPEAKER.SEX, values);
     }
 }

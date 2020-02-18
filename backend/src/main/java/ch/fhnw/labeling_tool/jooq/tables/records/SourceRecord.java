@@ -4,9 +4,9 @@
 package ch.fhnw.labeling_tool.jooq.tables.records;
 
 
-import ch.fhnw.labeling_tool.jooq.enums.SpeakerSex;
-import ch.fhnw.labeling_tool.jooq.tables.Speaker;
+import ch.fhnw.labeling_tool.jooq.tables.Source;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.jooq.Field;
@@ -17,9 +17,9 @@ import org.jooq.impl.UpdatableRecordImpl;
 
 
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class SpeakerRecord extends UpdatableRecordImpl<SpeakerRecord> implements Record5<Long, String, String, String, SpeakerSex> {
+public class SourceRecord extends UpdatableRecordImpl<SourceRecord> implements Record5<Long, String, String, String, String> {
 
-    private static final long serialVersionUID = 2121727813;
+    private static final long serialVersionUID = -1247968684;
 
     public void setId(Long value) {
         set(0, value);
@@ -29,39 +29,44 @@ public class SpeakerRecord extends UpdatableRecordImpl<SpeakerRecord> implements
         return (Long) get(0);
     }
 
-    public void setName(String value) {
+    public void setDescription(String value) {
         set(1, value);
     }
 
-    @Size(max = 45)
-    public String getName() {
+    @NotNull
+    @Size(max = 65535)
+    public String getDescription() {
         return (String) get(1);
     }
 
-    public void setLanguage(String value) {
+    public void setName(String value) {
         set(2, value);
     }
 
+    @NotNull
     @Size(max = 45)
-    public String getLanguage() {
+    public String getName() {
         return (String) get(2);
     }
 
-    public void setDialect(String value) {
+    public void setRawAudioPath(String value) {
         set(3, value);
     }
 
-    @Size(max = 45)
-    public String getDialect() {
+    @NotNull
+    @Size(max = 255)
+    public String getRawAudioPath() {
         return (String) get(3);
     }
 
-    public void setSex(SpeakerSex value) {
+    public void setRawFilePath(String value) {
         set(4, value);
     }
 
-    public SpeakerSex getSex() {
-        return (SpeakerSex) get(4);
+    @NotNull
+    @Size(max = 255)
+    public String getRawFilePath() {
+        return (String) get(4);
     }
 
     // -------------------------------------------------------------------------
@@ -78,38 +83,38 @@ public class SpeakerRecord extends UpdatableRecordImpl<SpeakerRecord> implements
     // -------------------------------------------------------------------------
 
     @Override
-    public Row5<Long, String, String, String, SpeakerSex> fieldsRow() {
+    public Row5<Long, String, String, String, String> fieldsRow() {
         return (Row5) super.fieldsRow();
     }
 
     @Override
-    public Row5<Long, String, String, String, SpeakerSex> valuesRow() {
+    public Row5<Long, String, String, String, String> valuesRow() {
         return (Row5) super.valuesRow();
     }
 
     @Override
     public Field<Long> field1() {
-        return Speaker.SPEAKER.ID;
+        return Source.SOURCE.ID;
     }
 
     @Override
     public Field<String> field2() {
-        return Speaker.SPEAKER.NAME;
+        return Source.SOURCE.DESCRIPTION;
     }
 
     @Override
     public Field<String> field3() {
-        return Speaker.SPEAKER.LANGUAGE;
+        return Source.SOURCE.NAME;
     }
 
     @Override
     public Field<String> field4() {
-        return Speaker.SPEAKER.DIALECT;
+        return Source.SOURCE.RAW_AUDIO_PATH;
     }
 
     @Override
-    public Field<SpeakerSex> field5() {
-        return Speaker.SPEAKER.SEX;
+    public Field<String> field5() {
+        return Source.SOURCE.RAW_FILE_PATH;
     }
 
     @Override
@@ -119,22 +124,22 @@ public class SpeakerRecord extends UpdatableRecordImpl<SpeakerRecord> implements
 
     @Override
     public String component2() {
-        return getName();
+        return getDescription();
     }
 
     @Override
     public String component3() {
-        return getLanguage();
+        return getName();
     }
 
     @Override
     public String component4() {
-        return getDialect();
+        return getRawAudioPath();
     }
 
     @Override
-    public SpeakerSex component5() {
-        return getSex();
+    public String component5() {
+        return getRawFilePath();
     }
 
     @Override
@@ -144,56 +149,56 @@ public class SpeakerRecord extends UpdatableRecordImpl<SpeakerRecord> implements
 
     @Override
     public String value2() {
-        return getName();
+        return getDescription();
     }
 
     @Override
     public String value3() {
-        return getLanguage();
+        return getName();
     }
 
     @Override
     public String value4() {
-        return getDialect();
+        return getRawAudioPath();
     }
 
     @Override
-    public SpeakerSex value5() {
-        return getSex();
+    public String value5() {
+        return getRawFilePath();
     }
 
     @Override
-    public SpeakerRecord value1(Long value) {
+    public SourceRecord value1(Long value) {
         setId(value);
         return this;
     }
 
     @Override
-    public SpeakerRecord value2(String value) {
+    public SourceRecord value2(String value) {
+        setDescription(value);
+        return this;
+    }
+
+    @Override
+    public SourceRecord value3(String value) {
         setName(value);
         return this;
     }
 
     @Override
-    public SpeakerRecord value3(String value) {
-        setLanguage(value);
+    public SourceRecord value4(String value) {
+        setRawAudioPath(value);
         return this;
     }
 
     @Override
-    public SpeakerRecord value4(String value) {
-        setDialect(value);
+    public SourceRecord value5(String value) {
+        setRawFilePath(value);
         return this;
     }
 
     @Override
-    public SpeakerRecord value5(SpeakerSex value) {
-        setSex(value);
-        return this;
-    }
-
-    @Override
-    public SpeakerRecord values(Long value1, String value2, String value3, String value4, SpeakerSex value5) {
+    public SourceRecord values(Long value1, String value2, String value3, String value4, String value5) {
         value1(value1);
         value2(value2);
         value3(value3);
@@ -206,17 +211,17 @@ public class SpeakerRecord extends UpdatableRecordImpl<SpeakerRecord> implements
     // Constructors
     // -------------------------------------------------------------------------
 
-    public SpeakerRecord() {
-        super(Speaker.SPEAKER);
+    public SourceRecord() {
+        super(Source.SOURCE);
     }
 
-    public SpeakerRecord(Long id, String name, String language, String dialect, SpeakerSex sex) {
-        super(Speaker.SPEAKER);
+    public SourceRecord(Long id, String description, String name, String rawAudioPath, String rawFilePath) {
+        super(Source.SOURCE);
 
         set(0, id);
-        set(1, name);
-        set(2, language);
-        set(3, dialect);
-        set(4, sex);
+        set(1, description);
+        set(2, name);
+        set(3, rawAudioPath);
+        set(4, rawFilePath);
     }
 }

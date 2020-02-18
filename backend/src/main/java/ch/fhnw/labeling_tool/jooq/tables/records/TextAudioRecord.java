@@ -11,15 +11,15 @@ import javax.validation.constraints.Size;
 
 import org.jooq.Field;
 import org.jooq.Record1;
-import org.jooq.Record9;
-import org.jooq.Row9;
+import org.jooq.Record7;
+import org.jooq.Row7;
 import org.jooq.impl.UpdatableRecordImpl;
 
 
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class TextAudioRecord extends UpdatableRecordImpl<TextAudioRecord> implements Record9<Long, Double, Double, String, Integer, String, Integer, Long, Long> {
+public class TextAudioRecord extends UpdatableRecordImpl<TextAudioRecord> implements Record7<Long, Double, Double, String, String, Long, Long> {
 
-    private static final long serialVersionUID = -125761181;
+    private static final long serialVersionUID = -1932022514;
 
     public void setId(Long value) {
         set(0, value);
@@ -51,51 +51,37 @@ public class TextAudioRecord extends UpdatableRecordImpl<TextAudioRecord> implem
         set(3, value);
     }
 
+    @NotNull
     @Size(max = 16777215)
     public String getText() {
         return (String) get(3);
     }
 
-    public void setFileid(Integer value) {
+    public void setPathToFile(String value) {
         set(4, value);
     }
 
-    @NotNull
-    public Integer getFileid() {
-        return (Integer) get(4);
+    @Size(max = 255)
+    public String getPathToFile() {
+        return (String) get(4);
     }
 
-    public void setSpeaker(String value) {
+    public void setSpeakerId(Long value) {
         set(5, value);
     }
 
-    @Size(max = 45)
-    public String getSpeaker() {
-        return (String) get(5);
+    @NotNull
+    public Long getSpeakerId() {
+        return (Long) get(5);
     }
 
-    public void setLabeled(Integer value) {
+    public void setSourceId(Long value) {
         set(6, value);
     }
 
-    public Integer getLabeled() {
-        return (Integer) get(6);
-    }
-
-    public void setCorrect(Long value) {
-        set(7, value);
-    }
-
-    public Long getCorrect() {
-        return (Long) get(7);
-    }
-
-    public void setWrong(Long value) {
-        set(8, value);
-    }
-
-    public Long getWrong() {
-        return (Long) get(8);
+    @NotNull
+    public Long getSourceId() {
+        return (Long) get(6);
     }
 
     // -------------------------------------------------------------------------
@@ -108,17 +94,17 @@ public class TextAudioRecord extends UpdatableRecordImpl<TextAudioRecord> implem
     }
 
     // -------------------------------------------------------------------------
-    // Record9 type implementation
+    // Record7 type implementation
     // -------------------------------------------------------------------------
 
     @Override
-    public Row9<Long, Double, Double, String, Integer, String, Integer, Long, Long> fieldsRow() {
-        return (Row9) super.fieldsRow();
+    public Row7<Long, Double, Double, String, String, Long, Long> fieldsRow() {
+        return (Row7) super.fieldsRow();
     }
 
     @Override
-    public Row9<Long, Double, Double, String, Integer, String, Integer, Long, Long> valuesRow() {
-        return (Row9) super.valuesRow();
+    public Row7<Long, Double, Double, String, String, Long, Long> valuesRow() {
+        return (Row7) super.valuesRow();
     }
 
     @Override
@@ -142,28 +128,18 @@ public class TextAudioRecord extends UpdatableRecordImpl<TextAudioRecord> implem
     }
 
     @Override
-    public Field<Integer> field5() {
-        return TextAudio.TEXT_AUDIO.FILEID;
+    public Field<String> field5() {
+        return TextAudio.TEXT_AUDIO.PATH_TO_FILE;
     }
 
     @Override
-    public Field<String> field6() {
-        return TextAudio.TEXT_AUDIO.SPEAKER;
+    public Field<Long> field6() {
+        return TextAudio.TEXT_AUDIO.SPEAKER_ID;
     }
 
     @Override
-    public Field<Integer> field7() {
-        return TextAudio.TEXT_AUDIO.LABELED;
-    }
-
-    @Override
-    public Field<Long> field8() {
-        return TextAudio.TEXT_AUDIO.CORRECT;
-    }
-
-    @Override
-    public Field<Long> field9() {
-        return TextAudio.TEXT_AUDIO.WRONG;
+    public Field<Long> field7() {
+        return TextAudio.TEXT_AUDIO.SOURCE_ID;
     }
 
     @Override
@@ -187,28 +163,18 @@ public class TextAudioRecord extends UpdatableRecordImpl<TextAudioRecord> implem
     }
 
     @Override
-    public Integer component5() {
-        return getFileid();
+    public String component5() {
+        return getPathToFile();
     }
 
     @Override
-    public String component6() {
-        return getSpeaker();
+    public Long component6() {
+        return getSpeakerId();
     }
 
     @Override
-    public Integer component7() {
-        return getLabeled();
-    }
-
-    @Override
-    public Long component8() {
-        return getCorrect();
-    }
-
-    @Override
-    public Long component9() {
-        return getWrong();
+    public Long component7() {
+        return getSourceId();
     }
 
     @Override
@@ -232,28 +198,18 @@ public class TextAudioRecord extends UpdatableRecordImpl<TextAudioRecord> implem
     }
 
     @Override
-    public Integer value5() {
-        return getFileid();
+    public String value5() {
+        return getPathToFile();
     }
 
     @Override
-    public String value6() {
-        return getSpeaker();
+    public Long value6() {
+        return getSpeakerId();
     }
 
     @Override
-    public Integer value7() {
-        return getLabeled();
-    }
-
-    @Override
-    public Long value8() {
-        return getCorrect();
-    }
-
-    @Override
-    public Long value9() {
-        return getWrong();
+    public Long value7() {
+        return getSourceId();
     }
 
     @Override
@@ -281,37 +237,25 @@ public class TextAudioRecord extends UpdatableRecordImpl<TextAudioRecord> implem
     }
 
     @Override
-    public TextAudioRecord value5(Integer value) {
-        setFileid(value);
+    public TextAudioRecord value5(String value) {
+        setPathToFile(value);
         return this;
     }
 
     @Override
-    public TextAudioRecord value6(String value) {
-        setSpeaker(value);
+    public TextAudioRecord value6(Long value) {
+        setSpeakerId(value);
         return this;
     }
 
     @Override
-    public TextAudioRecord value7(Integer value) {
-        setLabeled(value);
+    public TextAudioRecord value7(Long value) {
+        setSourceId(value);
         return this;
     }
 
     @Override
-    public TextAudioRecord value8(Long value) {
-        setCorrect(value);
-        return this;
-    }
-
-    @Override
-    public TextAudioRecord value9(Long value) {
-        setWrong(value);
-        return this;
-    }
-
-    @Override
-    public TextAudioRecord values(Long value1, Double value2, Double value3, String value4, Integer value5, String value6, Integer value7, Long value8, Long value9) {
+    public TextAudioRecord values(Long value1, Double value2, Double value3, String value4, String value5, Long value6, Long value7) {
         value1(value1);
         value2(value2);
         value3(value3);
@@ -319,8 +263,6 @@ public class TextAudioRecord extends UpdatableRecordImpl<TextAudioRecord> implem
         value5(value5);
         value6(value6);
         value7(value7);
-        value8(value8);
-        value9(value9);
         return this;
     }
 
@@ -332,17 +274,15 @@ public class TextAudioRecord extends UpdatableRecordImpl<TextAudioRecord> implem
         super(TextAudio.TEXT_AUDIO);
     }
 
-    public TextAudioRecord(Long id, Double audioStart, Double audioEnd, String text, Integer fileid, String speaker, Integer labeled, Long correct, Long wrong) {
+    public TextAudioRecord(Long id, Double audioStart, Double audioEnd, String text, String pathToFile, Long speakerId, Long sourceId) {
         super(TextAudio.TEXT_AUDIO);
 
         set(0, id);
         set(1, audioStart);
         set(2, audioEnd);
         set(3, text);
-        set(4, fileid);
-        set(5, speaker);
-        set(6, labeled);
-        set(7, correct);
-        set(8, wrong);
+        set(4, pathToFile);
+        set(5, speakerId);
+        set(6, sourceId);
     }
 }

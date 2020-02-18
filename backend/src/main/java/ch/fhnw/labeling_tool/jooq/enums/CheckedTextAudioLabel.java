@@ -10,7 +10,7 @@ import org.jooq.Schema;
 
 
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public enum CheckedUtteranceLabel implements EnumType {
+public enum CheckedTextAudioLabel implements EnumType {
 
     SKIPPED("SKIPPED"),
 
@@ -20,7 +20,7 @@ public enum CheckedUtteranceLabel implements EnumType {
 
     private final String literal;
 
-    private CheckedUtteranceLabel(String literal) {
+    private CheckedTextAudioLabel(String literal) {
         this.literal = literal;
     }
 
@@ -36,7 +36,7 @@ public enum CheckedUtteranceLabel implements EnumType {
 
     @Override
     public String getName() {
-        return "checked_utterance_label";
+        return "checked_text_audio_label";
     }
 
     @Override

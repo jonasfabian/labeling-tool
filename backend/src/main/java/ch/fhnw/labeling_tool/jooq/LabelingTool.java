@@ -4,15 +4,16 @@
 package ch.fhnw.labeling_tool.jooq;
 
 
-import ch.fhnw.labeling_tool.jooq.tables.CheckedUtterance;
+import ch.fhnw.labeling_tool.jooq.tables.CheckedRecording;
+import ch.fhnw.labeling_tool.jooq.tables.CheckedTextAudio;
 import ch.fhnw.labeling_tool.jooq.tables.Excerpt;
 import ch.fhnw.labeling_tool.jooq.tables.FlywaySchemaHistory;
 import ch.fhnw.labeling_tool.jooq.tables.OriginalText;
 import ch.fhnw.labeling_tool.jooq.tables.Recording;
+import ch.fhnw.labeling_tool.jooq.tables.Source;
 import ch.fhnw.labeling_tool.jooq.tables.Speaker;
 import ch.fhnw.labeling_tool.jooq.tables.TextAudio;
 import ch.fhnw.labeling_tool.jooq.tables.User;
-import ch.fhnw.labeling_tool.jooq.tables.UserAndTextAudio;
 import ch.fhnw.labeling_tool.jooq.tables.UserGroup;
 import ch.fhnw.labeling_tool.jooq.tables.UserGroupRole;
 
@@ -28,11 +29,13 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class LabelingTool extends SchemaImpl {
 
-    private static final long serialVersionUID = -1907923883;
+    private static final long serialVersionUID = 1761554549;
 
     public static final LabelingTool LABELING_TOOL = new LabelingTool();
 
-    public final CheckedUtterance CHECKED_UTTERANCE = ch.fhnw.labeling_tool.jooq.tables.CheckedUtterance.CHECKED_UTTERANCE;
+    public final CheckedRecording CHECKED_RECORDING = ch.fhnw.labeling_tool.jooq.tables.CheckedRecording.CHECKED_RECORDING;
+
+    public final CheckedTextAudio CHECKED_TEXT_AUDIO = ch.fhnw.labeling_tool.jooq.tables.CheckedTextAudio.CHECKED_TEXT_AUDIO;
 
     public final Excerpt EXCERPT = ch.fhnw.labeling_tool.jooq.tables.Excerpt.EXCERPT;
 
@@ -42,13 +45,13 @@ public class LabelingTool extends SchemaImpl {
 
     public final Recording RECORDING = ch.fhnw.labeling_tool.jooq.tables.Recording.RECORDING;
 
+    public final Source SOURCE = ch.fhnw.labeling_tool.jooq.tables.Source.SOURCE;
+
     public final Speaker SPEAKER = ch.fhnw.labeling_tool.jooq.tables.Speaker.SPEAKER;
 
     public final TextAudio TEXT_AUDIO = ch.fhnw.labeling_tool.jooq.tables.TextAudio.TEXT_AUDIO;
 
     public final User USER = ch.fhnw.labeling_tool.jooq.tables.User.USER;
-
-    public final UserAndTextAudio USER_AND_TEXT_AUDIO = ch.fhnw.labeling_tool.jooq.tables.UserAndTextAudio.USER_AND_TEXT_AUDIO;
 
     public final UserGroup USER_GROUP = ch.fhnw.labeling_tool.jooq.tables.UserGroup.USER_GROUP;
 
@@ -73,15 +76,16 @@ public class LabelingTool extends SchemaImpl {
 
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
-            CheckedUtterance.CHECKED_UTTERANCE,
+            CheckedRecording.CHECKED_RECORDING,
+            CheckedTextAudio.CHECKED_TEXT_AUDIO,
             Excerpt.EXCERPT,
             FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY,
             OriginalText.ORIGINAL_TEXT,
             Recording.RECORDING,
+            Source.SOURCE,
             Speaker.SPEAKER,
             TextAudio.TEXT_AUDIO,
             User.USER,
-            UserAndTextAudio.USER_AND_TEXT_AUDIO,
             UserGroup.USER_GROUP,
             UserGroupRole.USER_GROUP_ROLE);
     }

@@ -13,17 +13,15 @@ import javax.validation.constraints.Size;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TextAudio implements Serializable {
 
-    private static final long serialVersionUID = -546214904;
+    private static final long serialVersionUID = -534225959;
 
-    private Long    id;
-    private Double  audioStart;
-    private Double  audioEnd;
-    private String  text;
-    private Integer fileid;
-    private String  speaker;
-    private Integer labeled;
-    private Long    correct;
-    private Long    wrong;
+    private Long   id;
+    private Double audioStart;
+    private Double audioEnd;
+    private String text;
+    private String pathToFile;
+    private Long   speakerId;
+    private Long   sourceId;
 
     public TextAudio() {}
 
@@ -32,33 +30,27 @@ public class TextAudio implements Serializable {
         this.audioStart = value.audioStart;
         this.audioEnd = value.audioEnd;
         this.text = value.text;
-        this.fileid = value.fileid;
-        this.speaker = value.speaker;
-        this.labeled = value.labeled;
-        this.correct = value.correct;
-        this.wrong = value.wrong;
+        this.pathToFile = value.pathToFile;
+        this.speakerId = value.speakerId;
+        this.sourceId = value.sourceId;
     }
 
     public TextAudio(
-        Long    id,
-        Double  audioStart,
-        Double  audioEnd,
-        String  text,
-        Integer fileid,
-        String  speaker,
-        Integer labeled,
-        Long    correct,
-        Long    wrong
+        Long   id,
+        Double audioStart,
+        Double audioEnd,
+        String text,
+        String pathToFile,
+        Long   speakerId,
+        Long   sourceId
     ) {
         this.id = id;
         this.audioStart = audioStart;
         this.audioEnd = audioEnd;
         this.text = text;
-        this.fileid = fileid;
-        this.speaker = speaker;
-        this.labeled = labeled;
-        this.correct = correct;
-        this.wrong = wrong;
+        this.pathToFile = pathToFile;
+        this.speakerId = speakerId;
+        this.sourceId = sourceId;
     }
 
     public Long getId() {
@@ -87,6 +79,7 @@ public class TextAudio implements Serializable {
         this.audioEnd = audioEnd;
     }
 
+    @NotNull
     @Size(max = 16777215)
     public String getText() {
         return this.text;
@@ -96,46 +89,31 @@ public class TextAudio implements Serializable {
         this.text = text;
     }
 
+    @Size(max = 255)
+    public String getPathToFile() {
+        return this.pathToFile;
+    }
+
+    public void setPathToFile(String pathToFile) {
+        this.pathToFile = pathToFile;
+    }
+
     @NotNull
-    public Integer getFileid() {
-        return this.fileid;
+    public Long getSpeakerId() {
+        return this.speakerId;
     }
 
-    public void setFileid(Integer fileid) {
-        this.fileid = fileid;
+    public void setSpeakerId(Long speakerId) {
+        this.speakerId = speakerId;
     }
 
-    @Size(max = 45)
-    public String getSpeaker() {
-        return this.speaker;
+    @NotNull
+    public Long getSourceId() {
+        return this.sourceId;
     }
 
-    public void setSpeaker(String speaker) {
-        this.speaker = speaker;
-    }
-
-    public Integer getLabeled() {
-        return this.labeled;
-    }
-
-    public void setLabeled(Integer labeled) {
-        this.labeled = labeled;
-    }
-
-    public Long getCorrect() {
-        return this.correct;
-    }
-
-    public void setCorrect(Long correct) {
-        this.correct = correct;
-    }
-
-    public Long getWrong() {
-        return this.wrong;
-    }
-
-    public void setWrong(Long wrong) {
-        this.wrong = wrong;
+    public void setSourceId(Long sourceId) {
+        this.sourceId = sourceId;
     }
 
     @Override
@@ -146,11 +124,9 @@ public class TextAudio implements Serializable {
         sb.append(", ").append(audioStart);
         sb.append(", ").append(audioEnd);
         sb.append(", ").append(text);
-        sb.append(", ").append(fileid);
-        sb.append(", ").append(speaker);
-        sb.append(", ").append(labeled);
-        sb.append(", ").append(correct);
-        sb.append(", ").append(wrong);
+        sb.append(", ").append(pathToFile);
+        sb.append(", ").append(speakerId);
+        sb.append(", ").append(sourceId);
 
         sb.append(")");
         return sb.toString();
