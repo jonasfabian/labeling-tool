@@ -35,6 +35,7 @@
       </div>
     </mat-card-footer>
   </mat-card>
-  <app-profile-editor (output)="toggleIsLogin()" *ngIf="!isLogin" [user]="newUser()" [isNewUser]="true"></app-profile-editor>
+  <app-profile-editor (output)="toggleIsLogin()" *ngIf="!isLogin" [isNewUser]="true"
+                      [user]="newUser()"></app-profile-editor>
 </div>
 

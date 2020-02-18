@@ -1,14 +1,8 @@
 <mat-card id="header-card"><h1>Check</h1></mat-card>
-<!--TODO this could probably be replaced using html audio directly-->
-<div hidden id="wave">
-  <div id="waveform"></div>
-</div>
-<!--TODO this could probably be replaced using html audio directly-->
-<div *ngIf="blobUrl != ''">
-  <audio #audioPlayer>
-    <source [src]="blobUrl">
-  </audio>
-</div>
+<!--TODO not sure if we want to include some controls etc see https://www.w3schools.com/html/tryit.asp?filename=tryhtml5_audio_all-->
+<audio #audioPlayer *ngIf="blobUrl != ''">
+  <source [src]="blobUrl">
+</audio>
 
 <div *ngIf="textAudios.length===0" style="height: calc(100% - 100px);">
   <div style="height: calc(100% - 90px);">
@@ -26,9 +20,7 @@
         <div style="width: 100%;">{{textAudio.text}}</div>
       </mat-card>
 
-      <mat-progress-bar *ngIf="i === carousel.carousel.activeIndex" [value]="progress" mode="determinate"
-                        style="margin-left: auto; margin-right: auto; transition: none; height: 8px; border-radius: 0 0 10px 10px;"></mat-progress-bar>
-      <mat-progress-bar *ngIf="i !== carousel.carousel.activeIndex" [value]="0" mode="determinate"
+      <mat-progress-bar *ngIf="i === carousel.carousel.activeIndex" [value]="audioProgress()" mode="determinate"
                         style="margin-left: auto; margin-right: auto; transition: none; height: 8px; border-radius: 0 0 10px 10px;"></mat-progress-bar>
     </div>
   </carousel-component>

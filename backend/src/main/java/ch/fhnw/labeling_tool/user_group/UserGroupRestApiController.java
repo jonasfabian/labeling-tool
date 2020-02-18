@@ -2,6 +2,7 @@ package ch.fhnw.labeling_tool.user_group;
 
 import ch.fhnw.labeling_tool.jooq.tables.pojos.Excerpt;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio;
+import ch.fhnw.labeling_tool.model.TextAudioDto;
 import ch.fhnw.labeling_tool.user.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -48,11 +49,11 @@ public class UserGroupRestApiController {
     //TODO add missing logic here -> frontend needs to be refactored so it uses the right user_id
     // TODO can be a dummy for now
     @GetMapping("text_audio/next")
-    public List<TextAudio> getNextTextAudios(@PathVariable long groupId) {
+    public List<TextAudioDto> getNextTextAudios(@PathVariable long groupId) {
         customUserDetailsService.isAllowedOnProject(groupId, false);
-//        TODO add a dto for the text audios as we do not need the speaker,source, path
+        //TODO get real ones
         return IntStream.range(0, 10)
-                .mapToObj(i -> new TextAudio(1L, 0.0, 1.0, "Hallo welt", "path to file", 0L, 0L))
+                .mapToObj(i -> new TextAudioDto(1L, 0.0, 1.0, "Hallo welt"))
                 .collect(Collectors.toList());
     }
 

@@ -1,9 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {SafeUrl} from '@angular/platform-browser';
 import {Canton} from '../models/canton';
-import {TextAudio} from '../models/text-audio';
+import {TextAudioDto} from '../models/text-audio-dto';
 import {environment} from '../../environments/environment';
 
 @Injectable({
@@ -13,9 +12,9 @@ import {environment} from '../../environments/environment';
 export class ApiService {
 
   url = environment.url;
-  blobUrl: SafeUrl | string = '';
   showTenMoreQuest = false;
   // TODO maybe move into a sperate model class?
+  // TODO not sure if makes more sense to poll them from the backend/database?
   cantons: Canton[] = [
     {cantonId: 'ag', cantonName: 'Aargau'},
     {cantonId: 'ai', cantonName: 'Appenzell Innerrhoden'},
@@ -49,8 +48,8 @@ export class ApiService {
   }
 
   // TODO replace calls to new backend one by one.
-  getTextAudios(): Observable<Array<TextAudio>> {
-    return this.http.get<Array<TextAudio>>(this.url + 'getTextAudios');
+  getTextAudios(): Observable<Array<TextAudioDto>> {
+    return this.http.get<Array<TextAudioDto>>(this.url + 'getTextAudios');
   }
 
   getRecordingAudioById(id: number): Observable<any> {
@@ -62,7 +61,7 @@ export class ApiService {
     return this.http.get<[{ id: number, text: string, username: string, time: string }]>(this.url + 'getAllRecordingData');
   }
 
-  updateTextAudio(textAudio: TextAudio): Observable<any> {
+  updateTextAudio(textAudio: TextAudioDto): Observable<any> {
     return this.http.post(this.url + 'updateTextAudio', textAudio);
   }
 

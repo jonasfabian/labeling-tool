@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ApiService} from '../../services/api.service';
-import {TextAudio} from '../../models/text-audio';
+import {TextAudioDto} from '../../models/text-audio-dto';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
@@ -19,15 +19,15 @@ export class OverviewComponent implements OnInit {
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   showAll = true;
-  dataSource = new MatTableDataSource<TextAudio | { id: number, text: string, username: string, time: string }>();
+  dataSource = new MatTableDataSource<TextAudioDto | { id: number, text: string, username: string, time: string }>();
   allColumns = ['text', 'correct', 'wrong'];
   recordingColumns = ['text', 'time', 'username'];
   waveSurfer: WaveSurfer = null;
   isEditText = false;
   // TODO not sure this make sense
-  dummyTextAudio = new TextAudio(0, 0, 0, '', 0, '', false, 0, 0);
-  dummy = new TextAudio(0, 0, 0, '', 0, '', false, 0, 0);
-  dummyRecording: TextAudio;
+  dummyTextAudio = new TextAudioDto(0, 0, 0, '');
+  dummy = new TextAudioDto(0, 0, 0, '');
+  dummyRecording: TextAudioDto;
   currentFileId = -1;
   text = '';
   isPlaying = false;
@@ -48,13 +48,13 @@ export class OverviewComponent implements OnInit {
 
   ngOnInit() {
     this.apiService.getTextAudios().subscribe(textAudio => {
-      this.dataSource = new MatTableDataSource<TextAudio>(textAudio);
+      this.dataSource = new MatTableDataSource<TextAudioDto>(textAudio);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
   }
 
-  previewElement(textAudio: TextAudio) {
+  previewElement(textAudio: TextAudioDto) {
     this.isEditText = false;
     if (this.waveSurfer !== null) {
       this.waveSurfer.pause();
@@ -88,7 +88,8 @@ export class OverviewComponent implements OnInit {
         this.load(textAudio);
       } else {
         this.isPlaying = false;
-        if (this.currentFileId !== textAudio.fileid) {
+        // TODO fix code
+        if (this.currentFileId !== 0) {// textAudio.fileid
           this.load(textAudio);
         } else {
           this.addRegion(textAudio, false);
@@ -114,7 +115,7 @@ export class OverviewComponent implements OnInit {
       });
     } else {
       this.apiService.getTextAudios().subscribe(textAudio => {
-        this.dataSource = new MatTableDataSource<TextAudio>(textAudio);
+        this.dataSource = new MatTableDataSource<TextAudioDto>(textAudio);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       });
@@ -145,7 +146,7 @@ export class OverviewComponent implements OnInit {
     this.isPlaying = !this.isPlaying;
   }
 
-  setViewToRegion(textAudio: TextAudio): void {
+  setViewToRegion(textAudio: TextAudioDto): void {
     this.waveSurfer.zoom(50);
     const diff = textAudio.audioStart - textAudio.audioEnd;
     const centre = textAudio.audioStart + (diff / 2);
@@ -174,11 +175,6 @@ export class OverviewComponent implements OnInit {
           audioStart: l.audioStart,
           audioEnd: l.audioEnd,
           text: l.text,
-          fileId: l.fileid,
-          speaker: l.speaker,
-          labeled: l.labeled,
-          correct: l.correct,
-          wrong: l.wrong,
         });
       });
       this.csvExporter.generateCsv(this.data);
@@ -187,7 +183,7 @@ export class OverviewComponent implements OnInit {
 
   setVolume = (volume: any) => this.waveSurfer.setVolume(volume.value / 100);
 
-  private addRegion(textAudio: TextAudio, draw: boolean): void {
+  private addRegion(textAudio: TextAudioDto, draw: boolean): void {
     this.waveSurfer.clearRegions();
     const region = this.waveSurfer.addRegion({
       start: textAudio.audioStart,
