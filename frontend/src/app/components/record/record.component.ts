@@ -39,7 +39,7 @@ export class RecordComponent implements OnInit {
     navigator.mediaDevices.getUserMedia({audio: true})
       .then(stream => {
         // @ts-ignore
-        this.mediaRecorder = new MediaRecorder(stream);
+        this.mediaRecorder = new MediaRecorder(stream,{mimeType:"audio/webm"});
         this.mediaRecorder.ondataavailable = event => this.audioChunks.push(event.data);
         // this.mediaRecorder.onstop = () => this.recordingBlob = new Blob(this.audioChunks);
       });

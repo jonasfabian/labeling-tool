@@ -54,7 +54,7 @@ public class UserGroupService {
         var r2 = new Recording(null, excerptId, customUserDetailsService.getLoggedInUserId(), null);
         RecordingRecord recordingRecord = dslContext.newRecord(RECORDING, r2);
         recordingRecord.store();
-        Files.write(config.getBasePath().resolve("recording/" + recordingRecord.getId() + ".ogg"), file.getBytes());
+        Files.write(config.getBasePath().resolve("recording/" + recordingRecord.getId() + ".webm"), file.getBytes());
         recordingDao.insert(r2);
     }
 

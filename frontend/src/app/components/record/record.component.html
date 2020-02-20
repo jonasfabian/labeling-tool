@@ -6,16 +6,16 @@
   <mat-card class="margin">
     <button (click)="startRecord()" *ngIf="!this.isRecording" mat-raised-button title="Start recording">
       <mat-icon [ngClass]="isRecordingM()">fiber_manual_record</mat-icon>
+      <span>&nbsp;Start</span>
     </button>
     <button (click)="stopRecord()" *ngIf="this.isRecording" mat-raised-button title="Stop recording">
       <mat-icon>stop</mat-icon>
+      <span>&nbsp;Stop</span>
     </button>
     <button (click)="togglePlay()" mat-raised-button title="Play/Pause recording replay">
       <mat-icon *ngIf="!isPlaying">play_arrow</mat-icon>
       <mat-icon *ngIf="isPlaying">stop</mat-icon>
-    </button>
-    <button (click)="submit()" *ngIf="audioChunks .length>0" class="submit" color="primary" mat-flat-button
-            title="Submit your recording">Submit
+      <span>&nbsp;Play/Pause</span>
     </button>
     <button (click)="private()" mat-raised-button title="Private">
       <mat-icon>lock</mat-icon>
@@ -24,6 +24,9 @@
     <button (click)="skip()" mat-raised-button title="Skip">
       <mat-icon>skip_next</mat-icon>
       <span>&nbsp;Skip</span>
+    </button>
+    <button (click)="submit()" *ngIf="audioChunks .length>0" color="primary" mat-raised-button
+            title="Submit your recording">Submit
     </button>
   </mat-card>
 </div>
