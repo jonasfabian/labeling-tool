@@ -1,30 +1,30 @@
-<div *ngIf="excerpt">
+<div [hidden]="!excerpt">
   <mat-card class="margin">
     <h1>Record</h1>
     <b>Excerpt: </b><span>{{excerpt?.excerpt}}</span>
   </mat-card>
-  <div class="margin">
-    <mat-card>
-      <mat-button-toggle-group>
-        <mat-button-toggle (click)="startRecord()" *ngIf="!this.isRecording" title="Start recording">
-          <mat-icon [ngClass]="isRecordingM()">fiber_manual_record</mat-icon>
-        </mat-button-toggle>
-        <mat-button-toggle (click)="stopRecord()" *ngIf="this.isRecording" title="Stop recording">
-          <mat-icon>stop</mat-icon>
-        </mat-button-toggle>
-        <mat-button-toggle (click)="togglePlayRecord()" title="Play/Pause recording replay">
-          <mat-icon *ngIf="!isPlaying()">play_arrow</mat-icon>
-          <mat-icon *ngIf="isPlaying()">pause</mat-icon>
-        </mat-button-toggle>
-      </mat-button-toggle-group>
-      <button (click)="submit()" *ngIf="recordingBlob !== undefined" class="submit" color="primary"
-              mat-flat-button title="Submit your recording and transcript">Submit
-      </button>
-      <div [hidden]="!hasStartedRecording" class="wave" id="wave">
-        <div class="pointer" id="waveform"></div>
-      </div>
-      <div *ngIf="!hasStartedRecording" class="start-recording"><span>Start recording to see the waveform</span></div>
-    </mat-card>
-  </div>
+  <mat-card class="margin">
+    <button (click)="startRecord()" *ngIf="!this.isRecording" mat-raised-button title="Start recording">
+      <mat-icon [ngClass]="isRecordingM()">fiber_manual_record</mat-icon>
+    </button>
+    <button (click)="stopRecord()" *ngIf="this.isRecording" mat-raised-button title="Stop recording">
+      <mat-icon>stop</mat-icon>
+    </button>
+    <button (click)="togglePlay()" mat-raised-button title="Play/Pause recording replay">
+      <mat-icon *ngIf="!isPlaying">play_arrow</mat-icon>
+      <mat-icon *ngIf="isPlaying">stop</mat-icon>
+    </button>
+    <button (click)="submit()" *ngIf="audioChunks .length>0" class="submit" color="primary" mat-flat-button
+            title="Submit your recording">Submit
+    </button>
+    <button (click)="private()" mat-raised-button title="Private">
+      <mat-icon>lock</mat-icon>
+      <span>&nbsp;Private</span>
+    </button>
+    <button (click)="skip()" mat-raised-button title="Skip">
+      <mat-icon>skip_next</mat-icon>
+      <span>&nbsp;Skip</span>
+    </button>
+  </mat-card>
 </div>
 <div *ngIf="!excerpt">No more data available</div>

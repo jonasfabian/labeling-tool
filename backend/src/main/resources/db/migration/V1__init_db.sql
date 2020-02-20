@@ -5,7 +5,6 @@ CREATE TABLE user_group
     PRIMARY KEY (id)
 ) ENGINE = INNODB
   DEFAULT CHARSET = UTF8MB4;
-
 CREATE TABLE user
 (
     id         BIGINT       NOT NULL AUTO_INCREMENT,
@@ -15,15 +14,15 @@ CREATE TABLE user
     username   VARCHAR(100) NOT NULL,
     password   VARCHAR(100) NOT NULL,
     canton     VARCHAR(45)  NOT NULL,
-    sex        ENUM ('none','m','f')      DEFAULT 'none',
-    licence    ENUM ('public','academic') DEFAULT 'academic',
-    enabled    BOOLEAN                    DEFAULT true,
+    sex        ENUM ('NONE','M','F')                                       DEFAULT 'NONE',
+    licence    ENUM ('PUBLIC','ACADEMIC')                                  DEFAULT 'ACADEMIC',
+    age        ENUM ('NONE','U20','U30','U40','U50','U60''U70''U70','O80') DEFAULT 'NONE',
+    enabled    BOOLEAN                                                     DEFAULT true,
     PRIMARY KEY (id),
     UNIQUE KEY username (username),
     UNIQUE KEY email (email)
 ) ENGINE = INNODB
   DEFAULT CHARSET = UTF8MB4;
-
 CREATE TABLE user_group_role
 (
     id            BIGINT NOT NULL AUTO_INCREMENT,
@@ -39,12 +38,20 @@ CREATE TABLE user_group_role
 
 ### Recoding/Upload Functionality
 
+CREATE TABLE domain
+(
+    id   BIGINT NOT NULL AUTO_INCREMENT,
+    name TEXT   NOT NULL,
+    PRIMARY KEY (id)
+);
 CREATE TABLE original_text
 (
     id            BIGINT NOT NULL AUTO_INCREMENT,
     user_group_id BIGINT NOT NULL,
+    domain_id     BIGINT NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (user_group_id) REFERENCES user_group (id) ON DELETE CASCADE
+    FOREIGN KEY (user_group_id) REFERENCES user_group (id) ON DELETE CASCADE,
+    FOREIGN KEY (domain_id) REFERENCES domain (id) ON DELETE CASCADE
 );
 CREATE TABLE excerpt
 (
@@ -89,11 +96,10 @@ CREATE TABLE speaker
     name     VARCHAR(45),
     language VARCHAR(45),
     dialect  VARCHAR(45),
-    sex      ENUM ('none','m','f') DEFAULT 'none',
+    sex      ENUM ('NONE','M','F') DEFAULT 'NONE',
     PRIMARY KEY (id)
 ) ENGINE = INNODB
   DEFAULT CHARSET = UTF8MB4;
-
 CREATE TABLE source
 (
     id             BIGINT       NOT NULL AUTO_INCREMENT,
@@ -105,7 +111,6 @@ CREATE TABLE source
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 8
   DEFAULT CHARSET = utf8;
-
 CREATE TABLE text_audio
 (
     id           BIGINT NOT NULL AUTO_INCREMENT,
@@ -120,7 +125,6 @@ CREATE TABLE text_audio
     FOREIGN KEY (source_id) REFERENCES source (id) ON DELETE CASCADE
 ) ENGINE = INNODB
   DEFAULT CHARSET = UTF8MB4;
-
 CREATE TABLE checked_text_audio
 (
     id            BIGINT   NOT NULL AUTO_INCREMENT,
@@ -142,3 +146,8 @@ INSERT INTO user_group(id, name) VALUE (1, 'public test group');
 INSERT INTO user_group_role(role, user_id, user_group_id)
 VALUES ('ADMIN', 1, 1),
        ('GROUP_ADMIN', 1, 1);
+INSERT INTO domain(name)
+VALUES ('BANKING'),
+       ('IT'),
+       ('AGRICULTURE'),
+       ('NOT LISTED');

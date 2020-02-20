@@ -29,7 +29,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class OriginalText extends TableImpl<OriginalTextRecord> {
 
-    private static final long serialVersionUID = -176223545;
+    private static final long serialVersionUID = 1760595087;
 
     public static final OriginalText ORIGINAL_TEXT = new OriginalText();
 
@@ -41,6 +41,8 @@ public class OriginalText extends TableImpl<OriginalTextRecord> {
     public final TableField<OriginalTextRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     public final TableField<OriginalTextRecord, Long> USER_GROUP_ID = createField("user_group_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+
+    public final TableField<OriginalTextRecord, Long> DOMAIN_ID = createField("domain_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
     public OriginalText() {
         this(DSL.name("original_text"), null);
@@ -73,7 +75,7 @@ public class OriginalText extends TableImpl<OriginalTextRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.ORIGINAL_TEXT_PRIMARY, Indexes.ORIGINAL_TEXT_USER_GROUP_ID);
+        return Arrays.<Index>asList(Indexes.ORIGINAL_TEXT_DOMAIN_ID, Indexes.ORIGINAL_TEXT_PRIMARY, Indexes.ORIGINAL_TEXT_USER_GROUP_ID);
     }
 
     @Override
@@ -93,11 +95,15 @@ public class OriginalText extends TableImpl<OriginalTextRecord> {
 
     @Override
     public List<ForeignKey<OriginalTextRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<OriginalTextRecord, ?>>asList(Keys.ORIGINAL_TEXT_IBFK_1);
+        return Arrays.<ForeignKey<OriginalTextRecord, ?>>asList(Keys.ORIGINAL_TEXT_IBFK_1, Keys.ORIGINAL_TEXT_IBFK_2);
     }
 
     public UserGroup userGroup() {
         return new UserGroup(this, Keys.ORIGINAL_TEXT_IBFK_1);
+    }
+
+    public Domain domain() {
+        return new Domain(this, Keys.ORIGINAL_TEXT_IBFK_2);
     }
 
     @Override

@@ -12,6 +12,7 @@ export class GroupAdminComponent implements OnInit {
   private groupId = 1;
 
   // TODO add ability to manage,create,update,delete user group
+  private domainId = 1;
 
   constructor(private httpClient: HttpClient) {
   }
@@ -25,6 +26,7 @@ export class GroupAdminComponent implements OnInit {
     for (let i = 0; i < fileList.length; i++) {
       formData.append('files', fileList[i], fileList[i].name);
     }
+    formData.append('domainId', this.domainId.toFixed(0));
     this.httpClient.post(`${environment.url}user_group/${this.groupId}/original_text`, formData).subscribe(() => {
     });
     // TODO maybe show the sentences/parsed_text for validation

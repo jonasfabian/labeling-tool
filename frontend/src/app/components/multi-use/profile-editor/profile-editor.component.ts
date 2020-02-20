@@ -34,6 +34,7 @@ export class ProfileEditorComponent implements OnInit {
       canton: [this.user.canton, [Validators.required]],
       password: undefined,
       sex: [this.user.sex, [Validators.required]],
+      age: [this.user.age, [Validators.required]],
       licence: [this.user.licence, [Validators.required]],
     };
     if (this.isNewUser) {

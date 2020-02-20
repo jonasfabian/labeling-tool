@@ -69,15 +69,6 @@
       </ng-container>
       <app-profile-editor (output)="toggleProfileEdit()" *ngIf="isProfileEdit" [isNewUser]="false"
                           [user]="copyUser()"></app-profile-editor>
-
-    </div>
-    <!--TODO not sure how much sense this makes anymore? as we cannot edit the profile picture anyway-->
-    <div style="width: 30%; float: right; height: 90%; margin-top: 15px;">
-      <app-avatar [borderRadius]="0" [fontSize]="100" [hover]="'default'" [size]="260" [username]="this.user.username"
-                  style="float: left;"></app-avatar>
-      <div style="text-align: center; padding: 15px;">
-        <span style="font-size: 25px;">{{user.username}}</span>
-      </div>
     </div>
   </mat-card>
 </div>

@@ -4,6 +4,7 @@
 package ch.fhnw.labeling_tool.jooq.tables.pojos;
 
 
+import ch.fhnw.labeling_tool.jooq.enums.UserAge;
 import ch.fhnw.labeling_tool.jooq.enums.UserLicence;
 import ch.fhnw.labeling_tool.jooq.enums.UserSex;
 
@@ -16,7 +17,7 @@ import javax.validation.constraints.Size;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User implements Serializable {
 
-    private static final long serialVersionUID = -1905675456;
+    private static final long serialVersionUID = -135680253;
 
     private Long        id;
     private String      firstName;
@@ -27,6 +28,7 @@ public class User implements Serializable {
     private String      canton;
     private UserSex     sex;
     private UserLicence licence;
+    private UserAge     age;
     private Boolean     enabled;
 
     public User() {}
@@ -41,6 +43,7 @@ public class User implements Serializable {
         this.canton = value.canton;
         this.sex = value.sex;
         this.licence = value.licence;
+        this.age = value.age;
         this.enabled = value.enabled;
     }
 
@@ -54,6 +57,7 @@ public class User implements Serializable {
         String      canton,
         UserSex     sex,
         UserLicence licence,
+        UserAge     age,
         Boolean     enabled
     ) {
         this.id = id;
@@ -65,6 +69,7 @@ public class User implements Serializable {
         this.canton = canton;
         this.sex = sex;
         this.licence = licence;
+        this.age = age;
         this.enabled = enabled;
     }
 
@@ -152,6 +157,14 @@ public class User implements Serializable {
         this.licence = licence;
     }
 
+    public UserAge getAge() {
+        return this.age;
+    }
+
+    public void setAge(UserAge age) {
+        this.age = age;
+    }
+
     public Boolean getEnabled() {
         return this.enabled;
     }
@@ -173,6 +186,7 @@ public class User implements Serializable {
         sb.append(", ").append(canton);
         sb.append(", ").append(sex);
         sb.append(", ").append(licence);
+        sb.append(", ").append(age);
         sb.append(", ").append(enabled);
 
         sb.append(")");

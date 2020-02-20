@@ -44,4 +44,8 @@ public class OriginalTextDao extends DAOImpl<OriginalTextRecord, ch.fhnw.labelin
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.OriginalText> fetchByUserGroupId(Long... values) {
         return fetch(OriginalText.ORIGINAL_TEXT.USER_GROUP_ID, values);
     }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.OriginalText> fetchByDomainId(Long... values) {
+        return fetch(OriginalText.ORIGINAL_TEXT.DOMAIN_ID, values);
+    }
 }

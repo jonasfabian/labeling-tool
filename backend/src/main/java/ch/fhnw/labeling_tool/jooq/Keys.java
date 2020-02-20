@@ -6,6 +6,7 @@ package ch.fhnw.labeling_tool.jooq;
 
 import ch.fhnw.labeling_tool.jooq.tables.CheckedRecording;
 import ch.fhnw.labeling_tool.jooq.tables.CheckedTextAudio;
+import ch.fhnw.labeling_tool.jooq.tables.Domain;
 import ch.fhnw.labeling_tool.jooq.tables.Excerpt;
 import ch.fhnw.labeling_tool.jooq.tables.FlywaySchemaHistory;
 import ch.fhnw.labeling_tool.jooq.tables.OriginalText;
@@ -18,6 +19,7 @@ import ch.fhnw.labeling_tool.jooq.tables.UserGroup;
 import ch.fhnw.labeling_tool.jooq.tables.UserGroupRole;
 import ch.fhnw.labeling_tool.jooq.tables.records.CheckedRecordingRecord;
 import ch.fhnw.labeling_tool.jooq.tables.records.CheckedTextAudioRecord;
+import ch.fhnw.labeling_tool.jooq.tables.records.DomainRecord;
 import ch.fhnw.labeling_tool.jooq.tables.records.ExcerptRecord;
 import ch.fhnw.labeling_tool.jooq.tables.records.FlywaySchemaHistoryRecord;
 import ch.fhnw.labeling_tool.jooq.tables.records.OriginalTextRecord;
@@ -44,6 +46,7 @@ public class Keys {
 
     public static final Identity<CheckedRecordingRecord, Long> IDENTITY_CHECKED_RECORDING = Identities0.IDENTITY_CHECKED_RECORDING;
     public static final Identity<CheckedTextAudioRecord, Long> IDENTITY_CHECKED_TEXT_AUDIO = Identities0.IDENTITY_CHECKED_TEXT_AUDIO;
+    public static final Identity<DomainRecord, Long> IDENTITY_DOMAIN = Identities0.IDENTITY_DOMAIN;
     public static final Identity<ExcerptRecord, Long> IDENTITY_EXCERPT = Identities0.IDENTITY_EXCERPT;
     public static final Identity<OriginalTextRecord, Long> IDENTITY_ORIGINAL_TEXT = Identities0.IDENTITY_ORIGINAL_TEXT;
     public static final Identity<RecordingRecord, Long> IDENTITY_RECORDING = Identities0.IDENTITY_RECORDING;
@@ -60,6 +63,7 @@ public class Keys {
 
     public static final UniqueKey<CheckedRecordingRecord> KEY_CHECKED_RECORDING_PRIMARY = UniqueKeys0.KEY_CHECKED_RECORDING_PRIMARY;
     public static final UniqueKey<CheckedTextAudioRecord> KEY_CHECKED_TEXT_AUDIO_PRIMARY = UniqueKeys0.KEY_CHECKED_TEXT_AUDIO_PRIMARY;
+    public static final UniqueKey<DomainRecord> KEY_DOMAIN_PRIMARY = UniqueKeys0.KEY_DOMAIN_PRIMARY;
     public static final UniqueKey<ExcerptRecord> KEY_EXCERPT_PRIMARY = UniqueKeys0.KEY_EXCERPT_PRIMARY;
     public static final UniqueKey<FlywaySchemaHistoryRecord> KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY = UniqueKeys0.KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY;
     public static final UniqueKey<OriginalTextRecord> KEY_ORIGINAL_TEXT_PRIMARY = UniqueKeys0.KEY_ORIGINAL_TEXT_PRIMARY;
@@ -83,6 +87,7 @@ public class Keys {
     public static final ForeignKey<CheckedTextAudioRecord, UserRecord> CHECKED_TEXT_AUDIO_IBFK_1 = ForeignKeys0.CHECKED_TEXT_AUDIO_IBFK_1;
     public static final ForeignKey<ExcerptRecord, OriginalTextRecord> EXCERPT_IBFK_1 = ForeignKeys0.EXCERPT_IBFK_1;
     public static final ForeignKey<OriginalTextRecord, UserGroupRecord> ORIGINAL_TEXT_IBFK_1 = ForeignKeys0.ORIGINAL_TEXT_IBFK_1;
+    public static final ForeignKey<OriginalTextRecord, DomainRecord> ORIGINAL_TEXT_IBFK_2 = ForeignKeys0.ORIGINAL_TEXT_IBFK_2;
     public static final ForeignKey<RecordingRecord, ExcerptRecord> RECORDING_IBFK_2 = ForeignKeys0.RECORDING_IBFK_2;
     public static final ForeignKey<RecordingRecord, UserRecord> RECORDING_IBFK_1 = ForeignKeys0.RECORDING_IBFK_1;
     public static final ForeignKey<TextAudioRecord, SpeakerRecord> TEXT_AUDIO_IBFK_1 = ForeignKeys0.TEXT_AUDIO_IBFK_1;
@@ -97,6 +102,7 @@ public class Keys {
     private static class Identities0 {
         public static Identity<CheckedRecordingRecord, Long> IDENTITY_CHECKED_RECORDING = Internal.createIdentity(CheckedRecording.CHECKED_RECORDING, CheckedRecording.CHECKED_RECORDING.ID);
         public static Identity<CheckedTextAudioRecord, Long> IDENTITY_CHECKED_TEXT_AUDIO = Internal.createIdentity(CheckedTextAudio.CHECKED_TEXT_AUDIO, CheckedTextAudio.CHECKED_TEXT_AUDIO.ID);
+        public static Identity<DomainRecord, Long> IDENTITY_DOMAIN = Internal.createIdentity(Domain.DOMAIN, Domain.DOMAIN.ID);
         public static Identity<ExcerptRecord, Long> IDENTITY_EXCERPT = Internal.createIdentity(Excerpt.EXCERPT, Excerpt.EXCERPT.ID);
         public static Identity<OriginalTextRecord, Long> IDENTITY_ORIGINAL_TEXT = Internal.createIdentity(OriginalText.ORIGINAL_TEXT, OriginalText.ORIGINAL_TEXT.ID);
         public static Identity<RecordingRecord, Long> IDENTITY_RECORDING = Internal.createIdentity(Recording.RECORDING, Recording.RECORDING.ID);
@@ -111,6 +117,7 @@ public class Keys {
     private static class UniqueKeys0 {
         public static final UniqueKey<CheckedRecordingRecord> KEY_CHECKED_RECORDING_PRIMARY = Internal.createUniqueKey(CheckedRecording.CHECKED_RECORDING, "KEY_checked_recording_PRIMARY", CheckedRecording.CHECKED_RECORDING.ID);
         public static final UniqueKey<CheckedTextAudioRecord> KEY_CHECKED_TEXT_AUDIO_PRIMARY = Internal.createUniqueKey(CheckedTextAudio.CHECKED_TEXT_AUDIO, "KEY_checked_text_audio_PRIMARY", CheckedTextAudio.CHECKED_TEXT_AUDIO.ID);
+        public static final UniqueKey<DomainRecord> KEY_DOMAIN_PRIMARY = Internal.createUniqueKey(Domain.DOMAIN, "KEY_domain_PRIMARY", Domain.DOMAIN.ID);
         public static final UniqueKey<ExcerptRecord> KEY_EXCERPT_PRIMARY = Internal.createUniqueKey(Excerpt.EXCERPT, "KEY_excerpt_PRIMARY", Excerpt.EXCERPT.ID);
         public static final UniqueKey<FlywaySchemaHistoryRecord> KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY = Internal.createUniqueKey(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, "KEY_flyway_schema_history_PRIMARY", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK);
         public static final UniqueKey<OriginalTextRecord> KEY_ORIGINAL_TEXT_PRIMARY = Internal.createUniqueKey(OriginalText.ORIGINAL_TEXT, "KEY_original_text_PRIMARY", OriginalText.ORIGINAL_TEXT.ID);
@@ -132,6 +139,7 @@ public class Keys {
         public static final ForeignKey<CheckedTextAudioRecord, UserRecord> CHECKED_TEXT_AUDIO_IBFK_1 = Internal.createForeignKey(ch.fhnw.labeling_tool.jooq.Keys.KEY_USER_PRIMARY, CheckedTextAudio.CHECKED_TEXT_AUDIO, "checked_text_audio_ibfk_1", CheckedTextAudio.CHECKED_TEXT_AUDIO.USER_ID);
         public static final ForeignKey<ExcerptRecord, OriginalTextRecord> EXCERPT_IBFK_1 = Internal.createForeignKey(ch.fhnw.labeling_tool.jooq.Keys.KEY_ORIGINAL_TEXT_PRIMARY, Excerpt.EXCERPT, "excerpt_ibfk_1", Excerpt.EXCERPT.ORIGINAL_TEXT_ID);
         public static final ForeignKey<OriginalTextRecord, UserGroupRecord> ORIGINAL_TEXT_IBFK_1 = Internal.createForeignKey(ch.fhnw.labeling_tool.jooq.Keys.KEY_USER_GROUP_PRIMARY, OriginalText.ORIGINAL_TEXT, "original_text_ibfk_1", OriginalText.ORIGINAL_TEXT.USER_GROUP_ID);
+        public static final ForeignKey<OriginalTextRecord, DomainRecord> ORIGINAL_TEXT_IBFK_2 = Internal.createForeignKey(ch.fhnw.labeling_tool.jooq.Keys.KEY_DOMAIN_PRIMARY, OriginalText.ORIGINAL_TEXT, "original_text_ibfk_2", OriginalText.ORIGINAL_TEXT.DOMAIN_ID);
         public static final ForeignKey<RecordingRecord, ExcerptRecord> RECORDING_IBFK_2 = Internal.createForeignKey(ch.fhnw.labeling_tool.jooq.Keys.KEY_EXCERPT_PRIMARY, Recording.RECORDING, "recording_ibfk_2", Recording.RECORDING.EXCERPT_ID);
         public static final ForeignKey<RecordingRecord, UserRecord> RECORDING_IBFK_1 = Internal.createForeignKey(ch.fhnw.labeling_tool.jooq.Keys.KEY_USER_PRIMARY, Recording.RECORDING, "recording_ibfk_1", Recording.RECORDING.USER_ID);
         public static final ForeignKey<TextAudioRecord, SpeakerRecord> TEXT_AUDIO_IBFK_1 = Internal.createForeignKey(ch.fhnw.labeling_tool.jooq.Keys.KEY_SPEAKER_PRIMARY, TextAudio.TEXT_AUDIO, "text_audio_ibfk_1", TextAudio.TEXT_AUDIO.SPEAKER_ID);

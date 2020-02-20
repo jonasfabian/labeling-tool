@@ -198,6 +198,7 @@ export class OverviewComponent implements OnInit {
     });
   }
 
+  // TODO refactor so we only need to load the big one in case the user wants to edit else just load the small one -> see check component
   private loadAudioBlob(fileId: number): void {
     if (this.showAll) {
       this.apiService.getAudioFile(fileId).subscribe(resp => {

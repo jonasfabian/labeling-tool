@@ -10,15 +10,15 @@ import javax.validation.constraints.NotNull;
 
 import org.jooq.Field;
 import org.jooq.Record1;
-import org.jooq.Record2;
-import org.jooq.Row2;
+import org.jooq.Record3;
+import org.jooq.Row3;
 import org.jooq.impl.UpdatableRecordImpl;
 
 
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> implements Record2<Long, Long> {
+public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> implements Record3<Long, Long, Long> {
 
-    private static final long serialVersionUID = 14523097;
+    private static final long serialVersionUID = 1911270256;
 
     public void setId(Long value) {
         set(0, value);
@@ -37,6 +37,15 @@ public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> 
         return (Long) get(1);
     }
 
+    public void setDomainId(Long value) {
+        set(2, value);
+    }
+
+    @NotNull
+    public Long getDomainId() {
+        return (Long) get(2);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -47,17 +56,17 @@ public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> 
     }
 
     // -------------------------------------------------------------------------
-    // Record2 type implementation
+    // Record3 type implementation
     // -------------------------------------------------------------------------
 
     @Override
-    public Row2<Long, Long> fieldsRow() {
-        return (Row2) super.fieldsRow();
+    public Row3<Long, Long, Long> fieldsRow() {
+        return (Row3) super.fieldsRow();
     }
 
     @Override
-    public Row2<Long, Long> valuesRow() {
-        return (Row2) super.valuesRow();
+    public Row3<Long, Long, Long> valuesRow() {
+        return (Row3) super.valuesRow();
     }
 
     @Override
@@ -71,6 +80,11 @@ public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> 
     }
 
     @Override
+    public Field<Long> field3() {
+        return OriginalText.ORIGINAL_TEXT.DOMAIN_ID;
+    }
+
+    @Override
     public Long component1() {
         return getId();
     }
@@ -81,6 +95,11 @@ public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> 
     }
 
     @Override
+    public Long component3() {
+        return getDomainId();
+    }
+
+    @Override
     public Long value1() {
         return getId();
     }
@@ -88,6 +107,11 @@ public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> 
     @Override
     public Long value2() {
         return getUserGroupId();
+    }
+
+    @Override
+    public Long value3() {
+        return getDomainId();
     }
 
     @Override
@@ -103,9 +127,16 @@ public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> 
     }
 
     @Override
-    public OriginalTextRecord values(Long value1, Long value2) {
+    public OriginalTextRecord value3(Long value) {
+        setDomainId(value);
+        return this;
+    }
+
+    @Override
+    public OriginalTextRecord values(Long value1, Long value2, Long value3) {
         value1(value1);
         value2(value2);
+        value3(value3);
         return this;
     }
 
@@ -117,10 +148,11 @@ public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> 
         super(OriginalText.ORIGINAL_TEXT);
     }
 
-    public OriginalTextRecord(Long id, Long userGroupId) {
+    public OriginalTextRecord(Long id, Long userGroupId, Long domainId) {
         super(OriginalText.ORIGINAL_TEXT);
 
         set(0, id);
         set(1, userGroupId);
+        set(2, domainId);
     }
 }

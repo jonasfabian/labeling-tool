@@ -33,8 +33,8 @@ public class UserGroupRestApiController {
     }
 
     @PostMapping("original_text")
-    public void postOriginalText(@PathVariable long groupId, @RequestParam MultipartFile[] files) throws IOException {
-        userGroupService.postOriginalText(groupId, files);
+    public void postOriginalText(@PathVariable long groupId, @RequestParam long domainId, @RequestParam MultipartFile[] files) throws IOException {
+        userGroupService.postOriginalText(groupId, domainId, files);
     }
 
     @PostMapping("checked_text_audio")

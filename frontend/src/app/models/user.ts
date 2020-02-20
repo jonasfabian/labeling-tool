@@ -1,9 +1,13 @@
 export enum Sex {
-  NONE = 'none', M = 'm', F = 'f'
+  NONE, M, F
 }
 
 export enum Licence {
-  PUBLIC = 'public', ACADEMIC = 'academic'
+  PUBLIC, ACADEMIC
+}
+
+export enum UserAge {
+  NONE, U20, U30, U40, U50, U60, U70, U80, O80
 }
 
 export class User {
@@ -16,8 +20,10 @@ export class User {
   canton: string;
   sex: Sex;
   licence: Licence;
+  age: UserAge;
 
-  constructor(id: number, firstName: string, lastName: string, email: string, username: string, password: string, canton: string, sex: Sex, licence: Licence) {
+
+  constructor(id: number, firstName: string, lastName: string, email: string, username: string, password: string, canton: string, sex: Sex, licence: Licence, age: UserAge) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
@@ -27,5 +33,6 @@ export class User {
     this.canton = canton;
     this.sex = sex;
     this.licence = licence;
+    this.age = age;
   }
 }

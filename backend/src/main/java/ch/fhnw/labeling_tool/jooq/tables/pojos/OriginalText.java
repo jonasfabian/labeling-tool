@@ -12,24 +12,28 @@ import javax.validation.constraints.NotNull;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class OriginalText implements Serializable {
 
-    private static final long serialVersionUID = 1589597232;
+    private static final long serialVersionUID = -85376221;
 
     private Long id;
     private Long userGroupId;
+    private Long domainId;
 
     public OriginalText() {}
 
     public OriginalText(OriginalText value) {
         this.id = value.id;
         this.userGroupId = value.userGroupId;
+        this.domainId = value.domainId;
     }
 
     public OriginalText(
         Long id,
-        Long userGroupId
+        Long userGroupId,
+        Long domainId
     ) {
         this.id = id;
         this.userGroupId = userGroupId;
+        this.domainId = domainId;
     }
 
     public Long getId() {
@@ -49,12 +53,22 @@ public class OriginalText implements Serializable {
         this.userGroupId = userGroupId;
     }
 
+    @NotNull
+    public Long getDomainId() {
+        return this.domainId;
+    }
+
+    public void setDomainId(Long domainId) {
+        this.domainId = domainId;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("OriginalText (");
 
         sb.append(id);
         sb.append(", ").append(userGroupId);
+        sb.append(", ").append(domainId);
 
         sb.append(")");
         return sb.toString();

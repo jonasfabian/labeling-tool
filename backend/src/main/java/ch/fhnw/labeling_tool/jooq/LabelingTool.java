@@ -6,6 +6,7 @@ package ch.fhnw.labeling_tool.jooq;
 
 import ch.fhnw.labeling_tool.jooq.tables.CheckedRecording;
 import ch.fhnw.labeling_tool.jooq.tables.CheckedTextAudio;
+import ch.fhnw.labeling_tool.jooq.tables.Domain;
 import ch.fhnw.labeling_tool.jooq.tables.Excerpt;
 import ch.fhnw.labeling_tool.jooq.tables.FlywaySchemaHistory;
 import ch.fhnw.labeling_tool.jooq.tables.OriginalText;
@@ -29,13 +30,15 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class LabelingTool extends SchemaImpl {
 
-    private static final long serialVersionUID = 1761554549;
+    private static final long serialVersionUID = -2077419578;
 
     public static final LabelingTool LABELING_TOOL = new LabelingTool();
 
     public final CheckedRecording CHECKED_RECORDING = ch.fhnw.labeling_tool.jooq.tables.CheckedRecording.CHECKED_RECORDING;
 
     public final CheckedTextAudio CHECKED_TEXT_AUDIO = ch.fhnw.labeling_tool.jooq.tables.CheckedTextAudio.CHECKED_TEXT_AUDIO;
+
+    public final Domain DOMAIN = ch.fhnw.labeling_tool.jooq.tables.Domain.DOMAIN;
 
     public final Excerpt EXCERPT = ch.fhnw.labeling_tool.jooq.tables.Excerpt.EXCERPT;
 
@@ -78,6 +81,7 @@ public class LabelingTool extends SchemaImpl {
         return Arrays.<Table<?>>asList(
             CheckedRecording.CHECKED_RECORDING,
             CheckedTextAudio.CHECKED_TEXT_AUDIO,
+            Domain.DOMAIN,
             Excerpt.EXCERPT,
             FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY,
             OriginalText.ORIGINAL_TEXT,

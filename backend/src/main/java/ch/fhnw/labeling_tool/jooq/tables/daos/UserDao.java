@@ -4,6 +4,7 @@
 package ch.fhnw.labeling_tool.jooq.tables.daos;
 
 
+import ch.fhnw.labeling_tool.jooq.enums.UserAge;
 import ch.fhnw.labeling_tool.jooq.enums.UserLicence;
 import ch.fhnw.labeling_tool.jooq.enums.UserSex;
 import ch.fhnw.labeling_tool.jooq.tables.User;
@@ -81,6 +82,10 @@ public class UserDao extends DAOImpl<UserRecord, ch.fhnw.labeling_tool.jooq.tabl
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.User> fetchByLicence(UserLicence... values) {
         return fetch(User.USER.LICENCE, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.User> fetchByAge(UserAge... values) {
+        return fetch(User.USER.AGE, values);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.User> fetchByEnabled(Boolean... values) {

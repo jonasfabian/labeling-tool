@@ -7,6 +7,7 @@ package ch.fhnw.labeling_tool.jooq.tables;
 import ch.fhnw.labeling_tool.jooq.Indexes;
 import ch.fhnw.labeling_tool.jooq.Keys;
 import ch.fhnw.labeling_tool.jooq.LabelingTool;
+import ch.fhnw.labeling_tool.jooq.enums.UserAge;
 import ch.fhnw.labeling_tool.jooq.enums.UserLicence;
 import ch.fhnw.labeling_tool.jooq.enums.UserSex;
 import ch.fhnw.labeling_tool.jooq.tables.records.UserRecord;
@@ -31,7 +32,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User extends TableImpl<UserRecord> {
 
-    private static final long serialVersionUID = 2144078953;
+    private static final long serialVersionUID = -561633421;
 
     public static final User USER = new User();
 
@@ -54,9 +55,11 @@ public class User extends TableImpl<UserRecord> {
 
     public final TableField<UserRecord, String> CANTON = createField("canton", org.jooq.impl.SQLDataType.VARCHAR(45).nullable(false), this, "");
 
-    public final TableField<UserRecord, UserSex> SEX = createField("sex", org.jooq.impl.SQLDataType.VARCHAR(4).defaultValue(org.jooq.impl.DSL.inline("'none'", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.UserSex.class), this, "");
+    public final TableField<UserRecord, UserSex> SEX = createField("sex", org.jooq.impl.SQLDataType.VARCHAR(4).defaultValue(org.jooq.impl.DSL.inline("'NONE'", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.UserSex.class), this, "");
 
-    public final TableField<UserRecord, UserLicence> LICENCE = createField("licence", org.jooq.impl.SQLDataType.VARCHAR(8).defaultValue(org.jooq.impl.DSL.inline("'academic'", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.UserLicence.class), this, "");
+    public final TableField<UserRecord, UserLicence> LICENCE = createField("licence", org.jooq.impl.SQLDataType.VARCHAR(8).defaultValue(org.jooq.impl.DSL.inline("'ACADEMIC'", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.UserLicence.class), this, "");
+
+    public final TableField<UserRecord, UserAge> AGE = createField("age", org.jooq.impl.SQLDataType.VARCHAR(11).defaultValue(org.jooq.impl.DSL.inline("'NONE'", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.UserAge.class), this, "");
 
     public final TableField<UserRecord, Boolean> ENABLED = createField("enabled", org.jooq.impl.SQLDataType.BOOLEAN.defaultValue(org.jooq.impl.DSL.inline("1", org.jooq.impl.SQLDataType.BOOLEAN)), this, "");
 

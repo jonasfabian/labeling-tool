@@ -10,15 +10,25 @@ import org.jooq.Schema;
 
 
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public enum UserLicence implements EnumType {
+public enum UserAge implements EnumType {
 
-    PUBLIC("PUBLIC"),
+    NONE("NONE"),
 
-    ACADEMIC("ACADEMIC");
+    U20("U20"),
+
+    U30("U30"),
+
+    U40("U40"),
+
+    U50("U50"),
+
+    U60_27U70_27U70("U60'U70'U70"),
+
+    O80("O80");
 
     private final String literal;
 
-    private UserLicence(String literal) {
+    private UserAge(String literal) {
         this.literal = literal;
     }
 
@@ -34,7 +44,7 @@ public enum UserLicence implements EnumType {
 
     @Override
     public String getName() {
-        return "user_licence";
+        return "user_age";
     }
 
     @Override

@@ -76,7 +76,7 @@ def extract_data_to_db(folderNumber: str):
 
                 gender = speaker.find('sex')['value']
                 if gender == 'f' or gender == 'm':
-                    pass
+                    gender = gender.upper()
                 else:
                     gender = 'none'
 

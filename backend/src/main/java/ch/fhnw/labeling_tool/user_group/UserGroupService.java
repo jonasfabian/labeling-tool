@@ -15,6 +15,7 @@ import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.jooq.DSLContext;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -64,11 +65,14 @@ public class UserGroupService {
         return dslContext.select(EXCERPT.fields())
                 .from(EXCERPT.join(ORIGINAL_TEXT).onKey().join(USER_GROUP).onKey())
                 .where(USER_GROUP.ID.eq(groupId)
+                        /*TODO filter based on dialect instead of user so we have one recording by dialect*/
+                        /*TODO filter private skipped>3*/
                         .and(EXCERPT.ID.notIn(dslContext.select(RECORDING.ID).from(RECORDING).where(RECORDING.USER_ID.eq(customUserDetailsService.getLoggedInUserId())))))
+                .orderBy(DSL.rand())
                 .limit(1).fetchOneInto(Excerpt.class);
     }
 
-    public void postOriginalText(long groupId, MultipartFile[] files) {
+    public void postOriginalText(long groupId, long domainId, MultipartFile[] files) {
         customUserDetailsService.isAllowedOnProjectThrow(groupId, false);
         var parser = new AutoDetectParser(TikaConfig.getDefaultConfig());
         for (MultipartFile file : files) {
@@ -79,8 +83,11 @@ public class UserGroupService {
                 metadata.add(Metadata.CONTENT_TYPE, file.getContentType());
                 parser.parse(new ByteArrayInputStream(file.getBytes()), bodyContentHandler, metadata);
                 var text = bodyContentHandler.toString();
+//                TODO instead use this: "conda run -n labeling-tool python data-import.py"
+//                TODO not sure if we want to directly insert the data from the python site?
+//                TODO not sure about the syncronication or atomic integer
                 String[] sentences = (text.split("[.?!]"));
-                OriginalText originalText = new OriginalText(null, groupId);
+                OriginalText originalText = new OriginalText(null, groupId, domainId);
                 OriginalTextRecord textRecord = dslContext.newRecord(ORIGINAL_TEXT, originalText);
                 textRecord.store();
                 var exps = Arrays.stream(sentences).map(s -> new Excerpt(null, textRecord.getId(), s, 0, (byte) 0)).collect(Collectors.toList());
@@ -108,6 +115,7 @@ public class UserGroupService {
         return dslContext.select(TEXT_AUDIO.ID, TEXT_AUDIO.AUDIO_START, TEXT_AUDIO.AUDIO_END, TEXT_AUDIO.TEXT)
                 .from(TEXT_AUDIO)
                 .where(TEXT_AUDIO.ID.notIn(
+                        /*TODO maybe filter already checked ones e.g correct,wrong>10*/
                         dslContext.select(CHECKED_TEXT_AUDIO.TEXT_AUDIO_ID).from(CHECKED_TEXT_AUDIO)
                                 .where(CHECKED_TEXT_AUDIO.USER_ID.eq(customUserDetailsService.getLoggedInUserId()))))
                 .limit(10).fetchInto(TextAudioDto.class);

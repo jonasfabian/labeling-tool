@@ -6,6 +6,7 @@ package ch.fhnw.labeling_tool.jooq;
 
 import ch.fhnw.labeling_tool.jooq.tables.CheckedRecording;
 import ch.fhnw.labeling_tool.jooq.tables.CheckedTextAudio;
+import ch.fhnw.labeling_tool.jooq.tables.Domain;
 import ch.fhnw.labeling_tool.jooq.tables.Excerpt;
 import ch.fhnw.labeling_tool.jooq.tables.FlywaySchemaHistory;
 import ch.fhnw.labeling_tool.jooq.tables.OriginalText;
@@ -24,6 +25,8 @@ public class Tables {
     public static final CheckedRecording CHECKED_RECORDING = ch.fhnw.labeling_tool.jooq.tables.CheckedRecording.CHECKED_RECORDING;
 
     public static final CheckedTextAudio CHECKED_TEXT_AUDIO = ch.fhnw.labeling_tool.jooq.tables.CheckedTextAudio.CHECKED_TEXT_AUDIO;
+
+    public static final Domain DOMAIN = ch.fhnw.labeling_tool.jooq.tables.Domain.DOMAIN;
 
     public static final Excerpt EXCERPT = ch.fhnw.labeling_tool.jooq.tables.Excerpt.EXCERPT;
 

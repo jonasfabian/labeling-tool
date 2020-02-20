@@ -12,11 +12,11 @@ import org.jooq.Schema;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public enum UserSex implements EnumType {
 
-    none("none"),
+    NONE("NONE"),
 
-    m("m"),
+    M("M"),
 
-    f("f");
+    F("F");
 
     private final String literal;
 

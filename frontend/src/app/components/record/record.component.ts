@@ -1,6 +1,4 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import WaveSurfer from 'wavesurfer.js';
-import MicrophonesPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.microphone.js';
 import {Recording} from '../../models/recording';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
@@ -21,88 +19,55 @@ interface Excerpt {
 })
 export class RecordComponent implements OnInit {
   fileContent: string | ArrayBuffer = '';
-  recordingBlob: Blob;
-  hasStartedRecording = false;
-  excerpt: Excerpt=null;
+  excerpt: Excerpt = null;
   isRecording = false;
-  private waveSurfer: WaveSurfer = null;
+  isPlaying = false;
   // @ts-ignore
   private mediaRecorder: MediaRecorder;
-  // TODO not sure how we want to access the groupid => url based or just sessionstorage?
-  // probalby just get all avaible and then select one or just forward to public one -> url based e.g /1,2,3 etc.
-  // NOTE: for now we just set the public group access
+  // TODO get real groupId
   private groupId = 1;
+  private audioChunks = [];
+  private audioPlayer = new Audio();
 
   constructor(private snackBarService: SnackBarService, private detector: ChangeDetectorRef, private httpClient: HttpClient) {
   }
 
   ngOnInit() {
-    // TODO add failure message in case all recodings are done.
+    // TODO test microphone logic on multiple browsers
+    // TODO add failure message in case all recordings are done.
     this.httpClient.get<Excerpt>(`${environment.url}user_group/${this.groupId}/excerpt`).subscribe(value => this.excerpt = value);
-    if (this.waveSurfer === null) {
-      const context = new AudioContext();
-      const processor = context.createScriptProcessor(1024, 1, 1);
-      this.waveSurfer = WaveSurfer.create({
-        container: '#waveform',
-        waveColor: 'lightblue',
-        progressColor: 'blue',
-        barHeight: 1,
-        autoCenter: true,
-        partialRender: false,
-        normalize: false,
-        responsive: true,
-        interact: false,
-        cursorWidth: 0,
-        audioContext: context,
-        audioScriptProcessor: processor,
-        plugins: [
-          MicrophonesPlugin.create({
-            bufferSize: 4096,
-            numberOfInputChannels: 1,
-            numberOfOutputChannels: 1,
-            constraints: {
-              video: false,
-              audio: true
-            }
-          })
-        ]
-      });
-      this.waveSurfer.on('finish', () => {
-        this.detector.detectChanges();
-      });
-      this.waveSurfer.microphone.on('deviceReady', stream => {
+    navigator.mediaDevices.getUserMedia({audio: true})
+      .then(stream => {
         // @ts-ignore
         this.mediaRecorder = new MediaRecorder(stream);
-        this.mediaRecorder.ondataavailable = event => {
-          this.waveSurfer.loadBlob(event.data);
-          this.recordingBlob = event.data;
-          this.detector.detectChanges();
-        };
+        this.mediaRecorder.ondataavailable = event => this.audioChunks.push(event.data);
+        // this.mediaRecorder.onstop = () => this.recordingBlob = new Blob(this.audioChunks);
       });
-    }
   }
 
   isRecordingM = (): string => this.isRecording ? 'recording' : '';
-  isPlaying = () => this.waveSurfer ? this.waveSurfer.isPlaying() : false;
 
   startRecord(): void {
-    this.hasStartedRecording = true;
+    this.audioChunks = [];
     this.isRecording = true;
-    this.waveSurfer.microphone.start();
+    this.mediaRecorder.start();
   }
 
   stopRecord(): void {
-    this.mediaRecorder.start();
     this.mediaRecorder.stop();
     this.isRecording = false;
-    this.waveSurfer.microphone.pause();
   }
 
-  togglePlayRecord(): void {
-    if (this.waveSurfer.isPlaying()) {
-      this.waveSurfer.pause();
+  togglePlay() {
+    if (this.isPlaying) {
+      this.audioPlayer.pause();
+      this.audioPlayer.currentTime = 0;
+      // this.audioProgress = 0;
+      this.isPlaying = false;
     } else {
-      this.waveSurfer.play();
+      this.audioPlayer = new Audio(URL.createObjectURL(new Blob(this.audioChunks)));
+      this.audioPlayer.play();
+      this.isPlaying = true;
     }
   }
 
@@ -111,14 +76,21 @@ export class RecordComponent implements OnInit {
     const formData = new FormData();
     // TODO test if this works correctly -> needs a microphone
     // FIXME this may not work depending on the encoding
-    formData.append(`file`, this.recordingBlob, 'audio');
+    formData.append(`file`, new Blob(this.audioChunks), 'audio');
     formData.append('excerptId', recording.excerptId + '');
     this.httpClient.post(`${environment.url}user_group/${this.groupId}/recording`, formData).subscribe(() => {
       this.fileContent = '';
-      this.recordingBlob = null;
-      this.waveSurfer.empty();
-      this.hasStartedRecording = false;
+      this.audioChunks = [];
       this.snackBarService.openMessage('Successfully uploaded recording');
     });
+  }
+
+  //TODO implement logic
+  private() {
+
+  }
+
+  skip() {
+
   }
 }

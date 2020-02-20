@@ -1,4 +1,3 @@
-<!--TODO not sure about the height-->
 <mat-card style=" width: 500px; height: 600px;">
   <mat-card-header>
     <mat-toolbar *ngIf="isNewUser" class="minus-margin" color="primary">Register</mat-toolbar>
@@ -40,17 +39,32 @@
       <mat-form-field class="max-width">
         <mat-label>Sex</mat-label>
         <mat-select formControlName="sex">
-          <mat-option value="none">None</mat-option>
-          <mat-option value="m">m</mat-option>
-          <mat-option value="f">f</mat-option>
+          <mat-option value="NONE">None</mat-option>
+          <mat-option value="M">m</mat-option>
+          <mat-option value="F">f</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="max-width">
+        <mat-label>Age</mat-label>
+        <mat-select formControlName="age">
+          <!--          TODO finish this-->
+          <mat-option value="NONE">None</mat-option>
+          <mat-option value="U20">0-20</mat-option>
+          <mat-option value="U30">20-30</mat-option>
+          <mat-option value="U40">30-40</mat-option>
+          <mat-option value="U50">40-50</mat-option>
+          <mat-option value="U60">50-60</mat-option>
+          <mat-option value="U70">60-70</mat-option>
+          <mat-option value="U80">70-80</mat-option>
+          <mat-option value="O80">80+</mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field class="max-width">
         <!--TODO probably add a link/disclaimer here what the difference is-->
         <mat-label>Licence</mat-label>
         <mat-select formControlName="licence">
-          <mat-option value="academic">Academic</mat-option>
-          <mat-option value="public">Public</mat-option>
+          <mat-option value="ACADEMIC">Academic</mat-option>
+          <mat-option value="PUBLIC">Public</mat-option>
         </mat-select>
       </mat-form-field>
       <div>

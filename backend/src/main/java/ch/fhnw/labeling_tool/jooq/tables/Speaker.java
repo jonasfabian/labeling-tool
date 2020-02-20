@@ -30,7 +30,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Speaker extends TableImpl<SpeakerRecord> {
 
-    private static final long serialVersionUID = 1526483309;
+    private static final long serialVersionUID = -1849536147;
 
     public static final Speaker SPEAKER = new Speaker();
 
@@ -47,7 +47,7 @@ public class Speaker extends TableImpl<SpeakerRecord> {
 
     public final TableField<SpeakerRecord, String> DIALECT = createField("dialect", org.jooq.impl.SQLDataType.VARCHAR(45).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
-    public final TableField<SpeakerRecord, SpeakerSex> SEX = createField("sex", org.jooq.impl.SQLDataType.VARCHAR(4).defaultValue(org.jooq.impl.DSL.inline("'none'", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.SpeakerSex.class), this, "");
+    public final TableField<SpeakerRecord, SpeakerSex> SEX = createField("sex", org.jooq.impl.SQLDataType.VARCHAR(4).defaultValue(org.jooq.impl.DSL.inline("'NONE'", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.SpeakerSex.class), this, "");
 
     public Speaker() {
         this(DSL.name("speaker"), null);
