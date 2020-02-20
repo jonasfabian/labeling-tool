@@ -1,12 +1,15 @@
 package ch.fhnw.labeling_tool.user_group;
 
+import ch.fhnw.labeling_tool.jooq.tables.daos.CheckedTextAudioDao;
 import ch.fhnw.labeling_tool.jooq.tables.daos.ExcerptDao;
 import ch.fhnw.labeling_tool.jooq.tables.daos.OriginalTextDao;
 import ch.fhnw.labeling_tool.jooq.tables.daos.RecordingDao;
+import ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedTextAudio;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.Excerpt;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.OriginalText;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.Recording;
 import ch.fhnw.labeling_tool.jooq.tables.records.OriginalTextRecord;
+import ch.fhnw.labeling_tool.model.TextAudioDto;
 import ch.fhnw.labeling_tool.user.CustomUserDetailsService;
 import org.apache.tika.config.TikaConfig;
 import org.apache.tika.exception.TikaException;
@@ -24,6 +27,7 @@ import org.xml.sax.SAXException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static ch.fhnw.labeling_tool.jooq.Tables.*;
@@ -35,15 +39,17 @@ public class UserGroupService {
     private final ExcerptDao excerptDao;
     private final OriginalTextDao originalTextDao;
     private final DSLContext dslContext;
+    private final CheckedTextAudioDao checkedTextAudioDao;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    public UserGroupService(CustomUserDetailsService customUserDetailsService, RecordingDao recordingDao, ExcerptDao excerptDao, OriginalTextDao originalTextDao, DSLContext dslContext) {
+    public UserGroupService(CustomUserDetailsService customUserDetailsService, RecordingDao recordingDao, ExcerptDao excerptDao, OriginalTextDao originalTextDao, DSLContext dslContext, CheckedTextAudioDao checkedTextAudioDao) {
         this.customUserDetailsService = customUserDetailsService;
         this.recordingDao = recordingDao;
         this.excerptDao = excerptDao;
         this.originalTextDao = originalTextDao;
         this.dslContext = dslContext;
+        this.checkedTextAudioDao = checkedTextAudioDao;
     }
 
     public void postRecording(long excerptId, MultipartFile file) throws IOException {
@@ -89,4 +95,17 @@ public class UserGroupService {
 
     }
 
+    public void postCheckedTextAudio(long groupId, CheckedTextAudio checkedTextAudio) {
+        checkedTextAudio.setUserId(customUserDetailsService.getLoggedInUserId());
+        checkedTextAudioDao.insert(checkedTextAudio);
+    }
+
+    public List<TextAudioDto> getNextTextAudios(long groupId, Long loggedInUserId) {
+//        TODO maybe add user_group mapping for checked audio?
+//        TODO maybe add ability to also check the recordings as the user_groups cannot upload anything else.
+        return dslContext.select(TEXT_AUDIO.ID, TEXT_AUDIO.AUDIO_START, TEXT_AUDIO.AUDIO_END, TEXT_AUDIO.TEXT)
+                .from(TEXT_AUDIO)
+                .where(TEXT_AUDIO.ID.notIn(dslContext.select(CHECKED_TEXT_AUDIO.ID).from(CHECKED_TEXT_AUDIO).where(CHECKED_TEXT_AUDIO.USER_ID.eq(loggedInUserId))))
+                .limit(10).fetchInto(TextAudioDto.class);
+    }
 }

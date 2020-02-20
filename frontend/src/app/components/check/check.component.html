@@ -1,0 +1,45 @@
+<mat-card id="header-card"><h1>Check</h1></mat-card>
+<div *ngIf="textAudios.length===0" style="height: calc(100% - 100px);">
+  <div style="height: calc(100% - 90px);">
+    <mat-card style="margin: 15px; height: 100%; display: flex; align-items: center; justify-content: center;">
+      <div style="font-weight: bold; font-size: 36px;">No Data to display</div>
+    </mat-card>
+  </div>
+</div>
+<div *ngIf="textAudios.length>0">
+  <carousel-component #carousel [lockSlides]="true" [morePairSlides]="1" [perspective]="4000" id="carousel">
+    <div *ngFor="let textAudio of textAudios;let i=index" class="item-carousel">
+      <mat-card style="border-bottom-left-radius: 0; border-bottom-right-radius: 0;">
+        <div style="width: 100%;">{{textAudio.text}}</div>
+      </mat-card>
+      <mat-progress-bar *ngIf="i === carousel.carousel.activeIndex" [value]="audioProgress" mode="determinate"
+                        style="margin-left: auto; margin-right: auto; transition: none; height: 8px; border-radius: 0 0 10px 10px;"></mat-progress-bar>
+    </div>
+  </carousel-component>
+  <div id="navigation-button-container">
+    <button (click)="setCheckedType(checkedTextAudioLabel.CORRECT)" [disabled]="!this.isReady" mat-raised-button>
+      <mat-icon>thumb_up</mat-icon>
+      <span>&nbsp;Correct</span>
+    </button>
+    <button (click)="togglePlay();" *ngIf=" !isPlaying" class="check-navigation-button" mat-raised-button>
+      <mat-icon>play_arrow</mat-icon>
+    </button>
+    <button (click)="togglePlay();" *ngIf="isPlaying" class="check-navigation-button" mat-raised-button>
+      <mat-icon>pause</mat-icon>
+    </button>
+    <button (click)="setCheckedType(checkedTextAudioLabel.WRONG)" [disabled]="!this.isReady"
+            class="check-navigation-button" mat-raised-button>
+      <mat-icon>thumb_down</mat-icon>
+      <span>&nbsp;Wrong</span>
+    </button>
+    <button (click)="setCheckedType(checkedTextAudioLabel.SKIPPED)" [disabled]="!this.isReady"
+            class="check-navigation-button" mat-raised-button>
+      <span>Skip</span>
+    </button>
+  </div>
+  <div id="shortcut-button">
+    <button (click)="openShortcutDialog()" mat-raised-button>
+      <mat-icon>keyboard</mat-icon>
+    </button>
+  </div>
+</div>

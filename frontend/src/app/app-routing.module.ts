@@ -3,12 +3,13 @@ import {NgModule} from '@angular/core';
 import {AuthGuardService} from './guards/auth-guard.service';
 import {ProfileComponent} from './components/profile/profile.component';
 import {OverviewComponent} from './components/overview/overview.component';
-import {CheckComponent} from './components/check/check/check.component';
+import {CheckComponent} from './components/check/check.component';
 import {LoginComponent} from './components/login/login.component';
 import {RecordComponent} from './components/record/record.component';
 import {NavigationMenuComponent} from './components/navigation-menu/navigation-menu.component';
 import {GroupAdminComponent} from './components/admin/group-admin/group-admin.component';
 import {GroupsAdminComponent} from './components/admin/groups-admin/groups-admin.component';
+import {HomeComponent} from './components/home/home.component';
 
 const routes: Routes = [
   {
@@ -35,6 +36,10 @@ const routes: Routes = [
     component: NavigationMenuComponent,
     canActivate: [AuthGuardService],
     children: [
+      {
+        path: 'home',
+        component: HomeComponent,
+      },
       {
         path: 'check',
         component: CheckComponent,

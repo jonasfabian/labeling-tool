@@ -60,6 +60,11 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .anyMatch(userGroupRole -> userGroupRole.getUserGroupId() == userGroupId && (!checkAdminPermission || userGroupRole.getRole() == UserGroupRoleRole.GROUP_ADMIN));
     }
 
+    public void isAllowedOnProjectThrow(long userGroupId, boolean checkAdminPermission) {
+        if (!isAllowedOnProject(userGroupId, checkAdminPermission))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "BAD_REQUEST");
+    }
+
     private CustomUserDetails getLoggedInUser() {
         return (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }

@@ -1,7 +1,5 @@
 import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
-import {Router} from '@angular/router';
-import {ApiService} from '../../../services/api.service';
 
 @Component({
   selector: 'app-check-more',
@@ -9,18 +7,9 @@ import {ApiService} from '../../../services/api.service';
   styleUrls: ['./check-more.component.scss']
 })
 export class CheckMoreComponent {
-
-  constructor(public dialogRef: MatDialogRef<CheckMoreComponent>, private router: Router, private apiService: ApiService) {
+  constructor(public dialogRef: MatDialogRef<CheckMoreComponent>) {
   }
 
-  no(): void {
-    this.close();
-    this.router.navigate(['/overview']);
-  }
-
-  close(): void {
-    this.dialogRef.close();
-    // TODO not sure this component makes sense as we ignore the response anyway and instead go over the service.
-    this.apiService.showTenMoreQuest = false;
-  }
+  no = () => this.dialogRef.close(false);
+  yes = () => this.dialogRef.close(true);
 }

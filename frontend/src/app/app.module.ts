@@ -13,7 +13,7 @@ import {ProfileComponent} from './components/profile/profile.component';
 import {AvatarComponent} from './components/multi-use/avatar/avatar.component';
 import {CheckMoreComponent} from './components/check/check-more/check-more.component';
 import {OverviewComponent} from './components/overview/overview.component';
-import {CheckComponent} from './components/check/check/check.component';
+import {CheckComponent} from './components/check/check.component';
 import {LoginComponent} from './components/login/login.component';
 import {RecordComponent} from './components/record/record.component';
 import {AuthHeaderInterceptorService} from './services/auth-header-interceptor.service';
@@ -46,6 +46,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {UserAdminComponent} from './components/admin/user-admin/user-admin.component';
 import {MatSortModule} from '@angular/material/sort';
 import {LoadingInterceptorService} from './services/loading-interceptor.service';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import {LoadingInterceptorService} from './services/loading-interceptor.service'
     ProfileEditorComponent,
     GroupsAdminComponent,
     GroupAdminComponent,
-    UserAdminComponent
+    UserAdminComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
