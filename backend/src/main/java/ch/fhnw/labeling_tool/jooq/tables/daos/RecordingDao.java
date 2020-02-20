@@ -50,10 +50,6 @@ public class RecordingDao extends DAOImpl<RecordingRecord, ch.fhnw.labeling_tool
         return fetch(Recording.RECORDING.USER_ID, values);
     }
 
-    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Recording> fetchByAudio(byte[]... values) {
-        return fetch(Recording.RECORDING.AUDIO, values);
-    }
-
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Recording> fetchByTime(Timestamp... values) {
         return fetch(Recording.RECORDING.TIME, values);
     }

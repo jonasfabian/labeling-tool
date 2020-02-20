@@ -8,18 +8,16 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Recording implements Serializable {
 
-    private static final long serialVersionUID = 63487342;
+    private static final long serialVersionUID = 1146499268;
 
     private Long      id;
     private Long      excerptId;
     private Long      userId;
-    private byte[]    audio;
     private Timestamp time;
 
     public Recording() {}
@@ -28,7 +26,6 @@ public class Recording implements Serializable {
         this.id = value.id;
         this.excerptId = value.excerptId;
         this.userId = value.userId;
-        this.audio = value.audio;
         this.time = value.time;
     }
 
@@ -36,13 +33,11 @@ public class Recording implements Serializable {
         Long      id,
         Long      excerptId,
         Long      userId,
-        byte[]    audio,
         Timestamp time
     ) {
         this.id = id;
         this.excerptId = excerptId;
         this.userId = userId;
-        this.audio = audio;
         this.time = time;
     }
 
@@ -72,15 +67,6 @@ public class Recording implements Serializable {
         this.userId = userId;
     }
 
-    @Size(max = 16777215)
-    public byte[] getAudio() {
-        return this.audio;
-    }
-
-    public void setAudio(byte... audio) {
-        this.audio = audio;
-    }
-
     public Timestamp getTime() {
         return this.time;
     }
@@ -96,7 +82,6 @@ public class Recording implements Serializable {
         sb.append(id);
         sb.append(", ").append(excerptId);
         sb.append(", ").append(userId);
-        sb.append(", ").append("[binary...]");
         sb.append(", ").append(time);
 
         sb.append(")");

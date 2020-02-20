@@ -7,38 +7,29 @@ package ch.fhnw.labeling_tool.jooq.tables.pojos;
 import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class OriginalText implements Serializable {
 
-    private static final long serialVersionUID = 1561243368;
+    private static final long serialVersionUID = 1589597232;
 
-    private Long   id;
-    private Long   userGroupId;
-    private byte[] originalText;
-    private String extractedText;
+    private Long id;
+    private Long userGroupId;
 
     public OriginalText() {}
 
     public OriginalText(OriginalText value) {
         this.id = value.id;
         this.userGroupId = value.userGroupId;
-        this.originalText = value.originalText;
-        this.extractedText = value.extractedText;
     }
 
     public OriginalText(
-        Long   id,
-        Long   userGroupId,
-        byte[] originalText,
-        String extractedText
+        Long id,
+        Long userGroupId
     ) {
         this.id = id;
         this.userGroupId = userGroupId;
-        this.originalText = originalText;
-        this.extractedText = extractedText;
     }
 
     public Long getId() {
@@ -58,34 +49,12 @@ public class OriginalText implements Serializable {
         this.userGroupId = userGroupId;
     }
 
-    @NotNull
-    @Size(max = 16777215)
-    public byte[] getOriginalText() {
-        return this.originalText;
-    }
-
-    public void setOriginalText(byte... originalText) {
-        this.originalText = originalText;
-    }
-
-    @NotNull
-    @Size(max = 16777215)
-    public String getExtractedText() {
-        return this.extractedText;
-    }
-
-    public void setExtractedText(String extractedText) {
-        this.extractedText = extractedText;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("OriginalText (");
 
         sb.append(id);
         sb.append(", ").append(userGroupId);
-        sb.append(", ").append("[binary...]");
-        sb.append(", ").append(extractedText);
 
         sb.append(")");
         return sb.toString();

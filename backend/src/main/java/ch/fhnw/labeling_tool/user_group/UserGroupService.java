@@ -1,14 +1,12 @@
 package ch.fhnw.labeling_tool.user_group;
 
+import ch.fhnw.labeling_tool.config.Config;
 import ch.fhnw.labeling_tool.jooq.tables.daos.CheckedTextAudioDao;
 import ch.fhnw.labeling_tool.jooq.tables.daos.ExcerptDao;
-import ch.fhnw.labeling_tool.jooq.tables.daos.OriginalTextDao;
 import ch.fhnw.labeling_tool.jooq.tables.daos.RecordingDao;
-import ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedTextAudio;
-import ch.fhnw.labeling_tool.jooq.tables.pojos.Excerpt;
-import ch.fhnw.labeling_tool.jooq.tables.pojos.OriginalText;
-import ch.fhnw.labeling_tool.jooq.tables.pojos.Recording;
+import ch.fhnw.labeling_tool.jooq.tables.pojos.*;
 import ch.fhnw.labeling_tool.jooq.tables.records.OriginalTextRecord;
+import ch.fhnw.labeling_tool.jooq.tables.records.RecordingRecord;
 import ch.fhnw.labeling_tool.model.TextAudioDto;
 import ch.fhnw.labeling_tool.user.CustomUserDetailsService;
 import org.apache.tika.config.TikaConfig;
@@ -17,8 +15,6 @@ import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.jooq.DSLContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +22,7 @@ import org.xml.sax.SAXException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,29 +34,31 @@ public class UserGroupService {
     private final CustomUserDetailsService customUserDetailsService;
     private final RecordingDao recordingDao;
     private final ExcerptDao excerptDao;
-    private final OriginalTextDao originalTextDao;
     private final DSLContext dslContext;
     private final CheckedTextAudioDao checkedTextAudioDao;
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Config config;
 
     @Autowired
-    public UserGroupService(CustomUserDetailsService customUserDetailsService, RecordingDao recordingDao, ExcerptDao excerptDao, OriginalTextDao originalTextDao, DSLContext dslContext, CheckedTextAudioDao checkedTextAudioDao) {
+    public UserGroupService(CustomUserDetailsService customUserDetailsService, RecordingDao recordingDao, ExcerptDao excerptDao, DSLContext dslContext, CheckedTextAudioDao checkedTextAudioDao, Config config) {
         this.customUserDetailsService = customUserDetailsService;
         this.recordingDao = recordingDao;
         this.excerptDao = excerptDao;
-        this.originalTextDao = originalTextDao;
         this.dslContext = dslContext;
         this.checkedTextAudioDao = checkedTextAudioDao;
+        this.config = config;
     }
 
-    public void postRecording(long excerptId, MultipartFile file) throws IOException {
-//        TODO check logic e.g. if user has even access to the group etc.
-//        TODO probably save the recording in a file locally.
-        var r2 = new Recording(null, excerptId, customUserDetailsService.getLoggedInUserId(), file.getBytes(), null);
+    public void postRecording(long groupId, long excerptId, MultipartFile file) throws IOException {
+        customUserDetailsService.isAllowedOnProjectThrow(groupId, false);
+        var r2 = new Recording(null, excerptId, customUserDetailsService.getLoggedInUserId(), null);
+        RecordingRecord recordingRecord = dslContext.newRecord(RECORDING, r2);
+        recordingRecord.store();
+        Files.write(config.getBasePath().resolve("recording/" + recordingRecord.getId() + ".ogg"), file.getBytes());
         recordingDao.insert(r2);
     }
 
     public Excerpt getExcerpt(Long groupId) {
+        customUserDetailsService.isAllowedOnProjectThrow(groupId, false);
         // TODO limit based on what was already labeled by user and/or based on dialect .
 //        TODO not sure about the performance of this query -> maybe return 10 like check component
         return dslContext.select(EXCERPT.fields())
@@ -70,6 +69,7 @@ public class UserGroupService {
     }
 
     public void postOriginalText(long groupId, MultipartFile[] files) {
+        customUserDetailsService.isAllowedOnProjectThrow(groupId, false);
         var parser = new AutoDetectParser(TikaConfig.getDefaultConfig());
         for (MultipartFile file : files) {
             try {
@@ -79,16 +79,16 @@ public class UserGroupService {
                 metadata.add(Metadata.CONTENT_TYPE, file.getContentType());
                 parser.parse(new ByteArrayInputStream(file.getBytes()), bodyContentHandler, metadata);
                 var text = bodyContentHandler.toString();
-                //TODO maybe split using corenlp etc.
                 String[] sentences = (text.split("[.?!]"));
-                OriginalText originalText = new OriginalText(null, groupId, file.getBytes(), text);
+                OriginalText originalText = new OriginalText(null, groupId);
                 OriginalTextRecord textRecord = dslContext.newRecord(ORIGINAL_TEXT, originalText);
                 textRecord.store();
                 var exps = Arrays.stream(sentences).map(s -> new Excerpt(null, textRecord.getId(), s, 0, (byte) 0)).collect(Collectors.toList());
-                //TODO probably return result for validation / post processing before saving & publishing
                 excerptDao.insert(exps);
+                Files.write(config.getBasePath().resolve("original_text/" + textRecord.getId() + ".bin"), file.getBytes());
+                //TODO maybe return result for validation / post processing before saving & publishing
             } catch (IOException | TikaException | SAXException ex) {
-                //TODO not sure how we want to handle this e.g. maybe add a success wrapper for each file? and return them afterwards?
+                //TODO maybe add a success wrapper for each file? and return them afterwards?
             }
 
         }
@@ -96,16 +96,35 @@ public class UserGroupService {
     }
 
     public void postCheckedTextAudio(long groupId, CheckedTextAudio checkedTextAudio) {
+        customUserDetailsService.isAllowedOnProjectThrow(groupId, false);
         checkedTextAudio.setUserId(customUserDetailsService.getLoggedInUserId());
         checkedTextAudioDao.insert(checkedTextAudio);
     }
 
-    public List<TextAudioDto> getNextTextAudios(long groupId, Long loggedInUserId) {
+    public List<TextAudioDto> getNextTextAudios(long groupId) {
+        customUserDetailsService.isAllowedOnProjectThrow(groupId, false);
 //        TODO maybe add user_group mapping for checked audio?
 //        TODO maybe add ability to also check the recordings as the user_groups cannot upload anything else.
         return dslContext.select(TEXT_AUDIO.ID, TEXT_AUDIO.AUDIO_START, TEXT_AUDIO.AUDIO_END, TEXT_AUDIO.TEXT)
                 .from(TEXT_AUDIO)
-                .where(TEXT_AUDIO.ID.notIn(dslContext.select(CHECKED_TEXT_AUDIO.ID).from(CHECKED_TEXT_AUDIO).where(CHECKED_TEXT_AUDIO.USER_ID.eq(loggedInUserId))))
+                .where(TEXT_AUDIO.ID.notIn(
+                        dslContext.select(CHECKED_TEXT_AUDIO.TEXT_AUDIO_ID).from(CHECKED_TEXT_AUDIO)
+                                .where(CHECKED_TEXT_AUDIO.USER_ID.eq(customUserDetailsService.getLoggedInUserId()))))
                 .limit(10).fetchInto(TextAudioDto.class);
+    }
+
+    public byte[] getAudio(long groupId, long audioId) throws IOException {
+        customUserDetailsService.isAllowedOnProjectThrow(groupId, false);
+//        TODO check if audio is in the right group audioId
+//        TODO add config for path
+        return Files.readAllBytes(config.getBasePath().resolve("./text_audio/" + audioId + ".flac"));
+    }
+
+    public void putTextAudio(long groupId, TextAudio textAudio) {
+        customUserDetailsService.isAllowedOnProjectThrow(groupId, true);
+        //TODO implement logic to update text audio etc.
+        //TODO we also need to update the audio segment on the file system.
+        //or
+        //    TODO instead insert a new record instead
     }
 }

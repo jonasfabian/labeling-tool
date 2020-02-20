@@ -19,7 +19,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TextAudioRecord extends UpdatableRecordImpl<TextAudioRecord> implements Record7<Long, Double, Double, String, String, Long, Long> {
 
-    private static final long serialVersionUID = -1932022514;
+    private static final long serialVersionUID = 840035500;
 
     public void setId(Long value) {
         set(0, value);
@@ -52,7 +52,7 @@ public class TextAudioRecord extends UpdatableRecordImpl<TextAudioRecord> implem
     }
 
     @NotNull
-    @Size(max = 16777215)
+    @Size(max = 65535)
     public String getText() {
         return (String) get(3);
     }

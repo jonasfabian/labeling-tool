@@ -7,19 +7,18 @@ package ch.fhnw.labeling_tool.jooq.tables.records;
 import ch.fhnw.labeling_tool.jooq.tables.OriginalText;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import org.jooq.Field;
 import org.jooq.Record1;
-import org.jooq.Record4;
-import org.jooq.Row4;
+import org.jooq.Record2;
+import org.jooq.Row2;
 import org.jooq.impl.UpdatableRecordImpl;
 
 
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> implements Record4<Long, Long, byte[], String> {
+public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> implements Record2<Long, Long> {
 
-    private static final long serialVersionUID = -1456549288;
+    private static final long serialVersionUID = 14523097;
 
     public void setId(Long value) {
         set(0, value);
@@ -38,26 +37,6 @@ public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> 
         return (Long) get(1);
     }
 
-    public void setOriginalText(byte... value) {
-        set(2, value);
-    }
-
-    @NotNull
-    @Size(max = 16777215)
-    public byte[] getOriginalText() {
-        return (byte[]) get(2);
-    }
-
-    public void setExtractedText(String value) {
-        set(3, value);
-    }
-
-    @NotNull
-    @Size(max = 16777215)
-    public String getExtractedText() {
-        return (String) get(3);
-    }
-
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -68,17 +47,17 @@ public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> 
     }
 
     // -------------------------------------------------------------------------
-    // Record4 type implementation
+    // Record2 type implementation
     // -------------------------------------------------------------------------
 
     @Override
-    public Row4<Long, Long, byte[], String> fieldsRow() {
-        return (Row4) super.fieldsRow();
+    public Row2<Long, Long> fieldsRow() {
+        return (Row2) super.fieldsRow();
     }
 
     @Override
-    public Row4<Long, Long, byte[], String> valuesRow() {
-        return (Row4) super.valuesRow();
+    public Row2<Long, Long> valuesRow() {
+        return (Row2) super.valuesRow();
     }
 
     @Override
@@ -92,16 +71,6 @@ public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> 
     }
 
     @Override
-    public Field<byte[]> field3() {
-        return OriginalText.ORIGINAL_TEXT.ORIGINAL_TEXT_;
-    }
-
-    @Override
-    public Field<String> field4() {
-        return OriginalText.ORIGINAL_TEXT.EXTRACTED_TEXT;
-    }
-
-    @Override
     public Long component1() {
         return getId();
     }
@@ -112,16 +81,6 @@ public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> 
     }
 
     @Override
-    public byte[] component3() {
-        return getOriginalText();
-    }
-
-    @Override
-    public String component4() {
-        return getExtractedText();
-    }
-
-    @Override
     public Long value1() {
         return getId();
     }
@@ -129,16 +88,6 @@ public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> 
     @Override
     public Long value2() {
         return getUserGroupId();
-    }
-
-    @Override
-    public byte[] value3() {
-        return getOriginalText();
-    }
-
-    @Override
-    public String value4() {
-        return getExtractedText();
     }
 
     @Override
@@ -154,23 +103,9 @@ public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> 
     }
 
     @Override
-    public OriginalTextRecord value3(byte... value) {
-        setOriginalText(value);
-        return this;
-    }
-
-    @Override
-    public OriginalTextRecord value4(String value) {
-        setExtractedText(value);
-        return this;
-    }
-
-    @Override
-    public OriginalTextRecord values(Long value1, Long value2, byte[] value3, String value4) {
+    public OriginalTextRecord values(Long value1, Long value2) {
         value1(value1);
         value2(value2);
-        value3(value3);
-        value4(value4);
         return this;
     }
 
@@ -182,12 +117,10 @@ public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> 
         super(OriginalText.ORIGINAL_TEXT);
     }
 
-    public OriginalTextRecord(Long id, Long userGroupId, byte[] originalText, String extractedText) {
+    public OriginalTextRecord(Long id, Long userGroupId) {
         super(OriginalText.ORIGINAL_TEXT);
 
         set(0, id);
         set(1, userGroupId);
-        set(2, originalText);
-        set(3, extractedText);
     }
 }

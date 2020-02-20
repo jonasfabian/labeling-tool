@@ -10,6 +10,19 @@ Note: Other versions might work, but have not been tested yet
 * npm: @angular/cli
 * IntelliJ Idea
 ## Data Structure
+* the data can be loaded using `data-import/data-import.py`
+* the datastructure should look like this.
+* `data` the base data directory (can be changed in the configuration)
+   * `data-source` directory containing the raw data used by the import & edit
+      * `<id>` id of the transcript
+         * `audio.wav` the raw audio file
+         * `indexes.xml` the transcript
+   * `orginal_text` used to save the original text documents
+      * `<id>.bin`
+   * `recoding` used to save the recordings
+      * `<id>.ogg`
+   * `text-audio` used to save pre-cut audio
+      * `<id>.flac`
 ## Development
 run `gradle generateSampleJooqSchemaSource --rerun-tasks` to update the jooq database classes
 run `gradle devBootRun` && `npm start` to run the development version

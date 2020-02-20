@@ -29,7 +29,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class OriginalText extends TableImpl<OriginalTextRecord> {
 
-    private static final long serialVersionUID = -954009522;
+    private static final long serialVersionUID = -176223545;
 
     public static final OriginalText ORIGINAL_TEXT = new OriginalText();
 
@@ -41,10 +41,6 @@ public class OriginalText extends TableImpl<OriginalTextRecord> {
     public final TableField<OriginalTextRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     public final TableField<OriginalTextRecord, Long> USER_GROUP_ID = createField("user_group_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
-
-    public final TableField<OriginalTextRecord, byte[]> ORIGINAL_TEXT_ = createField("original_text", org.jooq.impl.SQLDataType.BLOB.nullable(false), this, "");
-
-    public final TableField<OriginalTextRecord, String> EXTRACTED_TEXT = createField("extracted_text", org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "");
 
     public OriginalText() {
         this(DSL.name("original_text"), null);

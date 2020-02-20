@@ -30,7 +30,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Recording extends TableImpl<RecordingRecord> {
 
-    private static final long serialVersionUID = -745866993;
+    private static final long serialVersionUID = -423064857;
 
     public static final Recording RECORDING = new Recording();
 
@@ -44,8 +44,6 @@ public class Recording extends TableImpl<RecordingRecord> {
     public final TableField<RecordingRecord, Long> EXCERPT_ID = createField("excerpt_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
     public final TableField<RecordingRecord, Long> USER_ID = createField("user_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
-
-    public final TableField<RecordingRecord, byte[]> AUDIO = createField("audio", org.jooq.impl.SQLDataType.BLOB.defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.BLOB)), this, "");
 
     public final TableField<RecordingRecord, Timestamp> TIME = createField("time", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("current_timestamp()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
 

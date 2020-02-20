@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TextAudio implements Serializable {
 
-    private static final long serialVersionUID = -534225959;
+    private static final long serialVersionUID = 130168811;
 
     private Long   id;
     private Double audioStart;
@@ -80,7 +80,7 @@ public class TextAudio implements Serializable {
     }
 
     @NotNull
-    @Size(max = 16777215)
+    @Size(max = 65535)
     public String getText() {
         return this.text;
     }

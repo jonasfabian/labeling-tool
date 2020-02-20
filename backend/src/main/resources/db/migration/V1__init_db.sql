@@ -41,10 +41,8 @@ CREATE TABLE user_group_role
 
 CREATE TABLE original_text
 (
-    id             BIGINT     NOT NULL AUTO_INCREMENT,
-    user_group_id  BIGINT     NOT NULL,
-    original_text  MEDIUMBLOB NOT NULL,
-    extracted_text MEDIUMTEXT NOT NULL,
+    id            BIGINT NOT NULL AUTO_INCREMENT,
+    user_group_id BIGINT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (user_group_id) REFERENCES user_group (id) ON DELETE CASCADE
 );
@@ -63,7 +61,6 @@ CREATE TABLE recording
     id         BIGINT   NOT NULL AUTO_INCREMENT,
     excerpt_id BIGINT   NOT NULL,
     user_id    BIGINT   NOT NULL,
-    audio      MEDIUMBLOB,
     time       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE,
@@ -109,16 +106,15 @@ CREATE TABLE source
   AUTO_INCREMENT = 8
   DEFAULT CHARSET = utf8;
 
-# TODO change frontend so it only loads the orginal file on edit and else loads a pre-clipped version
 CREATE TABLE text_audio
 (
-    id           BIGINT     NOT NULL AUTO_INCREMENT,
-    audio_start  FLOAT      NOT NULL,
-    audio_end    FLOAT      NOT NULL,
-    text         MEDIUMTEXT NOT NULL,
+    id           BIGINT NOT NULL AUTO_INCREMENT,
+    audio_start  FLOAT  NOT NULL,
+    audio_end    FLOAT  NOT NULL,
+    text         TEXT   NOT NULL,
     path_to_file varchar(255) DEFAULT NULL,
-    speaker_id   BIGINT     NOT NULL,
-    source_id    BIGINT     NOT NULL,
+    speaker_id   BIGINT NOT NULL,
+    source_id    BIGINT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (speaker_id) REFERENCES speaker (id) ON DELETE CASCADE,
     FOREIGN KEY (source_id) REFERENCES source (id) ON DELETE CASCADE
@@ -146,12 +142,3 @@ INSERT INTO user_group(id, name) VALUE (1, 'public test group');
 INSERT INTO user_group_role(role, user_id, user_group_id)
 VALUES ('ADMIN', 1, 1),
        ('GROUP_ADMIN', 1, 1);
-
-### TEST VALUES
-# TODO remove test values once everything else is done
-
-INSERT INTO original_text(id, original_text, extracted_text, user_group_id) VALUE (1, 'none', 'none', 1);
-INSERT INTO excerpt(original_text_id, excerpt, isSkipped, isPrivate)
-VALUES (1, 'Hallo Welt', 0, 0),
-       (1, 'Guten Morgen', 0, 0),
-       (1, 'Guten Abend', 0, 0);

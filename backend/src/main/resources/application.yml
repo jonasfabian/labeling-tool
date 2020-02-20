@@ -8,9 +8,3 @@ server:
   port: 8084
 labeling-tool:
   base-path: /home/stt/labeling-tool/data
-  #  TODO describe data structure in Readme
-  #  NOTE folder structure is as follows
-  # recording/1.ogg recording/2.ogg ... (maybe also leave in database )
-  # text-audio/ (maybe save pre-cut audio) (for easier checking e.g. not everything has to be loaded at once)
-  # data-source-1/<some-id>/ audio.wav, indexes.xml,
-  # orginal_text/ used to save orginal_text documents

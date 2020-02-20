@@ -23,7 +23,7 @@ export class RecordComponent implements OnInit {
   fileContent: string | ArrayBuffer = '';
   recordingBlob: Blob;
   hasStartedRecording = false;
-  excerpt: Excerpt;
+  excerpt: Excerpt=null;
   isRecording = false;
   private waveSurfer: WaveSurfer = null;
   // @ts-ignore
@@ -37,6 +37,7 @@ export class RecordComponent implements OnInit {
   }
 
   ngOnInit() {
+    // TODO add failure message in case all recodings are done.
     this.httpClient.get<Excerpt>(`${environment.url}user_group/${this.groupId}/excerpt`).subscribe(value => this.excerpt = value);
     if (this.waveSurfer === null) {
       const context = new AudioContext();
@@ -108,6 +109,8 @@ export class RecordComponent implements OnInit {
   submit(): void {
     const recording = new Recording(undefined, this.excerpt.id, undefined, undefined, undefined);
     const formData = new FormData();
+    // TODO test if this works correctly -> needs a microphone
+    // FIXME this may not work depending on the encoding
     formData.append(`file`, this.recordingBlob, 'audio');
     formData.append('excerptId', recording.excerptId + '');
     this.httpClient.post(`${environment.url}user_group/${this.groupId}/recording`, formData).subscribe(() => {

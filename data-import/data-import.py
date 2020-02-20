@@ -21,7 +21,7 @@ connection.autocommit = False
 cursor = connection.cursor(dictionary=True)
 
 base_dir = "../data"
-source_dir = os.path.join(base_dir, "source")
+source_dir = "source"
 
 source_name = 'Digitaltag'
 source_desc = 'Digitaltag 2019'
@@ -49,9 +49,9 @@ def search_directories():
         # directory already exists
         pass
     logging.info('Loading...')
-    entries = os.scandir(source_dir)
+    entries = os.scandir(os.path.join(base_dir, source_dir))
     for entry in entries:
-        for fileData in os.listdir(os.path.join(source_dir, entry.name)):
+        for fileData in os.listdir(os.path.join(base_dir, source_dir, entry.name)):
             if fileData.endswith(".xml"):
                 extract_data_to_db(entry.name)
     logging.info('Done!')
@@ -64,6 +64,8 @@ def extract_data_to_db(folderNumber: str):
         cursor.execute('insert into source(description,name,raw_audio_path,raw_file_path) VALUE(%s,%s,%s,%s)',
                        [source_desc, source_name, audio, index])
         source_id = get_last_insert_id(cursor)
+        index = os.path.join(base_dir, index)
+        audio = os.path.join(base_dir, audio)
 
         with open(index, encoding='utf-8') as file:
             soup = BeautifulSoup(file.read(), 'html.parser')

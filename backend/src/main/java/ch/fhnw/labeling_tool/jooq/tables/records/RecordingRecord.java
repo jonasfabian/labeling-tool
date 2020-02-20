@@ -9,19 +9,18 @@ import ch.fhnw.labeling_tool.jooq.tables.Recording;
 import java.sql.Timestamp;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import org.jooq.Field;
 import org.jooq.Record1;
-import org.jooq.Record5;
-import org.jooq.Row5;
+import org.jooq.Record4;
+import org.jooq.Row4;
 import org.jooq.impl.UpdatableRecordImpl;
 
 
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implements Record5<Long, Long, Long, byte[], Timestamp> {
+public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implements Record4<Long, Long, Long, Timestamp> {
 
-    private static final long serialVersionUID = 771562126;
+    private static final long serialVersionUID = -1275060029;
 
     public void setId(Long value) {
         set(0, value);
@@ -49,21 +48,12 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
         return (Long) get(2);
     }
 
-    public void setAudio(byte... value) {
+    public void setTime(Timestamp value) {
         set(3, value);
     }
 
-    @Size(max = 16777215)
-    public byte[] getAudio() {
-        return (byte[]) get(3);
-    }
-
-    public void setTime(Timestamp value) {
-        set(4, value);
-    }
-
     public Timestamp getTime() {
-        return (Timestamp) get(4);
+        return (Timestamp) get(3);
     }
 
     // -------------------------------------------------------------------------
@@ -76,17 +66,17 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
     }
 
     // -------------------------------------------------------------------------
-    // Record5 type implementation
+    // Record4 type implementation
     // -------------------------------------------------------------------------
 
     @Override
-    public Row5<Long, Long, Long, byte[], Timestamp> fieldsRow() {
-        return (Row5) super.fieldsRow();
+    public Row4<Long, Long, Long, Timestamp> fieldsRow() {
+        return (Row4) super.fieldsRow();
     }
 
     @Override
-    public Row5<Long, Long, Long, byte[], Timestamp> valuesRow() {
-        return (Row5) super.valuesRow();
+    public Row4<Long, Long, Long, Timestamp> valuesRow() {
+        return (Row4) super.valuesRow();
     }
 
     @Override
@@ -105,12 +95,7 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
     }
 
     @Override
-    public Field<byte[]> field4() {
-        return Recording.RECORDING.AUDIO;
-    }
-
-    @Override
-    public Field<Timestamp> field5() {
+    public Field<Timestamp> field4() {
         return Recording.RECORDING.TIME;
     }
 
@@ -130,12 +115,7 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
     }
 
     @Override
-    public byte[] component4() {
-        return getAudio();
-    }
-
-    @Override
-    public Timestamp component5() {
+    public Timestamp component4() {
         return getTime();
     }
 
@@ -155,12 +135,7 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
     }
 
     @Override
-    public byte[] value4() {
-        return getAudio();
-    }
-
-    @Override
-    public Timestamp value5() {
+    public Timestamp value4() {
         return getTime();
     }
 
@@ -183,24 +158,17 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
     }
 
     @Override
-    public RecordingRecord value4(byte... value) {
-        setAudio(value);
-        return this;
-    }
-
-    @Override
-    public RecordingRecord value5(Timestamp value) {
+    public RecordingRecord value4(Timestamp value) {
         setTime(value);
         return this;
     }
 
     @Override
-    public RecordingRecord values(Long value1, Long value2, Long value3, byte[] value4, Timestamp value5) {
+    public RecordingRecord values(Long value1, Long value2, Long value3, Timestamp value4) {
         value1(value1);
         value2(value2);
         value3(value3);
         value4(value4);
-        value5(value5);
         return this;
     }
 
@@ -212,13 +180,12 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
         super(Recording.RECORDING);
     }
 
-    public RecordingRecord(Long id, Long excerptId, Long userId, byte[] audio, Timestamp time) {
+    public RecordingRecord(Long id, Long excerptId, Long userId, Timestamp time) {
         super(Recording.RECORDING);
 
         set(0, id);
         set(1, excerptId);
         set(2, userId);
-        set(3, audio);
-        set(4, time);
+        set(3, time);
     }
 }
