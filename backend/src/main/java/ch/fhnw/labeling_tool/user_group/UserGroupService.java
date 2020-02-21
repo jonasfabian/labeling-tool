@@ -10,6 +10,7 @@ import ch.fhnw.labeling_tool.jooq.tables.records.OriginalTextRecord;
 import ch.fhnw.labeling_tool.jooq.tables.records.RecordingRecord;
 import ch.fhnw.labeling_tool.model.TextAudioDto;
 import ch.fhnw.labeling_tool.user.CustomUserDetailsService;
+import edu.stanford.nlp.simple.Document;
 import org.apache.tika.config.TikaConfig;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
@@ -25,7 +26,6 @@ import org.xml.sax.SAXException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -90,11 +90,12 @@ public class UserGroupService {
 //                TODO instead use this: "conda run -n labeling-tool python data-import.py"
 //                TODO not sure if we want to directly insert the data from the python site?
 //                TODO not sure about the syncronication or atomic integer
-                String[] sentences = (text.split("[.?!]"));
+
                 OriginalText originalText = new OriginalText(null, groupId, domainId);
                 OriginalTextRecord textRecord = dslContext.newRecord(ORIGINAL_TEXT, originalText);
                 textRecord.store();
-                var exps = Arrays.stream(sentences).map(s -> new Excerpt(null, textRecord.getId(), s, 0, false)).collect(Collectors.toList());
+//                TODO maybe replace corenlp with spacy
+                var exps = new Document(text).sentences().stream().map(s -> new Excerpt(null, textRecord.getId(), s.text(), 0, false)).collect(Collectors.toList());
                 excerptDao.insert(exps);
                 Files.write(config.getBasePath().resolve("original_text/" + textRecord.getId() + ".bin"), file.getBytes());
                 //TODO maybe return result for validation / post processing before saving & publishing
