@@ -68,7 +68,6 @@ public class UserGroupService {
                 .from(EXCERPT.join(ORIGINAL_TEXT).onKey().join(USER_GROUP).onKey())
                 .where(USER_GROUP.ID.eq(groupId)
                         .and(EXCERPT.ISSKIPPED.lessOrEqual(3))
-                        .and(EXCERPT.ISPRIVATE.isFalse())
                         /*TODO filter based on dialect instead of user so we have one recording by dialect*/
                         /*TODO filter private skipped>3*/
                         .and(EXCERPT.ID.notIn(dslContext.select(RECORDING.ID).from(RECORDING).where(RECORDING.USER_ID.eq(customUserDetailsService.getLoggedInUserId())))))

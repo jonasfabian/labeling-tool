@@ -1,13 +1,15 @@
 <div [hidden]="!excerpt">
   <mat-card class="margin">
     <h1>Record</h1>
+    <mat-icon *ngIf="excerpt.isPrivate">lock</mat-icon>
+    <mat-icon *ngIf="!excerpt.isPrivate">lock_open</mat-icon>
     <b>Excerpt: </b><span>{{excerpt?.excerpt}}</span>
   </mat-card>
   <div class="margin">
     <audio [src]="blobUrl" controls></audio>
     <br>
     <br>
-    <button (click)="private()" mat-raised-button title="Private">
+    <button (click)="private()" [disabled]="excerpt.isPrivate" mat-raised-button title="Mark as private">
       <mat-icon>lock</mat-icon>
       <span>&nbsp;Private</span>
     </button>

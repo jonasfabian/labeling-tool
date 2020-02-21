@@ -66,7 +66,7 @@ export class RecordComponent implements OnInit {
     this.httpClient.put<Excerpt>(`${environment.url}user_group/${this.groupId}/excerpt/${this.excerpt.id}/private`, {})
       .subscribe(() => {
         this.snackBarService.openMessage('marked as private');
-        this.getNext();
+        this.excerpt.isPrivate = true;
       });
   }
 
