@@ -18,6 +18,7 @@ import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
+import org.jooq.Row3;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -29,7 +30,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class OriginalText extends TableImpl<OriginalTextRecord> {
 
-    private static final long serialVersionUID = 1760595087;
+    private static final long serialVersionUID = 1452915015;
 
     public static final OriginalText ORIGINAL_TEXT = new OriginalText();
 
@@ -38,11 +39,11 @@ public class OriginalText extends TableImpl<OriginalTextRecord> {
         return OriginalTextRecord.class;
     }
 
-    public final TableField<OriginalTextRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+    public final TableField<OriginalTextRecord, Long> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
-    public final TableField<OriginalTextRecord, Long> USER_GROUP_ID = createField("user_group_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<OriginalTextRecord, Long> USER_GROUP_ID = createField(DSL.name("user_group_id"), org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
-    public final TableField<OriginalTextRecord, Long> DOMAIN_ID = createField("domain_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<OriginalTextRecord, Long> DOMAIN_ID = createField(DSL.name("domain_id"), org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
     public OriginalText() {
         this(DSL.name("original_text"), null);
@@ -124,5 +125,14 @@ public class OriginalText extends TableImpl<OriginalTextRecord> {
     @Override
     public OriginalText rename(Name name) {
         return new OriginalText(name, null);
+    }
+
+    // -------------------------------------------------------------------------
+    // Row3 type methods
+    // -------------------------------------------------------------------------
+
+    @Override
+    public Row3<Long, Long, Long> fieldsRow() {
+        return (Row3) super.fieldsRow();
     }
 }

@@ -29,8 +29,12 @@ public class SourceDao extends DAOImpl<SourceRecord, ch.fhnw.labeling_tool.jooq.
     }
 
     @Override
-    protected Long getId(ch.fhnw.labeling_tool.jooq.tables.pojos.Source object) {
+    public Long getId(ch.fhnw.labeling_tool.jooq.tables.pojos.Source object) {
         return object.getId();
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Source> fetchRangeOfId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(Source.SOURCE.ID, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Source> fetchById(Long... values) {
@@ -41,16 +45,32 @@ public class SourceDao extends DAOImpl<SourceRecord, ch.fhnw.labeling_tool.jooq.
         return fetchOne(Source.SOURCE.ID, value);
     }
 
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Source> fetchRangeOfDescription(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Source.SOURCE.DESCRIPTION, lowerInclusive, upperInclusive);
+    }
+
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Source> fetchByDescription(String... values) {
         return fetch(Source.SOURCE.DESCRIPTION, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Source> fetchRangeOfName(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Source.SOURCE.NAME, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Source> fetchByName(String... values) {
         return fetch(Source.SOURCE.NAME, values);
     }
 
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Source> fetchRangeOfRawAudioPath(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Source.SOURCE.RAW_AUDIO_PATH, lowerInclusive, upperInclusive);
+    }
+
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Source> fetchByRawAudioPath(String... values) {
         return fetch(Source.SOURCE.RAW_AUDIO_PATH, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Source> fetchRangeOfRawFilePath(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Source.SOURCE.RAW_FILE_PATH, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Source> fetchByRawFilePath(String... values) {

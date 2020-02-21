@@ -29,8 +29,12 @@ public class TextAudioDao extends DAOImpl<TextAudioRecord, ch.fhnw.labeling_tool
     }
 
     @Override
-    protected Long getId(ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio object) {
+    public Long getId(ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio object) {
         return object.getId();
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchRangeOfId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(TextAudio.TEXT_AUDIO.ID, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchById(Long... values) {
@@ -41,24 +45,48 @@ public class TextAudioDao extends DAOImpl<TextAudioRecord, ch.fhnw.labeling_tool
         return fetchOne(TextAudio.TEXT_AUDIO.ID, value);
     }
 
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchRangeOfAudioStart(Double lowerInclusive, Double upperInclusive) {
+        return fetchRange(TextAudio.TEXT_AUDIO.AUDIO_START, lowerInclusive, upperInclusive);
+    }
+
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchByAudioStart(Double... values) {
         return fetch(TextAudio.TEXT_AUDIO.AUDIO_START, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchRangeOfAudioEnd(Double lowerInclusive, Double upperInclusive) {
+        return fetchRange(TextAudio.TEXT_AUDIO.AUDIO_END, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchByAudioEnd(Double... values) {
         return fetch(TextAudio.TEXT_AUDIO.AUDIO_END, values);
     }
 
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchRangeOfText(String lowerInclusive, String upperInclusive) {
+        return fetchRange(TextAudio.TEXT_AUDIO.TEXT, lowerInclusive, upperInclusive);
+    }
+
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchByText(String... values) {
         return fetch(TextAudio.TEXT_AUDIO.TEXT, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchRangeOfPathToFile(String lowerInclusive, String upperInclusive) {
+        return fetchRange(TextAudio.TEXT_AUDIO.PATH_TO_FILE, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchByPathToFile(String... values) {
         return fetch(TextAudio.TEXT_AUDIO.PATH_TO_FILE, values);
     }
 
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchRangeOfSpeakerId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(TextAudio.TEXT_AUDIO.SPEAKER_ID, lowerInclusive, upperInclusive);
+    }
+
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchBySpeakerId(Long... values) {
         return fetch(TextAudio.TEXT_AUDIO.SPEAKER_ID, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchRangeOfSourceId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(TextAudio.TEXT_AUDIO.SOURCE_ID, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchBySourceId(Long... values) {

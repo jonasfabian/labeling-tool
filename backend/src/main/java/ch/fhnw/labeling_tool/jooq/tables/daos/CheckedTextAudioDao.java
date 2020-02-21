@@ -31,8 +31,12 @@ public class CheckedTextAudioDao extends DAOImpl<CheckedTextAudioRecord, ch.fhnw
     }
 
     @Override
-    protected Long getId(ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedTextAudio object) {
+    public Long getId(ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedTextAudio object) {
         return object.getId();
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedTextAudio> fetchRangeOfId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(CheckedTextAudio.CHECKED_TEXT_AUDIO.ID, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedTextAudio> fetchById(Long... values) {
@@ -43,16 +47,32 @@ public class CheckedTextAudioDao extends DAOImpl<CheckedTextAudioRecord, ch.fhnw
         return fetchOne(CheckedTextAudio.CHECKED_TEXT_AUDIO.ID, value);
     }
 
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedTextAudio> fetchRangeOfTextAudioId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(CheckedTextAudio.CHECKED_TEXT_AUDIO.TEXT_AUDIO_ID, lowerInclusive, upperInclusive);
+    }
+
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedTextAudio> fetchByTextAudioId(Long... values) {
         return fetch(CheckedTextAudio.CHECKED_TEXT_AUDIO.TEXT_AUDIO_ID, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedTextAudio> fetchRangeOfUserId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(CheckedTextAudio.CHECKED_TEXT_AUDIO.USER_ID, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedTextAudio> fetchByUserId(Long... values) {
         return fetch(CheckedTextAudio.CHECKED_TEXT_AUDIO.USER_ID, values);
     }
 
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedTextAudio> fetchRangeOfLabel(CheckedTextAudioLabel lowerInclusive, CheckedTextAudioLabel upperInclusive) {
+        return fetchRange(CheckedTextAudio.CHECKED_TEXT_AUDIO.LABEL, lowerInclusive, upperInclusive);
+    }
+
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedTextAudio> fetchByLabel(CheckedTextAudioLabel... values) {
         return fetch(CheckedTextAudio.CHECKED_TEXT_AUDIO.LABEL, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedTextAudio> fetchRangeOfTime(Timestamp lowerInclusive, Timestamp upperInclusive) {
+        return fetchRange(CheckedTextAudio.CHECKED_TEXT_AUDIO.TIME, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedTextAudio> fetchByTime(Timestamp... values) {

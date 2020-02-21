@@ -22,29 +22,29 @@ import ch.fhnw.labeling_tool.jooq.tables.UserGroupRole;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
 
-    public static final CheckedRecording CHECKED_RECORDING = ch.fhnw.labeling_tool.jooq.tables.CheckedRecording.CHECKED_RECORDING;
+    public static final CheckedRecording CHECKED_RECORDING = CheckedRecording.CHECKED_RECORDING;
 
-    public static final CheckedTextAudio CHECKED_TEXT_AUDIO = ch.fhnw.labeling_tool.jooq.tables.CheckedTextAudio.CHECKED_TEXT_AUDIO;
+    public static final CheckedTextAudio CHECKED_TEXT_AUDIO = CheckedTextAudio.CHECKED_TEXT_AUDIO;
 
-    public static final Domain DOMAIN = ch.fhnw.labeling_tool.jooq.tables.Domain.DOMAIN;
+    public static final Domain DOMAIN = Domain.DOMAIN;
 
-    public static final Excerpt EXCERPT = ch.fhnw.labeling_tool.jooq.tables.Excerpt.EXCERPT;
+    public static final Excerpt EXCERPT = Excerpt.EXCERPT;
 
-    public static final FlywaySchemaHistory FLYWAY_SCHEMA_HISTORY = ch.fhnw.labeling_tool.jooq.tables.FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY;
+    public static final FlywaySchemaHistory FLYWAY_SCHEMA_HISTORY = FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY;
 
-    public static final OriginalText ORIGINAL_TEXT = ch.fhnw.labeling_tool.jooq.tables.OriginalText.ORIGINAL_TEXT;
+    public static final OriginalText ORIGINAL_TEXT = OriginalText.ORIGINAL_TEXT;
 
-    public static final Recording RECORDING = ch.fhnw.labeling_tool.jooq.tables.Recording.RECORDING;
+    public static final Recording RECORDING = Recording.RECORDING;
 
-    public static final Source SOURCE = ch.fhnw.labeling_tool.jooq.tables.Source.SOURCE;
+    public static final Source SOURCE = Source.SOURCE;
 
-    public static final Speaker SPEAKER = ch.fhnw.labeling_tool.jooq.tables.Speaker.SPEAKER;
+    public static final Speaker SPEAKER = Speaker.SPEAKER;
 
-    public static final TextAudio TEXT_AUDIO = ch.fhnw.labeling_tool.jooq.tables.TextAudio.TEXT_AUDIO;
+    public static final TextAudio TEXT_AUDIO = TextAudio.TEXT_AUDIO;
 
-    public static final User USER = ch.fhnw.labeling_tool.jooq.tables.User.USER;
+    public static final User USER = User.USER;
 
-    public static final UserGroup USER_GROUP = ch.fhnw.labeling_tool.jooq.tables.UserGroup.USER_GROUP;
+    public static final UserGroup USER_GROUP = UserGroup.USER_GROUP;
 
-    public static final UserGroupRole USER_GROUP_ROLE = ch.fhnw.labeling_tool.jooq.tables.UserGroupRole.USER_GROUP_ROLE;
+    public static final UserGroupRole USER_GROUP_ROLE = UserGroupRole.USER_GROUP_ROLE;
 }

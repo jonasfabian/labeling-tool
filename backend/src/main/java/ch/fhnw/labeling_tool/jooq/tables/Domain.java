@@ -18,6 +18,7 @@ import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
+import org.jooq.Row2;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -29,7 +30,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Domain extends TableImpl<DomainRecord> {
 
-    private static final long serialVersionUID = -1588020729;
+    private static final long serialVersionUID = 1916024625;
 
     public static final Domain DOMAIN = new Domain();
 
@@ -38,9 +39,9 @@ public class Domain extends TableImpl<DomainRecord> {
         return DomainRecord.class;
     }
 
-    public final TableField<DomainRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+    public final TableField<DomainRecord, Long> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
-    public final TableField<DomainRecord, String> NAME = createField("name", org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "");
+    public final TableField<DomainRecord, String> NAME = createField(DSL.name("name"), org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "");
 
     public Domain() {
         this(DSL.name("domain"), null);
@@ -109,5 +110,14 @@ public class Domain extends TableImpl<DomainRecord> {
     @Override
     public Domain rename(Name name) {
         return new Domain(name, null);
+    }
+
+    // -------------------------------------------------------------------------
+    // Row2 type methods
+    // -------------------------------------------------------------------------
+
+    @Override
+    public Row2<Long, String> fieldsRow() {
+        return (Row2) super.fieldsRow();
     }
 }

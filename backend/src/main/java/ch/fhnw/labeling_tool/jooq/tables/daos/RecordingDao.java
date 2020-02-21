@@ -4,6 +4,7 @@
 package ch.fhnw.labeling_tool.jooq.tables.daos;
 
 
+import ch.fhnw.labeling_tool.jooq.enums.RecordingLabel;
 import ch.fhnw.labeling_tool.jooq.tables.Recording;
 import ch.fhnw.labeling_tool.jooq.tables.records.RecordingRecord;
 
@@ -30,8 +31,12 @@ public class RecordingDao extends DAOImpl<RecordingRecord, ch.fhnw.labeling_tool
     }
 
     @Override
-    protected Long getId(ch.fhnw.labeling_tool.jooq.tables.pojos.Recording object) {
+    public Long getId(ch.fhnw.labeling_tool.jooq.tables.pojos.Recording object) {
         return object.getId();
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Recording> fetchRangeOfId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(Recording.RECORDING.ID, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Recording> fetchById(Long... values) {
@@ -42,15 +47,35 @@ public class RecordingDao extends DAOImpl<RecordingRecord, ch.fhnw.labeling_tool
         return fetchOne(Recording.RECORDING.ID, value);
     }
 
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Recording> fetchRangeOfExcerptId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(Recording.RECORDING.EXCERPT_ID, lowerInclusive, upperInclusive);
+    }
+
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Recording> fetchByExcerptId(Long... values) {
         return fetch(Recording.RECORDING.EXCERPT_ID, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Recording> fetchRangeOfUserId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(Recording.RECORDING.USER_ID, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Recording> fetchByUserId(Long... values) {
         return fetch(Recording.RECORDING.USER_ID, values);
     }
 
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Recording> fetchRangeOfTime(Timestamp lowerInclusive, Timestamp upperInclusive) {
+        return fetchRange(Recording.RECORDING.TIME, lowerInclusive, upperInclusive);
+    }
+
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Recording> fetchByTime(Timestamp... values) {
         return fetch(Recording.RECORDING.TIME, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Recording> fetchRangeOfLabel(RecordingLabel lowerInclusive, RecordingLabel upperInclusive) {
+        return fetchRange(Recording.RECORDING.LABEL, lowerInclusive, upperInclusive);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Recording> fetchByLabel(RecordingLabel... values) {
+        return fetch(Recording.RECORDING.LABEL, values);
     }
 }

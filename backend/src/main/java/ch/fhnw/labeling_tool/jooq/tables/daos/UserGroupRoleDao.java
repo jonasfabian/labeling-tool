@@ -30,8 +30,12 @@ public class UserGroupRoleDao extends DAOImpl<UserGroupRoleRecord, ch.fhnw.label
     }
 
     @Override
-    protected Long getId(ch.fhnw.labeling_tool.jooq.tables.pojos.UserGroupRole object) {
+    public Long getId(ch.fhnw.labeling_tool.jooq.tables.pojos.UserGroupRole object) {
         return object.getId();
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.UserGroupRole> fetchRangeOfId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(UserGroupRole.USER_GROUP_ROLE.ID, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.UserGroupRole> fetchById(Long... values) {
@@ -42,12 +46,24 @@ public class UserGroupRoleDao extends DAOImpl<UserGroupRoleRecord, ch.fhnw.label
         return fetchOne(UserGroupRole.USER_GROUP_ROLE.ID, value);
     }
 
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.UserGroupRole> fetchRangeOfRole(UserGroupRoleRole lowerInclusive, UserGroupRoleRole upperInclusive) {
+        return fetchRange(UserGroupRole.USER_GROUP_ROLE.ROLE, lowerInclusive, upperInclusive);
+    }
+
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.UserGroupRole> fetchByRole(UserGroupRoleRole... values) {
         return fetch(UserGroupRole.USER_GROUP_ROLE.ROLE, values);
     }
 
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.UserGroupRole> fetchRangeOfUserId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(UserGroupRole.USER_GROUP_ROLE.USER_ID, lowerInclusive, upperInclusive);
+    }
+
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.UserGroupRole> fetchByUserId(Long... values) {
         return fetch(UserGroupRole.USER_GROUP_ROLE.USER_ID, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.UserGroupRole> fetchRangeOfUserGroupId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(UserGroupRole.USER_GROUP_ROLE.USER_GROUP_ID, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.UserGroupRole> fetchByUserGroupId(Long... values) {

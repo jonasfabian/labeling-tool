@@ -7,6 +7,7 @@ package ch.fhnw.labeling_tool.jooq.tables;
 import ch.fhnw.labeling_tool.jooq.Indexes;
 import ch.fhnw.labeling_tool.jooq.Keys;
 import ch.fhnw.labeling_tool.jooq.LabelingTool;
+import ch.fhnw.labeling_tool.jooq.enums.RecordingLabel;
 import ch.fhnw.labeling_tool.jooq.tables.records.RecordingRecord;
 
 import java.sql.Timestamp;
@@ -19,6 +20,7 @@ import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
+import org.jooq.Row5;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -30,7 +32,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Recording extends TableImpl<RecordingRecord> {
 
-    private static final long serialVersionUID = -423064857;
+    private static final long serialVersionUID = 652981170;
 
     public static final Recording RECORDING = new Recording();
 
@@ -39,13 +41,15 @@ public class Recording extends TableImpl<RecordingRecord> {
         return RecordingRecord.class;
     }
 
-    public final TableField<RecordingRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+    public final TableField<RecordingRecord, Long> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
-    public final TableField<RecordingRecord, Long> EXCERPT_ID = createField("excerpt_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<RecordingRecord, Long> EXCERPT_ID = createField(DSL.name("excerpt_id"), org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
-    public final TableField<RecordingRecord, Long> USER_ID = createField("user_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<RecordingRecord, Long> USER_ID = createField(DSL.name("user_id"), org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
-    public final TableField<RecordingRecord, Timestamp> TIME = createField("time", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("current_timestamp()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
+    public final TableField<RecordingRecord, Timestamp> TIME = createField(DSL.name("time"), org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("current_timestamp()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
+
+    public final TableField<RecordingRecord, RecordingLabel> LABEL = createField(DSL.name("label"), org.jooq.impl.SQLDataType.VARCHAR(8).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.RecordingLabel.class), this, "");
 
     public Recording() {
         this(DSL.name("recording"), null);
@@ -127,5 +131,14 @@ public class Recording extends TableImpl<RecordingRecord> {
     @Override
     public Recording rename(Name name) {
         return new Recording(name, null);
+    }
+
+    // -------------------------------------------------------------------------
+    // Row5 type methods
+    // -------------------------------------------------------------------------
+
+    @Override
+    public Row5<Long, Long, Long, Timestamp, RecordingLabel> fieldsRow() {
+        return (Row5) super.fieldsRow();
     }
 }

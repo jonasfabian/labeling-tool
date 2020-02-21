@@ -18,6 +18,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
+import org.jooq.Row10;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -29,7 +30,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class FlywaySchemaHistory extends TableImpl<FlywaySchemaHistoryRecord> {
 
-    private static final long serialVersionUID = 863321598;
+    private static final long serialVersionUID = 1697566647;
 
     public static final FlywaySchemaHistory FLYWAY_SCHEMA_HISTORY = new FlywaySchemaHistory();
 
@@ -38,25 +39,25 @@ public class FlywaySchemaHistory extends TableImpl<FlywaySchemaHistoryRecord> {
         return FlywaySchemaHistoryRecord.class;
     }
 
-    public final TableField<FlywaySchemaHistoryRecord, Integer> INSTALLED_RANK = createField("installed_rank", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<FlywaySchemaHistoryRecord, Integer> INSTALLED_RANK = createField(DSL.name("installed_rank"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
-    public final TableField<FlywaySchemaHistoryRecord, String> VERSION = createField("version", org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<FlywaySchemaHistoryRecord, String> VERSION = createField(DSL.name("version"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
-    public final TableField<FlywaySchemaHistoryRecord, String> DESCRIPTION = createField("description", org.jooq.impl.SQLDataType.VARCHAR(200).nullable(false), this, "");
+    public final TableField<FlywaySchemaHistoryRecord, String> DESCRIPTION = createField(DSL.name("description"), org.jooq.impl.SQLDataType.VARCHAR(200).nullable(false), this, "");
 
-    public final TableField<FlywaySchemaHistoryRecord, String> TYPE = createField("type", org.jooq.impl.SQLDataType.VARCHAR(20).nullable(false), this, "");
+    public final TableField<FlywaySchemaHistoryRecord, String> TYPE = createField(DSL.name("type"), org.jooq.impl.SQLDataType.VARCHAR(20).nullable(false), this, "");
 
-    public final TableField<FlywaySchemaHistoryRecord, String> SCRIPT = createField("script", org.jooq.impl.SQLDataType.VARCHAR(1000).nullable(false), this, "");
+    public final TableField<FlywaySchemaHistoryRecord, String> SCRIPT = createField(DSL.name("script"), org.jooq.impl.SQLDataType.VARCHAR(1000).nullable(false), this, "");
 
-    public final TableField<FlywaySchemaHistoryRecord, Integer> CHECKSUM = createField("checksum", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+    public final TableField<FlywaySchemaHistoryRecord, Integer> CHECKSUM = createField(DSL.name("checksum"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
-    public final TableField<FlywaySchemaHistoryRecord, String> INSTALLED_BY = createField("installed_by", org.jooq.impl.SQLDataType.VARCHAR(100).nullable(false), this, "");
+    public final TableField<FlywaySchemaHistoryRecord, String> INSTALLED_BY = createField(DSL.name("installed_by"), org.jooq.impl.SQLDataType.VARCHAR(100).nullable(false), this, "");
 
-    public final TableField<FlywaySchemaHistoryRecord, Timestamp> INSTALLED_ON = createField("installed_on", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("current_timestamp()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
+    public final TableField<FlywaySchemaHistoryRecord, Timestamp> INSTALLED_ON = createField(DSL.name("installed_on"), org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("current_timestamp()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
 
-    public final TableField<FlywaySchemaHistoryRecord, Integer> EXECUTION_TIME = createField("execution_time", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<FlywaySchemaHistoryRecord, Integer> EXECUTION_TIME = createField(DSL.name("execution_time"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
-    public final TableField<FlywaySchemaHistoryRecord, Byte> SUCCESS = createField("success", org.jooq.impl.SQLDataType.TINYINT.nullable(false), this, "");
+    public final TableField<FlywaySchemaHistoryRecord, Boolean> SUCCESS = createField(DSL.name("success"), org.jooq.impl.SQLDataType.BOOLEAN.nullable(false), this, "");
 
     public FlywaySchemaHistory() {
         this(DSL.name("flyway_schema_history"), null);
@@ -120,5 +121,14 @@ public class FlywaySchemaHistory extends TableImpl<FlywaySchemaHistoryRecord> {
     @Override
     public FlywaySchemaHistory rename(Name name) {
         return new FlywaySchemaHistory(name, null);
+    }
+
+    // -------------------------------------------------------------------------
+    // Row10 type methods
+    // -------------------------------------------------------------------------
+
+    @Override
+    public Row10<Integer, String, String, String, String, Integer, String, Timestamp, Integer, Boolean> fieldsRow() {
+        return (Row10) super.fieldsRow();
     }
 }

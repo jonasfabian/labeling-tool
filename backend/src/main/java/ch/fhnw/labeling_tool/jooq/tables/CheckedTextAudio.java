@@ -20,6 +20,7 @@ import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
+import org.jooq.Row5;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -31,7 +32,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CheckedTextAudio extends TableImpl<CheckedTextAudioRecord> {
 
-    private static final long serialVersionUID = 1720315944;
+    private static final long serialVersionUID = 930644910;
 
     public static final CheckedTextAudio CHECKED_TEXT_AUDIO = new CheckedTextAudio();
 
@@ -40,15 +41,15 @@ public class CheckedTextAudio extends TableImpl<CheckedTextAudioRecord> {
         return CheckedTextAudioRecord.class;
     }
 
-    public final TableField<CheckedTextAudioRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+    public final TableField<CheckedTextAudioRecord, Long> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
-    public final TableField<CheckedTextAudioRecord, Long> TEXT_AUDIO_ID = createField("text_audio_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<CheckedTextAudioRecord, Long> TEXT_AUDIO_ID = createField(DSL.name("text_audio_id"), org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
-    public final TableField<CheckedTextAudioRecord, Long> USER_ID = createField("user_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<CheckedTextAudioRecord, Long> USER_ID = createField(DSL.name("user_id"), org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
-    public final TableField<CheckedTextAudioRecord, CheckedTextAudioLabel> LABEL = createField("label", org.jooq.impl.SQLDataType.VARCHAR(7).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.CheckedTextAudioLabel.class), this, "");
+    public final TableField<CheckedTextAudioRecord, CheckedTextAudioLabel> LABEL = createField(DSL.name("label"), org.jooq.impl.SQLDataType.VARCHAR(7).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.CheckedTextAudioLabel.class), this, "");
 
-    public final TableField<CheckedTextAudioRecord, Timestamp> TIME = createField("time", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("current_timestamp()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
+    public final TableField<CheckedTextAudioRecord, Timestamp> TIME = createField(DSL.name("time"), org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("current_timestamp()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
 
     public CheckedTextAudio() {
         this(DSL.name("checked_text_audio"), null);
@@ -130,5 +131,14 @@ public class CheckedTextAudio extends TableImpl<CheckedTextAudioRecord> {
     @Override
     public CheckedTextAudio rename(Name name) {
         return new CheckedTextAudio(name, null);
+    }
+
+    // -------------------------------------------------------------------------
+    // Row5 type methods
+    // -------------------------------------------------------------------------
+
+    @Override
+    public Row5<Long, Long, Long, CheckedTextAudioLabel, Timestamp> fieldsRow() {
+        return (Row5) super.fieldsRow();
     }
 }

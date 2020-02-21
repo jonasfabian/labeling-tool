@@ -1,6 +1,7 @@
 package ch.fhnw.labeling_tool.user_group;
 
 import ch.fhnw.labeling_tool.config.Config;
+import ch.fhnw.labeling_tool.jooq.enums.RecordingLabel;
 import ch.fhnw.labeling_tool.jooq.tables.daos.CheckedTextAudioDao;
 import ch.fhnw.labeling_tool.jooq.tables.daos.ExcerptDao;
 import ch.fhnw.labeling_tool.jooq.tables.daos.RecordingDao;
@@ -51,7 +52,7 @@ public class UserGroupService {
 
     public void postRecording(long groupId, long excerptId, MultipartFile file) throws IOException {
         customUserDetailsService.isAllowedOnProjectThrow(groupId, false);
-        var r2 = new Recording(null, excerptId, customUserDetailsService.getLoggedInUserId(), null);
+        var r2 = new Recording(null, excerptId, customUserDetailsService.getLoggedInUserId(), null, RecordingLabel.RECORDED);
         RecordingRecord recordingRecord = dslContext.newRecord(RECORDING, r2);
         recordingRecord.store();
         Files.write(config.getBasePath().resolve("recording/" + recordingRecord.getId() + ".webm"), file.getBytes());
@@ -63,8 +64,11 @@ public class UserGroupService {
         // TODO limit based on what was already labeled by user and/or based on dialect .
 //        TODO not sure about the performance of this query -> maybe return 10 like check component
         return dslContext.select(EXCERPT.fields())
+//                TODO maybe add a direct foreign key?
                 .from(EXCERPT.join(ORIGINAL_TEXT).onKey().join(USER_GROUP).onKey())
                 .where(USER_GROUP.ID.eq(groupId)
+                        .and(EXCERPT.ISSKIPPED.lessOrEqual(3))
+                        .and(EXCERPT.ISPRIVATE.isFalse())
                         /*TODO filter based on dialect instead of user so we have one recording by dialect*/
                         /*TODO filter private skipped>3*/
                         .and(EXCERPT.ID.notIn(dslContext.select(RECORDING.ID).from(RECORDING).where(RECORDING.USER_ID.eq(customUserDetailsService.getLoggedInUserId())))))
@@ -90,7 +94,7 @@ public class UserGroupService {
                 OriginalText originalText = new OriginalText(null, groupId, domainId);
                 OriginalTextRecord textRecord = dslContext.newRecord(ORIGINAL_TEXT, originalText);
                 textRecord.store();
-                var exps = Arrays.stream(sentences).map(s -> new Excerpt(null, textRecord.getId(), s, 0, (byte) 0)).collect(Collectors.toList());
+                var exps = Arrays.stream(sentences).map(s -> new Excerpt(null, textRecord.getId(), s, 0, false)).collect(Collectors.toList());
                 excerptDao.insert(exps);
                 Files.write(config.getBasePath().resolve("original_text/" + textRecord.getId() + ".bin"), file.getBytes());
                 //TODO maybe return result for validation / post processing before saving & publishing
@@ -116,8 +120,10 @@ public class UserGroupService {
                 .from(TEXT_AUDIO)
                 .where(TEXT_AUDIO.ID.notIn(
                         /*TODO maybe filter already checked ones e.g correct,wrong>10*/
+                        /*TODO this probably needs a internal counter so we do not need to join each time*/
                         dslContext.select(CHECKED_TEXT_AUDIO.TEXT_AUDIO_ID).from(CHECKED_TEXT_AUDIO)
                                 .where(CHECKED_TEXT_AUDIO.USER_ID.eq(customUserDetailsService.getLoggedInUserId()))))
+                .orderBy(DSL.rand())
                 .limit(10).fetchInto(TextAudioDto.class);
     }
 
@@ -134,5 +140,28 @@ public class UserGroupService {
         //TODO we also need to update the audio segment on the file system.
         //or
         //    TODO instead insert a new record instead
+    }
+
+    public void putExcerptSkipped(long groupId, long excerptId) {
+        customUserDetailsService.isAllowedOnProjectThrow(groupId, false);
+//        TODO check if excerpt is in group
+        dslContext.update(EXCERPT).set(EXCERPT.ISSKIPPED, EXCERPT.ISSKIPPED.plus(1)).where(EXCERPT.ID.eq(excerptId)).execute();
+        RecordingRecord recordingRecord = dslContext.newRecord(RECORDING);
+        recordingRecord.setUserId(customUserDetailsService.getLoggedInUserId());
+        recordingRecord.setExcerptId(excerptId);
+        recordingRecord.setLabel(RecordingLabel.SKIPPED);
+        recordingRecord.store();
+    }
+
+    public void putExcerptPrivate(long groupId, long excerptId) {
+        customUserDetailsService.isAllowedOnProjectThrow(groupId, false);
+        //        TODO check if excerpt is in group
+//        TODO probably add an private method for it
+        dslContext.update(EXCERPT).set(EXCERPT.ISPRIVATE, true).where(EXCERPT.ID.eq(excerptId)).execute();
+        RecordingRecord recordingRecord = dslContext.newRecord(RECORDING);
+        recordingRecord.setUserId(customUserDetailsService.getLoggedInUserId());
+        recordingRecord.setExcerptId(excerptId);
+        recordingRecord.setLabel(RecordingLabel.PRIVATE);
+        recordingRecord.store();
     }
 }

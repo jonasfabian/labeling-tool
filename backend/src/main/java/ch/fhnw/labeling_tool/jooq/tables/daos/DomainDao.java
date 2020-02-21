@@ -29,8 +29,12 @@ public class DomainDao extends DAOImpl<DomainRecord, ch.fhnw.labeling_tool.jooq.
     }
 
     @Override
-    protected Long getId(ch.fhnw.labeling_tool.jooq.tables.pojos.Domain object) {
+    public Long getId(ch.fhnw.labeling_tool.jooq.tables.pojos.Domain object) {
         return object.getId();
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Domain> fetchRangeOfId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(Domain.DOMAIN.ID, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Domain> fetchById(Long... values) {
@@ -39,6 +43,10 @@ public class DomainDao extends DAOImpl<DomainRecord, ch.fhnw.labeling_tool.jooq.
 
     public ch.fhnw.labeling_tool.jooq.tables.pojos.Domain fetchOneById(Long value) {
         return fetchOne(Domain.DOMAIN.ID, value);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Domain> fetchRangeOfName(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Domain.DOMAIN.NAME, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Domain> fetchByName(String... values) {

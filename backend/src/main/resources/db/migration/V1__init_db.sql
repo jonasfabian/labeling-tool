@@ -69,6 +69,7 @@ CREATE TABLE recording
     excerpt_id BIGINT   NOT NULL,
     user_id    BIGINT   NOT NULL,
     time       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    label      ENUM ('SKIPPED', 'RECORDED', 'PRIVATE'),
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE,
     FOREIGN KEY (excerpt_id) REFERENCES excerpt (id) ON DELETE CASCADE

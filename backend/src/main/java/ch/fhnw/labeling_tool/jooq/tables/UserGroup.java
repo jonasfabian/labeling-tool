@@ -18,6 +18,7 @@ import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
+import org.jooq.Row2;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -29,7 +30,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class UserGroup extends TableImpl<UserGroupRecord> {
 
-    private static final long serialVersionUID = 1834064464;
+    private static final long serialVersionUID = 652150450;
 
     public static final UserGroup USER_GROUP = new UserGroup();
 
@@ -38,9 +39,9 @@ public class UserGroup extends TableImpl<UserGroupRecord> {
         return UserGroupRecord.class;
     }
 
-    public final TableField<UserGroupRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+    public final TableField<UserGroupRecord, Long> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
-    public final TableField<UserGroupRecord, String> NAME = createField("name", org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<UserGroupRecord, String> NAME = createField(DSL.name("name"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     public UserGroup() {
         this(DSL.name("user_group"), null);
@@ -109,5 +110,14 @@ public class UserGroup extends TableImpl<UserGroupRecord> {
     @Override
     public UserGroup rename(Name name) {
         return new UserGroup(name, null);
+    }
+
+    // -------------------------------------------------------------------------
+    // Row2 type methods
+    // -------------------------------------------------------------------------
+
+    @Override
+    public Row2<Long, String> fieldsRow() {
+        return (Row2) super.fieldsRow();
     }
 }

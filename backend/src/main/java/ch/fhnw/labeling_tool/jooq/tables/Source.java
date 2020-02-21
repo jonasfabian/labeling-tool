@@ -18,6 +18,7 @@ import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
+import org.jooq.Row5;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -29,7 +30,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Source extends TableImpl<SourceRecord> {
 
-    private static final long serialVersionUID = 585710952;
+    private static final long serialVersionUID = -1268811210;
 
     public static final Source SOURCE = new Source();
 
@@ -38,15 +39,15 @@ public class Source extends TableImpl<SourceRecord> {
         return SourceRecord.class;
     }
 
-    public final TableField<SourceRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+    public final TableField<SourceRecord, Long> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
-    public final TableField<SourceRecord, String> DESCRIPTION = createField("description", org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "");
+    public final TableField<SourceRecord, String> DESCRIPTION = createField(DSL.name("description"), org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "");
 
-    public final TableField<SourceRecord, String> NAME = createField("name", org.jooq.impl.SQLDataType.VARCHAR(45).nullable(false), this, "");
+    public final TableField<SourceRecord, String> NAME = createField(DSL.name("name"), org.jooq.impl.SQLDataType.VARCHAR(45).nullable(false), this, "");
 
-    public final TableField<SourceRecord, String> RAW_AUDIO_PATH = createField("raw_audio_path", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<SourceRecord, String> RAW_AUDIO_PATH = createField(DSL.name("raw_audio_path"), org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
 
-    public final TableField<SourceRecord, String> RAW_FILE_PATH = createField("raw_file_path", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<SourceRecord, String> RAW_FILE_PATH = createField(DSL.name("raw_file_path"), org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     public Source() {
         this(DSL.name("source"), null);
@@ -115,5 +116,14 @@ public class Source extends TableImpl<SourceRecord> {
     @Override
     public Source rename(Name name) {
         return new Source(name, null);
+    }
+
+    // -------------------------------------------------------------------------
+    // Row5 type methods
+    // -------------------------------------------------------------------------
+
+    @Override
+    public Row5<Long, String, String, String, String> fieldsRow() {
+        return (Row5) super.fieldsRow();
     }
 }

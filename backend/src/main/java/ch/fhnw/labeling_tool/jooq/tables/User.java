@@ -21,6 +21,7 @@ import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
+import org.jooq.Row11;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -32,7 +33,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User extends TableImpl<UserRecord> {
 
-    private static final long serialVersionUID = -561633421;
+    private static final long serialVersionUID = 1888901290;
 
     public static final User USER = new User();
 
@@ -41,27 +42,27 @@ public class User extends TableImpl<UserRecord> {
         return UserRecord.class;
     }
 
-    public final TableField<UserRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+    public final TableField<UserRecord, Long> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
-    public final TableField<UserRecord, String> FIRST_NAME = createField("first_name", org.jooq.impl.SQLDataType.VARCHAR(100).nullable(false), this, "");
+    public final TableField<UserRecord, String> FIRST_NAME = createField(DSL.name("first_name"), org.jooq.impl.SQLDataType.VARCHAR(100).nullable(false), this, "");
 
-    public final TableField<UserRecord, String> LAST_NAME = createField("last_name", org.jooq.impl.SQLDataType.VARCHAR(100).nullable(false), this, "");
+    public final TableField<UserRecord, String> LAST_NAME = createField(DSL.name("last_name"), org.jooq.impl.SQLDataType.VARCHAR(100).nullable(false), this, "");
 
-    public final TableField<UserRecord, String> EMAIL = createField("email", org.jooq.impl.SQLDataType.VARCHAR(100).nullable(false), this, "");
+    public final TableField<UserRecord, String> EMAIL = createField(DSL.name("email"), org.jooq.impl.SQLDataType.VARCHAR(100).nullable(false), this, "");
 
-    public final TableField<UserRecord, String> USERNAME = createField("username", org.jooq.impl.SQLDataType.VARCHAR(100).nullable(false), this, "");
+    public final TableField<UserRecord, String> USERNAME = createField(DSL.name("username"), org.jooq.impl.SQLDataType.VARCHAR(100).nullable(false), this, "");
 
-    public final TableField<UserRecord, String> PASSWORD = createField("password", org.jooq.impl.SQLDataType.VARCHAR(100).nullable(false), this, "");
+    public final TableField<UserRecord, String> PASSWORD = createField(DSL.name("password"), org.jooq.impl.SQLDataType.VARCHAR(100).nullable(false), this, "");
 
-    public final TableField<UserRecord, String> CANTON = createField("canton", org.jooq.impl.SQLDataType.VARCHAR(45).nullable(false), this, "");
+    public final TableField<UserRecord, String> CANTON = createField(DSL.name("canton"), org.jooq.impl.SQLDataType.VARCHAR(45).nullable(false), this, "");
 
-    public final TableField<UserRecord, UserSex> SEX = createField("sex", org.jooq.impl.SQLDataType.VARCHAR(4).defaultValue(org.jooq.impl.DSL.inline("'NONE'", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.UserSex.class), this, "");
+    public final TableField<UserRecord, UserSex> SEX = createField(DSL.name("sex"), org.jooq.impl.SQLDataType.VARCHAR(4).defaultValue(org.jooq.impl.DSL.inline("'NONE'", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.UserSex.class), this, "");
 
-    public final TableField<UserRecord, UserLicence> LICENCE = createField("licence", org.jooq.impl.SQLDataType.VARCHAR(8).defaultValue(org.jooq.impl.DSL.inline("'ACADEMIC'", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.UserLicence.class), this, "");
+    public final TableField<UserRecord, UserLicence> LICENCE = createField(DSL.name("licence"), org.jooq.impl.SQLDataType.VARCHAR(8).defaultValue(org.jooq.impl.DSL.inline("'ACADEMIC'", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.UserLicence.class), this, "");
 
-    public final TableField<UserRecord, UserAge> AGE = createField("age", org.jooq.impl.SQLDataType.VARCHAR(11).defaultValue(org.jooq.impl.DSL.inline("'NONE'", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.UserAge.class), this, "");
+    public final TableField<UserRecord, UserAge> AGE = createField(DSL.name("age"), org.jooq.impl.SQLDataType.VARCHAR(11).defaultValue(org.jooq.impl.DSL.inline("'NONE'", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.UserAge.class), this, "");
 
-    public final TableField<UserRecord, Boolean> ENABLED = createField("enabled", org.jooq.impl.SQLDataType.BOOLEAN.defaultValue(org.jooq.impl.DSL.inline("1", org.jooq.impl.SQLDataType.BOOLEAN)), this, "");
+    public final TableField<UserRecord, Boolean> ENABLED = createField(DSL.name("enabled"), org.jooq.impl.SQLDataType.BOOLEAN.defaultValue(org.jooq.impl.DSL.inline("1", org.jooq.impl.SQLDataType.BOOLEAN)), this, "");
 
     public User() {
         this(DSL.name("user"), null);
@@ -130,5 +131,14 @@ public class User extends TableImpl<UserRecord> {
     @Override
     public User rename(Name name) {
         return new User(name, null);
+    }
+
+    // -------------------------------------------------------------------------
+    // Row11 type methods
+    // -------------------------------------------------------------------------
+
+    @Override
+    public Row11<Long, String, String, String, String, String, String, UserSex, UserLicence, UserAge, Boolean> fieldsRow() {
+        return (Row11) super.fieldsRow();
     }
 }

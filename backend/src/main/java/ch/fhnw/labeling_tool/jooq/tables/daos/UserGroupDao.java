@@ -29,8 +29,12 @@ public class UserGroupDao extends DAOImpl<UserGroupRecord, ch.fhnw.labeling_tool
     }
 
     @Override
-    protected Long getId(ch.fhnw.labeling_tool.jooq.tables.pojos.UserGroup object) {
+    public Long getId(ch.fhnw.labeling_tool.jooq.tables.pojos.UserGroup object) {
         return object.getId();
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.UserGroup> fetchRangeOfId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(UserGroup.USER_GROUP.ID, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.UserGroup> fetchById(Long... values) {
@@ -39,6 +43,10 @@ public class UserGroupDao extends DAOImpl<UserGroupRecord, ch.fhnw.labeling_tool
 
     public ch.fhnw.labeling_tool.jooq.tables.pojos.UserGroup fetchOneById(Long value) {
         return fetchOne(UserGroup.USER_GROUP.ID, value);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.UserGroup> fetchRangeOfName(String lowerInclusive, String upperInclusive) {
+        return fetchRange(UserGroup.USER_GROUP.NAME, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.UserGroup> fetchByName(String... values) {

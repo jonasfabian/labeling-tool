@@ -29,8 +29,12 @@ public class OriginalTextDao extends DAOImpl<OriginalTextRecord, ch.fhnw.labelin
     }
 
     @Override
-    protected Long getId(ch.fhnw.labeling_tool.jooq.tables.pojos.OriginalText object) {
+    public Long getId(ch.fhnw.labeling_tool.jooq.tables.pojos.OriginalText object) {
         return object.getId();
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.OriginalText> fetchRangeOfId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(OriginalText.ORIGINAL_TEXT.ID, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.OriginalText> fetchById(Long... values) {
@@ -41,8 +45,16 @@ public class OriginalTextDao extends DAOImpl<OriginalTextRecord, ch.fhnw.labelin
         return fetchOne(OriginalText.ORIGINAL_TEXT.ID, value);
     }
 
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.OriginalText> fetchRangeOfUserGroupId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(OriginalText.ORIGINAL_TEXT.USER_GROUP_ID, lowerInclusive, upperInclusive);
+    }
+
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.OriginalText> fetchByUserGroupId(Long... values) {
         return fetch(OriginalText.ORIGINAL_TEXT.USER_GROUP_ID, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.OriginalText> fetchRangeOfDomainId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(OriginalText.ORIGINAL_TEXT.DOMAIN_ID, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.OriginalText> fetchByDomainId(Long... values) {

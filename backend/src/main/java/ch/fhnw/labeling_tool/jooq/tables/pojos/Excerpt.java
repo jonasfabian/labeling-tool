@@ -13,13 +13,13 @@ import javax.validation.constraints.Size;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Excerpt implements Serializable {
 
-    private static final long serialVersionUID = -737102921;
+    private static final long serialVersionUID = -1353214465;
 
     private Long    id;
     private Long    originalTextId;
     private String  excerpt;
     private Integer isskipped;
-    private Byte    isprivate;
+    private Boolean isprivate;
 
     public Excerpt() {}
 
@@ -36,7 +36,7 @@ public class Excerpt implements Serializable {
         Long    originalTextId,
         String  excerpt,
         Integer isskipped,
-        Byte    isprivate
+        Boolean isprivate
     ) {
         this.id = id;
         this.originalTextId = originalTextId;
@@ -80,11 +80,11 @@ public class Excerpt implements Serializable {
         this.isskipped = isskipped;
     }
 
-    public Byte getIsprivate() {
+    public Boolean getIsprivate() {
         return this.isprivate;
     }
 
-    public void setIsprivate(Byte isprivate) {
+    public void setIsprivate(Boolean isprivate) {
         this.isprivate = isprivate;
     }
 

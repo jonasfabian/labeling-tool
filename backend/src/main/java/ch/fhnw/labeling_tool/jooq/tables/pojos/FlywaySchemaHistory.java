@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class FlywaySchemaHistory implements Serializable {
 
-    private static final long serialVersionUID = -1095809862;
+    private static final long serialVersionUID = -1768833130;
 
     private Integer   installedRank;
     private String    version;
@@ -25,7 +25,7 @@ public class FlywaySchemaHistory implements Serializable {
     private String    installedBy;
     private Timestamp installedOn;
     private Integer   executionTime;
-    private Byte      success;
+    private Boolean   success;
 
     public FlywaySchemaHistory() {}
 
@@ -52,7 +52,7 @@ public class FlywaySchemaHistory implements Serializable {
         String    installedBy,
         Timestamp installedOn,
         Integer   executionTime,
-        Byte      success
+        Boolean   success
     ) {
         this.installedRank = installedRank;
         this.version = version;
@@ -150,11 +150,11 @@ public class FlywaySchemaHistory implements Serializable {
     }
 
     @NotNull
-    public Byte getSuccess() {
+    public Boolean getSuccess() {
         return this.success;
     }
 
-    public void setSuccess(Byte success) {
+    public void setSuccess(Boolean success) {
         this.success = success;
     }
 

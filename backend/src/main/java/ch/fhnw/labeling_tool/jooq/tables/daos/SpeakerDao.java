@@ -30,8 +30,12 @@ public class SpeakerDao extends DAOImpl<SpeakerRecord, ch.fhnw.labeling_tool.joo
     }
 
     @Override
-    protected Long getId(ch.fhnw.labeling_tool.jooq.tables.pojos.Speaker object) {
+    public Long getId(ch.fhnw.labeling_tool.jooq.tables.pojos.Speaker object) {
         return object.getId();
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Speaker> fetchRangeOfId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(Speaker.SPEAKER.ID, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Speaker> fetchById(Long... values) {
@@ -42,16 +46,32 @@ public class SpeakerDao extends DAOImpl<SpeakerRecord, ch.fhnw.labeling_tool.joo
         return fetchOne(Speaker.SPEAKER.ID, value);
     }
 
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Speaker> fetchRangeOfName(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Speaker.SPEAKER.NAME, lowerInclusive, upperInclusive);
+    }
+
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Speaker> fetchByName(String... values) {
         return fetch(Speaker.SPEAKER.NAME, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Speaker> fetchRangeOfLanguage(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Speaker.SPEAKER.LANGUAGE, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Speaker> fetchByLanguage(String... values) {
         return fetch(Speaker.SPEAKER.LANGUAGE, values);
     }
 
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Speaker> fetchRangeOfDialect(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Speaker.SPEAKER.DIALECT, lowerInclusive, upperInclusive);
+    }
+
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Speaker> fetchByDialect(String... values) {
         return fetch(Speaker.SPEAKER.DIALECT, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Speaker> fetchRangeOfSex(SpeakerSex lowerInclusive, SpeakerSex upperInclusive) {
+        return fetchRange(Speaker.SPEAKER.SEX, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Speaker> fetchBySex(SpeakerSex... values) {

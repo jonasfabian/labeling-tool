@@ -18,6 +18,7 @@ import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
+import org.jooq.Row5;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -29,7 +30,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Excerpt extends TableImpl<ExcerptRecord> {
 
-    private static final long serialVersionUID = -508177171;
+    private static final long serialVersionUID = 2098932628;
 
     public static final Excerpt EXCERPT = new Excerpt();
 
@@ -38,15 +39,15 @@ public class Excerpt extends TableImpl<ExcerptRecord> {
         return ExcerptRecord.class;
     }
 
-    public final TableField<ExcerptRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+    public final TableField<ExcerptRecord, Long> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
-    public final TableField<ExcerptRecord, Long> ORIGINAL_TEXT_ID = createField("original_text_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<ExcerptRecord, Long> ORIGINAL_TEXT_ID = createField(DSL.name("original_text_id"), org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
-    public final TableField<ExcerptRecord, String> EXCERPT_ = createField("excerpt", org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "");
+    public final TableField<ExcerptRecord, String> EXCERPT_ = createField(DSL.name("excerpt"), org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "");
 
-    public final TableField<ExcerptRecord, Integer> ISSKIPPED = createField("isSkipped", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+    public final TableField<ExcerptRecord, Integer> ISSKIPPED = createField(DSL.name("isSkipped"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
-    public final TableField<ExcerptRecord, Byte> ISPRIVATE = createField("isPrivate", org.jooq.impl.SQLDataType.TINYINT.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.TINYINT)), this, "");
+    public final TableField<ExcerptRecord, Boolean> ISPRIVATE = createField(DSL.name("isPrivate"), org.jooq.impl.SQLDataType.BOOLEAN.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.BOOLEAN)), this, "");
 
     public Excerpt() {
         this(DSL.name("excerpt"), null);
@@ -124,5 +125,14 @@ public class Excerpt extends TableImpl<ExcerptRecord> {
     @Override
     public Excerpt rename(Name name) {
         return new Excerpt(name, null);
+    }
+
+    // -------------------------------------------------------------------------
+    // Row5 type methods
+    // -------------------------------------------------------------------------
+
+    @Override
+    public Row5<Long, Long, String, Integer, Boolean> fieldsRow() {
+        return (Row5) super.fieldsRow();
     }
 }

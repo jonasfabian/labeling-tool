@@ -19,9 +19,9 @@ import org.jooq.impl.UpdatableRecordImpl;
 
 
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class FlywaySchemaHistoryRecord extends UpdatableRecordImpl<FlywaySchemaHistoryRecord> implements Record10<Integer, String, String, String, String, Integer, String, Timestamp, Integer, Byte> {
+public class FlywaySchemaHistoryRecord extends UpdatableRecordImpl<FlywaySchemaHistoryRecord> implements Record10<Integer, String, String, String, String, Integer, String, Timestamp, Integer, Boolean> {
 
-    private static final long serialVersionUID = -1261813542;
+    private static final long serialVersionUID = -316860854;
 
     public void setInstalledRank(Integer value) {
         set(0, value);
@@ -106,13 +106,13 @@ public class FlywaySchemaHistoryRecord extends UpdatableRecordImpl<FlywaySchemaH
         return (Integer) get(8);
     }
 
-    public void setSuccess(Byte value) {
+    public void setSuccess(Boolean value) {
         set(9, value);
     }
 
     @NotNull
-    public Byte getSuccess() {
-        return (Byte) get(9);
+    public Boolean getSuccess() {
+        return (Boolean) get(9);
     }
 
     // -------------------------------------------------------------------------
@@ -129,12 +129,12 @@ public class FlywaySchemaHistoryRecord extends UpdatableRecordImpl<FlywaySchemaH
     // -------------------------------------------------------------------------
 
     @Override
-    public Row10<Integer, String, String, String, String, Integer, String, Timestamp, Integer, Byte> fieldsRow() {
+    public Row10<Integer, String, String, String, String, Integer, String, Timestamp, Integer, Boolean> fieldsRow() {
         return (Row10) super.fieldsRow();
     }
 
     @Override
-    public Row10<Integer, String, String, String, String, Integer, String, Timestamp, Integer, Byte> valuesRow() {
+    public Row10<Integer, String, String, String, String, Integer, String, Timestamp, Integer, Boolean> valuesRow() {
         return (Row10) super.valuesRow();
     }
 
@@ -184,7 +184,7 @@ public class FlywaySchemaHistoryRecord extends UpdatableRecordImpl<FlywaySchemaH
     }
 
     @Override
-    public Field<Byte> field10() {
+    public Field<Boolean> field10() {
         return FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.SUCCESS;
     }
 
@@ -234,7 +234,7 @@ public class FlywaySchemaHistoryRecord extends UpdatableRecordImpl<FlywaySchemaH
     }
 
     @Override
-    public Byte component10() {
+    public Boolean component10() {
         return getSuccess();
     }
 
@@ -284,7 +284,7 @@ public class FlywaySchemaHistoryRecord extends UpdatableRecordImpl<FlywaySchemaH
     }
 
     @Override
-    public Byte value10() {
+    public Boolean value10() {
         return getSuccess();
     }
 
@@ -343,13 +343,13 @@ public class FlywaySchemaHistoryRecord extends UpdatableRecordImpl<FlywaySchemaH
     }
 
     @Override
-    public FlywaySchemaHistoryRecord value10(Byte value) {
+    public FlywaySchemaHistoryRecord value10(Boolean value) {
         setSuccess(value);
         return this;
     }
 
     @Override
-    public FlywaySchemaHistoryRecord values(Integer value1, String value2, String value3, String value4, String value5, Integer value6, String value7, Timestamp value8, Integer value9, Byte value10) {
+    public FlywaySchemaHistoryRecord values(Integer value1, String value2, String value3, String value4, String value5, Integer value6, String value7, Timestamp value8, Integer value9, Boolean value10) {
         value1(value1);
         value2(value2);
         value3(value3);
@@ -371,7 +371,7 @@ public class FlywaySchemaHistoryRecord extends UpdatableRecordImpl<FlywaySchemaH
         super(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY);
     }
 
-    public FlywaySchemaHistoryRecord(Integer installedRank, String version, String description, String type, String script, Integer checksum, String installedBy, Timestamp installedOn, Integer executionTime, Byte success) {
+    public FlywaySchemaHistoryRecord(Integer installedRank, String version, String description, String type, String script, Integer checksum, String installedBy, Timestamp installedOn, Integer executionTime, Boolean success) {
         super(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY);
 
         set(0, installedRank);

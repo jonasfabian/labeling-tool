@@ -63,15 +63,19 @@ export class RecordComponent implements OnInit {
   }
 
   private() {
-    // TODO not sure how we should implement this
-    this.httpClient.put<Excerpt>(`${environment.url}user_group/${this.groupId}/excerpt/private`, {});
-    this.snackBarService.openMessage('marked as private');
+    this.httpClient.put<Excerpt>(`${environment.url}user_group/${this.groupId}/excerpt/${this.excerpt.id}/private`, {})
+      .subscribe(() => {
+        this.snackBarService.openMessage('marked as private');
+        this.getNext();
+      });
   }
 
   skip() {
-    // TODO not sure how we should implement this
-    this.httpClient.put<Excerpt>(`${environment.url}user_group/${this.groupId}/excerpt/skip`, {});
-    this.snackBarService.openMessage('marked as skipped');
+    this.httpClient.put<Excerpt>(`${environment.url}user_group/${this.groupId}/excerpt/${this.excerpt.id}/skipped`, {})
+      .subscribe(() => {
+        this.snackBarService.openMessage('marked as skipped');
+        this.getNext();
+      });
   }
 
   isReady = () => this.audioChunks.length > 0;

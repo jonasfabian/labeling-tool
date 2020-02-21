@@ -30,8 +30,12 @@ public class FlywaySchemaHistoryDao extends DAOImpl<FlywaySchemaHistoryRecord, c
     }
 
     @Override
-    protected Integer getId(ch.fhnw.labeling_tool.jooq.tables.pojos.FlywaySchemaHistory object) {
+    public Integer getId(ch.fhnw.labeling_tool.jooq.tables.pojos.FlywaySchemaHistory object) {
         return object.getInstalledRank();
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.FlywaySchemaHistory> fetchRangeOfInstalledRank(Integer lowerInclusive, Integer upperInclusive) {
+        return fetchRange(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.FlywaySchemaHistory> fetchByInstalledRank(Integer... values) {
@@ -42,39 +46,75 @@ public class FlywaySchemaHistoryDao extends DAOImpl<FlywaySchemaHistoryRecord, c
         return fetchOne(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK, value);
     }
 
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.FlywaySchemaHistory> fetchRangeOfVersion(String lowerInclusive, String upperInclusive) {
+        return fetchRange(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.VERSION, lowerInclusive, upperInclusive);
+    }
+
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.FlywaySchemaHistory> fetchByVersion(String... values) {
         return fetch(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.VERSION, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.FlywaySchemaHistory> fetchRangeOfDescription(String lowerInclusive, String upperInclusive) {
+        return fetchRange(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.DESCRIPTION, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.FlywaySchemaHistory> fetchByDescription(String... values) {
         return fetch(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.DESCRIPTION, values);
     }
 
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.FlywaySchemaHistory> fetchRangeOfType(String lowerInclusive, String upperInclusive) {
+        return fetchRange(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.TYPE, lowerInclusive, upperInclusive);
+    }
+
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.FlywaySchemaHistory> fetchByType(String... values) {
         return fetch(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.TYPE, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.FlywaySchemaHistory> fetchRangeOfScript(String lowerInclusive, String upperInclusive) {
+        return fetchRange(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.SCRIPT, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.FlywaySchemaHistory> fetchByScript(String... values) {
         return fetch(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.SCRIPT, values);
     }
 
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.FlywaySchemaHistory> fetchRangeOfChecksum(Integer lowerInclusive, Integer upperInclusive) {
+        return fetchRange(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.CHECKSUM, lowerInclusive, upperInclusive);
+    }
+
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.FlywaySchemaHistory> fetchByChecksum(Integer... values) {
         return fetch(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.CHECKSUM, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.FlywaySchemaHistory> fetchRangeOfInstalledBy(String lowerInclusive, String upperInclusive) {
+        return fetchRange(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_BY, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.FlywaySchemaHistory> fetchByInstalledBy(String... values) {
         return fetch(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_BY, values);
     }
 
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.FlywaySchemaHistory> fetchRangeOfInstalledOn(Timestamp lowerInclusive, Timestamp upperInclusive) {
+        return fetchRange(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_ON, lowerInclusive, upperInclusive);
+    }
+
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.FlywaySchemaHistory> fetchByInstalledOn(Timestamp... values) {
         return fetch(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_ON, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.FlywaySchemaHistory> fetchRangeOfExecutionTime(Integer lowerInclusive, Integer upperInclusive) {
+        return fetchRange(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.EXECUTION_TIME, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.FlywaySchemaHistory> fetchByExecutionTime(Integer... values) {
         return fetch(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.EXECUTION_TIME, values);
     }
 
-    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.FlywaySchemaHistory> fetchBySuccess(Byte... values) {
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.FlywaySchemaHistory> fetchRangeOfSuccess(Boolean lowerInclusive, Boolean upperInclusive) {
+        return fetchRange(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.SUCCESS, lowerInclusive, upperInclusive);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.FlywaySchemaHistory> fetchBySuccess(Boolean... values) {
         return fetch(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.SUCCESS, values);
     }
 }

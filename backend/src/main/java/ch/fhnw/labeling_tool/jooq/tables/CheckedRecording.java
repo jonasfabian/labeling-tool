@@ -20,6 +20,7 @@ import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
+import org.jooq.Row5;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -31,7 +32,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CheckedRecording extends TableImpl<CheckedRecordingRecord> {
 
-    private static final long serialVersionUID = -238296780;
+    private static final long serialVersionUID = 1067385558;
 
     public static final CheckedRecording CHECKED_RECORDING = new CheckedRecording();
 
@@ -40,15 +41,15 @@ public class CheckedRecording extends TableImpl<CheckedRecordingRecord> {
         return CheckedRecordingRecord.class;
     }
 
-    public final TableField<CheckedRecordingRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+    public final TableField<CheckedRecordingRecord, Long> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
-    public final TableField<CheckedRecordingRecord, Long> RECORDING_ID = createField("recording_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<CheckedRecordingRecord, Long> RECORDING_ID = createField(DSL.name("recording_id"), org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
-    public final TableField<CheckedRecordingRecord, Long> USER_ID = createField("user_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<CheckedRecordingRecord, Long> USER_ID = createField(DSL.name("user_id"), org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
-    public final TableField<CheckedRecordingRecord, CheckedRecordingLabel> LABEL = createField("label", org.jooq.impl.SQLDataType.VARCHAR(7).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.CheckedRecordingLabel.class), this, "");
+    public final TableField<CheckedRecordingRecord, CheckedRecordingLabel> LABEL = createField(DSL.name("label"), org.jooq.impl.SQLDataType.VARCHAR(7).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.CheckedRecordingLabel.class), this, "");
 
-    public final TableField<CheckedRecordingRecord, Timestamp> TIME = createField("time", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("current_timestamp()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
+    public final TableField<CheckedRecordingRecord, Timestamp> TIME = createField(DSL.name("time"), org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("current_timestamp()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
 
     public CheckedRecording() {
         this(DSL.name("checked_recording"), null);
@@ -130,5 +131,14 @@ public class CheckedRecording extends TableImpl<CheckedRecordingRecord> {
     @Override
     public CheckedRecording rename(Name name) {
         return new CheckedRecording(name, null);
+    }
+
+    // -------------------------------------------------------------------------
+    // Row5 type methods
+    // -------------------------------------------------------------------------
+
+    @Override
+    public Row5<Long, Long, Long, CheckedRecordingLabel, Timestamp> fieldsRow() {
+        return (Row5) super.fieldsRow();
     }
 }

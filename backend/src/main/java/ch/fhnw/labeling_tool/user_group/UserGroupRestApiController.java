@@ -27,6 +27,16 @@ public class UserGroupRestApiController {
         userGroupService.postRecording(groupId, excerptId, file);
     }
 
+    @PutMapping("excerpt/{excerptId}/private")
+    public void putExcerptPrivate(@PathVariable long groupId, @PathVariable long excerptId) {
+        userGroupService.putExcerptPrivate(groupId, excerptId);
+    }
+
+    @PutMapping("excerpt/{excerptId}/skipped")
+    public void putExcerptSkipped(@PathVariable long groupId, @PathVariable long excerptId) {
+        userGroupService.putExcerptSkipped(groupId, excerptId);
+    }
+
     @GetMapping("excerpt")
     public Excerpt getExcerpt(@PathVariable long groupId) {
         return userGroupService.getExcerpt(groupId);

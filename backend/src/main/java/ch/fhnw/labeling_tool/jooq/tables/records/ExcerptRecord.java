@@ -17,9 +17,9 @@ import org.jooq.impl.UpdatableRecordImpl;
 
 
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class ExcerptRecord extends UpdatableRecordImpl<ExcerptRecord> implements Record5<Long, Long, String, Integer, Byte> {
+public class ExcerptRecord extends UpdatableRecordImpl<ExcerptRecord> implements Record5<Long, Long, String, Integer, Boolean> {
 
-    private static final long serialVersionUID = 426539623;
+    private static final long serialVersionUID = -374334999;
 
     public void setId(Long value) {
         set(0, value);
@@ -56,12 +56,12 @@ public class ExcerptRecord extends UpdatableRecordImpl<ExcerptRecord> implements
         return (Integer) get(3);
     }
 
-    public void setIsprivate(Byte value) {
+    public void setIsprivate(Boolean value) {
         set(4, value);
     }
 
-    public Byte getIsprivate() {
-        return (Byte) get(4);
+    public Boolean getIsprivate() {
+        return (Boolean) get(4);
     }
 
     // -------------------------------------------------------------------------
@@ -78,12 +78,12 @@ public class ExcerptRecord extends UpdatableRecordImpl<ExcerptRecord> implements
     // -------------------------------------------------------------------------
 
     @Override
-    public Row5<Long, Long, String, Integer, Byte> fieldsRow() {
+    public Row5<Long, Long, String, Integer, Boolean> fieldsRow() {
         return (Row5) super.fieldsRow();
     }
 
     @Override
-    public Row5<Long, Long, String, Integer, Byte> valuesRow() {
+    public Row5<Long, Long, String, Integer, Boolean> valuesRow() {
         return (Row5) super.valuesRow();
     }
 
@@ -108,7 +108,7 @@ public class ExcerptRecord extends UpdatableRecordImpl<ExcerptRecord> implements
     }
 
     @Override
-    public Field<Byte> field5() {
+    public Field<Boolean> field5() {
         return Excerpt.EXCERPT.ISPRIVATE;
     }
 
@@ -133,7 +133,7 @@ public class ExcerptRecord extends UpdatableRecordImpl<ExcerptRecord> implements
     }
 
     @Override
-    public Byte component5() {
+    public Boolean component5() {
         return getIsprivate();
     }
 
@@ -158,7 +158,7 @@ public class ExcerptRecord extends UpdatableRecordImpl<ExcerptRecord> implements
     }
 
     @Override
-    public Byte value5() {
+    public Boolean value5() {
         return getIsprivate();
     }
 
@@ -187,13 +187,13 @@ public class ExcerptRecord extends UpdatableRecordImpl<ExcerptRecord> implements
     }
 
     @Override
-    public ExcerptRecord value5(Byte value) {
+    public ExcerptRecord value5(Boolean value) {
         setIsprivate(value);
         return this;
     }
 
     @Override
-    public ExcerptRecord values(Long value1, Long value2, String value3, Integer value4, Byte value5) {
+    public ExcerptRecord values(Long value1, Long value2, String value3, Integer value4, Boolean value5) {
         value1(value1);
         value2(value2);
         value3(value3);
@@ -210,7 +210,7 @@ public class ExcerptRecord extends UpdatableRecordImpl<ExcerptRecord> implements
         super(Excerpt.EXCERPT);
     }
 
-    public ExcerptRecord(Long id, Long originalTextId, String excerpt, Integer isskipped, Byte isprivate) {
+    public ExcerptRecord(Long id, Long originalTextId, String excerpt, Integer isskipped, Boolean isprivate) {
         super(Excerpt.EXCERPT);
 
         set(0, id);

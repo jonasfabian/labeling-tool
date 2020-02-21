@@ -4,6 +4,8 @@
 package ch.fhnw.labeling_tool.jooq.tables.pojos;
 
 
+import ch.fhnw.labeling_tool.jooq.enums.RecordingLabel;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -13,12 +15,13 @@ import javax.validation.constraints.NotNull;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Recording implements Serializable {
 
-    private static final long serialVersionUID = 1146499268;
+    private static final long serialVersionUID = -1513931537;
 
-    private Long      id;
-    private Long      excerptId;
-    private Long      userId;
-    private Timestamp time;
+    private Long           id;
+    private Long           excerptId;
+    private Long           userId;
+    private Timestamp      time;
+    private RecordingLabel label;
 
     public Recording() {}
 
@@ -27,18 +30,21 @@ public class Recording implements Serializable {
         this.excerptId = value.excerptId;
         this.userId = value.userId;
         this.time = value.time;
+        this.label = value.label;
     }
 
     public Recording(
-        Long      id,
-        Long      excerptId,
-        Long      userId,
-        Timestamp time
+        Long           id,
+        Long           excerptId,
+        Long           userId,
+        Timestamp      time,
+        RecordingLabel label
     ) {
         this.id = id;
         this.excerptId = excerptId;
         this.userId = userId;
         this.time = time;
+        this.label = label;
     }
 
     public Long getId() {
@@ -75,6 +81,14 @@ public class Recording implements Serializable {
         this.time = time;
     }
 
+    public RecordingLabel getLabel() {
+        return this.label;
+    }
+
+    public void setLabel(RecordingLabel label) {
+        this.label = label;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Recording (");
@@ -83,6 +97,7 @@ public class Recording implements Serializable {
         sb.append(", ").append(excerptId);
         sb.append(", ").append(userId);
         sb.append(", ").append(time);
+        sb.append(", ").append(label);
 
         sb.append(")");
         return sb.toString();

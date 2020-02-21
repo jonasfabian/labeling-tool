@@ -32,8 +32,9 @@ task devBootRun(type: BootRun) {
 }
 
 jooq {
-    version = '3.11.11' // the default (can be omitted)
-    edition = 'OSS'
+//    version = '3.11.11' // the default (can be omitted)
+//    edition = 'OSS'
+    generateSchemaSourceOnCompilation = false
     sample(sourceSets.main) {
         jdbc {
             driver = 'org.mariadb.jdbc.Driver'
@@ -46,9 +47,14 @@ jooq {
             database {
                 inputSchema = 'labeling-tool'
                 forcedTypes {
+//                    forcedType {
+//                        name = 'BOOLEAN'
+//                        expression = ".*\\.published|finished|enabled"
+//                    }
                     forcedType {
                         name = 'BOOLEAN'
-                        expression = ".*\\.published|finished|enabled"
+                        expression = '.*'
+                        types = '(?i:(TINY|SMALL|MEDIUM|BIG)?INT(UNSIGNED)?\\(1\\))'
                     }
                 }
             }

@@ -4,6 +4,7 @@
 package ch.fhnw.labeling_tool.jooq.tables.records;
 
 
+import ch.fhnw.labeling_tool.jooq.enums.RecordingLabel;
 import ch.fhnw.labeling_tool.jooq.tables.Recording;
 
 import java.sql.Timestamp;
@@ -12,15 +13,15 @@ import javax.validation.constraints.NotNull;
 
 import org.jooq.Field;
 import org.jooq.Record1;
-import org.jooq.Record4;
-import org.jooq.Row4;
+import org.jooq.Record5;
+import org.jooq.Row5;
 import org.jooq.impl.UpdatableRecordImpl;
 
 
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implements Record4<Long, Long, Long, Timestamp> {
+public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implements Record5<Long, Long, Long, Timestamp, RecordingLabel> {
 
-    private static final long serialVersionUID = -1275060029;
+    private static final long serialVersionUID = -1459478292;
 
     public void setId(Long value) {
         set(0, value);
@@ -56,6 +57,14 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
         return (Timestamp) get(3);
     }
 
+    public void setLabel(RecordingLabel value) {
+        set(4, value);
+    }
+
+    public RecordingLabel getLabel() {
+        return (RecordingLabel) get(4);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -66,17 +75,17 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
     }
 
     // -------------------------------------------------------------------------
-    // Record4 type implementation
+    // Record5 type implementation
     // -------------------------------------------------------------------------
 
     @Override
-    public Row4<Long, Long, Long, Timestamp> fieldsRow() {
-        return (Row4) super.fieldsRow();
+    public Row5<Long, Long, Long, Timestamp, RecordingLabel> fieldsRow() {
+        return (Row5) super.fieldsRow();
     }
 
     @Override
-    public Row4<Long, Long, Long, Timestamp> valuesRow() {
-        return (Row4) super.valuesRow();
+    public Row5<Long, Long, Long, Timestamp, RecordingLabel> valuesRow() {
+        return (Row5) super.valuesRow();
     }
 
     @Override
@@ -100,6 +109,11 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
     }
 
     @Override
+    public Field<RecordingLabel> field5() {
+        return Recording.RECORDING.LABEL;
+    }
+
+    @Override
     public Long component1() {
         return getId();
     }
@@ -120,6 +134,11 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
     }
 
     @Override
+    public RecordingLabel component5() {
+        return getLabel();
+    }
+
+    @Override
     public Long value1() {
         return getId();
     }
@@ -137,6 +156,11 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
     @Override
     public Timestamp value4() {
         return getTime();
+    }
+
+    @Override
+    public RecordingLabel value5() {
+        return getLabel();
     }
 
     @Override
@@ -164,11 +188,18 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
     }
 
     @Override
-    public RecordingRecord values(Long value1, Long value2, Long value3, Timestamp value4) {
+    public RecordingRecord value5(RecordingLabel value) {
+        setLabel(value);
+        return this;
+    }
+
+    @Override
+    public RecordingRecord values(Long value1, Long value2, Long value3, Timestamp value4, RecordingLabel value5) {
         value1(value1);
         value2(value2);
         value3(value3);
         value4(value4);
+        value5(value5);
         return this;
     }
 
@@ -180,12 +211,13 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
         super(Recording.RECORDING);
     }
 
-    public RecordingRecord(Long id, Long excerptId, Long userId, Timestamp time) {
+    public RecordingRecord(Long id, Long excerptId, Long userId, Timestamp time, RecordingLabel label) {
         super(Recording.RECORDING);
 
         set(0, id);
         set(1, excerptId);
         set(2, userId);
         set(3, time);
+        set(4, label);
     }
 }

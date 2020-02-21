@@ -19,6 +19,7 @@ import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
+import org.jooq.Row5;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -30,7 +31,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Speaker extends TableImpl<SpeakerRecord> {
 
-    private static final long serialVersionUID = -1849536147;
+    private static final long serialVersionUID = -521875401;
 
     public static final Speaker SPEAKER = new Speaker();
 
@@ -39,15 +40,15 @@ public class Speaker extends TableImpl<SpeakerRecord> {
         return SpeakerRecord.class;
     }
 
-    public final TableField<SpeakerRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+    public final TableField<SpeakerRecord, Long> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
-    public final TableField<SpeakerRecord, String> NAME = createField("name", org.jooq.impl.SQLDataType.VARCHAR(45).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<SpeakerRecord, String> NAME = createField(DSL.name("name"), org.jooq.impl.SQLDataType.VARCHAR(45).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
-    public final TableField<SpeakerRecord, String> LANGUAGE = createField("language", org.jooq.impl.SQLDataType.VARCHAR(45).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<SpeakerRecord, String> LANGUAGE = createField(DSL.name("language"), org.jooq.impl.SQLDataType.VARCHAR(45).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
-    public final TableField<SpeakerRecord, String> DIALECT = createField("dialect", org.jooq.impl.SQLDataType.VARCHAR(45).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<SpeakerRecord, String> DIALECT = createField(DSL.name("dialect"), org.jooq.impl.SQLDataType.VARCHAR(45).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
-    public final TableField<SpeakerRecord, SpeakerSex> SEX = createField("sex", org.jooq.impl.SQLDataType.VARCHAR(4).defaultValue(org.jooq.impl.DSL.inline("'NONE'", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.SpeakerSex.class), this, "");
+    public final TableField<SpeakerRecord, SpeakerSex> SEX = createField(DSL.name("sex"), org.jooq.impl.SQLDataType.VARCHAR(4).defaultValue(org.jooq.impl.DSL.inline("'NONE'", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.SpeakerSex.class), this, "");
 
     public Speaker() {
         this(DSL.name("speaker"), null);
@@ -116,5 +117,14 @@ public class Speaker extends TableImpl<SpeakerRecord> {
     @Override
     public Speaker rename(Name name) {
         return new Speaker(name, null);
+    }
+
+    // -------------------------------------------------------------------------
+    // Row5 type methods
+    // -------------------------------------------------------------------------
+
+    @Override
+    public Row5<Long, String, String, String, SpeakerSex> fieldsRow() {
+        return (Row5) super.fieldsRow();
     }
 }

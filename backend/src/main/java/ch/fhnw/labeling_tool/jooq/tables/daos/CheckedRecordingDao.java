@@ -31,8 +31,12 @@ public class CheckedRecordingDao extends DAOImpl<CheckedRecordingRecord, ch.fhnw
     }
 
     @Override
-    protected Long getId(ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedRecording object) {
+    public Long getId(ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedRecording object) {
         return object.getId();
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedRecording> fetchRangeOfId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(CheckedRecording.CHECKED_RECORDING.ID, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedRecording> fetchById(Long... values) {
@@ -43,16 +47,32 @@ public class CheckedRecordingDao extends DAOImpl<CheckedRecordingRecord, ch.fhnw
         return fetchOne(CheckedRecording.CHECKED_RECORDING.ID, value);
     }
 
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedRecording> fetchRangeOfRecordingId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(CheckedRecording.CHECKED_RECORDING.RECORDING_ID, lowerInclusive, upperInclusive);
+    }
+
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedRecording> fetchByRecordingId(Long... values) {
         return fetch(CheckedRecording.CHECKED_RECORDING.RECORDING_ID, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedRecording> fetchRangeOfUserId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(CheckedRecording.CHECKED_RECORDING.USER_ID, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedRecording> fetchByUserId(Long... values) {
         return fetch(CheckedRecording.CHECKED_RECORDING.USER_ID, values);
     }
 
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedRecording> fetchRangeOfLabel(CheckedRecordingLabel lowerInclusive, CheckedRecordingLabel upperInclusive) {
+        return fetchRange(CheckedRecording.CHECKED_RECORDING.LABEL, lowerInclusive, upperInclusive);
+    }
+
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedRecording> fetchByLabel(CheckedRecordingLabel... values) {
         return fetch(CheckedRecording.CHECKED_RECORDING.LABEL, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedRecording> fetchRangeOfTime(Timestamp lowerInclusive, Timestamp upperInclusive) {
+        return fetchRange(CheckedRecording.CHECKED_RECORDING.TIME, lowerInclusive, upperInclusive);
     }
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedRecording> fetchByTime(Timestamp... values) {

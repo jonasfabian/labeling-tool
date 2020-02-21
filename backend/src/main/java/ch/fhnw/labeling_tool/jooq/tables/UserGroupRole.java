@@ -19,6 +19,7 @@ import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
+import org.jooq.Row4;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -30,7 +31,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class UserGroupRole extends TableImpl<UserGroupRoleRecord> {
 
-    private static final long serialVersionUID = -102863134;
+    private static final long serialVersionUID = -184158567;
 
     public static final UserGroupRole USER_GROUP_ROLE = new UserGroupRole();
 
@@ -39,13 +40,13 @@ public class UserGroupRole extends TableImpl<UserGroupRoleRecord> {
         return UserGroupRoleRecord.class;
     }
 
-    public final TableField<UserGroupRoleRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+    public final TableField<UserGroupRoleRecord, Long> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
-    public final TableField<UserGroupRoleRecord, UserGroupRoleRole> ROLE = createField("role", org.jooq.impl.SQLDataType.VARCHAR(11).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.UserGroupRoleRole.class), this, "");
+    public final TableField<UserGroupRoleRecord, UserGroupRoleRole> ROLE = createField(DSL.name("role"), org.jooq.impl.SQLDataType.VARCHAR(11).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.UserGroupRoleRole.class), this, "");
 
-    public final TableField<UserGroupRoleRecord, Long> USER_ID = createField("user_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<UserGroupRoleRecord, Long> USER_ID = createField(DSL.name("user_id"), org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
-    public final TableField<UserGroupRoleRecord, Long> USER_GROUP_ID = createField("user_group_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<UserGroupRoleRecord, Long> USER_GROUP_ID = createField(DSL.name("user_group_id"), org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
     public UserGroupRole() {
         this(DSL.name("user_group_role"), null);
@@ -127,5 +128,14 @@ public class UserGroupRole extends TableImpl<UserGroupRoleRecord> {
     @Override
     public UserGroupRole rename(Name name) {
         return new UserGroupRole(name, null);
+    }
+
+    // -------------------------------------------------------------------------
+    // Row4 type methods
+    // -------------------------------------------------------------------------
+
+    @Override
+    public Row4<Long, UserGroupRoleRole, Long, Long> fieldsRow() {
+        return (Row4) super.fieldsRow();
     }
 }
