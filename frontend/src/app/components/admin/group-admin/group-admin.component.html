@@ -1,9 +1,18 @@
-<div>
-  <!--  TODO add drop down for domain etc.-->
+<div class="margin">
+  <br>
+
+  <mat-form-field>
+    <mat-label>Domain</mat-label>
+    <mat-select [(ngModel)]="selectedDomain">
+      <mat-option *ngFor="let domain of domains" [value]="domain">{{domain.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
   <mat-label (click)="projectSetupFile.click()" class="click-me">select files for uploading</mat-label>
   <input #projectSetupFile (change)="handleFileInput($event.target.files)" hidden id="projectSetupFile" multiple
          type="file">
   <button (click)="projectSetupFile.click()" mat-icon-button title="Upload File">
     <mat-icon>cloud_upload</mat-icon>
   </button>
+
+
 </div>

@@ -1,6 +1,8 @@
 package ch.fhnw.labeling_tool;
 
+import ch.fhnw.labeling_tool.jooq.tables.daos.DomainDao;
 import ch.fhnw.labeling_tool.jooq.tables.daos.UserGroupDao;
+import ch.fhnw.labeling_tool.jooq.tables.pojos.Domain;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.User;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.UserGroup;
 import ch.fhnw.labeling_tool.model.ChangePassword;
@@ -16,11 +18,13 @@ import java.util.List;
 public class RestApiController {
     private final UserGroupDao userGroupDao;
     private final CustomUserDetailsService customUserDetailsService;
+    private final DomainDao domainDao;
 
     @Autowired
-    public RestApiController(UserGroupDao userGroupDao, CustomUserDetailsService customUserDetailsService) {
+    public RestApiController(UserGroupDao userGroupDao, CustomUserDetailsService customUserDetailsService, DomainDao domainDao) {
         this.userGroupDao = userGroupDao;
         this.customUserDetailsService = customUserDetailsService;
+        this.domainDao = domainDao;
     }
 
     @PostMapping("register")
@@ -55,6 +59,11 @@ public class RestApiController {
     @PutMapping("user/password")
     public void putPassword(@RequestBody ChangePassword changePassword) {
         customUserDetailsService.putPassword(changePassword);
+    }
+
+    @GetMapping("domain")
+    public List<Domain> getDomain() {
+        return domainDao.findAll();
     }
 
     //TODO maybe put these routes under a admin prefix and check permissions etc.
