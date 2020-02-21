@@ -3,14 +3,8 @@ import {Recording} from '../../models/recording';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {SnackBarService} from '../../services/snack-bar.service';
-
-interface Excerpt {
-  excerpt: string;
-  id: number;
-  isSkipped: number;
-  isPrivate: number;
-  orginal_text_id: number;
-}
+import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
+import {Excerpt} from '../../models/excerpt';
 
 @Component({
   selector: 'app-record',
@@ -18,39 +12,36 @@ interface Excerpt {
   styleUrls: ['./record.component.scss']
 })
 export class RecordComponent implements OnInit {
-  fileContent: string | ArrayBuffer = '';
   excerpt: Excerpt = null;
   isRecording = false;
-  isPlaying = false;
+  blobUrl: SafeUrl;
   // @ts-ignore
   private mediaRecorder: MediaRecorder;
+  private audioChunks = [];
   // TODO get real groupId
   private groupId = 1;
-  private audioChunks = [];
-  private audioPlayer = new Audio();
 
-  constructor(private snackBarService: SnackBarService, private detector: ChangeDetectorRef, private httpClient: HttpClient) {
+  constructor(private snackBarService: SnackBarService, private detector: ChangeDetectorRef, private httpClient: HttpClient, private domSanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
-    // TODO test microphone logic on multiple browsers
-    // TODO add failure message in case all recordings are done.
-    this.httpClient.get<Excerpt>(`${environment.url}user_group/${this.groupId}/excerpt`).subscribe(value => this.excerpt = value);
+    this.getNext();
     navigator.mediaDevices.getUserMedia({audio: true})
       .then(stream => {
         // @ts-ignore
-        this.mediaRecorder = new MediaRecorder(stream,{mimeType:"audio/webm"});
+        this.mediaRecorder = new MediaRecorder(stream, {mimeType: 'audio/webm'});
         this.mediaRecorder.ondataavailable = event => this.audioChunks.push(event.data);
-        // this.mediaRecorder.onstop = () => this.recordingBlob = new Blob(this.audioChunks);
+        this.mediaRecorder.onstop = () => {
+          this.blobUrl = this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(new Blob(this.audioChunks)));
+          this.detector.detectChanges();
+        };
       });
   }
 
-  isRecordingM = (): string => this.isRecording ? 'recording' : '';
-
   startRecord(): void {
     this.audioChunks = [];
-    this.isRecording = true;
     this.mediaRecorder.start();
+    this.isRecording = true;
   }
 
   stopRecord(): void {
@@ -58,39 +49,34 @@ export class RecordComponent implements OnInit {
     this.isRecording = false;
   }
 
-  togglePlay() {
-    if (this.isPlaying) {
-      this.audioPlayer.pause();
-      this.audioPlayer.currentTime = 0;
-      // this.audioProgress = 0;
-      this.isPlaying = false;
-    } else {
-      this.audioPlayer = new Audio(URL.createObjectURL(new Blob(this.audioChunks)));
-      this.audioPlayer.play();
-      this.isPlaying = true;
-    }
-  }
-
   submit(): void {
     const recording = new Recording(undefined, this.excerpt.id, undefined, undefined, undefined);
     const formData = new FormData();
-    // TODO test if this works correctly -> needs a microphone
-    // FIXME this may not work depending on the encoding
     formData.append(`file`, new Blob(this.audioChunks), 'audio');
     formData.append('excerptId', recording.excerptId + '');
     this.httpClient.post(`${environment.url}user_group/${this.groupId}/recording`, formData).subscribe(() => {
-      this.fileContent = '';
       this.audioChunks = [];
+      this.blobUrl = undefined;
       this.snackBarService.openMessage('Successfully uploaded recording');
+      this.getNext();
     });
   }
 
-  //TODO implement logic
   private() {
-
+    // TODO not sure how we should implement this
+    this.httpClient.put<Excerpt>(`${environment.url}user_group/${this.groupId}/excerpt/private`, {});
+    this.snackBarService.openMessage('marked as private');
   }
 
   skip() {
+    // TODO not sure how we should implement this
+    this.httpClient.put<Excerpt>(`${environment.url}user_group/${this.groupId}/excerpt/skip`, {});
+    this.snackBarService.openMessage('marked as skipped');
+  }
 
+  isReady = () => this.audioChunks.length > 0;
+
+  private getNext() {
+    this.httpClient.get<Excerpt>(`${environment.url}user_group/${this.groupId}/excerpt`).subscribe(value => this.excerpt = value);
   }
 }
