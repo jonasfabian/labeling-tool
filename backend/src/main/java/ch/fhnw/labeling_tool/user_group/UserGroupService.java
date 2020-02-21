@@ -5,7 +5,10 @@ import ch.fhnw.labeling_tool.jooq.enums.RecordingLabel;
 import ch.fhnw.labeling_tool.jooq.tables.daos.CheckedTextAudioDao;
 import ch.fhnw.labeling_tool.jooq.tables.daos.ExcerptDao;
 import ch.fhnw.labeling_tool.jooq.tables.daos.RecordingDao;
-import ch.fhnw.labeling_tool.jooq.tables.pojos.*;
+import ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedTextAudio;
+import ch.fhnw.labeling_tool.jooq.tables.pojos.Excerpt;
+import ch.fhnw.labeling_tool.jooq.tables.pojos.Recording;
+import ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio;
 import ch.fhnw.labeling_tool.jooq.tables.records.OriginalTextRecord;
 import ch.fhnw.labeling_tool.jooq.tables.records.RecordingRecord;
 import ch.fhnw.labeling_tool.model.TextAudioDto;
@@ -23,10 +26,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static ch.fhnw.labeling_tool.jooq.Tables.*;
@@ -79,7 +84,7 @@ public class UserGroupService {
     public void postOriginalText(long groupId, long domainId, MultipartFile[] files) {
         customUserDetailsService.isAllowedOnProjectThrow(groupId, false);
         var parser = new AutoDetectParser(TikaConfig.getDefaultConfig());
-        for (MultipartFile file : files) {
+        String collect = Arrays.stream(files).map(file -> {
             try {
                 var bodyContentHandler = new BodyContentHandler();
                 var metadata = new Metadata();
@@ -87,24 +92,33 @@ public class UserGroupService {
                 metadata.add(Metadata.CONTENT_TYPE, file.getContentType());
                 parser.parse(new ByteArrayInputStream(file.getBytes()), bodyContentHandler, metadata);
                 var text = bodyContentHandler.toString();
-//                TODO instead use this: "conda run -n labeling-tool python data-import.py"
-//                TODO not sure if we want to directly insert the data from the python site?
-//                TODO not sure about the syncronication or atomic integer
-
-                OriginalText originalText = new OriginalText(null, groupId, domainId);
-                OriginalTextRecord textRecord = dslContext.newRecord(ORIGINAL_TEXT, originalText);
+                OriginalTextRecord textRecord = dslContext.newRecord(ORIGINAL_TEXT);
+                textRecord.setUserGroupId(groupId);
+                textRecord.setDomainId(domainId);
                 textRecord.store();
 //                TODO maybe replace corenlp with spacy
-                var exps = new Document(text).sentences().stream().map(s -> new Excerpt(null, textRecord.getId(), s.text(), 0, false)).collect(Collectors.toList());
-                excerptDao.insert(exps);
+//                var exps = new Document(text).sentences().stream().map(s -> new Excerpt(null, textRecord.getId(), s.text(), 0, false)).collect(Collectors.toList());
+//                excerptDao.insert(exps);
                 Files.write(config.getBasePath().resolve("original_text/" + textRecord.getId() + ".bin"), file.getBytes());
-                //TODO maybe return result for validation / post processing before saving & publishing
+                return Optional.of(textRecord.getId());
+                //TODO save the extracted text on the file system    Files.write(config.getBasePath().resolve("original_text/" + textRecord.getId() + ".bin"), file.getBytes());
             } catch (IOException | TikaException | SAXException ex) {
-                //TODO maybe add a success wrapper for each file? and return them afterwards?
+                return Optional.<Long>empty();
             }
-
+        }).flatMap(Optional::stream).map(Object::toString).collect(Collectors.joining(","));
+        try {
+            //TODO NOTE depending on the process etc. it may be better to just start a flask server and send it there over rest
+            Process process = Runtime.getRuntime().exec(new String[]{"conda run -n labeling-tool python data-import.py", collect});
+            //TODO NOTE only needed for debugging
+            InputStream stdout = process.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stdout, StandardCharsets.UTF_8));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println("stdout: " + line);
+            }
+        } catch (Exception e) {
+            System.out.println("Exception Raised" + e.toString());
         }
-
     }
 
     public void postCheckedTextAudio(long groupId, CheckedTextAudio checkedTextAudio) {
