@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs';
-import {ApiService} from './api.service';
 import {EmailPassword} from '../models/email-password';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../environments/environment';
@@ -15,7 +14,7 @@ export class AuthService {
   static currentUserStore = 'currentUser';
   private user: Observable<SpringPrincipal>;
 
-  constructor(private router: Router, private apiService: ApiService, private httpClient: HttpClient, private snackBarService: SnackBarService) {
+  constructor(private router: Router, private httpClient: HttpClient, private snackBarService: SnackBarService) {
   }
 
   getUser() {

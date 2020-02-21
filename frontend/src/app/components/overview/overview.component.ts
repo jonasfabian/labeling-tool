@@ -1,12 +1,13 @@
 import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {ApiService} from '../../services/api.service';
 import {TextAudioDto} from '../../models/text-audio-dto';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import WaveSurfer from 'wavesurfer.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
-import {ExportToCsv} from 'export-to-csv';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-overview',
@@ -14,7 +15,7 @@ import {ExportToCsv} from 'export-to-csv';
   styleUrls: ['./overview.component.scss']
 })
 export class OverviewComponent implements OnInit {
-
+  //TODO  simplify component
   @ViewChild('textAreaText') textAreaText: ElementRef<HTMLTextAreaElement>;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -33,21 +34,12 @@ export class OverviewComponent implements OnInit {
   isPlaying = false;
   waveSurferIsReady = false;
   data = [];
-  csvExporter = new ExportToCsv({
-    fieldSeparator: ',',
-    quoteStrings: '"',
-    decimalSeparator: '.',
-    showLabels: true,
-    useTextFile: false,
-    useBom: true,
-    useKeysAsHeaders: true
-  });
 
-  constructor(private apiService: ApiService, private det: ChangeDetectorRef) {
+  constructor(private det: ChangeDetectorRef, private httpClient: HttpClient) {
   }
 
   ngOnInit() {
-    this.apiService.getTextAudios().subscribe(textAudio => {
+    this.getTextAudios().subscribe(textAudio => {
       this.dataSource = new MatTableDataSource<TextAudioDto>(textAudio);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -108,13 +100,13 @@ export class OverviewComponent implements OnInit {
     }
     this.showAll = !this.showAll;
     if (!this.showAll) {
-      this.apiService.getAllRecordingData().subscribe(recordings => {
+      this.getAllRecordingData().subscribe(recordings => {
         this.dataSource = new MatTableDataSource<{ id: number, text: string, time: string, username: string }>(recordings);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       });
     } else {
-      this.apiService.getTextAudios().subscribe(textAudio => {
+      this.getTextAudios().subscribe(textAudio => {
         this.dataSource = new MatTableDataSource<TextAudioDto>(textAudio);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -157,28 +149,13 @@ export class OverviewComponent implements OnInit {
   submitChange() {
     if (this.showAll) {
       this.dummyTextAudio.text = this.text = this.textAreaText.nativeElement.value;
-      this.apiService.updateTextAudio(this.dummyTextAudio).subscribe();
+      this.updateTextAudio(this.dummyTextAudio).subscribe();
       this.addRegion(this.dummyTextAudio, false);
     } else {
       this.dummyRecording.text = this.text = this.textAreaText.nativeElement.value;
-      this.apiService.updateRecording(this.dummyRecording.id, this.dummyRecording.text).subscribe();
+      this.updateRecording(this.dummyRecording.id, this.dummyRecording.text).subscribe();
     }
     this.isEditText = !this.isEditText;
-  }
-
-  // TODO not sure it makes any sense to export this data as csv ?
-  generateTable() {
-    this.apiService.getTextAudios().subscribe(textAudio => {
-      textAudio.forEach(l => {
-        this.data.push({
-          id: l.id,
-          audioStart: l.audioStart,
-          audioEnd: l.audioEnd,
-          text: l.text,
-        });
-      });
-      this.csvExporter.generateCsv(this.data);
-    });
   }
 
   setVolume = (volume: any) => this.waveSurfer.setVolume(volume.value / 100);
@@ -201,11 +178,11 @@ export class OverviewComponent implements OnInit {
   // TODO refactor so we only need to load the big one in case the user wants to edit else just load the small one -> see check component
   private loadAudioBlob(fileId: number): void {
     if (this.showAll) {
-      this.apiService.getAudioFile(fileId).subscribe(resp => {
+      this.getAudioFile(fileId).subscribe(resp => {
         this.waveSurfer.load(URL.createObjectURL(resp));
       });
     } else {
-      this.apiService.getRecordingAudioById(fileId).subscribe(resp => {
+      this.getRecordingAudioById(fileId).subscribe(resp => {
         this.waveSurfer.load(URL.createObjectURL(resp));
       });
     }
@@ -237,5 +214,30 @@ export class OverviewComponent implements OnInit {
       this.det.detectChanges();
     });
     this.waveSurfer.on('finish', () => this.isPlaying = false);
+  }
+
+  private getTextAudios(): Observable<Array<TextAudioDto>> {
+    return this.httpClient.get<Array<TextAudioDto>>(environment.url + 'getTextAudios');
+  }
+
+  private getRecordingAudioById(id: number): Observable<any> {
+    // @ts-ignore
+    return this.httpClient.get<Blob>(environment.url + 'getRecordingAudioById?id=' + id, {responseType: 'blob'});
+  }
+
+  private getAllRecordingData(): Observable<[{ id: number, text: string, username: string, time: string }]> {
+    return this.httpClient.get<[{ id: number, text: string, username: string, time: string }]>(environment.url + 'getAllRecordingData');
+  }
+
+  private updateTextAudio(textAudio: TextAudioDto): Observable<any> {
+    return this.httpClient.post(environment.url + 'updateTextAudio', textAudio);
+  }
+
+  private updateRecording(id: number, text: string): Observable<any> {
+    return this.httpClient.post(environment.url + 'updateRecording', {id, text});
+  }
+
+  private getAudioFile(fileId: number): Observable<any> {
+    return this.httpClient.get(environment.url + 'getAudio?id=' + fileId, {responseType: 'blob'});
   }
 }

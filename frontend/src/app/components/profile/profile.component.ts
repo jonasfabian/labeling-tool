@@ -7,7 +7,7 @@ import {environment} from '../../../environments/environment';
 import {ChangePassword} from '../../models/change-password';
 import {SnackBarService} from '../../services/snack-bar.service';
 import {log} from 'util';
-import {ApiService} from '../../services/api.service';
+import {Canton} from '../../models/canton';
 
 @Component({
   selector: 'app-profile',
@@ -21,7 +21,7 @@ export class ProfileComponent implements OnInit {
   changePasswordForm: FormGroup;
   user: User;
 
-  constructor(private authService: AuthService, private httpClient: HttpClient, private fb: FormBuilder, private snackBarService: SnackBarService, private apiService: ApiService) {
+  constructor(private authService: AuthService, private httpClient: HttpClient, private fb: FormBuilder, private snackBarService: SnackBarService) {
   }
 
   ngOnInit() {
@@ -45,7 +45,7 @@ export class ProfileComponent implements OnInit {
   togglePasswordEdit = () => this.isPasswordEdit = !this.isPasswordEdit;
   isOldPwError = (errorCode: string) => this.changePasswordForm.controls.password.hasError(errorCode);
   isNewPwError = (errorCode: string) => this.changePasswordForm.controls.newPassword.hasError(errorCode);
-  getCanton = () => this.apiService.cantons.find(value => value.cantonId === this.user.canton).cantonName;
+  getCanton = () => Canton.cantons.find(value => value.cantonId === this.user.canton).cantonName;
 
   changePassword() {
     log('changePassword');

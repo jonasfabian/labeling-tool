@@ -1,5 +1,4 @@
 import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
-import {ApiService} from '../../services/api.service';
 import {MatDialog} from '@angular/material/dialog';
 import {AuthService} from '../../services/auth.service';
 import {CheckMoreComponent} from './check-more/check-more.component';
@@ -28,8 +27,7 @@ export class CheckComponent implements OnInit {
   // TODO replace dummy id with real one
   private groupId = 1;
 
-  constructor(private apiService: ApiService, private httpClient: HttpClient, private dialog: MatDialog, private authService: AuthService,
-              private router: Router) {
+  constructor(private httpClient: HttpClient, private dialog: MatDialog, private authService: AuthService, private router: Router) {
   }
 
   ngOnInit() {
@@ -64,7 +62,6 @@ export class CheckComponent implements OnInit {
 
       // checkIfFinishedChunk
       if (this.carousel.carousel.activeIndex === this.textAudios.length - 1) {
-        this.apiService.showTenMoreQuest = true;
         this.dialog.open(CheckMoreComponent, {width: '500px', disableClose: true}).afterClosed().subscribe(result => {
           if (result) {
             // reset carousel and load new data

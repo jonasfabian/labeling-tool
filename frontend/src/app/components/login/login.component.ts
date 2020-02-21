@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {ApiService} from '../../services/api.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {EmailPassword} from '../../models/email-password';
 import {AuthService} from '../../services/auth.service';
@@ -16,12 +15,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   isLogin = true;
 
-  constructor(
-    private fb: FormBuilder,
-    private apiService: ApiService,
-    private authService: AuthService,
-    private router: Router
-  ) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
   }
 
   ngOnInit() {
