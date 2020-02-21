@@ -42,18 +42,20 @@
             <mat-icon>record_voice_over</mat-icon>
             <span>Record</span>
           </mat-list-item>
-          <mat-list-item (click)="redirectToPage('/admin/overview')">
-            <mat-icon>view_list</mat-icon>
-            <span>Overview</span>
-          </mat-list-item>
+          <!--          TODO activate again once it works-->
+<!--          <mat-list-item (click)="redirectToPage('/admin/overview')">-->
+<!--            <mat-icon>view_list</mat-icon>-->
+<!--            <span>Overview</span>-->
+<!--          </mat-list-item>-->
           <mat-list-item (click)="redirectToPage('/admin/user_group')" *ngIf="isGroupAdmin()">
             <mat-icon>people</mat-icon>
             <span>User Group</span>
           </mat-list-item>
-          <mat-list-item (click)="redirectToPage('/admin/user_groups')" *ngIf="isAdmin()" >
-            <mat-icon>supervised_user_circle</mat-icon>
-            <span>User Groups</span>
-          </mat-list-item>
+<!--          TODO activate again once it works-->
+<!--          <mat-list-item (click)="redirectToPage('/admin/user_groups')" *ngIf="isAdmin()" >-->
+<!--            <mat-icon>supervised_user_circle</mat-icon>-->
+<!--            <span>User Groups</span>-->
+<!--          </mat-list-item>-->
         </ng-container>
       </mat-list>
     </div>

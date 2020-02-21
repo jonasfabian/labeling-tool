@@ -6,9 +6,6 @@ apply plugin: 'org.springframework.boot'
 description 'module containing the whole spring framework logic'
 
 dependencies {
-    compile 'com.google.guava:guava'
-    compile 'org.apache.commons:commons-csv'
-    compile 'org.apache.commons:commons-math3'
     compile 'org.apache.tika:tika-parsers'
     compile 'org.flywaydb:flyway-core'
     compile 'org.mariadb.jdbc:mariadb-java-client'
@@ -26,8 +23,6 @@ dependencies {
     compile 'org.slf4j:log4j-over-slf4j'
     compile 'org.slf4j:jcl-over-slf4j'
     compile 'org.slf4j:jul-to-slf4j'
-
-    testCompile 'commons-io:commons-io'
 }
 task devBootRun(type: BootRun) {
     main = 'ch.fhnw.labeling_tool.DevTestApplication'
@@ -35,8 +30,6 @@ task devBootRun(type: BootRun) {
 }
 
 jooq {
-//    version = '3.11.11' // the default (can be omitted)
-//    edition = 'OSS'
     generateSchemaSourceOnCompilation = false
     sample(sourceSets.main) {
         jdbc {
@@ -50,10 +43,6 @@ jooq {
             database {
                 inputSchema = 'labeling-tool'
                 forcedTypes {
-//                    forcedType {
-//                        name = 'BOOLEAN'
-//                        expression = ".*\\.published|finished|enabled"
-//                    }
                     forcedType {
                         name = 'BOOLEAN'
                         expression = '.*'

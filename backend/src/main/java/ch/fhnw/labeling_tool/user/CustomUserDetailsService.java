@@ -85,9 +85,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public void putPassword(ChangePassword changePassword) {
         User user = userDao.fetchOneById(getLoggedInUserId());
-        System.out.println("putPassword");
-        System.out.println(changePassword.getPassword());
-        System.out.println(changePassword.getNewPassword());
         if (passwordEncoder.matches(changePassword.getPassword(), user.getPassword())) {
             user.setPassword(passwordEncoder.encode(changePassword.getNewPassword()));
             userDao.update(user);
@@ -98,6 +95,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public void register(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setEnabled(true);
         userDao.insert(user);
         Long id = userDao.fetchOneByUsername(user.getUsername()).getId();
         //    TODO not sure how to handle public logins for now we just add them to the public group
