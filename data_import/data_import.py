@@ -1,8 +1,8 @@
 import logging
 import os
-import wave
 
 import mysql.connector
+import wave
 from bs4 import BeautifulSoup
 from pydub import AudioSegment
 

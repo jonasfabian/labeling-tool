@@ -10,7 +10,7 @@ Note: Other versions might work, but have not been tested yet
 * npm: @angular/cli
 * IntelliJ Idea
 ## Data Structure
-* the data can be loaded using `data-import/data-import.py`
+* the data can be loaded using `data_import/data-import.py`
    * use `conda env create -f environment.yml` to install the environment.
 * the datastructure should look like this.
 * `data` the base data directory (can be changed in the configuration)

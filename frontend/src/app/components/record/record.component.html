@@ -1,4 +1,4 @@
-<div [hidden]="!excerpt">
+<div *ngIf="excerpt">
   <mat-card class="margin">
     <h1>Record</h1>
     <mat-icon *ngIf="excerpt.isPrivate">lock</mat-icon>
