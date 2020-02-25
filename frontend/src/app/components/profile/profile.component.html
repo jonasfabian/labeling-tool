@@ -45,13 +45,15 @@
           <div>
             <div>
               <mat-form-field style="width: 100%;">
-                <input formControlName="password" matInput placeholder="Old Password" type="password">
+                <input autocomplete="current-password" formControlName="password" matInput placeholder="Old Password"
+                       type="password">
                 <mat-error *ngIf="isOldPwError('required')">Please enter your old password</mat-error>
               </mat-form-field>
             </div>
             <div>
               <mat-form-field style="width: 100%;">
-                <input formControlName="newPassword" matInput placeholder="New Password" type="password">
+                <input autocomplete="new-password" formControlName="newPassword" matInput placeholder="New Password"
+                       type="password">
                 <mat-error *ngIf="isNewPwError('required')">Please enter your new password</mat-error>
                 <mat-error *ngIf="isNewPwError('minlength')">At least 8 characters</mat-error>
                 <mat-error *ngIf="isNewPwError('maxlength')">Maximum 50 characters</mat-error>

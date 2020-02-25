@@ -1,13 +1,13 @@
 export enum Sex {
-  NONE, M, F
+  NONE = 'NONE', M = 'M', F = 'F'
 }
 
 export enum Licence {
-  PUBLIC, ACADEMIC
+  PUBLIC = 'PUBLIC', ACADEMIC = 'ACADEMIC'
 }
 
 export enum UserAge {
-  NONE, U20, U30, U40, U50, U60, U70, U80, O80
+  NONE = 'NONE', U20 = 'U20', U30 = 'U30', U40 = 'U40', U50 = 'U50', U60 = 'U60', U70 = 'U70', U80 = 'U80', O80 = 'O80'
 }
 
 export class User {
