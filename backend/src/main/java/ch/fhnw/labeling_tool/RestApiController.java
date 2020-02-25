@@ -44,7 +44,6 @@ public class RestApiController {
     /**
      * endpoint used for user login validation
      */
-
     @GetMapping("user")
     public Principal getPrincipal(Principal user) {
         return user;

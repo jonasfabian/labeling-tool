@@ -32,7 +32,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Recording extends TableImpl<RecordingRecord> {
 
-    private static final long serialVersionUID = 652981170;
+    private static final long serialVersionUID = 560168301;
 
     public static final Recording RECORDING = new Recording();
 
@@ -49,7 +49,7 @@ public class Recording extends TableImpl<RecordingRecord> {
 
     public final TableField<RecordingRecord, Timestamp> TIME = createField(DSL.name("time"), org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("current_timestamp()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
 
-    public final TableField<RecordingRecord, RecordingLabel> LABEL = createField(DSL.name("label"), org.jooq.impl.SQLDataType.VARCHAR(8).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.RecordingLabel.class), this, "");
+    public final TableField<RecordingRecord, RecordingLabel> LABEL = createField(DSL.name("label"), org.jooq.impl.SQLDataType.VARCHAR(14).defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.RecordingLabel.class), this, "");
 
     public Recording() {
         this(DSL.name("recording"), null);

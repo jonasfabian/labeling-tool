@@ -22,7 +22,6 @@ VALUES (1, 'CH-de', 'Swiss German'),
        (2, 'DE-de', 'Standard German');
 INSERT INTO dialect(county_id, county_name, language_id)
 VALUES ('ag', 'Aargau', 1),
-       ('ag', 'Aargau', 1),
        ('ai', 'Appenzell Innerrhoden', 1),
        ('ar', 'Appenzell Ausserrhoden', 1),
        ('be', 'Bern', 1),
@@ -57,3 +56,8 @@ SET user.dialect_id = dialect.id;
 ALTER TABLE user
     MODIFY COLUMN dialect_id BIGINT NOT NULL,
     DROP COLUMN canton;
+
+ALTER TABLE excerpt
+    ADD COLUMN is_sentence_error BOOLEAN DEFAULT FALSE;
+ALTER TABLE recording
+    MODIFY COLUMN label ENUM ('SKIPPED','RECORDED','PRIVATE','SENTENCE_ERROR')

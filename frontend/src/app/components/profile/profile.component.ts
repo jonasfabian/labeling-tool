@@ -30,11 +30,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.authService.getUser().subscribe(sp => {
-      this.httpClient.get<User>(environment.url + 'user/' + sp.principal.id).subscribe(user => {
-        this.user = user;
-      });
-    });
+    this.authService.getUser().subscribe(sp => this.user = sp.principal.user);
     this.changePasswordForm = this.formBuilder.group({
       password: ['', [Validators.required]],
       newPassword: ['', Validators.compose([

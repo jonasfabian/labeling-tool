@@ -76,4 +76,12 @@ public class ExcerptDao extends DAOImpl<ExcerptRecord, ch.fhnw.labeling_tool.joo
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Excerpt> fetchByIsprivate(Boolean... values) {
         return fetch(Excerpt.EXCERPT.ISPRIVATE, values);
     }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Excerpt> fetchRangeOfIsSentenceError(Boolean lowerInclusive, Boolean upperInclusive) {
+        return fetchRange(Excerpt.EXCERPT.IS_SENTENCE_ERROR, lowerInclusive, upperInclusive);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Excerpt> fetchByIsSentenceError(Boolean... values) {
+        return fetch(Excerpt.EXCERPT.IS_SENTENCE_ERROR, values);
+    }
 }

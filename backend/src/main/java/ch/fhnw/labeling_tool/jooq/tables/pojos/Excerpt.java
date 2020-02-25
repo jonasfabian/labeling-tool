@@ -13,13 +13,14 @@ import javax.validation.constraints.Size;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Excerpt implements Serializable {
 
-    private static final long serialVersionUID = -1353214465;
+    private static final long serialVersionUID = -1930845422;
 
     private Long    id;
     private Long    originalTextId;
     private String  excerpt;
     private Integer isskipped;
     private Boolean isprivate;
+    private Boolean isSentenceError;
 
     public Excerpt() {}
 
@@ -29,6 +30,7 @@ public class Excerpt implements Serializable {
         this.excerpt = value.excerpt;
         this.isskipped = value.isskipped;
         this.isprivate = value.isprivate;
+        this.isSentenceError = value.isSentenceError;
     }
 
     public Excerpt(
@@ -36,13 +38,15 @@ public class Excerpt implements Serializable {
         Long    originalTextId,
         String  excerpt,
         Integer isskipped,
-        Boolean isprivate
+        Boolean isprivate,
+        Boolean isSentenceError
     ) {
         this.id = id;
         this.originalTextId = originalTextId;
         this.excerpt = excerpt;
         this.isskipped = isskipped;
         this.isprivate = isprivate;
+        this.isSentenceError = isSentenceError;
     }
 
     public Long getId() {
@@ -88,6 +92,14 @@ public class Excerpt implements Serializable {
         this.isprivate = isprivate;
     }
 
+    public Boolean getIsSentenceError() {
+        return this.isSentenceError;
+    }
+
+    public void setIsSentenceError(Boolean isSentenceError) {
+        this.isSentenceError = isSentenceError;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Excerpt (");
@@ -97,6 +109,7 @@ public class Excerpt implements Serializable {
         sb.append(", ").append(excerpt);
         sb.append(", ").append(isskipped);
         sb.append(", ").append(isprivate);
+        sb.append(", ").append(isSentenceError);
 
         sb.append(")");
         return sb.toString();

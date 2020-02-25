@@ -11,7 +11,11 @@
     <br>
     <button (click)="private()" [disabled]="excerpt.isPrivate" mat-raised-button title="Mark as private">
       <mat-icon>lock</mat-icon>
-      <span>&nbsp;Private</span>
+      <span>&nbsp;Sensitive data</span>
+    </button>
+    <button (click)="sentenceError()" mat-raised-button title="Mark as sentence error">
+      <mat-icon>delete</mat-icon>
+      <span>&nbsp;Sentence Error</span>
     </button>
     <button (click)="skip()" mat-raised-button title="Skip">
       <mat-icon>skip_next</mat-icon>

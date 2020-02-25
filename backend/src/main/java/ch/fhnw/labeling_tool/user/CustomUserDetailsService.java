@@ -64,7 +64,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .anyMatch(userGroupRole -> userGroupRole.getUserGroupId() == userGroupId && (!checkAdminPermission || userGroupRole.getRole() == UserGroupRoleRole.GROUP_ADMIN));
     }
 
-    private CustomUserDetails getLoggedInUser() {
+    public CustomUserDetails getLoggedInUser() {
         return (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 

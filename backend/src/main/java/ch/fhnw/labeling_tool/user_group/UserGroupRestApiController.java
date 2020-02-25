@@ -36,6 +36,11 @@ public class UserGroupRestApiController {
         userGroupService.putExcerptSkipped(groupId, excerptId);
     }
 
+    @PutMapping("excerpt/{excerptId}/sentence_error")
+    public void putExcerptSentenceError(@PathVariable long groupId, @PathVariable long excerptId) {
+        userGroupService.putExcerptSentenceError(groupId, excerptId);
+    }
+
     @GetMapping("excerpt")
     public Excerpt getExcerpt(@PathVariable long groupId) {
         return userGroupService.getExcerpt(groupId);

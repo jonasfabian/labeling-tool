@@ -3,10 +3,8 @@ package ch.fhnw.labeling_tool.user_group;
 import ch.fhnw.labeling_tool.config.LabelingToolConfig;
 import ch.fhnw.labeling_tool.jooq.enums.RecordingLabel;
 import ch.fhnw.labeling_tool.jooq.tables.daos.CheckedTextAudioDao;
-import ch.fhnw.labeling_tool.jooq.tables.daos.RecordingDao;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedTextAudio;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.Excerpt;
-import ch.fhnw.labeling_tool.jooq.tables.pojos.Recording;
 import ch.fhnw.labeling_tool.jooq.tables.records.RecordingRecord;
 import ch.fhnw.labeling_tool.model.TextAudioDto;
 import ch.fhnw.labeling_tool.user.CustomUserDetailsService;
@@ -27,15 +25,13 @@ import static ch.fhnw.labeling_tool.jooq.Tables.*;
 @Service
 public class UserGroupService {
     private final CustomUserDetailsService customUserDetailsService;
-    private final RecordingDao recordingDao;
     private final DSLContext dslContext;
     private final CheckedTextAudioDao checkedTextAudioDao;
     private final LabelingToolConfig labelingToolConfig;
 
     @Autowired
-    public UserGroupService(CustomUserDetailsService customUserDetailsService, RecordingDao recordingDao, DSLContext dslContext, CheckedTextAudioDao checkedTextAudioDao, LabelingToolConfig labelingToolConfig) {
+    public UserGroupService(CustomUserDetailsService customUserDetailsService, DSLContext dslContext, CheckedTextAudioDao checkedTextAudioDao, LabelingToolConfig labelingToolConfig) {
         this.customUserDetailsService = customUserDetailsService;
-        this.recordingDao = recordingDao;
         this.dslContext = dslContext;
         this.checkedTextAudioDao = checkedTextAudioDao;
         this.labelingToolConfig = labelingToolConfig;
@@ -43,11 +39,8 @@ public class UserGroupService {
 
     public void postRecording(long groupId, long excerptId, MultipartFile file) throws IOException {
         isAllowed(groupId);
-        var r2 = new Recording(null, excerptId, customUserDetailsService.getLoggedInUserId(), null, RecordingLabel.RECORDED);
-        RecordingRecord recordingRecord = dslContext.newRecord(RECORDING, r2);
-        recordingRecord.store();
+        RecordingRecord recordingRecord = storeRecord(RecordingLabel.RECORDED, excerptId);
         Files.write(labelingToolConfig.getBasePath().resolve("recording/" + recordingRecord.getId() + ".webm"), file.getBytes());
-        recordingDao.insert(r2);
     }
 
     public Excerpt getExcerpt(Long groupId) {
@@ -58,6 +51,7 @@ public class UserGroupService {
                 .from(EXCERPT.join(ORIGINAL_TEXT).onKey().join(USER_GROUP).onKey())
                 .where(USER_GROUP.ID.eq(groupId)
                         .and(EXCERPT.ISSKIPPED.lessOrEqual(3))
+                        .and(EXCERPT.IS_SENTENCE_ERROR.isFalse())
                         .and(EXCERPT.ID.notIn(dslContext.select(RECORDING.EXCERPT_ID)
                                 .from(RECORDING.join(USER).onKey())
                                 .where(USER.DIALECT_ID.eq(customUserDetailsService.getLoggedInUserDialectId())))))
@@ -95,24 +89,30 @@ public class UserGroupService {
 
     public void putExcerptSkipped(long groupId, long excerptId) {
         checkExcerpt(groupId, excerptId);
-
         dslContext.update(EXCERPT).set(EXCERPT.ISSKIPPED, EXCERPT.ISSKIPPED.plus(1)).where(EXCERPT.ID.eq(excerptId)).execute();
-        RecordingRecord recordingRecord = dslContext.newRecord(RECORDING);
-        recordingRecord.setUserId(customUserDetailsService.getLoggedInUserId());
-        recordingRecord.setExcerptId(excerptId);
-        recordingRecord.setLabel(RecordingLabel.SKIPPED);
-        recordingRecord.store();
+        storeRecord(RecordingLabel.SKIPPED, excerptId);
     }
 
     public void putExcerptPrivate(long groupId, long excerptId) {
         checkExcerpt(groupId, excerptId);
-
         dslContext.update(EXCERPT).set(EXCERPT.ISPRIVATE, true).where(EXCERPT.ID.eq(excerptId)).execute();
+        storeRecord(RecordingLabel.PRIVATE, excerptId);
+    }
+
+    public void putExcerptSentenceError(long groupId, long excerptId) {
+        checkExcerpt(groupId, excerptId);
+        dslContext.update(EXCERPT).set(EXCERPT.IS_SENTENCE_ERROR, true).where(EXCERPT.ID.eq(excerptId)).execute();
+        storeRecord(RecordingLabel.SENTENCE_ERROR, excerptId);
+
+    }
+
+    private RecordingRecord storeRecord(RecordingLabel recordingLabel, long excerptId) {
         RecordingRecord recordingRecord = dslContext.newRecord(RECORDING);
         recordingRecord.setUserId(customUserDetailsService.getLoggedInUserId());
         recordingRecord.setExcerptId(excerptId);
-        recordingRecord.setLabel(RecordingLabel.PRIVATE);
+        recordingRecord.setLabel(recordingLabel);
         recordingRecord.store();
+        return recordingRecord;
     }
 
     private void checkExcerpt(long groupId, long excerptId) {

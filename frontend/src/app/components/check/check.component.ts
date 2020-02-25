@@ -31,7 +31,7 @@ export class CheckComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.authService.getUser().subscribe(user => this.userId = user.principal.id);
+    this.authService.getUser().subscribe(user => this.userId = user.principal.user.id);
     this.getTenNonLabeledTextAudios();
   }
 

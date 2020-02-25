@@ -80,6 +80,14 @@ export class RecordComponent implements OnInit {
 
   isReady = () => this.audioChunks.length > 0;
 
+  sentenceError() {
+    this.httpClient.put<Excerpt>(`${environment.url}user_group/${this.groupId}/excerpt/${this.excerpt.id}/sentence_error`, {})
+      .subscribe(() => {
+        this.snackBarService.openMessage('marked as "Sentence Error"');
+        this.getNext();
+      });
+  }
+
   private getNext() {
     this.httpClient.get<Excerpt>(`${environment.url}user_group/${this.groupId}/excerpt`).subscribe(value => this.excerpt = value);
   }

@@ -11,15 +11,15 @@ import javax.validation.constraints.Size;
 
 import org.jooq.Field;
 import org.jooq.Record1;
-import org.jooq.Record5;
-import org.jooq.Row5;
+import org.jooq.Record6;
+import org.jooq.Row6;
 import org.jooq.impl.UpdatableRecordImpl;
 
 
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class ExcerptRecord extends UpdatableRecordImpl<ExcerptRecord> implements Record5<Long, Long, String, Integer, Boolean> {
+public class ExcerptRecord extends UpdatableRecordImpl<ExcerptRecord> implements Record6<Long, Long, String, Integer, Boolean, Boolean> {
 
-    private static final long serialVersionUID = -374334999;
+    private static final long serialVersionUID = 566034723;
 
     public void setId(Long value) {
         set(0, value);
@@ -64,6 +64,14 @@ public class ExcerptRecord extends UpdatableRecordImpl<ExcerptRecord> implements
         return (Boolean) get(4);
     }
 
+    public void setIsSentenceError(Boolean value) {
+        set(5, value);
+    }
+
+    public Boolean getIsSentenceError() {
+        return (Boolean) get(5);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -74,17 +82,17 @@ public class ExcerptRecord extends UpdatableRecordImpl<ExcerptRecord> implements
     }
 
     // -------------------------------------------------------------------------
-    // Record5 type implementation
+    // Record6 type implementation
     // -------------------------------------------------------------------------
 
     @Override
-    public Row5<Long, Long, String, Integer, Boolean> fieldsRow() {
-        return (Row5) super.fieldsRow();
+    public Row6<Long, Long, String, Integer, Boolean, Boolean> fieldsRow() {
+        return (Row6) super.fieldsRow();
     }
 
     @Override
-    public Row5<Long, Long, String, Integer, Boolean> valuesRow() {
-        return (Row5) super.valuesRow();
+    public Row6<Long, Long, String, Integer, Boolean, Boolean> valuesRow() {
+        return (Row6) super.valuesRow();
     }
 
     @Override
@@ -113,6 +121,11 @@ public class ExcerptRecord extends UpdatableRecordImpl<ExcerptRecord> implements
     }
 
     @Override
+    public Field<Boolean> field6() {
+        return Excerpt.EXCERPT.IS_SENTENCE_ERROR;
+    }
+
+    @Override
     public Long component1() {
         return getId();
     }
@@ -138,6 +151,11 @@ public class ExcerptRecord extends UpdatableRecordImpl<ExcerptRecord> implements
     }
 
     @Override
+    public Boolean component6() {
+        return getIsSentenceError();
+    }
+
+    @Override
     public Long value1() {
         return getId();
     }
@@ -160,6 +178,11 @@ public class ExcerptRecord extends UpdatableRecordImpl<ExcerptRecord> implements
     @Override
     public Boolean value5() {
         return getIsprivate();
+    }
+
+    @Override
+    public Boolean value6() {
+        return getIsSentenceError();
     }
 
     @Override
@@ -193,12 +216,19 @@ public class ExcerptRecord extends UpdatableRecordImpl<ExcerptRecord> implements
     }
 
     @Override
-    public ExcerptRecord values(Long value1, Long value2, String value3, Integer value4, Boolean value5) {
+    public ExcerptRecord value6(Boolean value) {
+        setIsSentenceError(value);
+        return this;
+    }
+
+    @Override
+    public ExcerptRecord values(Long value1, Long value2, String value3, Integer value4, Boolean value5, Boolean value6) {
         value1(value1);
         value2(value2);
         value3(value3);
         value4(value4);
         value5(value5);
+        value6(value6);
         return this;
     }
 
@@ -210,7 +240,7 @@ public class ExcerptRecord extends UpdatableRecordImpl<ExcerptRecord> implements
         super(Excerpt.EXCERPT);
     }
 
-    public ExcerptRecord(Long id, Long originalTextId, String excerpt, Integer isskipped, Boolean isprivate) {
+    public ExcerptRecord(Long id, Long originalTextId, String excerpt, Integer isskipped, Boolean isprivate, Boolean isSentenceError) {
         super(Excerpt.EXCERPT);
 
         set(0, id);
@@ -218,5 +248,6 @@ public class ExcerptRecord extends UpdatableRecordImpl<ExcerptRecord> implements
         set(2, excerpt);
         set(3, isskipped);
         set(4, isprivate);
+        set(5, isSentenceError);
     }
 }

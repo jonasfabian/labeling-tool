@@ -16,7 +16,9 @@ public enum RecordingLabel implements EnumType {
 
     RECORDED("RECORDED"),
 
-    PRIVATE("PRIVATE");
+    PRIVATE("PRIVATE"),
+
+    SENTENCE_ERROR("SENTENCE_ERROR");
 
     private final String literal;
 
