@@ -18,9 +18,10 @@ export class GroupAdminComponent implements OnInit {
   // TODO get actual groupId
   private groupId = 1;
 
-  // TODO add ability to manage,create,update,delete user group
-
+  // TODO add ability to manage user group permissions
+  // TODO probably add a search/add function based on email/username
   constructor(private httpClient: HttpClient) {
+    //  TODO add authentification -> needs super admin or group admin
   }
 
   ngOnInit() {

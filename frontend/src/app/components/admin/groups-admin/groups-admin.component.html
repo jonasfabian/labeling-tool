@@ -1,1 +1,30 @@
-<p>groups-admin works!</p>
+<div class="margin">
+  <button (click)="newUserGroup()" mat-raised-button title="add new user group">
+    <mat-icon>add</mat-icon>
+  </button>
+  <div *ngIf="userGroup">
+    <mat-form-field>
+      <mat-label>name</mat-label>
+      <input [(ngModel)]="userGroup.name" matInput type="text">
+    </mat-form-field>
+    <br>
+    <button (click)="cancel()" color="primary" mat-raised-button title="cancel">cancel</button>
+    <button (click)="save()" mat-raised-button title="add new user group">save</button>
+  </div>
+  <br>
+  <br>
+  <table *ngIf="userGroups.length>0" class="mat-table">
+    <tr>
+      <th>Name</th>
+      <th>Edit</th>
+    </tr>
+    <tr *ngFor="let group of userGroups">
+      <td>{{group.name}}</td>
+      <td>
+        <button mat-icon-button>
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>

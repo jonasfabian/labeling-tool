@@ -14,7 +14,7 @@
     Login
   </span>
   <ng-container *ngIf="authService.checkAuthenticated()">
-    <app-avatar [borderRadius]="50" [fontSize]="15" [hover]="'pointer'" [matMenuTriggerFor]="menu" [size]="32" [username]="this.username"
+    <app-avatar [hover]="'pointer'" [matMenuTriggerFor]="menu"  [username]="this.username"
       style="float: right;"></app-avatar>
     <mat-menu #menu>
       <mat-list style="padding: 0;">
@@ -43,19 +43,18 @@
             <span>Record</span>
           </mat-list-item>
           <!--          TODO activate again once it works-->
-<!--          <mat-list-item (click)="redirectToPage('/admin/overview')">-->
-<!--            <mat-icon>view_list</mat-icon>-->
-<!--            <span>Overview</span>-->
-<!--          </mat-list-item>-->
+          <!--          <mat-list-item (click)="redirectToPage('/admin/overview')">-->
+          <!--            <mat-icon>view_list</mat-icon>-->
+          <!--            <span>Overview</span>-->
+          <!--          </mat-list-item>-->
           <mat-list-item (click)="redirectToPage('/admin/user_group')" *ngIf="isGroupAdmin()">
             <mat-icon>people</mat-icon>
             <span>User Group</span>
           </mat-list-item>
-<!--          TODO activate again once it works-->
-<!--          <mat-list-item (click)="redirectToPage('/admin/user_groups')" *ngIf="isAdmin()" >-->
-<!--            <mat-icon>supervised_user_circle</mat-icon>-->
-<!--            <span>User Groups</span>-->
-<!--          </mat-list-item>-->
+          <mat-list-item (click)="redirectToPage('/admin/user_groups')" *ngIf="isAdmin()" >
+            <mat-icon>supervised_user_circle</mat-icon>
+            <span>User Groups</span>
+          </mat-list-item>
         </ng-container>
       </mat-list>
     </div>

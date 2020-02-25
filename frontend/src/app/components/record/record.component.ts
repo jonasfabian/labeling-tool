@@ -21,7 +21,10 @@ export class RecordComponent implements OnInit {
   // TODO get real groupId
   private groupId = 1;
 
-  constructor(private snackBarService: SnackBarService, private detector: ChangeDetectorRef, private httpClient: HttpClient, private domSanitizer: DomSanitizer) {
+  constructor(
+    private snackBarService: SnackBarService, private detector: ChangeDetectorRef, private httpClient: HttpClient,
+    private domSanitizer: DomSanitizer
+  ) {
   }
 
   ngOnInit() {

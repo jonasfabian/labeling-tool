@@ -31,8 +31,7 @@
               <ng-container matColumnDef="username">
                 <th *matHeaderCellDef mat-header-cell mat-sort-header>User</th>
                 <td *matCellDef="let element" mat-cell>
-                  <app-avatar [borderRadius]="50" [fontSize]="15" [hover]="'default'" [size]="32"
-                              [username]="element.username"></app-avatar>
+                  <app-avatar [hover]="'default'" [username]="element.username"></app-avatar>
                 </td>
               </ng-container>
               <ng-container matColumnDef="time">

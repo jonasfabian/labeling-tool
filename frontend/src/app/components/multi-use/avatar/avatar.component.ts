@@ -1,19 +1,18 @@
 import {Component, Input, OnChanges} from '@angular/core';
 
-// TODO simplify
 @Component({
   selector: 'app-avatar',
   templateUrl: './avatar.component.html',
   styleUrls: ['./avatar.component.scss']
 })
 export class AvatarComponent implements OnChanges {
-  @Input() size: number;
   @Input() username: string;
-  @Input() fontSize: number;
-  @Input() borderRadius: number;
   @Input() hover: string;
   initials = '';
   color = '';
+  size = 32;
+  fontSize = 15;
+  borderRadius = 50;
 
   ngOnChanges(): void {
     if (this.username) {
