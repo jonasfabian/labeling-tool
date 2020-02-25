@@ -1,16 +1,13 @@
 import logging
 import os
+import wave
 
 import mysql.connector
-import wave
 from bs4 import BeautifulSoup
 from pydub import AudioSegment
 
-host = "localhost"
-database = "labeling-tool"
+from config import *
 
-password = "labeling-tool"
-user = "labeling-tool"
 connection = mysql.connector.connect(
     host=host,
     database=database,
@@ -19,12 +16,6 @@ connection = mysql.connector.connect(
 )
 connection.autocommit = False
 cursor = connection.cursor(dictionary=True)
-
-base_dir = "../data"
-source_dir = "source"
-
-source_name = 'Digitaltag'
-source_desc = 'Digitaltag 2019'
 
 
 def get_last_insert_id(dict_cursor):

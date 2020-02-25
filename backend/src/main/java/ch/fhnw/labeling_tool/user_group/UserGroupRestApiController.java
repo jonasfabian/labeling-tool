@@ -43,12 +43,12 @@ public class UserGroupRestApiController {
     }
 
     @PostMapping("original_text")
-    public void postOriginalText(@PathVariable long groupId, @RequestParam long domainId, @RequestParam MultipartFile[] files) throws IOException {
+    public void postOriginalText(@PathVariable long groupId, @RequestParam long domainId, @RequestParam MultipartFile[] files) {
         userGroupService.postOriginalText(groupId, domainId, files);
     }
 
     @PostMapping("checked_text_audio")
-    public void postCheckedTextAudio(@PathVariable long groupId, @RequestBody CheckedTextAudio checkedTextAudio) throws IOException {
+    public void postCheckedTextAudio(@PathVariable long groupId, @RequestBody CheckedTextAudio checkedTextAudio) {
         userGroupService.postCheckedTextAudio(groupId, checkedTextAudio);
     }
 
@@ -61,10 +61,5 @@ public class UserGroupRestApiController {
     @ResponseBody
     public byte[] getAudio(@PathVariable long groupId, @PathVariable long audioId) throws IOException {
         return userGroupService.getAudio(groupId, audioId);
-    }
-
-    @PutMapping("text_audio")
-    public void putTextAudio(@PathVariable long groupId, @RequestBody TextAudio textAudio) {
-        userGroupService.putTextAudio(groupId, textAudio);
     }
 }
