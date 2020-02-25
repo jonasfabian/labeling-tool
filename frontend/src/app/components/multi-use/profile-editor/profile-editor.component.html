@@ -29,12 +29,11 @@
         <mat-error *ngIf="isPwError('minlength')">At least 8 characters</mat-error>
         <mat-error *ngIf="isPwError('maxlength')">Maximum 50 characters</mat-error>
       </mat-form-field>
-      <!--TODO fix editor on register default values-->
       <mat-form-field class="max-width">
         <mat-label>Canton</mat-label>
         <mat-select formControlName="canton">
-          <mat-option *ngFor="let canton of cantons"
-                      [value]="canton.cantonId">{{canton.cantonName}}</mat-option>
+          <mat-option *ngFor="let canton of dialects"
+                      [value]="canton.id">{{canton.countyName}}</mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field class="max-width">
@@ -48,7 +47,6 @@
       <mat-form-field class="max-width">
         <mat-label>Age</mat-label>
         <mat-select formControlName="age">
-          <!--          TODO finish this-->
           <mat-option value="NONE">None</mat-option>
           <mat-option value="U20">0-20</mat-option>
           <mat-option value="U30">20-30</mat-option>
@@ -61,7 +59,7 @@
         </mat-select>
       </mat-form-field>
       <mat-form-field class="max-width">
-        <!--TODO probably add a link/disclaimer here what the difference is-->
+        <!--TODO add a link/disclaimer here what the difference is-->
         <mat-label>Licence</mat-label>
         <mat-select formControlName="licence">
           <mat-option value="ACADEMIC">Academic</mat-option>

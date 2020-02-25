@@ -6,9 +6,11 @@ package ch.fhnw.labeling_tool.jooq;
 
 import ch.fhnw.labeling_tool.jooq.tables.CheckedRecording;
 import ch.fhnw.labeling_tool.jooq.tables.CheckedTextAudio;
+import ch.fhnw.labeling_tool.jooq.tables.Dialect;
 import ch.fhnw.labeling_tool.jooq.tables.Domain;
 import ch.fhnw.labeling_tool.jooq.tables.Excerpt;
 import ch.fhnw.labeling_tool.jooq.tables.FlywaySchemaHistory;
+import ch.fhnw.labeling_tool.jooq.tables.Language;
 import ch.fhnw.labeling_tool.jooq.tables.OriginalText;
 import ch.fhnw.labeling_tool.jooq.tables.Recording;
 import ch.fhnw.labeling_tool.jooq.tables.Source;
@@ -26,11 +28,15 @@ public class Tables {
 
     public static final CheckedTextAudio CHECKED_TEXT_AUDIO = CheckedTextAudio.CHECKED_TEXT_AUDIO;
 
+    public static final Dialect DIALECT = Dialect.DIALECT;
+
     public static final Domain DOMAIN = Domain.DOMAIN;
 
     public static final Excerpt EXCERPT = Excerpt.EXCERPT;
 
     public static final FlywaySchemaHistory FLYWAY_SCHEMA_HISTORY = FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY;
+
+    public static final Language LANGUAGE = Language.LANGUAGE;
 
     public static final OriginalText ORIGINAL_TEXT = OriginalText.ORIGINAL_TEXT;
 

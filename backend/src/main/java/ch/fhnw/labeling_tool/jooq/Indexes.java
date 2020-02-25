@@ -6,9 +6,11 @@ package ch.fhnw.labeling_tool.jooq;
 
 import ch.fhnw.labeling_tool.jooq.tables.CheckedRecording;
 import ch.fhnw.labeling_tool.jooq.tables.CheckedTextAudio;
+import ch.fhnw.labeling_tool.jooq.tables.Dialect;
 import ch.fhnw.labeling_tool.jooq.tables.Domain;
 import ch.fhnw.labeling_tool.jooq.tables.Excerpt;
 import ch.fhnw.labeling_tool.jooq.tables.FlywaySchemaHistory;
+import ch.fhnw.labeling_tool.jooq.tables.Language;
 import ch.fhnw.labeling_tool.jooq.tables.OriginalText;
 import ch.fhnw.labeling_tool.jooq.tables.Recording;
 import ch.fhnw.labeling_tool.jooq.tables.Source;
@@ -36,11 +38,14 @@ public class Indexes {
     public static final Index CHECKED_TEXT_AUDIO_PRIMARY = Indexes0.CHECKED_TEXT_AUDIO_PRIMARY;
     public static final Index CHECKED_TEXT_AUDIO_TEXT_AUDIO_ID = Indexes0.CHECKED_TEXT_AUDIO_TEXT_AUDIO_ID;
     public static final Index CHECKED_TEXT_AUDIO_USER_ID = Indexes0.CHECKED_TEXT_AUDIO_USER_ID;
+    public static final Index DIALECT_LANGUAGE_ID = Indexes0.DIALECT_LANGUAGE_ID;
+    public static final Index DIALECT_PRIMARY = Indexes0.DIALECT_PRIMARY;
     public static final Index DOMAIN_PRIMARY = Indexes0.DOMAIN_PRIMARY;
     public static final Index EXCERPT_ORIGINAL_TEXT_ID = Indexes0.EXCERPT_ORIGINAL_TEXT_ID;
     public static final Index EXCERPT_PRIMARY = Indexes0.EXCERPT_PRIMARY;
     public static final Index FLYWAY_SCHEMA_HISTORY_FLYWAY_SCHEMA_HISTORY_S_IDX = Indexes0.FLYWAY_SCHEMA_HISTORY_FLYWAY_SCHEMA_HISTORY_S_IDX;
     public static final Index FLYWAY_SCHEMA_HISTORY_PRIMARY = Indexes0.FLYWAY_SCHEMA_HISTORY_PRIMARY;
+    public static final Index LANGUAGE_PRIMARY = Indexes0.LANGUAGE_PRIMARY;
     public static final Index ORIGINAL_TEXT_DOMAIN_ID = Indexes0.ORIGINAL_TEXT_DOMAIN_ID;
     public static final Index ORIGINAL_TEXT_PRIMARY = Indexes0.ORIGINAL_TEXT_PRIMARY;
     public static final Index ORIGINAL_TEXT_USER_GROUP_ID = Indexes0.ORIGINAL_TEXT_USER_GROUP_ID;
@@ -52,6 +57,7 @@ public class Indexes {
     public static final Index TEXT_AUDIO_PRIMARY = Indexes0.TEXT_AUDIO_PRIMARY;
     public static final Index TEXT_AUDIO_SOURCE_ID = Indexes0.TEXT_AUDIO_SOURCE_ID;
     public static final Index TEXT_AUDIO_SPEAKER_ID = Indexes0.TEXT_AUDIO_SPEAKER_ID;
+    public static final Index USER_DIALECT_ID = Indexes0.USER_DIALECT_ID;
     public static final Index USER_EMAIL = Indexes0.USER_EMAIL;
     public static final Index USER_PRIMARY = Indexes0.USER_PRIMARY;
     public static final Index USER_USERNAME = Indexes0.USER_USERNAME;
@@ -71,11 +77,14 @@ public class Indexes {
         public static Index CHECKED_TEXT_AUDIO_PRIMARY = Internal.createIndex("PRIMARY", CheckedTextAudio.CHECKED_TEXT_AUDIO, new OrderField[] { CheckedTextAudio.CHECKED_TEXT_AUDIO.ID }, true);
         public static Index CHECKED_TEXT_AUDIO_TEXT_AUDIO_ID = Internal.createIndex("text_audio_id", CheckedTextAudio.CHECKED_TEXT_AUDIO, new OrderField[] { CheckedTextAudio.CHECKED_TEXT_AUDIO.TEXT_AUDIO_ID }, false);
         public static Index CHECKED_TEXT_AUDIO_USER_ID = Internal.createIndex("user_id", CheckedTextAudio.CHECKED_TEXT_AUDIO, new OrderField[] { CheckedTextAudio.CHECKED_TEXT_AUDIO.USER_ID }, false);
+        public static Index DIALECT_LANGUAGE_ID = Internal.createIndex("language_id", Dialect.DIALECT, new OrderField[] { Dialect.DIALECT.LANGUAGE_ID }, false);
+        public static Index DIALECT_PRIMARY = Internal.createIndex("PRIMARY", Dialect.DIALECT, new OrderField[] { Dialect.DIALECT.ID }, true);
         public static Index DOMAIN_PRIMARY = Internal.createIndex("PRIMARY", Domain.DOMAIN, new OrderField[] { Domain.DOMAIN.ID }, true);
         public static Index EXCERPT_ORIGINAL_TEXT_ID = Internal.createIndex("original_text_id", Excerpt.EXCERPT, new OrderField[] { Excerpt.EXCERPT.ORIGINAL_TEXT_ID }, false);
         public static Index EXCERPT_PRIMARY = Internal.createIndex("PRIMARY", Excerpt.EXCERPT, new OrderField[] { Excerpt.EXCERPT.ID }, true);
         public static Index FLYWAY_SCHEMA_HISTORY_FLYWAY_SCHEMA_HISTORY_S_IDX = Internal.createIndex("flyway_schema_history_s_idx", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, new OrderField[] { FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.SUCCESS }, false);
         public static Index FLYWAY_SCHEMA_HISTORY_PRIMARY = Internal.createIndex("PRIMARY", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, new OrderField[] { FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK }, true);
+        public static Index LANGUAGE_PRIMARY = Internal.createIndex("PRIMARY", Language.LANGUAGE, new OrderField[] { Language.LANGUAGE.ID }, true);
         public static Index ORIGINAL_TEXT_DOMAIN_ID = Internal.createIndex("domain_id", OriginalText.ORIGINAL_TEXT, new OrderField[] { OriginalText.ORIGINAL_TEXT.DOMAIN_ID }, false);
         public static Index ORIGINAL_TEXT_PRIMARY = Internal.createIndex("PRIMARY", OriginalText.ORIGINAL_TEXT, new OrderField[] { OriginalText.ORIGINAL_TEXT.ID }, true);
         public static Index ORIGINAL_TEXT_USER_GROUP_ID = Internal.createIndex("user_group_id", OriginalText.ORIGINAL_TEXT, new OrderField[] { OriginalText.ORIGINAL_TEXT.USER_GROUP_ID }, false);
@@ -87,6 +96,7 @@ public class Indexes {
         public static Index TEXT_AUDIO_PRIMARY = Internal.createIndex("PRIMARY", TextAudio.TEXT_AUDIO, new OrderField[] { TextAudio.TEXT_AUDIO.ID }, true);
         public static Index TEXT_AUDIO_SOURCE_ID = Internal.createIndex("source_id", TextAudio.TEXT_AUDIO, new OrderField[] { TextAudio.TEXT_AUDIO.SOURCE_ID }, false);
         public static Index TEXT_AUDIO_SPEAKER_ID = Internal.createIndex("speaker_id", TextAudio.TEXT_AUDIO, new OrderField[] { TextAudio.TEXT_AUDIO.SPEAKER_ID }, false);
+        public static Index USER_DIALECT_ID = Internal.createIndex("dialect_id", User.USER, new OrderField[] { User.USER.DIALECT_ID }, false);
         public static Index USER_EMAIL = Internal.createIndex("email", User.USER, new OrderField[] { User.USER.EMAIL }, true);
         public static Index USER_PRIMARY = Internal.createIndex("PRIMARY", User.USER, new OrderField[] { User.USER.ID }, true);
         public static Index USER_USERNAME = Internal.createIndex("username", User.USER, new OrderField[] { User.USER.USERNAME }, true);

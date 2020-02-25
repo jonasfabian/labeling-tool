@@ -32,7 +32,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         var conf = http.authorizeRequests()
-                .antMatchers("/api/register").permitAll()
+                .antMatchers("/api/public/**").permitAll()
                 .antMatchers("/api/admin/**").access("hasRole('admin')")
                 .antMatchers("/api/**").fullyAuthenticated()
                 .and()

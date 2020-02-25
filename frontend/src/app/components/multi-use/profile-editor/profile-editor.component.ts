@@ -6,7 +6,8 @@ import {environment} from '../../../../environments/environment';
 import {AuthService} from '../../../services/auth.service';
 import {EmailPassword} from '../../../models/email-password';
 import {SnackBarService} from '../../../services/snack-bar.service';
-import {Canton} from '../../../models/canton';
+import {Dialect} from '../../../models/dialect';
+import {DialectService} from '../../../services/dialect.service';
 
 @Component({
   selector: 'app-profile-editor',
@@ -18,12 +19,16 @@ export class ProfileEditorComponent implements OnInit {
   @Input() user: User;
   @Output() output = new EventEmitter();
   registerForm: FormGroup;
-  cantons = Canton.cantons;
+  dialects: Dialect[] = [];
 
-  constructor(private fb: FormBuilder, private snackBarService: SnackBarService, private httpClient: HttpClient, private authService: AuthService) {
+  constructor(
+    private formBuilder: FormBuilder, private snackBarService: SnackBarService, private httpClient: HttpClient,
+    private authService: AuthService, private dialectService: DialectService
+  ) {
   }
 
   ngOnInit() {
+    this.dialectService.getDialects().subscribe(v => this.dialects = v);
     const cc = {
       firstName: [this.user.firstName, [Validators.required]],
       lastName: [this.user.lastName, [Validators.required]],
@@ -32,7 +37,7 @@ export class ProfileEditorComponent implements OnInit {
         Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
       ])],
       username: [this.user.username, [Validators.required, Validators.pattern('^[a-zA-Z0-9-.]+$')]],
-      canton: [this.user.canton, [Validators.required]],
+      canton: [this.user.dialectId, [Validators.required]],
       password: undefined,
       sex: [this.user.sex, [Validators.required]],
       age: [this.user.age, [Validators.required]],
@@ -45,7 +50,7 @@ export class ProfileEditorComponent implements OnInit {
         Validators.maxLength(50)
       ])];
     }
-    this.registerForm = this.fb.group(cc);
+    this.registerForm = this.formBuilder.group(cc);
   }
 
   register(): void {

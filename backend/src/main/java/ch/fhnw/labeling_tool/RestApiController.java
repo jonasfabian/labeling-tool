@@ -1,7 +1,9 @@
 package ch.fhnw.labeling_tool;
 
+import ch.fhnw.labeling_tool.jooq.tables.daos.DialectDao;
 import ch.fhnw.labeling_tool.jooq.tables.daos.DomainDao;
 import ch.fhnw.labeling_tool.jooq.tables.daos.UserGroupDao;
+import ch.fhnw.labeling_tool.jooq.tables.pojos.Dialect;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.Domain;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.User;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.UserGroup;
@@ -19,17 +21,24 @@ public class RestApiController {
     private final UserGroupDao userGroupDao;
     private final CustomUserDetailsService customUserDetailsService;
     private final DomainDao domainDao;
+    private final DialectDao dialectDao;
 
     @Autowired
-    public RestApiController(UserGroupDao userGroupDao, CustomUserDetailsService customUserDetailsService, DomainDao domainDao) {
+    public RestApiController(UserGroupDao userGroupDao, CustomUserDetailsService customUserDetailsService, DomainDao domainDao, DialectDao dialectDao) {
         this.userGroupDao = userGroupDao;
         this.customUserDetailsService = customUserDetailsService;
         this.domainDao = domainDao;
+        this.dialectDao = dialectDao;
     }
 
-    @PostMapping("register")
+    @PostMapping("public/register")
     public void register(@RequestBody User user) {
         customUserDetailsService.register(user);
+    }
+
+    @GetMapping("public/dialect")
+    public List<Dialect> getDialect() {
+        return dialectDao.findAll();
     }
 
     /**

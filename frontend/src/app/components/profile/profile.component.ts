@@ -7,7 +7,8 @@ import {environment} from '../../../environments/environment';
 import {ChangePassword} from '../../models/change-password';
 import {SnackBarService} from '../../services/snack-bar.service';
 import {log} from 'util';
-import {Canton} from '../../models/canton';
+import {Dialect} from '../../models/dialect';
+import {DialectService} from '../../services/dialect.service';
 
 @Component({
   selector: 'app-profile',
@@ -20,8 +21,12 @@ export class ProfileComponent implements OnInit {
   isPasswordEdit = false;
   changePasswordForm: FormGroup;
   user: User;
+  private dialects: Dialect[] = [];
 
-  constructor(private authService: AuthService, private httpClient: HttpClient, private fb: FormBuilder, private snackBarService: SnackBarService) {
+  constructor(
+    private authService: AuthService, private httpClient: HttpClient, private formBuilder: FormBuilder,
+    private snackBarService: SnackBarService, private dialectService: DialectService
+  ) {
   }
 
   ngOnInit() {
@@ -30,7 +35,7 @@ export class ProfileComponent implements OnInit {
         this.user = user;
       });
     });
-    this.changePasswordForm = this.fb.group({
+    this.changePasswordForm = this.formBuilder.group({
       password: ['', [Validators.required]],
       newPassword: ['', Validators.compose([
         Validators.required,
@@ -38,6 +43,7 @@ export class ProfileComponent implements OnInit {
         Validators.maxLength(50)
       ])]
     });
+    this.dialectService.getDialects().subscribe(v => this.dialects = v);
   }
 
   copyUser = () => JSON.parse(JSON.stringify(this.user));
@@ -45,7 +51,7 @@ export class ProfileComponent implements OnInit {
   togglePasswordEdit = () => this.isPasswordEdit = !this.isPasswordEdit;
   isOldPwError = (errorCode: string) => this.changePasswordForm.controls.password.hasError(errorCode);
   isNewPwError = (errorCode: string) => this.changePasswordForm.controls.newPassword.hasError(errorCode);
-  getCanton = () => Canton.cantons.find(value => value.cantonId === this.user.canton).cantonName;
+  getCanton = () => this.dialects.find(value => value.id === this.user.id).countyName;
 
   changePassword() {
     log('changePassword');

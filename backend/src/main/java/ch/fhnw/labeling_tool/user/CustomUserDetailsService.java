@@ -52,7 +52,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     public Long getLoggedInUserId() {
-        return getLoggedInUser().id;
+        return getLoggedInUser().user.getId();
+    }
+
+    public Long getLoggedInUserDialectId() {
+        return getLoggedInUser().user.getDialectId();
     }
 
     public boolean isAllowedOnProject(long userGroupId, boolean checkAdminPermission) {

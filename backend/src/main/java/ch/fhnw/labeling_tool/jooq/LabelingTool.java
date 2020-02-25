@@ -6,9 +6,11 @@ package ch.fhnw.labeling_tool.jooq;
 
 import ch.fhnw.labeling_tool.jooq.tables.CheckedRecording;
 import ch.fhnw.labeling_tool.jooq.tables.CheckedTextAudio;
+import ch.fhnw.labeling_tool.jooq.tables.Dialect;
 import ch.fhnw.labeling_tool.jooq.tables.Domain;
 import ch.fhnw.labeling_tool.jooq.tables.Excerpt;
 import ch.fhnw.labeling_tool.jooq.tables.FlywaySchemaHistory;
+import ch.fhnw.labeling_tool.jooq.tables.Language;
 import ch.fhnw.labeling_tool.jooq.tables.OriginalText;
 import ch.fhnw.labeling_tool.jooq.tables.Recording;
 import ch.fhnw.labeling_tool.jooq.tables.Source;
@@ -30,7 +32,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class LabelingTool extends SchemaImpl {
 
-    private static final long serialVersionUID = -2077419578;
+    private static final long serialVersionUID = -1920162028;
 
     public static final LabelingTool LABELING_TOOL = new LabelingTool();
 
@@ -38,11 +40,15 @@ public class LabelingTool extends SchemaImpl {
 
     public final CheckedTextAudio CHECKED_TEXT_AUDIO = ch.fhnw.labeling_tool.jooq.tables.CheckedTextAudio.CHECKED_TEXT_AUDIO;
 
+    public final Dialect DIALECT = ch.fhnw.labeling_tool.jooq.tables.Dialect.DIALECT;
+
     public final Domain DOMAIN = ch.fhnw.labeling_tool.jooq.tables.Domain.DOMAIN;
 
     public final Excerpt EXCERPT = ch.fhnw.labeling_tool.jooq.tables.Excerpt.EXCERPT;
 
     public final FlywaySchemaHistory FLYWAY_SCHEMA_HISTORY = ch.fhnw.labeling_tool.jooq.tables.FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY;
+
+    public final Language LANGUAGE = ch.fhnw.labeling_tool.jooq.tables.Language.LANGUAGE;
 
     public final OriginalText ORIGINAL_TEXT = ch.fhnw.labeling_tool.jooq.tables.OriginalText.ORIGINAL_TEXT;
 
@@ -81,9 +87,11 @@ public class LabelingTool extends SchemaImpl {
         return Arrays.<Table<?>>asList(
             CheckedRecording.CHECKED_RECORDING,
             CheckedTextAudio.CHECKED_TEXT_AUDIO,
+            Dialect.DIALECT,
             Domain.DOMAIN,
             Excerpt.EXCERPT,
             FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY,
+            Language.LANGUAGE,
             OriginalText.ORIGINAL_TEXT,
             Recording.RECORDING,
             Source.SOURCE,

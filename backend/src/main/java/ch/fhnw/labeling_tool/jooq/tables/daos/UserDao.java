@@ -96,14 +96,6 @@ public class UserDao extends DAOImpl<UserRecord, ch.fhnw.labeling_tool.jooq.tabl
         return fetch(User.USER.PASSWORD, values);
     }
 
-    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.User> fetchRangeOfCanton(String lowerInclusive, String upperInclusive) {
-        return fetchRange(User.USER.CANTON, lowerInclusive, upperInclusive);
-    }
-
-    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.User> fetchByCanton(String... values) {
-        return fetch(User.USER.CANTON, values);
-    }
-
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.User> fetchRangeOfSex(UserSex lowerInclusive, UserSex upperInclusive) {
         return fetchRange(User.USER.SEX, lowerInclusive, upperInclusive);
     }
@@ -134,5 +126,13 @@ public class UserDao extends DAOImpl<UserRecord, ch.fhnw.labeling_tool.jooq.tabl
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.User> fetchByEnabled(Boolean... values) {
         return fetch(User.USER.ENABLED, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.User> fetchRangeOfDialectId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(User.USER.DIALECT_ID, lowerInclusive, upperInclusive);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.User> fetchByDialectId(Long... values) {
+        return fetch(User.USER.DIALECT_ID, values);
     }
 }

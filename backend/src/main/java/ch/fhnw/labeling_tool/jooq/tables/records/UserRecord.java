@@ -20,9 +20,9 @@ import org.jooq.impl.UpdatableRecordImpl;
 
 
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Record11<Long, String, String, String, String, String, String, UserSex, UserLicence, UserAge, Boolean> {
+public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Record11<Long, String, String, String, String, String, UserSex, UserLicence, UserAge, Boolean, Long> {
 
-    private static final long serialVersionUID = 179986257;
+    private static final long serialVersionUID = 976956156;
 
     public void setId(Long value) {
         set(0, value);
@@ -82,46 +82,45 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
         return (String) get(5);
     }
 
-    public void setCanton(String value) {
+    public void setSex(UserSex value) {
         set(6, value);
     }
 
-    @NotNull
-    @Size(max = 45)
-    public String getCanton() {
-        return (String) get(6);
-    }
-
-    public void setSex(UserSex value) {
-        set(7, value);
-    }
-
     public UserSex getSex() {
-        return (UserSex) get(7);
+        return (UserSex) get(6);
     }
 
     public void setLicence(UserLicence value) {
-        set(8, value);
+        set(7, value);
     }
 
     public UserLicence getLicence() {
-        return (UserLicence) get(8);
+        return (UserLicence) get(7);
     }
 
     public void setAge(UserAge value) {
-        set(9, value);
+        set(8, value);
     }
 
     public UserAge getAge() {
-        return (UserAge) get(9);
+        return (UserAge) get(8);
     }
 
     public void setEnabled(Boolean value) {
-        set(10, value);
+        set(9, value);
     }
 
     public Boolean getEnabled() {
-        return (Boolean) get(10);
+        return (Boolean) get(9);
+    }
+
+    public void setDialectId(Long value) {
+        set(10, value);
+    }
+
+    @NotNull
+    public Long getDialectId() {
+        return (Long) get(10);
     }
 
     // -------------------------------------------------------------------------
@@ -138,12 +137,12 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
     // -------------------------------------------------------------------------
 
     @Override
-    public Row11<Long, String, String, String, String, String, String, UserSex, UserLicence, UserAge, Boolean> fieldsRow() {
+    public Row11<Long, String, String, String, String, String, UserSex, UserLicence, UserAge, Boolean, Long> fieldsRow() {
         return (Row11) super.fieldsRow();
     }
 
     @Override
-    public Row11<Long, String, String, String, String, String, String, UserSex, UserLicence, UserAge, Boolean> valuesRow() {
+    public Row11<Long, String, String, String, String, String, UserSex, UserLicence, UserAge, Boolean, Long> valuesRow() {
         return (Row11) super.valuesRow();
     }
 
@@ -178,28 +177,28 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
     }
 
     @Override
-    public Field<String> field7() {
-        return User.USER.CANTON;
-    }
-
-    @Override
-    public Field<UserSex> field8() {
+    public Field<UserSex> field7() {
         return User.USER.SEX;
     }
 
     @Override
-    public Field<UserLicence> field9() {
+    public Field<UserLicence> field8() {
         return User.USER.LICENCE;
     }
 
     @Override
-    public Field<UserAge> field10() {
+    public Field<UserAge> field9() {
         return User.USER.AGE;
     }
 
     @Override
-    public Field<Boolean> field11() {
+    public Field<Boolean> field10() {
         return User.USER.ENABLED;
+    }
+
+    @Override
+    public Field<Long> field11() {
+        return User.USER.DIALECT_ID;
     }
 
     @Override
@@ -233,28 +232,28 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
     }
 
     @Override
-    public String component7() {
-        return getCanton();
-    }
-
-    @Override
-    public UserSex component8() {
+    public UserSex component7() {
         return getSex();
     }
 
     @Override
-    public UserLicence component9() {
+    public UserLicence component8() {
         return getLicence();
     }
 
     @Override
-    public UserAge component10() {
+    public UserAge component9() {
         return getAge();
     }
 
     @Override
-    public Boolean component11() {
+    public Boolean component10() {
         return getEnabled();
+    }
+
+    @Override
+    public Long component11() {
+        return getDialectId();
     }
 
     @Override
@@ -288,28 +287,28 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
     }
 
     @Override
-    public String value7() {
-        return getCanton();
-    }
-
-    @Override
-    public UserSex value8() {
+    public UserSex value7() {
         return getSex();
     }
 
     @Override
-    public UserLicence value9() {
+    public UserLicence value8() {
         return getLicence();
     }
 
     @Override
-    public UserAge value10() {
+    public UserAge value9() {
         return getAge();
     }
 
     @Override
-    public Boolean value11() {
+    public Boolean value10() {
         return getEnabled();
+    }
+
+    @Override
+    public Long value11() {
+        return getDialectId();
     }
 
     @Override
@@ -349,37 +348,37 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
     }
 
     @Override
-    public UserRecord value7(String value) {
-        setCanton(value);
-        return this;
-    }
-
-    @Override
-    public UserRecord value8(UserSex value) {
+    public UserRecord value7(UserSex value) {
         setSex(value);
         return this;
     }
 
     @Override
-    public UserRecord value9(UserLicence value) {
+    public UserRecord value8(UserLicence value) {
         setLicence(value);
         return this;
     }
 
     @Override
-    public UserRecord value10(UserAge value) {
+    public UserRecord value9(UserAge value) {
         setAge(value);
         return this;
     }
 
     @Override
-    public UserRecord value11(Boolean value) {
+    public UserRecord value10(Boolean value) {
         setEnabled(value);
         return this;
     }
 
     @Override
-    public UserRecord values(Long value1, String value2, String value3, String value4, String value5, String value6, String value7, UserSex value8, UserLicence value9, UserAge value10, Boolean value11) {
+    public UserRecord value11(Long value) {
+        setDialectId(value);
+        return this;
+    }
+
+    @Override
+    public UserRecord values(Long value1, String value2, String value3, String value4, String value5, String value6, UserSex value7, UserLicence value8, UserAge value9, Boolean value10, Long value11) {
         value1(value1);
         value2(value2);
         value3(value3);
@@ -402,7 +401,7 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
         super(User.USER);
     }
 
-    public UserRecord(Long id, String firstName, String lastName, String email, String username, String password, String canton, UserSex sex, UserLicence licence, UserAge age, Boolean enabled) {
+    public UserRecord(Long id, String firstName, String lastName, String email, String username, String password, UserSex sex, UserLicence licence, UserAge age, Boolean enabled, Long dialectId) {
         super(User.USER);
 
         set(0, id);
@@ -411,10 +410,10 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
         set(3, email);
         set(4, username);
         set(5, password);
-        set(6, canton);
-        set(7, sex);
-        set(8, licence);
-        set(9, age);
-        set(10, enabled);
+        set(6, sex);
+        set(7, licence);
+        set(8, age);
+        set(9, enabled);
+        set(10, dialectId);
     }
 }

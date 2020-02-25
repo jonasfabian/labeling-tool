@@ -17,7 +17,7 @@ import javax.validation.constraints.Size;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User implements Serializable {
 
-    private static final long serialVersionUID = -135680253;
+    private static final long serialVersionUID = -92133801;
 
     private Long        id;
     private String      firstName;
@@ -25,11 +25,11 @@ public class User implements Serializable {
     private String      email;
     private String      username;
     private String      password;
-    private String      canton;
     private UserSex     sex;
     private UserLicence licence;
     private UserAge     age;
     private Boolean     enabled;
+    private Long        dialectId;
 
     public User() {}
 
@@ -40,11 +40,11 @@ public class User implements Serializable {
         this.email = value.email;
         this.username = value.username;
         this.password = value.password;
-        this.canton = value.canton;
         this.sex = value.sex;
         this.licence = value.licence;
         this.age = value.age;
         this.enabled = value.enabled;
+        this.dialectId = value.dialectId;
     }
 
     public User(
@@ -54,11 +54,11 @@ public class User implements Serializable {
         String      email,
         String      username,
         String      password,
-        String      canton,
         UserSex     sex,
         UserLicence licence,
         UserAge     age,
-        Boolean     enabled
+        Boolean     enabled,
+        Long        dialectId
     ) {
         this.id = id;
         this.firstName = firstName;
@@ -66,11 +66,11 @@ public class User implements Serializable {
         this.email = email;
         this.username = username;
         this.password = password;
-        this.canton = canton;
         this.sex = sex;
         this.licence = licence;
         this.age = age;
         this.enabled = enabled;
+        this.dialectId = dialectId;
     }
 
     public Long getId() {
@@ -131,16 +131,6 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    @NotNull
-    @Size(max = 45)
-    public String getCanton() {
-        return this.canton;
-    }
-
-    public void setCanton(String canton) {
-        this.canton = canton;
-    }
-
     public UserSex getSex() {
         return this.sex;
     }
@@ -173,6 +163,15 @@ public class User implements Serializable {
         this.enabled = enabled;
     }
 
+    @NotNull
+    public Long getDialectId() {
+        return this.dialectId;
+    }
+
+    public void setDialectId(Long dialectId) {
+        this.dialectId = dialectId;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("User (");
@@ -183,11 +182,11 @@ public class User implements Serializable {
         sb.append(", ").append(email);
         sb.append(", ").append(username);
         sb.append(", ").append(password);
-        sb.append(", ").append(canton);
         sb.append(", ").append(sex);
         sb.append(", ").append(licence);
         sb.append(", ").append(age);
         sb.append(", ").append(enabled);
+        sb.append(", ").append(dialectId);
 
         sb.append(")");
         return sb.toString();

@@ -18,6 +18,8 @@ import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,6 +41,7 @@ public class UserGroupService {
     private final DSLContext dslContext;
     private final CheckedTextAudioDao checkedTextAudioDao;
     private final Config config;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     public UserGroupService(CustomUserDetailsService customUserDetailsService, RecordingDao recordingDao, ExcerptDao excerptDao, DSLContext dslContext, CheckedTextAudioDao checkedTextAudioDao, Config config) {
@@ -61,16 +64,15 @@ public class UserGroupService {
 
     public Excerpt getExcerpt(Long groupId) {
         customUserDetailsService.isAllowedOnProjectThrow(groupId, false);
-        // TODO limit based on what was already labeled by user and/or based on dialect .
-//        TODO not sure about the performance of this query -> maybe return 10 like check component
+        // TODO maybe return 10 like check component
+        // TODO maybe add direct foreign keys instead of join
         return dslContext.select(EXCERPT.fields())
-//                TODO maybe add a direct foreign key?
                 .from(EXCERPT.join(ORIGINAL_TEXT).onKey().join(USER_GROUP).onKey())
                 .where(USER_GROUP.ID.eq(groupId)
                         .and(EXCERPT.ISSKIPPED.lessOrEqual(3))
-                        /*TODO filter based on dialect instead of user so we have one recording by dialect -> save dialect as foreign key*/
-                        /*TOOD note this does not need a userid -> just get the dialect of the logged in user*/
-                        .and(EXCERPT.ID.notIn(dslContext.select(RECORDING.ID).from(RECORDING).where(RECORDING.USER_ID.eq(customUserDetailsService.getLoggedInUserId())))))
+                        .and(EXCERPT.ID.notIn(dslContext.select(RECORDING.EXCERPT_ID)
+                                .from(RECORDING.join(USER).onKey())
+                                .where(USER.DIALECT_ID.eq(customUserDetailsService.getLoggedInUserDialectId())))))
                 .orderBy(DSL.rand())
                 .limit(1).fetchOneInto(Excerpt.class);
     }
@@ -86,20 +88,19 @@ public class UserGroupService {
                 metadata.add(Metadata.CONTENT_TYPE, file.getContentType());
                 parser.parse(new ByteArrayInputStream(file.getBytes()), bodyContentHandler, metadata);
                 var text = bodyContentHandler.toString();
-//                TODO instead use this: "conda run -n labeling-tool python data-import.py"
-//                TODO not sure if we want to directly insert the data from the python site?
-//                TODO not sure about the syncronication or atomic integer
 
                 OriginalText originalText = new OriginalText(null, groupId, domainId);
                 OriginalTextRecord textRecord = dslContext.newRecord(ORIGINAL_TEXT, originalText);
                 textRecord.store();
-//                TODO maybe replace corenlp with spacy
+                // TODO replace corenlp with spacy
+                // TODO instead use this: "conda run -n labeling-tool python data-import.py"
+                // TODO not sure if we want to directly insert the data from the python site?
+                // TODO not sure about the syncronication or atomic integer
                 var exps = new Document(text).sentences().stream().map(s -> new Excerpt(null, textRecord.getId(), s.text(), 0, false)).collect(Collectors.toList());
                 excerptDao.insert(exps);
                 Files.write(config.getBasePath().resolve("original_text/" + textRecord.getId() + ".bin"), file.getBytes());
-                //TODO maybe return result for validation / post processing before saving & publishing
             } catch (IOException | TikaException | SAXException ex) {
-                //TODO maybe add a success wrapper for each file? and return them afterwards?
+                logger.error("failed to parse original text: ", ex);
             }
 
         }

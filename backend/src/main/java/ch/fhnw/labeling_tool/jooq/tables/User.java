@@ -33,7 +33,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User extends TableImpl<UserRecord> {
 
-    private static final long serialVersionUID = 1888901290;
+    private static final long serialVersionUID = -1721164062;
 
     public static final User USER = new User();
 
@@ -54,8 +54,6 @@ public class User extends TableImpl<UserRecord> {
 
     public final TableField<UserRecord, String> PASSWORD = createField(DSL.name("password"), org.jooq.impl.SQLDataType.VARCHAR(100).nullable(false), this, "");
 
-    public final TableField<UserRecord, String> CANTON = createField(DSL.name("canton"), org.jooq.impl.SQLDataType.VARCHAR(45).nullable(false), this, "");
-
     public final TableField<UserRecord, UserSex> SEX = createField(DSL.name("sex"), org.jooq.impl.SQLDataType.VARCHAR(4).defaultValue(org.jooq.impl.DSL.inline("'NONE'", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.UserSex.class), this, "");
 
     public final TableField<UserRecord, UserLicence> LICENCE = createField(DSL.name("licence"), org.jooq.impl.SQLDataType.VARCHAR(8).defaultValue(org.jooq.impl.DSL.inline("'ACADEMIC'", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.UserLicence.class), this, "");
@@ -63,6 +61,8 @@ public class User extends TableImpl<UserRecord> {
     public final TableField<UserRecord, UserAge> AGE = createField(DSL.name("age"), org.jooq.impl.SQLDataType.VARCHAR(11).defaultValue(org.jooq.impl.DSL.inline("'NONE'", org.jooq.impl.SQLDataType.VARCHAR)).asEnumDataType(ch.fhnw.labeling_tool.jooq.enums.UserAge.class), this, "");
 
     public final TableField<UserRecord, Boolean> ENABLED = createField(DSL.name("enabled"), org.jooq.impl.SQLDataType.BOOLEAN.defaultValue(org.jooq.impl.DSL.inline("1", org.jooq.impl.SQLDataType.BOOLEAN)), this, "");
+
+    public final TableField<UserRecord, Long> DIALECT_ID = createField(DSL.name("dialect_id"), org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
     public User() {
         this(DSL.name("user"), null);
@@ -95,7 +95,7 @@ public class User extends TableImpl<UserRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.USER_EMAIL, Indexes.USER_PRIMARY, Indexes.USER_USERNAME);
+        return Arrays.<Index>asList(Indexes.USER_DIALECT_ID, Indexes.USER_EMAIL, Indexes.USER_PRIMARY, Indexes.USER_USERNAME);
     }
 
     @Override
@@ -111,6 +111,15 @@ public class User extends TableImpl<UserRecord> {
     @Override
     public List<UniqueKey<UserRecord>> getKeys() {
         return Arrays.<UniqueKey<UserRecord>>asList(Keys.KEY_USER_PRIMARY, Keys.KEY_USER_EMAIL, Keys.KEY_USER_USERNAME);
+    }
+
+    @Override
+    public List<ForeignKey<UserRecord, ?>> getReferences() {
+        return Arrays.<ForeignKey<UserRecord, ?>>asList(Keys.USER_IBFK_1);
+    }
+
+    public Dialect dialect() {
+        return new Dialect(this, Keys.USER_IBFK_1);
     }
 
     @Override
@@ -138,7 +147,7 @@ public class User extends TableImpl<UserRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row11<Long, String, String, String, String, String, String, UserSex, UserLicence, UserAge, Boolean> fieldsRow() {
+    public Row11<Long, String, String, String, String, String, UserSex, UserLicence, UserAge, Boolean, Long> fieldsRow() {
         return (Row11) super.fieldsRow();
     }
 }
