@@ -49,21 +49,24 @@ export class ProfileEditorComponent implements OnInit {
   }
 
   register(): void {
-    this.user.firstName = this.registerForm.controls.firstName.value;
-    this.user.lastName = this.registerForm.controls.lastName.value;
-    this.user.email = this.registerForm.controls.email.value;
-    this.user.username = this.registerForm.controls.username.value;
-    this.user.password = this.registerForm.controls.password.value;
-    this.user.canton = this.registerForm.controls.canton.value;
+    // we need to deep copy the object to prevent updating the object inside the observables
+    const user = JSON.parse(JSON.stringify(this.user));
+    user.firstName = this.registerForm.controls.firstName.value;
+    user.lastName = this.registerForm.controls.lastName.value;
+    user.email = this.registerForm.controls.email.value;
+    user.username = this.registerForm.controls.username.value;
+    user.password = this.registerForm.controls.password.value;
+    user.canton = this.registerForm.controls.canton.value;
     if (this.registerForm.valid) {
       if (this.isNewUser) {
-        this.httpClient.post(environment.url + 'register', this.user).subscribe(() => {
-          this.authService.login(new EmailPassword(this.user.username, this.user.password));
+        this.httpClient.post(environment.url + 'register', user).subscribe(() => {
+          this.authService.login(new EmailPassword(user.username, user.password));
         }, () => {
-          this.snackBarService.openError('failed to create user');
+          /*TODO show if username or email is already taken*/
+          this.snackBarService.openError('failed to create user: username/email already taken');
         });
       } else {
-        this.httpClient.put(environment.url + 'user', this.user).subscribe(() => {
+        this.httpClient.put(environment.url + 'user', user).subscribe(() => {
           // NOTE we need to re-login in case the email,username changed
           this.authService.logout(true);
         }, error => {
@@ -74,14 +77,9 @@ export class ProfileEditorComponent implements OnInit {
   }
 
   cancel = () => this.output.emit('cancel');
-
   isLNError = (errorCode: string) => this.registerForm.controls.lastName.hasError(errorCode);
-
   isFNError = (errorCode: string) => this.registerForm.controls.firstName.hasError(errorCode);
-
   isEmailError = (errorCode: string) => this.registerForm.controls.email.hasError(errorCode);
-
   isUNError = (errorCode: string) => this.registerForm.controls.username.hasError(errorCode);
-
   isPwError = (errorCode: string) => this.registerForm.controls.password.hasError(errorCode);
 }

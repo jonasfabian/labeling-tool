@@ -74,7 +74,7 @@ export class CheckComponent implements OnInit {
         });
       } else {
         this.isReady = false;
-        this.loadAudioBlob(this.textAudios[this.carousel.carousel.activeIndex]);
+        this.loadAudioBlob(this.textAudios[this.carousel.carousel.activeIndex + 1]);
         this.carousel.slideNext();
       }
     }
