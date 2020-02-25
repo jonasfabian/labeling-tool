@@ -37,9 +37,8 @@ export class GroupAdminComponent implements OnInit {
       formData.append('files', fileList[i], fileList[i].name);
     }
     formData.append('domainId', this.selectedDomain.id.toFixed(0));
-    this.httpClient.post(`${environment.url}user_group/${this.groupId}/original_text`, formData).subscribe(() => {
+    this.httpClient.post(`${environment.url}user_group/${this.groupId}/admin/original_text`, formData).subscribe(() => {
     });
-    // TODO maybe show the sentences/parsed_text for validation
   }
 
 }

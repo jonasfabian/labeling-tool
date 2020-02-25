@@ -8,3 +8,4 @@ server:
   port: 8084
 labeling-tool:
   base-path: ./data
+  conda-exec: "/home/cintoros/miniconda3/condabin/conda run -n labeling_tool python /home/cintoros/Documents/git_repos/labeling-tool/data_import/sentences.py"

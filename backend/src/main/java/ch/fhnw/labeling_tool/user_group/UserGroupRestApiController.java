@@ -2,7 +2,6 @@ package ch.fhnw.labeling_tool.user_group;
 
 import ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedTextAudio;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.Excerpt;
-import ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio;
 import ch.fhnw.labeling_tool.model.TextAudioDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -40,11 +39,6 @@ public class UserGroupRestApiController {
     @GetMapping("excerpt")
     public Excerpt getExcerpt(@PathVariable long groupId) {
         return userGroupService.getExcerpt(groupId);
-    }
-
-    @PostMapping("original_text")
-    public void postOriginalText(@PathVariable long groupId, @RequestParam long domainId, @RequestParam MultipartFile[] files) {
-        userGroupService.postOriginalText(groupId, domainId, files);
     }
 
     @PostMapping("checked_text_audio")

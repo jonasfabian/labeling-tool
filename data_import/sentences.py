@@ -10,15 +10,6 @@ from config import *
 NLP = spacy.load('de_core_news_sm', disable=['ner'])
 WHITESPACE_REGEX = re.compile(r'[ \t]+')
 
-connection = mysql.connector.connect(
-    host=host,
-    database=database,
-    user=user,
-    password=password,
-)
-connection.autocommit = False
-cursor = connection.cursor(dictionary=True)
-
 
 def preprocess_transcript_for_sentence_split(transcript):
     transcript = transcript.replace('-\n', '')
@@ -40,9 +31,23 @@ def split_to_sentences(transcript):
 
 if __name__ == '__main__':
     fileIds = sys.argv[1]
-    for fileId in fileIds.split(','):
-        with open(os.path.join(base_dir, 'extracted_text', fileId + ".txt")) as file:
+    connection = mysql.connector.connect(
+        host=host,
+        database=database,
+        user=user,
+        password=password,
+    )
+    connection.autocommit = False
+    cursor = connection.cursor(dictionary=True)
+    try:
+        for fileId in fileIds.split(','):
+            file = open(os.path.join(base_dir, 'extracted_text', fileId + ".txt"), encoding="utf-8").read()
             p = preprocess_transcript_for_sentence_split(file)
             sentences = split_to_sentences(p)
-            # TODO insert sentences into database
-        print(fileId)
+            for excerpt in sentences:
+                cursor.execute("insert into excerpt(original_text_id,excerpt) values(%s,%s)", [fileId, excerpt])
+            print(fileId + " done.")
+            connection.commit()
+    finally:
+        cursor.close()
+        connection.close()

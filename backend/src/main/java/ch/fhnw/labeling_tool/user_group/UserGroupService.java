@@ -1,40 +1,26 @@
 package ch.fhnw.labeling_tool.user_group;
 
-import ch.fhnw.labeling_tool.config.Config;
+import ch.fhnw.labeling_tool.config.LabelingToolConfig;
 import ch.fhnw.labeling_tool.jooq.enums.RecordingLabel;
 import ch.fhnw.labeling_tool.jooq.tables.daos.CheckedTextAudioDao;
-import ch.fhnw.labeling_tool.jooq.tables.daos.ExcerptDao;
 import ch.fhnw.labeling_tool.jooq.tables.daos.RecordingDao;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedTextAudio;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.Excerpt;
-import ch.fhnw.labeling_tool.jooq.tables.pojos.OriginalText;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.Recording;
-import ch.fhnw.labeling_tool.jooq.tables.records.OriginalTextRecord;
 import ch.fhnw.labeling_tool.jooq.tables.records.RecordingRecord;
 import ch.fhnw.labeling_tool.model.TextAudioDto;
 import ch.fhnw.labeling_tool.user.CustomUserDetailsService;
-import edu.stanford.nlp.simple.Document;
-import org.apache.tika.config.TikaConfig;
-import org.apache.tika.exception.TikaException;
-import org.apache.tika.metadata.Metadata;
-import org.apache.tika.parser.AutoDetectParser;
-import org.apache.tika.sax.BodyContentHandler;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-import org.xml.sax.SAXException;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static ch.fhnw.labeling_tool.jooq.Tables.*;
 
@@ -42,20 +28,17 @@ import static ch.fhnw.labeling_tool.jooq.Tables.*;
 public class UserGroupService {
     private final CustomUserDetailsService customUserDetailsService;
     private final RecordingDao recordingDao;
-    private final ExcerptDao excerptDao;
     private final DSLContext dslContext;
     private final CheckedTextAudioDao checkedTextAudioDao;
-    private final Config config;
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private final LabelingToolConfig labelingToolConfig;
 
     @Autowired
-    public UserGroupService(CustomUserDetailsService customUserDetailsService, RecordingDao recordingDao, ExcerptDao excerptDao, DSLContext dslContext, CheckedTextAudioDao checkedTextAudioDao, Config config) {
+    public UserGroupService(CustomUserDetailsService customUserDetailsService, RecordingDao recordingDao, DSLContext dslContext, CheckedTextAudioDao checkedTextAudioDao, LabelingToolConfig labelingToolConfig) {
         this.customUserDetailsService = customUserDetailsService;
         this.recordingDao = recordingDao;
-        this.excerptDao = excerptDao;
         this.dslContext = dslContext;
         this.checkedTextAudioDao = checkedTextAudioDao;
-        this.config = config;
+        this.labelingToolConfig = labelingToolConfig;
     }
 
     public void postRecording(long groupId, long excerptId, MultipartFile file) throws IOException {
@@ -63,7 +46,7 @@ public class UserGroupService {
         var r2 = new Recording(null, excerptId, customUserDetailsService.getLoggedInUserId(), null, RecordingLabel.RECORDED);
         RecordingRecord recordingRecord = dslContext.newRecord(RECORDING, r2);
         recordingRecord.store();
-        Files.write(config.getBasePath().resolve("recording/" + recordingRecord.getId() + ".webm"), file.getBytes());
+        Files.write(labelingToolConfig.getBasePath().resolve("recording/" + recordingRecord.getId() + ".webm"), file.getBytes());
         recordingDao.insert(r2);
     }
 
@@ -80,35 +63,6 @@ public class UserGroupService {
                                 .where(USER.DIALECT_ID.eq(customUserDetailsService.getLoggedInUserDialectId())))))
                 .orderBy(DSL.rand())
                 .limit(1).fetchOneInto(Excerpt.class);
-    }
-
-    public void postOriginalText(long groupId, long domainId, MultipartFile[] files) {
-        isAllowed(groupId);
-        var parser = new AutoDetectParser(TikaConfig.getDefaultConfig());
-        for (MultipartFile file : files) {
-            try {
-                var bodyContentHandler = new BodyContentHandler();
-                var metadata = new Metadata();
-                metadata.add(Metadata.RESOURCE_NAME_KEY, file.getOriginalFilename());
-                metadata.add(Metadata.CONTENT_TYPE, file.getContentType());
-                parser.parse(new ByteArrayInputStream(file.getBytes()), bodyContentHandler, metadata);
-                var text = bodyContentHandler.toString();
-
-                OriginalText originalText = new OriginalText(null, groupId, domainId);
-                OriginalTextRecord textRecord = dslContext.newRecord(ORIGINAL_TEXT, originalText);
-                textRecord.store();
-                // TODO replace corenlp with spacy
-                // TODO instead use this: ' conda run -n labeling-tool python data-import.py "1 2 3 4 5"(ids) '
-                // TODO not sure about the syncronication or atomic integer
-                var exps = new Document(text).sentences().stream().map(s -> new Excerpt(null, textRecord.getId(), s.text(), 0, false)).collect(Collectors.toList());
-                excerptDao.insert(exps);
-                Files.write(config.getBasePath().resolve("original_text/" + textRecord.getId() + ".bin"), file.getBytes());
-            } catch (IOException | TikaException | SAXException ex) {
-                logger.error("failed to parse original text: ", ex);
-            }
-
-        }
-
     }
 
     public void postCheckedTextAudio(long groupId, CheckedTextAudio checkedTextAudio) {
@@ -136,7 +90,7 @@ public class UserGroupService {
     public byte[] getAudio(long groupId, long audioId) throws IOException {
         isAllowed(groupId);
         //TODO check if audio is in the right group audioId
-        return Files.readAllBytes(config.getBasePath().resolve("./text_audio/" + audioId + ".flac"));
+        return Files.readAllBytes(labelingToolConfig.getBasePath().resolve("./text_audio/" + audioId + ".flac"));
     }
 
     public void putExcerptSkipped(long groupId, long excerptId) {
