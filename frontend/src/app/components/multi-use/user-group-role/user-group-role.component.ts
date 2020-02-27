@@ -21,7 +21,7 @@ export class UserGroupRoleComponent implements OnInit {
   //TODO we probably need to add a custom model as we also need the username,email
   userGroupRoles: UserGroupRoleDto[] = [];
   columns = ['avatar', 'username', 'email', 'remove'];
-  private userEmail: string;
+  userEmail: string;
 
   constructor(private httpClient: HttpClient, private userGroupService: UserGroupService, private snackBarService: SnackBarService) {
   }
