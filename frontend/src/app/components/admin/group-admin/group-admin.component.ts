@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
 import {UserGroupService} from '../../../services/user-group.service';
+import {UserGroupRoleRole} from '../../../models/spring-principal';
 
 interface Domain {
   id: number;
@@ -16,9 +17,12 @@ interface Domain {
 export class GroupAdminComponent implements OnInit {
   selectedDomain: Domain;
   domains: Domain[];
+  user = UserGroupRoleRole.USER;
+  ga = UserGroupRoleRole.GROUP_ADMIN;
   private groupId = 1;
 
   // TODO add ability to manage user group permissions
+
   // TODO probably add a search/add function based on email/username
   constructor(private httpClient: HttpClient, private userGroupService: UserGroupService) {
     //  TODO add authentification -> needs super admin or group admin

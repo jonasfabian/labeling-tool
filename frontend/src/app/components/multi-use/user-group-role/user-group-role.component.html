@@ -1,0 +1,45 @@
+<h3>{{mode}}(s)</h3>
+<button (click)="newUserGroupRole()" mat-raised-button title="add new user group">
+  <mat-icon>add</mat-icon>
+</button>
+<div *ngIf="userEmail">
+  <mat-form-field>
+    <mat-label>email/username</mat-label>
+    <input [(ngModel)]="userEmail" matInput type="text">
+  </mat-form-field>
+  <br>
+  <button (click)="cancel()" color="primary" mat-raised-button title="cancel">cancel</button>
+  <button (click)="save()" mat-raised-button title="add new user group">save</button>
+</div>
+<mat-divider style="margin: 15px 0 15px 0 "></mat-divider>
+<b *ngIf="userGroupRoles.length<=0">No Data available</b>
+<div *ngIf="userGroupRoles.length>0">
+  <!--  TODO maybe use mat-table for username filtering sorting etc.-->
+  <table [dataSource]="userGroupRoles" id="overview-table" mat-table matSort
+         style="width: 100%; height: calc(100% - 50px); padding: 0; text-align: initial;">
+    <ng-container matColumnDef="avatar">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>avatar</th>
+      <td *matCellDef="let element" mat-cell>
+        <app-avatar [hover]="'default'" [username]="element.username"></app-avatar>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="username">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>username</th>
+      <td *matCellDef="let element" mat-cell>{{element.username}}</td>
+    </ng-container>
+    <ng-container matColumnDef="email">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>email</th>
+      <td *matCellDef="let element" mat-cell>{{element.email}}</td>
+    </ng-container>
+    <ng-container matColumnDef="remove">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>remove</th>
+      <td *matCellDef="let element" mat-cell>
+        <button (click)="remove(element.id)" mat-icon-button>
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <tr *matHeaderRowDef="columns;sticky: true" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: columns;" mat-row></tr>
+  </table>
+</div>

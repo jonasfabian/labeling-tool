@@ -1,20 +1,22 @@
-<h3>Recoding/Labeling</h3>
-<p>After you have registered yourself successfully, you can start the labeling/recoding process. </p>
-<h3> Labeling</h3>
-<p>Click the menu-icon in the top left corner to expand the sidenav. After you click on "Check" you can begin with
-  checking already matched snippets</p>
-<h3>Recoding</h3>
-<p>Click the menu-icon in the top left corner to expand the sidenav. After you click on "Record" you can begin with
-  recoding excerpts.</p>
-<p>In case you are labeling for a group and the excerpt contains sensitive data you can press the private button.</p>
-<p>In case the excerpt does not make sense. you can press the "Sentence Error" button</p>
-<!--TODO add more info/help-->
-<div *ngIf="userGroups.length>1">
-  <h3>Multiple user groups available:</h3>
-  <mat-form-field>
-    <mat-label>User group:</mat-label>
-    <mat-select [(value)]="userGroupService.userGroupId">
-      <mat-option *ngFor="let group of userGroups" [value]="group.id">{{group.name}}</mat-option>
-    </mat-select>
-  </mat-form-field>
+<div class="margin">
+  <h3>Recoding/Labeling</h3>
+  <p>After you have registered yourself successfully, you can start the labeling/recoding process. </p>
+  <h3> Labeling</h3>
+  <p>Click the menu-icon in the top left corner to expand the sidenav. After you click on "Check" you can begin with
+    checking already matched snippets</p>
+  <h3>Recoding</h3>
+  <p>Click the menu-icon in the top left corner to expand the sidenav. After you click on "Record" you can begin with
+    recoding excerpts.</p>
+  <p>In case you are labeling for a group and the excerpt contains sensitive data you can press the private button.</p>
+  <p>In case the excerpt does not make sense. you can press the "Sentence Error" button</p>
+  <!--TODO add more info/help-->
+  <div *ngIf="userGroups.length>1">
+    <h3>Multiple user groups available:</h3>
+    <mat-form-field>
+      <mat-label>User group:</mat-label>
+      <mat-select [(value)]="userGroupService.userGroupId">
+        <mat-option *ngFor="let group of userGroups" [value]="group.id">{{group.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 </div>

@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
 import {UserGroupService} from '../../../services/user-group.service';
 import {Router} from '@angular/router';
+import {UserGroupRoleRole} from '../../../models/spring-principal';
 
 @Component({
   selector: 'app-groups-admin',
@@ -13,6 +14,7 @@ import {Router} from '@angular/router';
 export class AdminComponent implements OnInit {
   userGroup: UserGroup;
   userGroups: UserGroup[] = [];
+  admin = UserGroupRoleRole.ADMIN;
 
   constructor(private httpClient: HttpClient, private userGroupService: UserGroupService, private router: Router) {
   }

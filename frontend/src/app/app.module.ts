@@ -46,6 +46,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatSortModule} from '@angular/material/sort';
 import {LoadingInterceptorService} from './services/loading-interceptor.service';
 import {HomeComponent} from './components/home/home.component';
+import { UserGroupRoleComponent } from './components/multi-use/user-group-role/user-group-role.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import {HomeComponent} from './components/home/home.component';
     ProfileEditorComponent,
     AdminComponent,
     GroupAdminComponent,
-    HomeComponent
+    HomeComponent,
+    UserGroupRoleComponent
   ],
   imports: [
     BrowserModule,

@@ -64,7 +64,7 @@ export class ProfileEditorComponent implements OnInit {
     user.canton = this.registerForm.controls.canton.value;
     if (this.registerForm.valid) {
       if (this.isNewUser) {
-        this.httpClient.post(environment.url + 'register', user).subscribe(() => {
+        this.httpClient.post(environment.url + 'public/register', user).subscribe(() => {
           this.authService.login(new EmailPassword(user.username, user.password));
         }, () => {
           /*TODO show if username or email is already taken*/
