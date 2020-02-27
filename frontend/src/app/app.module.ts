@@ -40,13 +40,12 @@ import {MatSliderModule} from '@angular/material/slider';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatTableModule} from '@angular/material/table';
 import {MatToolbarModule} from '@angular/material/toolbar';
-import {GroupsAdminComponent} from './components/admin/groups-admin/groups-admin.component';
+import {AdminComponent} from './components/admin/groups-admin/admin.component';
 import {GroupAdminComponent} from './components/admin/group-admin/group-admin.component';
 import {MatDialogModule} from '@angular/material/dialog';
-import {UserAdminComponent} from './components/admin/user-admin/user-admin.component';
 import {MatSortModule} from '@angular/material/sort';
 import {LoadingInterceptorService} from './services/loading-interceptor.service';
-import { HomeComponent } from './components/home/home.component';
+import {HomeComponent} from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -61,9 +60,8 @@ import { HomeComponent } from './components/home/home.component';
     CheckMoreComponent,
     RecordComponent,
     ProfileEditorComponent,
-    GroupsAdminComponent,
+    AdminComponent,
     GroupAdminComponent,
-    UserAdminComponent,
     HomeComponent
   ],
   imports: [

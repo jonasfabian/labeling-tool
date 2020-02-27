@@ -79,18 +79,7 @@ public class UserGroupAdminService {
         }).flatMap(Optional::stream).map(Object::toString).collect(Collectors.joining(","));
         try {
             Process process = Runtime.getRuntime().exec(labelingToolConfig.getCondaExec() + " " + collect);
-            //TODO NOTE only needed for debugging
-            InputStream stdout = process.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(stdout, StandardCharsets.UTF_8));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println("stdout: " + line);
-            }
-            stdout = process.getErrorStream();
-            reader = new BufferedReader(new InputStreamReader(stdout, StandardCharsets.UTF_8));
-            while ((line = reader.readLine()) != null) {
-                System.out.println("sterr: " + line);
-            }
+
         } catch (Exception e) {
             logger.error("Exception Raised", e);
         }

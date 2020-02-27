@@ -5,6 +5,7 @@ import {environment} from '../../../environments/environment';
 import {SnackBarService} from '../../services/snack-bar.service';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {Excerpt} from '../../models/excerpt';
+import {UserGroupService} from '../../services/user-group.service';
 
 @Component({
   selector: 'app-record',
@@ -18,13 +19,13 @@ export class RecordComponent implements OnInit {
   // @ts-ignore
   private mediaRecorder: MediaRecorder;
   private audioChunks = [];
-  // TODO get real groupId
   private groupId = 1;
 
   constructor(
     private snackBarService: SnackBarService, private detector: ChangeDetectorRef, private httpClient: HttpClient,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer, private userGroupService: UserGroupService
   ) {
+    this.groupId = this.userGroupService.userGroupId;
   }
 
   ngOnInit() {

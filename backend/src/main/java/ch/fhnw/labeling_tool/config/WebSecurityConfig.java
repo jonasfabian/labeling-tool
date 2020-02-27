@@ -33,7 +33,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         var conf = http.authorizeRequests()
                 .antMatchers("/api/public/**").permitAll()
-                .antMatchers("/api/admin/**").access("hasRole('admin')")
+                .antMatchers("/api/admin/**").access("hasRole('ADMIN')")
                 .antMatchers("/api/**").fullyAuthenticated()
                 .and()
                 .httpBasic()

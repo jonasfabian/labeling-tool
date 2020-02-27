@@ -47,6 +47,7 @@ public class UserGroupService {
         isAllowed(groupId);
         // TODO maybe return 10 like check component
         // TODO maybe add direct foreign keys instead of join
+        System.out.println(groupId);
         return dslContext.select(EXCERPT.fields())
                 .from(EXCERPT.join(ORIGINAL_TEXT).onKey().join(USER_GROUP).onKey())
                 .where(USER_GROUP.ID.eq(groupId)
@@ -66,11 +67,13 @@ public class UserGroupService {
     }
 
     public List<TextAudioDto> getNextTextAudios(long groupId) {
-        isAllowed(groupId);
+        /*NOTE for now we just return the normal public ones*/
+//        isAllowed(groupId);
         // TODO maybe add user_group mapping for checked audio?
         // TODO maybe add ability to also check the recordings as the user_groups cannot upload anything else.
         // TODO maybe filter already checked ones e.g correct,wrong>10
         // TODO this probably needs a internal counter so we do not need to join each time
+        System.out.println(groupId);
         return dslContext.select(TEXT_AUDIO.ID, TEXT_AUDIO.AUDIO_START, TEXT_AUDIO.AUDIO_END, TEXT_AUDIO.TEXT)
                 .from(TEXT_AUDIO)
                 .where(TEXT_AUDIO.ID.notIn(

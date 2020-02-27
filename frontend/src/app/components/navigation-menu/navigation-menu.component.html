@@ -14,7 +14,7 @@
     Login
   </span>
   <ng-container *ngIf="authService.checkAuthenticated()">
-    <app-avatar [hover]="'pointer'" [matMenuTriggerFor]="menu"  [username]="this.username"
+    <app-avatar [hover]="'pointer'" [matMenuTriggerFor]="menu"  [username]="this.user.username"
       style="float: right;"></app-avatar>
     <mat-menu #menu>
       <mat-list style="padding: 0;">
@@ -52,10 +52,10 @@
             <span>User Group</span>
           </mat-list-item>
           <!--          TODO activate again once it works-->
-<!--          <mat-list-item (click)="redirectToPage('/admin/user_groups')" *ngIf="isAdmin()" >-->
-<!--            <mat-icon>supervised_user_circle</mat-icon>-->
-<!--            <span>User Groups</span>-->
-<!--          </mat-list-item>-->
+          <mat-list-item (click)="redirectToPage('/admin/admin')" *ngIf="isAdmin()" >
+            <mat-icon>supervised_user_circle</mat-icon>
+            <span>Admin</span>
+          </mat-list-item>
         </ng-container>
       </mat-list>
     </div>

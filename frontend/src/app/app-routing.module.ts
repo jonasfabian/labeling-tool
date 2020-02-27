@@ -8,7 +8,7 @@ import {LoginComponent} from './components/login/login.component';
 import {RecordComponent} from './components/record/record.component';
 import {NavigationMenuComponent} from './components/navigation-menu/navigation-menu.component';
 import {GroupAdminComponent} from './components/admin/group-admin/group-admin.component';
-import {GroupsAdminComponent} from './components/admin/groups-admin/groups-admin.component';
+import {AdminComponent} from './components/admin/groups-admin/admin.component';
 import {HomeComponent} from './components/home/home.component';
 
 const routes: Routes = [
@@ -22,8 +22,8 @@ const routes: Routes = [
         component: GroupAdminComponent,
       },
       {
-        path: 'user_groups',
-        component: GroupsAdminComponent,
+        path: 'admin',
+        component: AdminComponent,
       },
       {
         path: 'overview',

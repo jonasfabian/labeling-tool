@@ -9,6 +9,7 @@ import {environment} from '../../../environments/environment';
 import {CarouselComponent} from 'ngx-carousel-lib';
 import {CheckedTextAudio, CheckedTextAudioLabel} from '../../models/user-and-text-audio';
 import {Router} from '@angular/router';
+import {UserGroupService} from '../../services/user-group.service';
 
 @Component({
   selector: 'app-check',
@@ -24,10 +25,13 @@ export class CheckComponent implements OnInit {
   private audioPlayer = new Audio();
   private isReady = false;
   private userId: number;
-  // TODO replace dummy id with real one
   private groupId = 1;
 
-  constructor(private httpClient: HttpClient, private dialog: MatDialog, private authService: AuthService, private router: Router) {
+  constructor(
+    private httpClient: HttpClient, private dialog: MatDialog, private authService: AuthService, private router: Router,
+    private userGroupService: UserGroupService
+  ) {
+    this.groupId = this.userGroupService.userGroupId;
   }
 
   ngOnInit() {

@@ -3,10 +3,7 @@ package ch.fhnw.labeling_tool;
 import ch.fhnw.labeling_tool.jooq.tables.daos.DialectDao;
 import ch.fhnw.labeling_tool.jooq.tables.daos.DomainDao;
 import ch.fhnw.labeling_tool.jooq.tables.daos.UserGroupDao;
-import ch.fhnw.labeling_tool.jooq.tables.pojos.Dialect;
-import ch.fhnw.labeling_tool.jooq.tables.pojos.Domain;
-import ch.fhnw.labeling_tool.jooq.tables.pojos.User;
-import ch.fhnw.labeling_tool.jooq.tables.pojos.UserGroup;
+import ch.fhnw.labeling_tool.jooq.tables.pojos.*;
 import ch.fhnw.labeling_tool.model.ChangePassword;
 import ch.fhnw.labeling_tool.user.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +51,7 @@ public class RestApiController {
         return customUserDetailsService.getUser(id);
     }
 
+    //TODO not  sure this is needed anymore -> maybe move to admin
     @PostMapping("user")
     public void postUser(@RequestBody User user) {
         customUserDetailsService.postUser(user);
@@ -74,14 +72,13 @@ public class RestApiController {
         return domainDao.findAll();
     }
 
-    //TODO maybe put these routes under a admin prefix and check permissions etc.
     @GetMapping("user_group")
     public List<UserGroup> getUserGroup() {
-        return userGroupDao.findAll();
-    }
-
-    @PostMapping("user_group")
-    public void postUserGroup(@RequestBody UserGroup userGroup) {
-        userGroupDao.insert(userGroup);
+        if (customUserDetailsService.isAdmin()) {
+            return userGroupDao.findAll();
+        } else {
+            var ids = customUserDetailsService.getLoggedInUser().userGroupRoles.stream().map(UserGroupRole::getUserGroupId).distinct();
+            return userGroupDao.fetchById(ids.toArray(Long[]::new));
+        }
     }
 }
