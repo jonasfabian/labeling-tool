@@ -18,7 +18,6 @@ interface UserGroupRoleDto {
 })
 export class UserGroupRoleComponent implements OnInit {
   @Input() mode: UserGroupRoleRole;
-  //TODO we probably need to add a custom model as we also need the username,email
   userGroupRoles: UserGroupRoleDto[] = [];
   columns = ['avatar', 'username', 'email', 'remove'];
   userEmail: string;
@@ -26,7 +25,6 @@ export class UserGroupRoleComponent implements OnInit {
   constructor(private httpClient: HttpClient, private userGroupService: UserGroupService, private snackBarService: SnackBarService) {
   }
 
-  //TODO maybe also ng change
   ngOnInit(): void {
     this.reload();
   }

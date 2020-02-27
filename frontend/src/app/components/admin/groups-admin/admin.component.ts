@@ -38,6 +38,4 @@ export class AdminComponent implements OnInit {
   newUserGroup = () => this.userGroup = new UserGroup(undefined, '');
   cancel = () => this.userGroup = undefined;
   private reload = () => this.httpClient.get <UserGroup[]>(`${environment.url}admin/user_group`).subscribe(v => this.userGroups = v);
-
-//  TODO add component to set user admin permissions -> uses similar logic as
 }

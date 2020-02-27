@@ -72,13 +72,9 @@ public class CustomUserDetailsService implements UserDetailsService {
         return userDao.findById(id);
     }
 
-    public void postUser(User user) {
-//        TODO add ability for admin to create users etc.
-        register(user);
-    }
-
     public void putUser(User user) {
-//        TODO check user id
+        if (!getLoggedInUserId().equals(user.getId()))
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         userDao.update(user);
     }
 
@@ -97,8 +93,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         user.setEnabled(true);
         userDao.insert(user);
         Long id = userDao.fetchOneByUsername(user.getUsername()).getId();
-        //    TODO not sure how to handle public logins for now we just add them to the public group
-        // TODO afterwards they can be added to the groups by the admins
         //add user to public group
         userGroupRoleDao.insert(new UserGroupRole(null, UserGroupRoleRole.USER, id, 1L));
 

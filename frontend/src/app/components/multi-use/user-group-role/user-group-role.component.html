@@ -14,7 +14,6 @@
 <mat-divider style="margin: 15px 0 15px 0 "></mat-divider>
 <b *ngIf="userGroupRoles.length<=0">No Data available</b>
 <div *ngIf="userGroupRoles.length>0">
-  <!--  TODO maybe use mat-table for username filtering sorting etc.-->
   <table [dataSource]="userGroupRoles" id="overview-table" mat-table matSort
          style="width: 100%; height: calc(100% - 50px); padding: 0; text-align: initial;">
     <ng-container matColumnDef="avatar">

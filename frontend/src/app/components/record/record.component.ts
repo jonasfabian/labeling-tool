@@ -87,7 +87,7 @@ export class RecordComponent implements OnInit {
   sentenceError() {
     this.httpClient.put<Excerpt>(`${environment.url}user_group/${this.groupId}/excerpt/${this.excerpt.id}/sentence_error`, {})
       .subscribe(() => {
-        this.snackBarService.openMessage('marked as "Sentence Error"');
+        this.snackBarService.openMessage('marked as "Not a sentence"');
         this.getNext();
       });
   }

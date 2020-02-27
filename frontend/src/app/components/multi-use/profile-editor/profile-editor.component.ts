@@ -67,7 +67,6 @@ export class ProfileEditorComponent implements OnInit {
         this.httpClient.post(environment.url + 'public/register', user).subscribe(() => {
           this.authService.login(new EmailPassword(user.username, user.password));
         }, () => {
-          /*TODO show if username or email is already taken*/
           this.snackBarService.openError('failed to create user: username/email already taken');
         });
       } else {

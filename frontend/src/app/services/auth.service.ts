@@ -31,7 +31,6 @@ export class AuthService {
 
   login(emailPassword: EmailPassword) {
     this.loginUser(emailPassword).subscribe(user => {
-      // TODO change redirect based on user permission
       this.router.navigate(['/home']);
       sessionStorage.setItem(AuthService.currentUserStore, this.buildAuthenticationHeader(emailPassword.email, emailPassword.password));
     }, () => {

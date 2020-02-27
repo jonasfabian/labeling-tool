@@ -61,12 +61,6 @@ public class RestApiController {
         return customUserDetailsService.getUser(id);
     }
 
-    //TODO not  sure this is needed anymore -> maybe move to admin
-    @PostMapping("user")
-    public void postUser(@RequestBody User user) {
-        customUserDetailsService.postUser(user);
-    }
-
     @PutMapping("user")
     public void putUser(@RequestBody User user) {
         customUserDetailsService.putUser(user);
@@ -124,7 +118,6 @@ public class RestApiController {
         }
     }
 
-    //TODO add enpoint to update the user_group_role (s)
     static class UserGroupRoleDto {
         public final Long id;
         public final String username, email;
