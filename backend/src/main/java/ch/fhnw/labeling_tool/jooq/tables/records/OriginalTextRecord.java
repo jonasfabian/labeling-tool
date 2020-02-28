@@ -6,19 +6,21 @@ package ch.fhnw.labeling_tool.jooq.tables.records;
 
 import ch.fhnw.labeling_tool.jooq.tables.OriginalText;
 
+import java.sql.Timestamp;
+
 import javax.validation.constraints.NotNull;
 
 import org.jooq.Field;
 import org.jooq.Record1;
-import org.jooq.Record3;
-import org.jooq.Row3;
+import org.jooq.Record5;
+import org.jooq.Row5;
 import org.jooq.impl.UpdatableRecordImpl;
 
 
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> implements Record3<Long, Long, Long> {
+public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> implements Record5<Long, Long, Long, Long, Timestamp> {
 
-    private static final long serialVersionUID = 1911270256;
+    private static final long serialVersionUID = -479379311;
 
     public void setId(Long value) {
         set(0, value);
@@ -46,6 +48,22 @@ public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> 
         return (Long) get(2);
     }
 
+    public void setUserId(Long value) {
+        set(3, value);
+    }
+
+    public Long getUserId() {
+        return (Long) get(3);
+    }
+
+    public void setTime(Timestamp value) {
+        set(4, value);
+    }
+
+    public Timestamp getTime() {
+        return (Timestamp) get(4);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -56,17 +74,17 @@ public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> 
     }
 
     // -------------------------------------------------------------------------
-    // Record3 type implementation
+    // Record5 type implementation
     // -------------------------------------------------------------------------
 
     @Override
-    public Row3<Long, Long, Long> fieldsRow() {
-        return (Row3) super.fieldsRow();
+    public Row5<Long, Long, Long, Long, Timestamp> fieldsRow() {
+        return (Row5) super.fieldsRow();
     }
 
     @Override
-    public Row3<Long, Long, Long> valuesRow() {
-        return (Row3) super.valuesRow();
+    public Row5<Long, Long, Long, Long, Timestamp> valuesRow() {
+        return (Row5) super.valuesRow();
     }
 
     @Override
@@ -85,6 +103,16 @@ public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> 
     }
 
     @Override
+    public Field<Long> field4() {
+        return OriginalText.ORIGINAL_TEXT.USER_ID;
+    }
+
+    @Override
+    public Field<Timestamp> field5() {
+        return OriginalText.ORIGINAL_TEXT.TIME;
+    }
+
+    @Override
     public Long component1() {
         return getId();
     }
@@ -100,6 +128,16 @@ public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> 
     }
 
     @Override
+    public Long component4() {
+        return getUserId();
+    }
+
+    @Override
+    public Timestamp component5() {
+        return getTime();
+    }
+
+    @Override
     public Long value1() {
         return getId();
     }
@@ -112,6 +150,16 @@ public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> 
     @Override
     public Long value3() {
         return getDomainId();
+    }
+
+    @Override
+    public Long value4() {
+        return getUserId();
+    }
+
+    @Override
+    public Timestamp value5() {
+        return getTime();
     }
 
     @Override
@@ -133,10 +181,24 @@ public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> 
     }
 
     @Override
-    public OriginalTextRecord values(Long value1, Long value2, Long value3) {
+    public OriginalTextRecord value4(Long value) {
+        setUserId(value);
+        return this;
+    }
+
+    @Override
+    public OriginalTextRecord value5(Timestamp value) {
+        setTime(value);
+        return this;
+    }
+
+    @Override
+    public OriginalTextRecord values(Long value1, Long value2, Long value3, Long value4, Timestamp value5) {
         value1(value1);
         value2(value2);
         value3(value3);
+        value4(value4);
+        value5(value5);
         return this;
     }
 
@@ -148,11 +210,13 @@ public class OriginalTextRecord extends UpdatableRecordImpl<OriginalTextRecord> 
         super(OriginalText.ORIGINAL_TEXT);
     }
 
-    public OriginalTextRecord(Long id, Long userGroupId, Long domainId) {
+    public OriginalTextRecord(Long id, Long userGroupId, Long domainId, Long userId, Timestamp time) {
         super(OriginalText.ORIGINAL_TEXT);
 
         set(0, id);
         set(1, userGroupId);
         set(2, domainId);
+        set(3, userId);
+        set(4, time);
     }
 }

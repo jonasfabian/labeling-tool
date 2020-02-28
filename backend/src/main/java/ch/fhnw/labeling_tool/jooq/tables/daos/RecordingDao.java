@@ -78,4 +78,20 @@ public class RecordingDao extends DAOImpl<RecordingRecord, ch.fhnw.labeling_tool
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Recording> fetchByLabel(RecordingLabel... values) {
         return fetch(Recording.RECORDING.LABEL, values);
     }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Recording> fetchRangeOfWrong(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(Recording.RECORDING.WRONG, lowerInclusive, upperInclusive);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Recording> fetchByWrong(Long... values) {
+        return fetch(Recording.RECORDING.WRONG, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Recording> fetchRangeOfCorrect(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(Recording.RECORDING.CORRECT, lowerInclusive, upperInclusive);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Recording> fetchByCorrect(Long... values) {
+        return fetch(Recording.RECORDING.CORRECT, values);
+    }
 }

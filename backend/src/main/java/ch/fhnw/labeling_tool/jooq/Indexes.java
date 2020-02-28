@@ -49,6 +49,7 @@ public class Indexes {
     public static final Index ORIGINAL_TEXT_DOMAIN_ID = Indexes0.ORIGINAL_TEXT_DOMAIN_ID;
     public static final Index ORIGINAL_TEXT_PRIMARY = Indexes0.ORIGINAL_TEXT_PRIMARY;
     public static final Index ORIGINAL_TEXT_USER_GROUP_ID = Indexes0.ORIGINAL_TEXT_USER_GROUP_ID;
+    public static final Index ORIGINAL_TEXT_USER_ID = Indexes0.ORIGINAL_TEXT_USER_ID;
     public static final Index RECORDING_EXCERPT_ID = Indexes0.RECORDING_EXCERPT_ID;
     public static final Index RECORDING_PRIMARY = Indexes0.RECORDING_PRIMARY;
     public static final Index RECORDING_USER_ID = Indexes0.RECORDING_USER_ID;
@@ -88,6 +89,7 @@ public class Indexes {
         public static Index ORIGINAL_TEXT_DOMAIN_ID = Internal.createIndex("domain_id", OriginalText.ORIGINAL_TEXT, new OrderField[] { OriginalText.ORIGINAL_TEXT.DOMAIN_ID }, false);
         public static Index ORIGINAL_TEXT_PRIMARY = Internal.createIndex("PRIMARY", OriginalText.ORIGINAL_TEXT, new OrderField[] { OriginalText.ORIGINAL_TEXT.ID }, true);
         public static Index ORIGINAL_TEXT_USER_GROUP_ID = Internal.createIndex("user_group_id", OriginalText.ORIGINAL_TEXT, new OrderField[] { OriginalText.ORIGINAL_TEXT.USER_GROUP_ID }, false);
+        public static Index ORIGINAL_TEXT_USER_ID = Internal.createIndex("user_id", OriginalText.ORIGINAL_TEXT, new OrderField[] { OriginalText.ORIGINAL_TEXT.USER_ID }, false);
         public static Index RECORDING_EXCERPT_ID = Internal.createIndex("excerpt_id", Recording.RECORDING, new OrderField[] { Recording.RECORDING.EXCERPT_ID }, false);
         public static Index RECORDING_PRIMARY = Internal.createIndex("PRIMARY", Recording.RECORDING, new OrderField[] { Recording.RECORDING.ID }, true);
         public static Index RECORDING_USER_ID = Internal.createIndex("user_id", Recording.RECORDING, new OrderField[] { Recording.RECORDING.USER_ID }, false);

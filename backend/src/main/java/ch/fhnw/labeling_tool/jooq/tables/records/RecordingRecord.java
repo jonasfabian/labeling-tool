@@ -13,15 +13,15 @@ import javax.validation.constraints.NotNull;
 
 import org.jooq.Field;
 import org.jooq.Record1;
-import org.jooq.Record5;
-import org.jooq.Row5;
+import org.jooq.Record7;
+import org.jooq.Row7;
 import org.jooq.impl.UpdatableRecordImpl;
 
 
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implements Record5<Long, Long, Long, Timestamp, RecordingLabel> {
+public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implements Record7<Long, Long, Long, Timestamp, RecordingLabel, Long, Long> {
 
-    private static final long serialVersionUID = -1459478292;
+    private static final long serialVersionUID = -364689568;
 
     public void setId(Long value) {
         set(0, value);
@@ -65,6 +65,22 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
         return (RecordingLabel) get(4);
     }
 
+    public void setWrong(Long value) {
+        set(5, value);
+    }
+
+    public Long getWrong() {
+        return (Long) get(5);
+    }
+
+    public void setCorrect(Long value) {
+        set(6, value);
+    }
+
+    public Long getCorrect() {
+        return (Long) get(6);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -75,17 +91,17 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
     }
 
     // -------------------------------------------------------------------------
-    // Record5 type implementation
+    // Record7 type implementation
     // -------------------------------------------------------------------------
 
     @Override
-    public Row5<Long, Long, Long, Timestamp, RecordingLabel> fieldsRow() {
-        return (Row5) super.fieldsRow();
+    public Row7<Long, Long, Long, Timestamp, RecordingLabel, Long, Long> fieldsRow() {
+        return (Row7) super.fieldsRow();
     }
 
     @Override
-    public Row5<Long, Long, Long, Timestamp, RecordingLabel> valuesRow() {
-        return (Row5) super.valuesRow();
+    public Row7<Long, Long, Long, Timestamp, RecordingLabel, Long, Long> valuesRow() {
+        return (Row7) super.valuesRow();
     }
 
     @Override
@@ -114,6 +130,16 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
     }
 
     @Override
+    public Field<Long> field6() {
+        return Recording.RECORDING.WRONG;
+    }
+
+    @Override
+    public Field<Long> field7() {
+        return Recording.RECORDING.CORRECT;
+    }
+
+    @Override
     public Long component1() {
         return getId();
     }
@@ -139,6 +165,16 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
     }
 
     @Override
+    public Long component6() {
+        return getWrong();
+    }
+
+    @Override
+    public Long component7() {
+        return getCorrect();
+    }
+
+    @Override
     public Long value1() {
         return getId();
     }
@@ -161,6 +197,16 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
     @Override
     public RecordingLabel value5() {
         return getLabel();
+    }
+
+    @Override
+    public Long value6() {
+        return getWrong();
+    }
+
+    @Override
+    public Long value7() {
+        return getCorrect();
     }
 
     @Override
@@ -194,12 +240,26 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
     }
 
     @Override
-    public RecordingRecord values(Long value1, Long value2, Long value3, Timestamp value4, RecordingLabel value5) {
+    public RecordingRecord value6(Long value) {
+        setWrong(value);
+        return this;
+    }
+
+    @Override
+    public RecordingRecord value7(Long value) {
+        setCorrect(value);
+        return this;
+    }
+
+    @Override
+    public RecordingRecord values(Long value1, Long value2, Long value3, Timestamp value4, RecordingLabel value5, Long value6, Long value7) {
         value1(value1);
         value2(value2);
         value3(value3);
         value4(value4);
         value5(value5);
+        value6(value6);
+        value7(value7);
         return this;
     }
 
@@ -211,7 +271,7 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
         super(Recording.RECORDING);
     }
 
-    public RecordingRecord(Long id, Long excerptId, Long userId, Timestamp time, RecordingLabel label) {
+    public RecordingRecord(Long id, Long excerptId, Long userId, Timestamp time, RecordingLabel label, Long wrong, Long correct) {
         super(Recording.RECORDING);
 
         set(0, id);
@@ -219,5 +279,7 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
         set(2, userId);
         set(3, time);
         set(4, label);
+        set(5, wrong);
+        set(6, correct);
     }
 }

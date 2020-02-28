@@ -18,7 +18,7 @@ import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row7;
+import org.jooq.Row9;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -30,7 +30,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TextAudio extends TableImpl<TextAudioRecord> {
 
-    private static final long serialVersionUID = 1068518435;
+    private static final long serialVersionUID = -754379407;
 
     public static final TextAudio TEXT_AUDIO = new TextAudio();
 
@@ -52,6 +52,10 @@ public class TextAudio extends TableImpl<TextAudioRecord> {
     public final TableField<TextAudioRecord, Long> SPEAKER_ID = createField(DSL.name("speaker_id"), org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
     public final TableField<TextAudioRecord, Long> SOURCE_ID = createField(DSL.name("source_id"), org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+
+    public final TableField<TextAudioRecord, Long> WRONG = createField(DSL.name("wrong"), org.jooq.impl.SQLDataType.BIGINT.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.BIGINT)), this, "");
+
+    public final TableField<TextAudioRecord, Long> CORRECT = createField(DSL.name("correct"), org.jooq.impl.SQLDataType.BIGINT.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.BIGINT)), this, "");
 
     public TextAudio() {
         this(DSL.name("text_audio"), null);
@@ -136,11 +140,11 @@ public class TextAudio extends TableImpl<TextAudioRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row7 type methods
+    // Row9 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row7<Long, Double, Double, String, String, Long, Long> fieldsRow() {
-        return (Row7) super.fieldsRow();
+    public Row9<Long, Double, Double, String, String, Long, Long, Long, Long> fieldsRow() {
+        return (Row9) super.fieldsRow();
     }
 }

@@ -7,6 +7,7 @@ package ch.fhnw.labeling_tool.jooq.tables.daos;
 import ch.fhnw.labeling_tool.jooq.tables.OriginalText;
 import ch.fhnw.labeling_tool.jooq.tables.records.OriginalTextRecord;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.jooq.Configuration;
@@ -59,5 +60,21 @@ public class OriginalTextDao extends DAOImpl<OriginalTextRecord, ch.fhnw.labelin
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.OriginalText> fetchByDomainId(Long... values) {
         return fetch(OriginalText.ORIGINAL_TEXT.DOMAIN_ID, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.OriginalText> fetchRangeOfUserId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(OriginalText.ORIGINAL_TEXT.USER_ID, lowerInclusive, upperInclusive);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.OriginalText> fetchByUserId(Long... values) {
+        return fetch(OriginalText.ORIGINAL_TEXT.USER_ID, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.OriginalText> fetchRangeOfTime(Timestamp lowerInclusive, Timestamp upperInclusive) {
+        return fetchRange(OriginalText.ORIGINAL_TEXT.TIME, lowerInclusive, upperInclusive);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.OriginalText> fetchByTime(Timestamp... values) {
+        return fetch(OriginalText.ORIGINAL_TEXT.TIME, values);
     }
 }

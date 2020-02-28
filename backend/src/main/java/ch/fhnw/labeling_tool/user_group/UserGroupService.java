@@ -1,6 +1,7 @@
 package ch.fhnw.labeling_tool.user_group;
 
 import ch.fhnw.labeling_tool.config.LabelingToolConfig;
+import ch.fhnw.labeling_tool.jooq.enums.CheckedTextAudioLabel;
 import ch.fhnw.labeling_tool.jooq.enums.RecordingLabel;
 import ch.fhnw.labeling_tool.jooq.tables.daos.CheckedTextAudioDao;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedTextAudio;
@@ -46,13 +47,13 @@ public class UserGroupService {
     public Excerpt getExcerpt(Long groupId) {
         isAllowed(groupId);
         // TODO maybe return 10 like check component
-        // TODO maybe add direct foreign keys instead of join
         System.out.println(groupId);
         return dslContext.select(EXCERPT.fields())
-                .from(EXCERPT.join(ORIGINAL_TEXT).onKey().join(USER_GROUP).onKey())
-                .where(USER_GROUP.ID.eq(groupId)
+                .from(EXCERPT.join(ORIGINAL_TEXT).onKey())
+                .where(ORIGINAL_TEXT.USER_GROUP_ID.eq(groupId)
                         .and(EXCERPT.ISSKIPPED.lessOrEqual(3))
                         .and(EXCERPT.IS_SENTENCE_ERROR.isFalse())
+
                         .and(EXCERPT.ID.notIn(dslContext.select(RECORDING.EXCERPT_ID)
                                 .from(RECORDING.join(USER).onKey())
                                 .where(USER.DIALECT_ID.eq(customUserDetailsService.getLoggedInUserDialectId())))))
@@ -64,22 +65,24 @@ public class UserGroupService {
         isAllowed(groupId);
         checkedTextAudio.setUserId(customUserDetailsService.getLoggedInUserId());
         checkedTextAudioDao.insert(checkedTextAudio);
+        if (checkedTextAudio.getLabel() == CheckedTextAudioLabel.WRONG) {
+            dslContext.update(TEXT_AUDIO).set(TEXT_AUDIO.WRONG, TEXT_AUDIO.WRONG.plus(1)).where(TEXT_AUDIO.ID.eq(checkedTextAudio.getTextAudioId())).execute();
+        } else if (checkedTextAudio.getLabel() == CheckedTextAudioLabel.CORRECT) {
+            dslContext.update(TEXT_AUDIO).set(TEXT_AUDIO.CORRECT, TEXT_AUDIO.CORRECT.plus(1)).where(TEXT_AUDIO.ID.eq(checkedTextAudio.getTextAudioId())).execute();
+        }
     }
 
     public List<TextAudioDto> getNextTextAudios(long groupId) {
+        isAllowed(groupId);
         /*NOTE for now we just return the normal public ones*/
-//        isAllowed(groupId);
-        // TODO maybe add user_group mapping for checked audio?
         // TODO maybe add ability to also check the recordings as the user_groups cannot upload anything else.
-        // TODO maybe filter already checked ones e.g correct,wrong>10
-        // TODO this probably needs a internal counter so we do not need to join each time
         System.out.println(groupId);
         return dslContext.select(TEXT_AUDIO.ID, TEXT_AUDIO.AUDIO_START, TEXT_AUDIO.AUDIO_END, TEXT_AUDIO.TEXT)
                 .from(TEXT_AUDIO)
-                .where(TEXT_AUDIO.ID.notIn(
-
-                        dslContext.select(CHECKED_TEXT_AUDIO.TEXT_AUDIO_ID).from(CHECKED_TEXT_AUDIO)
+                .where(DSL.abs(TEXT_AUDIO.WRONG.minus(TEXT_AUDIO.CORRECT)).le(3L)
+                        .and(TEXT_AUDIO.ID.notIn(dslContext.select(CHECKED_TEXT_AUDIO.TEXT_AUDIO_ID).from(CHECKED_TEXT_AUDIO)
                                 .where(CHECKED_TEXT_AUDIO.USER_ID.eq(customUserDetailsService.getLoggedInUserId()))))
+                )
                 .orderBy(DSL.rand())
                 .limit(10).fetchInto(TextAudioDto.class);
     }
@@ -87,7 +90,7 @@ public class UserGroupService {
     public byte[] getAudio(long groupId, long audioId) throws IOException {
         isAllowed(groupId);
         //TODO check if audio is in the right group audioId
-        return Files.readAllBytes(labelingToolConfig.getBasePath().resolve("./text_audio/" + audioId + ".flac"));
+        return Files.readAllBytes(labelingToolConfig.getBasePath().resolve("text_audio/" + audioId + ".flac"));
     }
 
     public void putExcerptSkipped(long groupId, long excerptId) {
@@ -120,9 +123,8 @@ public class UserGroupService {
 
     private void checkExcerpt(long groupId, long excerptId) {
         isAllowed(groupId);
-        // TODO maybe add direct foreign keys instead of join
-        boolean equals = dslContext.select(USER_GROUP.ID)
-                .from(EXCERPT.join(ORIGINAL_TEXT).onKey().join(USER_GROUP).onKey())
+        boolean equals = dslContext.select(ORIGINAL_TEXT.USER_GROUP_ID)
+                .from(EXCERPT.join(ORIGINAL_TEXT).onKey())
                 .where(EXCERPT.ID.eq(excerptId))
                 .fetchOne().component1().equals(groupId);
         if (!equals) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);

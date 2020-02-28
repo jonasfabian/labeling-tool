@@ -9,6 +9,7 @@ import ch.fhnw.labeling_tool.jooq.Keys;
 import ch.fhnw.labeling_tool.jooq.LabelingTool;
 import ch.fhnw.labeling_tool.jooq.tables.records.OriginalTextRecord;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row3;
+import org.jooq.Row5;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -30,7 +31,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class OriginalText extends TableImpl<OriginalTextRecord> {
 
-    private static final long serialVersionUID = 1452915015;
+    private static final long serialVersionUID = -684782233;
 
     public static final OriginalText ORIGINAL_TEXT = new OriginalText();
 
@@ -44,6 +45,10 @@ public class OriginalText extends TableImpl<OriginalTextRecord> {
     public final TableField<OriginalTextRecord, Long> USER_GROUP_ID = createField(DSL.name("user_group_id"), org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
     public final TableField<OriginalTextRecord, Long> DOMAIN_ID = createField(DSL.name("domain_id"), org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+
+    public final TableField<OriginalTextRecord, Long> USER_ID = createField(DSL.name("user_id"), org.jooq.impl.SQLDataType.BIGINT.defaultValue(org.jooq.impl.DSL.inline("1", org.jooq.impl.SQLDataType.BIGINT)), this, "");
+
+    public final TableField<OriginalTextRecord, Timestamp> TIME = createField(DSL.name("time"), org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("current_timestamp()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
 
     public OriginalText() {
         this(DSL.name("original_text"), null);
@@ -76,7 +81,7 @@ public class OriginalText extends TableImpl<OriginalTextRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.ORIGINAL_TEXT_DOMAIN_ID, Indexes.ORIGINAL_TEXT_PRIMARY, Indexes.ORIGINAL_TEXT_USER_GROUP_ID);
+        return Arrays.<Index>asList(Indexes.ORIGINAL_TEXT_DOMAIN_ID, Indexes.ORIGINAL_TEXT_PRIMARY, Indexes.ORIGINAL_TEXT_USER_GROUP_ID, Indexes.ORIGINAL_TEXT_USER_ID);
     }
 
     @Override
@@ -96,7 +101,7 @@ public class OriginalText extends TableImpl<OriginalTextRecord> {
 
     @Override
     public List<ForeignKey<OriginalTextRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<OriginalTextRecord, ?>>asList(Keys.ORIGINAL_TEXT_IBFK_1, Keys.ORIGINAL_TEXT_IBFK_2);
+        return Arrays.<ForeignKey<OriginalTextRecord, ?>>asList(Keys.ORIGINAL_TEXT_IBFK_1, Keys.ORIGINAL_TEXT_IBFK_2, Keys.ORIGINAL_TEXT_IBFK_3);
     }
 
     public UserGroup userGroup() {
@@ -105,6 +110,10 @@ public class OriginalText extends TableImpl<OriginalTextRecord> {
 
     public Domain domain() {
         return new Domain(this, Keys.ORIGINAL_TEXT_IBFK_2);
+    }
+
+    public User user() {
+        return new User(this, Keys.ORIGINAL_TEXT_IBFK_3);
     }
 
     @Override
@@ -128,11 +137,11 @@ public class OriginalText extends TableImpl<OriginalTextRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row3 type methods
+    // Row5 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row3<Long, Long, Long> fieldsRow() {
-        return (Row3) super.fieldsRow();
+    public Row5<Long, Long, Long, Long, Timestamp> fieldsRow() {
+        return (Row5) super.fieldsRow();
     }
 }

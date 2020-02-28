@@ -97,6 +97,7 @@ public class Keys {
     public static final ForeignKey<ExcerptRecord, OriginalTextRecord> EXCERPT_IBFK_1 = ForeignKeys0.EXCERPT_IBFK_1;
     public static final ForeignKey<OriginalTextRecord, UserGroupRecord> ORIGINAL_TEXT_IBFK_1 = ForeignKeys0.ORIGINAL_TEXT_IBFK_1;
     public static final ForeignKey<OriginalTextRecord, DomainRecord> ORIGINAL_TEXT_IBFK_2 = ForeignKeys0.ORIGINAL_TEXT_IBFK_2;
+    public static final ForeignKey<OriginalTextRecord, UserRecord> ORIGINAL_TEXT_IBFK_3 = ForeignKeys0.ORIGINAL_TEXT_IBFK_3;
     public static final ForeignKey<RecordingRecord, ExcerptRecord> RECORDING_IBFK_2 = ForeignKeys0.RECORDING_IBFK_2;
     public static final ForeignKey<RecordingRecord, UserRecord> RECORDING_IBFK_1 = ForeignKeys0.RECORDING_IBFK_1;
     public static final ForeignKey<TextAudioRecord, SpeakerRecord> TEXT_AUDIO_IBFK_1 = ForeignKeys0.TEXT_AUDIO_IBFK_1;
@@ -155,6 +156,7 @@ public class Keys {
         public static final ForeignKey<ExcerptRecord, OriginalTextRecord> EXCERPT_IBFK_1 = Internal.createForeignKey(ch.fhnw.labeling_tool.jooq.Keys.KEY_ORIGINAL_TEXT_PRIMARY, Excerpt.EXCERPT, "excerpt_ibfk_1", Excerpt.EXCERPT.ORIGINAL_TEXT_ID);
         public static final ForeignKey<OriginalTextRecord, UserGroupRecord> ORIGINAL_TEXT_IBFK_1 = Internal.createForeignKey(ch.fhnw.labeling_tool.jooq.Keys.KEY_USER_GROUP_PRIMARY, OriginalText.ORIGINAL_TEXT, "original_text_ibfk_1", OriginalText.ORIGINAL_TEXT.USER_GROUP_ID);
         public static final ForeignKey<OriginalTextRecord, DomainRecord> ORIGINAL_TEXT_IBFK_2 = Internal.createForeignKey(ch.fhnw.labeling_tool.jooq.Keys.KEY_DOMAIN_PRIMARY, OriginalText.ORIGINAL_TEXT, "original_text_ibfk_2", OriginalText.ORIGINAL_TEXT.DOMAIN_ID);
+        public static final ForeignKey<OriginalTextRecord, UserRecord> ORIGINAL_TEXT_IBFK_3 = Internal.createForeignKey(ch.fhnw.labeling_tool.jooq.Keys.KEY_USER_PRIMARY, OriginalText.ORIGINAL_TEXT, "original_text_ibfk_3", OriginalText.ORIGINAL_TEXT.USER_ID);
         public static final ForeignKey<RecordingRecord, ExcerptRecord> RECORDING_IBFK_2 = Internal.createForeignKey(ch.fhnw.labeling_tool.jooq.Keys.KEY_EXCERPT_PRIMARY, Recording.RECORDING, "recording_ibfk_2", Recording.RECORDING.EXCERPT_ID);
         public static final ForeignKey<RecordingRecord, UserRecord> RECORDING_IBFK_1 = Internal.createForeignKey(ch.fhnw.labeling_tool.jooq.Keys.KEY_USER_PRIMARY, Recording.RECORDING, "recording_ibfk_1", Recording.RECORDING.USER_ID);
         public static final ForeignKey<TextAudioRecord, SpeakerRecord> TEXT_AUDIO_IBFK_1 = Internal.createForeignKey(ch.fhnw.labeling_tool.jooq.Keys.KEY_SPEAKER_PRIMARY, TextAudio.TEXT_AUDIO, "text_audio_ibfk_1", TextAudio.TEXT_AUDIO.SPEAKER_ID);

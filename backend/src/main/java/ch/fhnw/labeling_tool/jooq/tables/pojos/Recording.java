@@ -15,13 +15,15 @@ import javax.validation.constraints.NotNull;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Recording implements Serializable {
 
-    private static final long serialVersionUID = -1513931537;
+    private static final long serialVersionUID = -1423879176;
 
     private Long           id;
     private Long           excerptId;
     private Long           userId;
     private Timestamp      time;
     private RecordingLabel label;
+    private Long           wrong;
+    private Long           correct;
 
     public Recording() {}
 
@@ -31,6 +33,8 @@ public class Recording implements Serializable {
         this.userId = value.userId;
         this.time = value.time;
         this.label = value.label;
+        this.wrong = value.wrong;
+        this.correct = value.correct;
     }
 
     public Recording(
@@ -38,13 +42,17 @@ public class Recording implements Serializable {
         Long           excerptId,
         Long           userId,
         Timestamp      time,
-        RecordingLabel label
+        RecordingLabel label,
+        Long           wrong,
+        Long           correct
     ) {
         this.id = id;
         this.excerptId = excerptId;
         this.userId = userId;
         this.time = time;
         this.label = label;
+        this.wrong = wrong;
+        this.correct = correct;
     }
 
     public Long getId() {
@@ -89,6 +97,22 @@ public class Recording implements Serializable {
         this.label = label;
     }
 
+    public Long getWrong() {
+        return this.wrong;
+    }
+
+    public void setWrong(Long wrong) {
+        this.wrong = wrong;
+    }
+
+    public Long getCorrect() {
+        return this.correct;
+    }
+
+    public void setCorrect(Long correct) {
+        this.correct = correct;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Recording (");
@@ -98,6 +122,8 @@ public class Recording implements Serializable {
         sb.append(", ").append(userId);
         sb.append(", ").append(time);
         sb.append(", ").append(label);
+        sb.append(", ").append(wrong);
+        sb.append(", ").append(correct);
 
         sb.append(")");
         return sb.toString();

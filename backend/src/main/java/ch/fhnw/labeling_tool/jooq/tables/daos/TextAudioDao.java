@@ -92,4 +92,20 @@ public class TextAudioDao extends DAOImpl<TextAudioRecord, ch.fhnw.labeling_tool
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchBySourceId(Long... values) {
         return fetch(TextAudio.TEXT_AUDIO.SOURCE_ID, values);
     }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchRangeOfWrong(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(TextAudio.TEXT_AUDIO.WRONG, lowerInclusive, upperInclusive);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchByWrong(Long... values) {
+        return fetch(TextAudio.TEXT_AUDIO.WRONG, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchRangeOfCorrect(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(TextAudio.TEXT_AUDIO.CORRECT, lowerInclusive, upperInclusive);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchByCorrect(Long... values) {
+        return fetch(TextAudio.TEXT_AUDIO.CORRECT, values);
+    }
 }

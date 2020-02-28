@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TextAudio implements Serializable {
 
-    private static final long serialVersionUID = 130168811;
+    private static final long serialVersionUID = -1441273082;
 
     private Long   id;
     private Double audioStart;
@@ -22,6 +22,8 @@ public class TextAudio implements Serializable {
     private String pathToFile;
     private Long   speakerId;
     private Long   sourceId;
+    private Long   wrong;
+    private Long   correct;
 
     public TextAudio() {}
 
@@ -33,6 +35,8 @@ public class TextAudio implements Serializable {
         this.pathToFile = value.pathToFile;
         this.speakerId = value.speakerId;
         this.sourceId = value.sourceId;
+        this.wrong = value.wrong;
+        this.correct = value.correct;
     }
 
     public TextAudio(
@@ -42,7 +46,9 @@ public class TextAudio implements Serializable {
         String text,
         String pathToFile,
         Long   speakerId,
-        Long   sourceId
+        Long   sourceId,
+        Long   wrong,
+        Long   correct
     ) {
         this.id = id;
         this.audioStart = audioStart;
@@ -51,6 +57,8 @@ public class TextAudio implements Serializable {
         this.pathToFile = pathToFile;
         this.speakerId = speakerId;
         this.sourceId = sourceId;
+        this.wrong = wrong;
+        this.correct = correct;
     }
 
     public Long getId() {
@@ -116,6 +124,22 @@ public class TextAudio implements Serializable {
         this.sourceId = sourceId;
     }
 
+    public Long getWrong() {
+        return this.wrong;
+    }
+
+    public void setWrong(Long wrong) {
+        this.wrong = wrong;
+    }
+
+    public Long getCorrect() {
+        return this.correct;
+    }
+
+    public void setCorrect(Long correct) {
+        this.correct = correct;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("TextAudio (");
@@ -127,6 +151,8 @@ public class TextAudio implements Serializable {
         sb.append(", ").append(pathToFile);
         sb.append(", ").append(speakerId);
         sb.append(", ").append(sourceId);
+        sb.append(", ").append(wrong);
+        sb.append(", ").append(correct);
 
         sb.append(")");
         return sb.toString();
