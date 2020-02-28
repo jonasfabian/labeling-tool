@@ -3,13 +3,14 @@ import {NgModule} from '@angular/core';
 import {AuthGuardService} from './guards/auth-guard.service';
 import {ProfileComponent} from './components/profile/profile.component';
 import {OverviewComponent} from './components/overview/overview.component';
-import {CheckComponent} from './components/check/check.component';
 import {LoginComponent} from './components/login/login.component';
 import {RecordComponent} from './components/record/record.component';
 import {NavigationMenuComponent} from './components/navigation-menu/navigation-menu.component';
 import {GroupAdminComponent} from './components/admin/group-admin/group-admin.component';
 import {AdminComponent} from './components/admin/groups-admin/admin.component';
 import {HomeComponent} from './components/home/home.component';
+import {CheckTextAudioComponent} from './components/check/check-text-audio.component';
+import {CheckRecordingComponent} from './components/check/check-recording.component';
 
 const routes: Routes = [
   {
@@ -42,7 +43,15 @@ const routes: Routes = [
       },
       {
         path: 'check',
-        component: CheckComponent,
+        children: [
+          {
+            path: 'text_audio',
+            component: CheckTextAudioComponent,
+          }, {
+            path: 'recording',
+            component: CheckRecordingComponent,
+          }
+        ],
       },
       {
         path: 'record',

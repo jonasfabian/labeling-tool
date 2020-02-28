@@ -1,15 +1,18 @@
 package ch.fhnw.labeling_tool.user_group;
 
 import ch.fhnw.labeling_tool.config.LabelingToolConfig;
+import ch.fhnw.labeling_tool.jooq.enums.CheckedRecordingLabel;
 import ch.fhnw.labeling_tool.jooq.enums.CheckedTextAudioLabel;
 import ch.fhnw.labeling_tool.jooq.enums.RecordingLabel;
 import ch.fhnw.labeling_tool.jooq.tables.daos.CheckedTextAudioDao;
-import ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedTextAudio;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.Excerpt;
+import ch.fhnw.labeling_tool.jooq.tables.records.CheckedRecordingRecord;
+import ch.fhnw.labeling_tool.jooq.tables.records.CheckedTextAudioRecord;
 import ch.fhnw.labeling_tool.jooq.tables.records.RecordingRecord;
-import ch.fhnw.labeling_tool.model.TextAudioDto;
 import ch.fhnw.labeling_tool.user.CustomUserDetailsService;
 import org.jooq.DSLContext;
+import org.jooq.Record2;
+import org.jooq.SelectConditionStep;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -61,36 +64,74 @@ public class UserGroupService {
                 .limit(1).fetchOneInto(Excerpt.class);
     }
 
-    public void postCheckedTextAudio(long groupId, CheckedTextAudio checkedTextAudio) {
+    public void postCheckedOccurrence(long groupId, CheckedOccurrence checkedOccurrence) {
         isAllowed(groupId);
-        checkedTextAudio.setUserId(customUserDetailsService.getLoggedInUserId());
-        checkedTextAudioDao.insert(checkedTextAudio);
-        if (checkedTextAudio.getLabel() == CheckedTextAudioLabel.WRONG) {
-            dslContext.update(TEXT_AUDIO).set(TEXT_AUDIO.WRONG, TEXT_AUDIO.WRONG.plus(1)).where(TEXT_AUDIO.ID.eq(checkedTextAudio.getTextAudioId())).execute();
-        } else if (checkedTextAudio.getLabel() == CheckedTextAudioLabel.CORRECT) {
-            dslContext.update(TEXT_AUDIO).set(TEXT_AUDIO.CORRECT, TEXT_AUDIO.CORRECT.plus(1)).where(TEXT_AUDIO.ID.eq(checkedTextAudio.getTextAudioId())).execute();
+        //TODO refactor logic
+        //TODO change based on mode
+        if (checkedOccurrence.mode == OccurrenceMode.TEXT_AUDIO)
+            postCheckedOccurrenceTextAudio(checkedOccurrence);
+        else postCheckedOccurrenceRecording(checkedOccurrence);
+    }
+
+    private void postCheckedOccurrenceRecording(CheckedOccurrence checkedOccurrence) {
+        var label = CheckedRecordingLabel.valueOf(checkedOccurrence.label.toString());
+        var record = new CheckedRecordingRecord();
+        record.setRecordingId(checkedOccurrence.id);
+        record.setUserId(customUserDetailsService.getLoggedInUserId());
+        record.setLabel(label);
+        dslContext.executeInsert(record);
+        if (checkedOccurrence.label == CheckedOccurrenceLabel.WRONG) {
+            dslContext.update(RECORDING).set(RECORDING.WRONG, RECORDING.WRONG.plus(1)).where(RECORDING.ID.eq(checkedOccurrence.id)).execute();
+        } else if (checkedOccurrence.label == CheckedOccurrenceLabel.CORRECT) {
+            dslContext.update(RECORDING).set(RECORDING.CORRECT, RECORDING.CORRECT.plus(1)).where(RECORDING.ID.eq(checkedOccurrence.id)).execute();
         }
     }
 
-    public List<TextAudioDto> getNextTextAudios(long groupId) {
-        isAllowed(groupId);
-        /*NOTE for now we just return the normal public ones*/
-        // TODO maybe add ability to also check the recordings as the user_groups cannot upload anything else.
-        System.out.println(groupId);
-        return dslContext.select(TEXT_AUDIO.ID, TEXT_AUDIO.AUDIO_START, TEXT_AUDIO.AUDIO_END, TEXT_AUDIO.TEXT)
-                .from(TEXT_AUDIO)
-                .where(DSL.abs(TEXT_AUDIO.WRONG.minus(TEXT_AUDIO.CORRECT)).le(3L)
-                        .and(TEXT_AUDIO.ID.notIn(dslContext.select(CHECKED_TEXT_AUDIO.TEXT_AUDIO_ID).from(CHECKED_TEXT_AUDIO)
-                                .where(CHECKED_TEXT_AUDIO.USER_ID.eq(customUserDetailsService.getLoggedInUserId()))))
-                )
-                .orderBy(DSL.rand())
-                .limit(10).fetchInto(TextAudioDto.class);
+    private void postCheckedOccurrenceTextAudio(CheckedOccurrence checkedOccurrence) {
+        var label = CheckedTextAudioLabel.valueOf(checkedOccurrence.label.toString());
+        var record = new CheckedTextAudioRecord();
+        record.setTextAudioId(checkedOccurrence.id);
+        record.setUserId(customUserDetailsService.getLoggedInUserId());
+        record.setLabel(label);
+        dslContext.executeInsert(record);
+        if (checkedOccurrence.label == CheckedOccurrenceLabel.WRONG) {
+            dslContext.update(TEXT_AUDIO).set(TEXT_AUDIO.WRONG, TEXT_AUDIO.WRONG.plus(1)).where(TEXT_AUDIO.ID.eq(checkedOccurrence.id)).execute();
+        } else if (checkedOccurrence.label == CheckedOccurrenceLabel.CORRECT) {
+            dslContext.update(TEXT_AUDIO).set(TEXT_AUDIO.CORRECT, TEXT_AUDIO.CORRECT.plus(1)).where(TEXT_AUDIO.ID.eq(checkedOccurrence.id)).execute();
+        }
     }
 
-    public byte[] getAudio(long groupId, long audioId) throws IOException {
+    public List<Occurrence> getNextTextAudios(long groupId, OccurrenceMode mode) {
+        isAllowed(groupId);
+        //TODO check user_group mapping
+        /*NOTE for now we just return the normal public ones*/
+        //TODO not sure if the datastructure may be improved
+        SelectConditionStep<Record2<Long, String>> res;
+        if (mode == OccurrenceMode.TEXT_AUDIO) {
+            res = dslContext.select(TEXT_AUDIO.ID, TEXT_AUDIO.TEXT)
+                    .from(TEXT_AUDIO)
+                    .where(DSL.abs(TEXT_AUDIO.WRONG.minus(TEXT_AUDIO.CORRECT)).le(3L)
+                            .and(TEXT_AUDIO.ID.notIn(dslContext.select(CHECKED_TEXT_AUDIO.TEXT_AUDIO_ID).from(CHECKED_TEXT_AUDIO)
+                                    .where(CHECKED_TEXT_AUDIO.USER_ID.eq(customUserDetailsService.getLoggedInUserId()))))
+                    );
+        } else {
+            res = dslContext.select(RECORDING.ID, EXCERPT.EXCERPT_)
+                    .from(RECORDING.join(EXCERPT).onKey())
+                    .where(DSL.abs(RECORDING.WRONG.minus(RECORDING.CORRECT)).le(3L)
+                            .and(RECORDING.ID.notIn(dslContext.select(CHECKED_RECORDING.RECORDING_ID).from(CHECKED_RECORDING)
+                                    .where(CHECKED_RECORDING.USER_ID.eq(customUserDetailsService.getLoggedInUserId()))))
+                    );
+        }
+        return res.orderBy(DSL.rand()).limit(10).fetchInto(Occurrence.class);
+
+    }
+
+    public byte[] getAudio(long groupId, long audioId, OccurrenceMode mode) throws IOException {
         isAllowed(groupId);
         //TODO check if audio is in the right group audioId
-        return Files.readAllBytes(labelingToolConfig.getBasePath().resolve("text_audio/" + audioId + ".flac"));
+        var s = (mode == OccurrenceMode.TEXT_AUDIO) ? "text_audio/" + audioId + ".flac" : "recording/" + audioId + ".webm";
+        return Files.readAllBytes(labelingToolConfig.getBasePath().resolve(s));
+
     }
 
     public void putExcerptSkipped(long groupId, long excerptId) {

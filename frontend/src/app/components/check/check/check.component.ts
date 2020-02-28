@@ -1,26 +1,37 @@
-import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
+import {Component, HostListener, Input, OnInit, ViewChild} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {AuthService} from '../../services/auth.service';
-import {CheckMoreComponent} from './check-more/check-more.component';
-import {ShortcutComponent} from './shortcut/shortcut.component';
+import {AuthService} from '../../../services/auth.service';
+import {CheckMoreComponent} from '../check-more/check-more.component';
+import {ShortcutComponent} from '../shortcut/shortcut.component';
 import {HttpClient} from '@angular/common/http';
-import {TextAudioDto} from '../../models/text-audio-dto';
-import {environment} from '../../../environments/environment';
+import {TextAudioDto} from '../../../models/text-audio-dto';
+import {environment} from '../../../../environments/environment';
 import {CarouselComponent} from 'ngx-carousel-lib';
-import {CheckedTextAudio, CheckedTextAudioLabel} from '../../models/user-and-text-audio';
+import {CheckedOccurrence, CheckedOccurrenceLabel, Occurrence} from './checked-occurrence';
 import {Router} from '@angular/router';
-import {UserGroupService} from '../../services/user-group.service';
+import {UserGroupService} from '../../../services/user-group.service';
+
+export enum OccurrenceMode {
+  RECORDING = 'RECORDING', TEXT_AUDIO = 'TEXT_AUDIO'
+}
 
 @Component({
   selector: 'app-check',
   templateUrl: './check.component.html',
   styleUrls: ['./check.component.scss']
 })
+// TODO switch or 2x components,routings -> probably 2x components
+// TODO refactor so it is possible to check recordings or textAudio
+// TODO add message in case someone is labeling textaudio but has not selected the public group?
 export class CheckComponent implements OnInit {
+  // TODO maybe add send checkMode to backend -> or mutliple urls
+  @Input() checkMode: OccurrenceMode;
   isPlaying = false;
-  textAudios: Array<TextAudioDto> = [];
+  // TODO probably just remove audioStart,end so it can be reused
+  // TODO rename
+  textAudios: Array<Occurrence> = [];
   audioProgress = 0;
-  checkedTextAudioLabel = CheckedTextAudioLabel;
+  checkedTextAudioLabel = CheckedOccurrenceLabel;
   @ViewChild('carousel') private carousel: CarouselComponent;
   private audioPlayer = new Audio();
   private isReady = false;
@@ -44,25 +55,25 @@ export class CheckComponent implements OnInit {
     if (event.key === 'p') {
       this.togglePlay();
     } else if (event.key === 'c') {
-      this.setCheckedType(CheckedTextAudioLabel.CORRECT);
+      this.setCheckedType(CheckedOccurrenceLabel.CORRECT);
     } else if (event.key === 'w') {
-      this.setCheckedType(CheckedTextAudioLabel.WRONG);
+      this.setCheckedType(CheckedOccurrenceLabel.WRONG);
     } else if (event.key === 's') {
-      this.setCheckedType(CheckedTextAudioLabel.SKIPPED);
+      this.setCheckedType(CheckedOccurrenceLabel.SKIPPED);
     }
   }
 
   /**
    * set the checked type and prepare the next carousel
    */
-  setCheckedType(checkType: CheckedTextAudioLabel): void {
+  setCheckedType(checkType: CheckedOccurrenceLabel): void {
     // only trigger this method if the user has played the audio at least once to prevent accidental button presses
     if (this.isReady) {
       this.stop();
 
       const textAudio = this.textAudios[this.carousel.carousel.activeIndex];
-      const cta = new CheckedTextAudio(undefined, textAudio.id, this.userId, checkType);
-      this.httpClient.post(`${environment.url}user_group/${this.groupId}/checked_text_audio`, cta).subscribe();
+      const cta = new CheckedOccurrence(textAudio.id, this.userId, checkType, this.checkMode);
+      this.httpClient.post(`${environment.url}user_group/${this.groupId}/occurrence/check`, cta).subscribe();
 
       // checkIfFinishedChunk
       if (this.carousel.carousel.activeIndex === this.textAudios.length - 1) {
@@ -108,16 +119,17 @@ export class CheckComponent implements OnInit {
   }
 
   private getTenNonLabeledTextAudios() {
-    this.httpClient.get<Array<TextAudioDto>>(`${environment.url}user_group/${this.groupId}/text_audio/next`).subscribe(textAudios => {
-      this.textAudios = textAudios;
-      if (textAudios.length > 0) {
-        this.loadAudioBlob(textAudios[0]);
-      }
-    });
+    this.httpClient.get<Array<TextAudioDto>>(`${environment.url}user_group/${this.groupId}/occurrence/next?mode=${this.checkMode}`)
+      .subscribe(textAudios => {
+        this.textAudios = textAudios;
+        if (textAudios.length > 0) {
+          this.loadAudioBlob(textAudios[0]);
+        }
+      });
   }
 
-  private loadAudioBlob(dto: TextAudioDto): void {
-    this.httpClient.get(`${environment.url}user_group/${this.groupId}/text_audio/audio/${dto.id}`, {responseType: 'blob'})
+  private loadAudioBlob(dto: Occurrence): void {
+    this.httpClient.get(`${environment.url}user_group/${this.groupId}/occurrence/audio/${dto.id}?mode=${this.checkMode}`, {responseType: 'blob'})
       .subscribe(resp => {
         this.audioPlayer = new Audio(URL.createObjectURL(resp));
         this.audioPlayer.onended = () => this.isPlaying = false;

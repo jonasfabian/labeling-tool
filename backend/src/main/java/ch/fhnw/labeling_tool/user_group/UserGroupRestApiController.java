@@ -1,8 +1,6 @@
 package ch.fhnw.labeling_tool.user_group;
 
-import ch.fhnw.labeling_tool.jooq.tables.pojos.CheckedTextAudio;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.Excerpt;
-import ch.fhnw.labeling_tool.model.TextAudioDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -46,19 +44,21 @@ public class UserGroupRestApiController {
         return userGroupService.getExcerpt(groupId);
     }
 
-    @PostMapping("checked_text_audio")
-    public void postCheckedTextAudio(@PathVariable long groupId, @RequestBody CheckedTextAudio checkedTextAudio) {
-        userGroupService.postCheckedTextAudio(groupId, checkedTextAudio);
+    //    TODO maybe move into seperate service endpoint
+//    TODO not sure it makes sense for this endpoint
+    @PostMapping("occurrence/check")
+    public void postCheckedOccurrence(@PathVariable long groupId, @RequestBody CheckedOccurrence checkedOccurrence) {
+        userGroupService.postCheckedOccurrence(groupId, checkedOccurrence);
     }
 
-    @GetMapping("text_audio/next")
-    public List<TextAudioDto> getNextTextAudios(@PathVariable long groupId) {
-        return userGroupService.getNextTextAudios(groupId);
+    @GetMapping("occurrence/next")
+    public List<Occurrence> getNextTextAudios(@PathVariable long groupId, @RequestParam OccurrenceMode mode) {
+        return userGroupService.getNextTextAudios(groupId, mode);
     }
 
-    @GetMapping(value = "text_audio/audio/{audioId}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @GetMapping(value = "occurrence/audio/{audioId}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @ResponseBody
-    public byte[] getAudio(@PathVariable long groupId, @PathVariable long audioId) throws IOException {
-        return userGroupService.getAudio(groupId, audioId);
+    public byte[] getAudio(@PathVariable long groupId, @PathVariable long audioId, @RequestParam OccurrenceMode mode) throws IOException {
+        return userGroupService.getAudio(groupId, audioId, mode);
     }
 }
