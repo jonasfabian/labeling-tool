@@ -118,6 +118,7 @@ public class UserGroupService {
             res = dslContext.select(RECORDING.ID, EXCERPT.EXCERPT_)
                     .from(RECORDING.join(EXCERPT).onKey())
                     .where(DSL.abs(RECORDING.WRONG.minus(RECORDING.CORRECT)).le(3L)
+                            .and(RECORDING.LABEL.eq(RecordingLabel.RECORDED))
                             .and(RECORDING.ID.notIn(dslContext.select(CHECKED_RECORDING.RECORDING_ID).from(CHECKED_RECORDING)
                                     .where(CHECKED_RECORDING.USER_ID.eq(customUserDetailsService.getLoggedInUserId()))))
                     );
