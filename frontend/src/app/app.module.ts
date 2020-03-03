@@ -12,7 +12,7 @@ import {AuthGuardService} from './guards/auth-guard.service';
 import {ProfileComponent} from './components/profile/profile.component';
 import {AvatarComponent} from './components/multi-use/avatar/avatar.component';
 import {CheckMoreComponent} from './components/check/check-more/check-more.component';
-import {OverviewComponent} from './components/overview/overview.component';
+import {OverviewComponent} from './components/admin/overview/overview.component';
 import {CheckComponent} from './components/check/check/check.component';
 import {LoginComponent} from './components/login/login.component';
 import {RecordComponent} from './components/record/record.component';
@@ -46,9 +46,12 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatSortModule} from '@angular/material/sort';
 import {LoadingInterceptorService} from './services/loading-interceptor.service';
 import {HomeComponent} from './components/home/home.component';
-import { UserGroupRoleComponent } from './components/multi-use/user-group-role/user-group-role.component';
-import { CheckRecordingComponent } from './components/check/check-recording.component';
-import { CheckTextAudioComponent } from './components/check/check-text-audio.component';
+import {UserGroupRoleComponent} from './components/multi-use/user-group-role/user-group-role.component';
+import {CheckRecordingComponent} from './components/check/check-recording.component';
+import {CheckTextAudioComponent} from './components/check/check-text-audio.component';
+import {EditTextAudioComponent} from './components/admin/overview/edit-text-audio/edit-text-audio.component';
+import {AdminGuardService} from './guards/admin-guard.service';
+import {GroupAdminGuardService} from './guards/group-admin-guard.service';
 
 @NgModule({
   declarations: [
@@ -68,7 +71,8 @@ import { CheckTextAudioComponent } from './components/check/check-text-audio.com
     HomeComponent,
     UserGroupRoleComponent,
     CheckRecordingComponent,
-    CheckTextAudioComponent
+    CheckTextAudioComponent,
+    EditTextAudioComponent
   ],
   imports: [
     BrowserModule,
@@ -105,6 +109,8 @@ import { CheckTextAudioComponent } from './components/check/check-text-audio.com
   providers: [
     HttpClient,
     AuthGuardService,
+    AdminGuardService,
+    GroupAdminGuardService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptorService,

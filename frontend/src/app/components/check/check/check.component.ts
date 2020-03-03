@@ -20,18 +20,13 @@ export enum OccurrenceMode {
   templateUrl: './check.component.html',
   styleUrls: ['./check.component.scss']
 })
-// TODO switch or 2x components,routings -> probably 2x components
-// TODO refactor so it is possible to check recordings or textAudio
 // TODO add message in case someone is labeling textaudio but has not selected the public group?
 export class CheckComponent implements OnInit {
-  // TODO maybe add send checkMode to backend -> or mutliple urls
   @Input() checkMode: OccurrenceMode;
   isPlaying = false;
-  // TODO probably just remove audioStart,end so it can be reused
-  // TODO rename
-  textAudios: Array<Occurrence> = [];
+  occurrences: Array<Occurrence> = [];
   audioProgress = 0;
-  checkedTextAudioLabel = CheckedOccurrenceLabel;
+  checkedOccurrenceLabel = CheckedOccurrenceLabel;
   @ViewChild('carousel') private carousel: CarouselComponent;
   private audioPlayer = new Audio();
   private isReady = false;
@@ -71,17 +66,17 @@ export class CheckComponent implements OnInit {
     if (this.isReady) {
       this.stop();
 
-      const textAudio = this.textAudios[this.carousel.carousel.activeIndex];
+      const textAudio = this.occurrences[this.carousel.carousel.activeIndex];
       const cta = new CheckedOccurrence(textAudio.id, this.userId, checkType, this.checkMode);
       this.httpClient.post(`${environment.url}user_group/${this.groupId}/occurrence/check`, cta).subscribe();
 
       // checkIfFinishedChunk
-      if (this.carousel.carousel.activeIndex === this.textAudios.length - 1) {
+      if (this.carousel.carousel.activeIndex === this.occurrences.length - 1) {
         this.dialog.open(CheckMoreComponent, {width: '500px', disableClose: true}).afterClosed().subscribe(result => {
           if (result) {
             // reset carousel and load new data
             this.carousel.carousel.activeIndex = 0;
-            this.textAudios = [];
+            this.occurrences = [];
             this.getTenNonLabeledTextAudios();
           } else {
             this.router.navigate(['/home']);
@@ -89,7 +84,7 @@ export class CheckComponent implements OnInit {
         });
       } else {
         this.isReady = false;
-        this.loadAudioBlob(this.textAudios[this.carousel.carousel.activeIndex + 1]);
+        this.loadAudioBlob(this.occurrences[this.carousel.carousel.activeIndex + 1]);
         this.carousel.slideNext();
       }
     }
@@ -121,7 +116,7 @@ export class CheckComponent implements OnInit {
   private getTenNonLabeledTextAudios() {
     this.httpClient.get<Array<TextAudioDto>>(`${environment.url}user_group/${this.groupId}/occurrence/next?mode=${this.checkMode}`)
       .subscribe(textAudios => {
-        this.textAudios = textAudios;
+        this.occurrences = textAudios;
         if (textAudios.length > 0) {
           this.loadAudioBlob(textAudios[0]);
         }

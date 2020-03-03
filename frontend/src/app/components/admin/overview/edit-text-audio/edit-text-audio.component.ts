@@ -1,62 +1,40 @@
-import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {TextAudioDto} from '../../models/text-audio-dto';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
+import {ChangeDetectorRef, Component, ElementRef, Input, OnChanges, ViewChild} from '@angular/core';
 import WaveSurfer from 'wavesurfer.js';
-import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {environment} from '../../../environments/environment';
+import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
+import {TextAudioDto} from '../../../../models/text-audio-dto';
+import {environment} from '../../../../../environments/environment';
 
 @Component({
-  selector: 'app-overview',
-  templateUrl: './overview.component.html',
-  styleUrls: ['./overview.component.scss']
+  selector: 'app-edit-text-audio',
+  templateUrl: './edit-text-audio.component.html',
+  styleUrls: ['./edit-text-audio.component.scss']
 })
-export class OverviewComponent implements OnInit {
-  //TODO  simplify component
+export class EditTextAudioComponent implements OnChanges {
+  //TODO simplify
   @ViewChild('textAreaText') textAreaText: ElementRef<HTMLTextAreaElement>;
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @Input() textAudioId: number;
   showAll = true;
-  dataSource = new MatTableDataSource<TextAudioDto | { id: number, text: string, username: string, time: string }>();
-  allColumns = ['text', 'correct', 'wrong'];
-  recordingColumns = ['text', 'time', 'username'];
   waveSurfer: WaveSurfer = null;
   isEditText = false;
-  // TODO not sure this make sense
+  // TODO not sure this make sense -> would need deep copy
   dummyTextAudio = new TextAudioDto(0, 0, 0, '');
   dummy = new TextAudioDto(0, 0, 0, '');
   dummyRecording: TextAudioDto;
-  currentFileId = -1;
   text = '';
   isPlaying = false;
   waveSurferIsReady = false;
-  data = [];
+  textAudio: TextAudioDto;
+  private currentFileId: number;
 
   constructor(private det: ChangeDetectorRef, private httpClient: HttpClient) {
   }
 
-  ngOnInit() {
-    this.getTextAudios().subscribe(textAudio => {
-      this.dataSource = new MatTableDataSource<TextAudioDto>(textAudio);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    });
-  }
-
-  previewElement(textAudio: TextAudioDto) {
-    this.isEditText = false;
-    if (this.waveSurfer !== null) {
-      this.waveSurfer.pause();
-      this.isPlaying = false;
-    }
-    if (textAudio.audioStart !== undefined) {
-      this.dummyTextAudio = textAudio;
-    } else {
-      this.dummyRecording = textAudio;
-    }
+  ngOnChanges(): void {
+    //TODO load the text audio blob etc.
+    this.loadAudioBlob(this.textAudioId);
+    const textAudio = this.textAudio;
     // generateWaveform
     Promise.resolve(null).then(() => {
       if (this.waveSurfer === null) {
@@ -90,28 +68,6 @@ export class OverviewComponent implements OnInit {
         }
       }
     });
-  }
-
-  toggleChangeView(): void {
-    this.waveSurferIsReady = false;
-    if (this.waveSurfer !== null) {
-      this.waveSurfer.destroy();
-      this.waveSurfer = null;
-    }
-    this.showAll = !this.showAll;
-    if (!this.showAll) {
-      this.getAllRecordingData().subscribe(recordings => {
-        this.dataSource = new MatTableDataSource<{ id: number, text: string, time: string, username: string }>(recordings);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      });
-    } else {
-      this.getTextAudios().subscribe(textAudio => {
-        this.dataSource = new MatTableDataSource<TextAudioDto>(textAudio);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      });
-    }
   }
 
   toggleEdit(): void {
@@ -175,7 +131,6 @@ export class OverviewComponent implements OnInit {
     });
   }
 
-  // TODO refactor so we only need to load the big one in case the user wants to edit else just load the small one -> see check component
   private loadAudioBlob(fileId: number): void {
     if (this.showAll) {
       this.getAudioFile(fileId).subscribe(resp => {
@@ -188,45 +143,9 @@ export class OverviewComponent implements OnInit {
     }
   }
 
-  private load(textAudio) {
-    if (textAudio.audioStart !== undefined) {
-      this.currentFileId = textAudio.fileId;
-      this.loadAudioBlob(textAudio.fileId);
-      this.waveSurfer.on('ready', () => {
-        this.addRegion(textAudio, false);
-        if (this.showAll) {
-          this.setViewToRegion(textAudio);
-        }
-        this.text = textAudio.text;
-      });
-    } else {
-      this.currentFileId = textAudio.id;
-      this.loadAudioBlob(textAudio.id);
-      this.waveSurfer.on('ready', () => {
-        this.waveSurfer.clearRegions();
-        this.text = textAudio.text;
-        this.dummy.text = textAudio.text;
-        this.dummyTextAudio.text = textAudio.text;
-      });
-    }
-    this.waveSurfer.on('waveform-ready', () => {
-      this.waveSurferIsReady = true;
-      this.det.detectChanges();
-    });
-    this.waveSurfer.on('finish', () => this.isPlaying = false);
-  }
-
-  private getTextAudios(): Observable<Array<TextAudioDto>> {
-    return this.httpClient.get<Array<TextAudioDto>>(environment.url + 'getTextAudios');
-  }
-
   private getRecordingAudioById(id: number): Observable<any> {
     // @ts-ignore
     return this.httpClient.get<Blob>(environment.url + 'getRecordingAudioById?id=' + id, {responseType: 'blob'});
-  }
-
-  private getAllRecordingData(): Observable<[{ id: number, text: string, username: string, time: string }]> {
-    return this.httpClient.get<[{ id: number, text: string, username: string, time: string }]>(environment.url + 'getAllRecordingData');
   }
 
   private updateTextAudio(textAudio: TextAudioDto): Observable<any> {
@@ -239,5 +158,9 @@ export class OverviewComponent implements OnInit {
 
   private getAudioFile(fileId: number): Observable<any> {
     return this.httpClient.get(environment.url + 'getAudio?id=' + fileId, {responseType: 'blob'});
+  }
+
+  private load(textAudio: any) {
+
   }
 }

@@ -50,7 +50,6 @@ public class UserGroupService {
     public Excerpt getExcerpt(Long groupId) {
         isAllowed(groupId);
         // TODO maybe return 10 like check component
-        System.out.println(groupId);
         return dslContext.select(EXCERPT.fields())
                 .from(EXCERPT.join(ORIGINAL_TEXT).onKey())
                 .where(ORIGINAL_TEXT.USER_GROUP_ID.eq(groupId)

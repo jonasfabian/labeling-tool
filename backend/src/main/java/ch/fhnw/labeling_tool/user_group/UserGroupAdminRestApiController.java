@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/user_group/{groupId}/admin")
 public class UserGroupAdminRestApiController {
@@ -23,6 +25,11 @@ public class UserGroupAdminRestApiController {
     @PostMapping("original_text")
     public void postOriginalText(@PathVariable long groupId, @RequestParam long domainId, @RequestParam MultipartFile[] files) {
         userGroupAdminService.postOriginalText(groupId, domainId, files);
+    }
+
+    @GetMapping("overview_occurrence")
+    public List<OverviewOccurrence> getOverviewOccurrence(@PathVariable long groupId, @RequestParam OccurrenceMode mode) {
+        return userGroupAdminService.getOverviewOccurrence(groupId, mode);
     }
 
     //TODO add enpdoints for overview etc.

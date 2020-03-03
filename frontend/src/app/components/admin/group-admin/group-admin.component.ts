@@ -22,7 +22,6 @@ export class GroupAdminComponent implements OnInit {
   private groupId = 1;
 
   constructor(private httpClient: HttpClient, private userGroupService: UserGroupService) {
-    //  TODO add authentification -> needs super admin or group admin
     this.groupId = this.userGroupService.userGroupId;
   }
 

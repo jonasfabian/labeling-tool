@@ -50,9 +50,6 @@ export class ProfileComponent implements OnInit {
   getCanton = () => this.dialects.find(value => value.id === this.user.id).countyName;
 
   changePassword() {
-    log('changePassword');
-    log(this.changePasswordForm.controls.password.value);
-    log(this.changePasswordForm.controls.newPassword.value);
     this.httpClient.put(environment.url + 'user/password',
       new ChangePassword(this.changePasswordForm.controls.password.value, this.changePasswordForm.controls.newPassword.value)
     ).subscribe(() => {

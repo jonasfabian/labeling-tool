@@ -26,10 +26,11 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static ch.fhnw.labeling_tool.jooq.Tables.ORIGINAL_TEXT;
+import static ch.fhnw.labeling_tool.jooq.Tables.*;
 
 @Service
 public class UserGroupAdminService {
@@ -100,5 +101,22 @@ public class UserGroupAdminService {
         //    TODO instead insert a new record instead
 
         //TODO maybe also add ability to delete not correct recordings -> based on record labels
+    }
+
+    public List<OverviewOccurrence> getOverviewOccurrence(long groupId, OccurrenceMode mode) {
+        isAllowed(groupId);
+        if (mode == OccurrenceMode.TEXT_AUDIO) {
+            if (labelingToolConfig.getPublicGroupId().equals(groupId))
+                return dslContext.select(TEXT_AUDIO.ID, TEXT_AUDIO.CORRECT, TEXT_AUDIO.WRONG, TEXT_AUDIO.TEXT)
+                        .from(TEXT_AUDIO)
+                        .where(TEXT_AUDIO.CORRECT.plus(TEXT_AUDIO.WRONG).ge(0L))
+                        .fetchInto(OverviewOccurrence.class);
+            else return List.of();
+        } else {
+            return dslContext.select(RECORDING.ID, RECORDING.CORRECT, RECORDING.WRONG, EXCERPT.EXCERPT_)
+                    .from(RECORDING.join(EXCERPT).onKey().join(ORIGINAL_TEXT).onKey())
+                    .where(ORIGINAL_TEXT.USER_GROUP_ID.eq(groupId).and(RECORDING.CORRECT.plus(RECORDING.WRONG).ge(0L)))
+                    .fetchInto(OverviewOccurrence.class);
+        }
     }
 }

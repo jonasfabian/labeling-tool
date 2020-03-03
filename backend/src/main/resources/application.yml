@@ -9,3 +9,4 @@ server:
 labeling-tool:
   base-path: /home/stt/labeling-tool/data
   conda-exec: "/home/stt/miniconda3/condabin/conda run -n labeling_tool python /home/stt/labeling-tool/data_import/sentences.py"
+  public-group-id: 1

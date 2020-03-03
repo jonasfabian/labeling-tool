@@ -1,0 +1,58 @@
+<mat-card
+  [style.align-items]="(!waveSurferIsReady && waveSurfer == null) ? 'center' : 'initial'"
+  style="width: calc(50% - 245px); height: calc(100% - 35px); position: absolute; top: 0; right: 5px;">
+  <div style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0;">
+    <div *ngIf="!waveSurferIsReady && waveSurfer === null" style="font-weight: bold;">
+      Please select an element in the table to view more details
+    </div>
+    <div [hidden]="!waveSurferIsReady" style="width: 100%; height: 100%;">
+      <div style="width: 100%; height: 100%;">
+        <div id="wave" style="border: 1px solid lightgrey; border-radius: 4px;">
+          <div id="waveform" style="cursor: pointer;"></div>
+        </div>
+        <div id="wave-navigation" style="display: flex; justify-content: left; margin-top: 10px;">
+          <mat-button-toggle-group>
+            <mat-button-toggle (click)="togglePlay()" *ngIf="!isPlaying" title="Play">
+              <mat-icon>play_arrow</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle (click)="togglePlay()" *ngIf="isPlaying" title="Pause">
+              <mat-icon>pause</mat-icon>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+          <mat-slider #volumeSlider (input)="setVolume($event)" max="100" min="0" step="1"
+                      value="100"></mat-slider>
+          <mat-button-toggle (click)="setViewToRegion(dummyTextAudio)" *ngIf="showAll"
+                             style="position: absolute; right: 120px; line-height: 49px;"
+                             title="Seek selected audio passage">
+            <mat-icon>my_location</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle (click)="toggleEdit()" style="position: absolute; right: 15px; width: 100px;"
+                             title="Toggle Edit">
+            <span *ngIf="!isEditText">Edit</span>
+            <span *ngIf="isEditText">Cancel Edit</span>
+          </mat-button-toggle>
+        </div>
+        <div style="height: calc(100% - 200px);">
+          <div *ngIf="!isEditText"
+               style="overflow-y: auto; border: 1px solid lightgrey; border-radius: 4px; height: calc(100% - 30px); margin-top: 10px; font-size: 16px; text-align: initial; padding: 15px;">
+            {{text}}
+          </div>
+          <div *ngIf="isEditText"
+               style="width: 100%; border-radius: 4px; height: 100%; margin-top: 10px;">
+          <textarea #textAreaText
+                    [value]="text"
+                    style="padding: 15px; border-radius: 4px; border: 1px solid lightgray; height: calc(100% - 90px); resize: none; width: calc(100% - 30px); font-family: Roboto, 'Helvetica Neue', sans-serif; font-size: 16px;"></textarea>
+            <mat-button-toggle-group style="margin-top: 5px; width: 100%;">
+              <mat-button-toggle (click)="submitChange()" *ngIf="isEditText" class="audio-nav-button"
+                                 style="width: 100%;">Submit
+              </mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!waveSurferIsReady && this.waveSurfer !== null">
+      <mat-spinner></mat-spinner>
+    </div>
+  </div>
+</mat-card>

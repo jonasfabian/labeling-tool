@@ -11,6 +11,7 @@ import java.nio.file.Path;
 public class LabelingToolConfig {
     private Path basePath;
     private String condaExec;
+    private Long publicGroupId;
 
     public Path getBasePath() {
         return basePath;
@@ -26,5 +27,13 @@ public class LabelingToolConfig {
 
     public void setCondaExec(String condaExec) {
         this.condaExec = condaExec;
+    }
+
+    public Long getPublicGroupId() {
+        return publicGroupId;
+    }
+
+    public void setPublicGroupId(Long publicGroupId) {
+        this.publicGroupId = publicGroupId;
     }
 }

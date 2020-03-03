@@ -13,7 +13,6 @@ export class AuthGuardService implements CanActivate {
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean | UrlTree> | boolean {
     if (this.authService.checkAuthenticated()) {
-      //TODO check if url contains admin & if the user has the right permissions
       return true;
     } else {
       this.router.navigate(['/login'], {queryParams: {returnUrl: state.url}});

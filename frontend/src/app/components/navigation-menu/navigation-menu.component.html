@@ -46,11 +46,10 @@
             <mat-icon>record_voice_over</mat-icon>
             <span>Record</span>
           </mat-list-item>
-          <!--          TODO activate again once it works-->
-          <!--          <mat-list-item (click)="redirectToPage('/admin/overview')">-->
-          <!--            <mat-icon>view_list</mat-icon>-->
-          <!--            <span>Overview</span>-->
-          <!--          </mat-list-item>-->
+          <mat-list-item (click)="redirectToPage('/admin/overview')" *ngIf="isGroupAdmin()">
+            <mat-icon>view_list</mat-icon>
+            <span>Overview</span>
+          </mat-list-item>
           <mat-list-item (click)="redirectToPage('/admin/user_group')" *ngIf="isGroupAdmin()">
             <mat-icon>people</mat-icon>
             <span>User Group</span>

@@ -1,0 +1,47 @@
+<div class="margin">
+  <mat-card id="header-card">
+    <h1 style="margin: 0;">Overview</h1>
+    <mat-slide-toggle (toggleChange)="toggleChangeView()" color="primary" labelPosition="before"
+                      style="position: absolute; right: 15px; top: 16px;">
+      <span>See only recordings</span>
+    </mat-slide-toggle>
+  </mat-card>
+</div>
+<div class="margin">
+  <mat-table [dataSource]="dataSource" matSort style="width: 100%;  text-align: initial;">
+    <ng-container matColumnDef="text">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>Text</th>
+      <td *matCellDef="let element" [title]="element.text" mat-cell
+      >{{element.text}}</td>
+    </ng-container>
+    <ng-container matColumnDef="correct">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>Correct</th>
+      <td *matCellDef="let element" mat-cell>{{element.correct}}</td>
+    </ng-container>
+    <ng-container matColumnDef="wrong">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>Wrong</th>
+      <td *matCellDef="let element" mat-cell>{{element.wrong}}</td>
+    </ng-container>
+    <ng-container matColumnDef="options">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>options</th>
+      <td *matCellDef="let element" mat-cell>
+        <!--TODO add edit and play buttons-->
+        <button mat-icon-button (click)="play(element)">
+          <mat-icon>play_arrow</mat-icon>
+        </button>
+        <button mat-icon-button (click)="edit(element)">
+          <mat-icon >edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <tr *matHeaderRowDef="columns;sticky: true" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: columns;" mat-row></tr>
+  </mat-table>
+  <mat-paginator [pageSizeOptions]="[10, 20,30]" showFirstLastButtons></mat-paginator>
+</div>
+
+<!--        TODO show audio recorder for the selected element-->
+<!--        TODO mabye add a play button that then downloads and plays the audio-->
+<!--TODO show other component if edit is pressed-->
+<!--TODO not sure if it makes sense to edit the recording-->
+<!--TODO maybe add a delete button -> at least for the recording-->
