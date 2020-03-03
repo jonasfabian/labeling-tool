@@ -1,6 +1,7 @@
 package ch.fhnw.labeling_tool.user_group;
 
 import ch.fhnw.labeling_tool.config.LabelingToolConfig;
+import ch.fhnw.labeling_tool.jooq.enums.RecordingLabel;
 import ch.fhnw.labeling_tool.jooq.tables.daos.ExcerptDao;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.OriginalText;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio;
@@ -115,7 +116,7 @@ public class UserGroupAdminService {
         } else {
             return dslContext.select(RECORDING.ID, RECORDING.CORRECT, RECORDING.WRONG, EXCERPT.EXCERPT_)
                     .from(RECORDING.join(EXCERPT).onKey().join(ORIGINAL_TEXT).onKey())
-                    .where(ORIGINAL_TEXT.USER_GROUP_ID.eq(groupId).and(RECORDING.CORRECT.plus(RECORDING.WRONG).ge(0L)))
+                    .where(RECORDING.LABEL.eq(RecordingLabel.RECORDED).and(ORIGINAL_TEXT.USER_GROUP_ID.eq(groupId).and(RECORDING.CORRECT.plus(RECORDING.WRONG).ge(0L))))
                     .fetchInto(OverviewOccurrence.class);
         }
     }
