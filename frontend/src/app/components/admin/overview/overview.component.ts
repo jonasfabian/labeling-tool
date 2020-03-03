@@ -3,7 +3,6 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
 import {environment} from '../../../../environments/environment';
 import {OccurrenceMode} from '../../check/check/check.component';
 import {UserGroupService} from '../../../services/user-group.service';
@@ -27,19 +26,18 @@ export class OverviewComponent implements OnInit {
   dataSource = new MatTableDataSource<OverviewOccurrence | { id: number, text: string, username: string, time: string }>();
   columns = ['text', 'correct', 'wrong', 'options'];
   private selectedTextAudioDto: OverviewOccurrence;
+  private audioPlayer = new Audio();
+  private baseUrl: string;
 
   constructor(private det: ChangeDetectorRef, private httpClient: HttpClient, private userGroupService: UserGroupService) {
   }
 
   ngOnInit() {
+    this.baseUrl = `${environment.url}user_group/${this.userGroupService.userGroupId}/`;
     this.dataSource = new MatTableDataSource<OverviewOccurrence>([]);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.reload();
-  }
-
-  selectElement(textAudio: OverviewOccurrence) {
-    this.selectedTextAudioDto = textAudio;
   }
 
   toggleChangeView(): void {
@@ -55,14 +53,18 @@ export class OverviewComponent implements OnInit {
 
   edit(element: any) {
     // TODO implement logic
+    // TODO not sure how we want to edit -> invalidate old data and copy/insert record
   }
 
   play(element: any) {
-    // TODO implement logic
+    this.httpClient.get(`${this.baseUrl}occurrence/audio/${element.id}?mode=${this.mode()}`, {responseType: 'blob'})
+      .subscribe(resp => {
+        this.audioPlayer.pause();
+        this.audioPlayer = new Audio(URL.createObjectURL(resp));
+        this.audioPlayer.play();
+      });
   }
 
-  private getTextAudios(): Observable<Array<OverviewOccurrence>> {
-    const mode = this.showTextAudio ? OccurrenceMode.TEXT_AUDIO : OccurrenceMode.RECORDING;
-    return this.httpClient.get<Array<OverviewOccurrence>>(`${environment.url}user_group/${this.userGroupService.userGroupId}/admin/overview_occurrence?mode=${(mode)}`);
-  }
+  private mode = () => this.showTextAudio ? OccurrenceMode.TEXT_AUDIO : OccurrenceMode.RECORDING;
+  private getTextAudios = () => this.httpClient.get<OverviewOccurrence[]>(`${this.baseUrl}admin/overview_occurrence?mode=${this.mode()}`);
 }

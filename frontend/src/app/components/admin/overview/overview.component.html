@@ -24,13 +24,13 @@
       <td *matCellDef="let element" mat-cell>{{element.wrong}}</td>
     </ng-container>
     <ng-container matColumnDef="options">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header>options</th>
+      <th *matHeaderCellDef mat-header-cell mat-sort-header></th>
       <td *matCellDef="let element" mat-cell>
-        <!--TODO add edit and play buttons-->
         <button (click)="play(element)" mat-icon-button>
           <mat-icon>play_arrow</mat-icon>
         </button>
-        <button (click)="edit(element)" mat-icon-button>
+        <!--TODO enable once ready-->
+        <button (click)="edit(element)" [disabled]="true" mat-icon-button>
           <mat-icon>edit</mat-icon>
         </button>
       </td>
@@ -40,9 +40,3 @@
   </table>
   <mat-paginator [pageSizeOptions]="[10, 20,30]" showFirstLastButtons></mat-paginator>
 </div>
-
-<!--        TODO show audio recorder for the selected element-->
-<!--        TODO mabye add a play button that then downloads and plays the audio-->
-<!--TODO show other component if edit is pressed-->
-<!--TODO not sure if it makes sense to edit the recording-->
-<!--TODO maybe add a delete button -> at least for the recording-->
