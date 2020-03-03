@@ -8,11 +8,12 @@
   </mat-card>
 </div>
 <div class="margin">
-  <mat-table [dataSource]="dataSource" matSort style="width: 100%;  text-align: initial;">
+  <table [dataSource]="dataSource" mat-table matSort
+         style="width: 100%; ">
     <ng-container matColumnDef="text">
       <th *matHeaderCellDef mat-header-cell mat-sort-header>Text</th>
-      <td *matCellDef="let element" [title]="element.text" mat-cell
-      >{{element.text}}</td>
+      <td *matCellDef="let element" [title]="element.text" mat-cell><span
+        style="overflow: hidden">{{element.text}}</span></td>
     </ng-container>
     <ng-container matColumnDef="correct">
       <th *matHeaderCellDef mat-header-cell mat-sort-header>Correct</th>
@@ -26,17 +27,17 @@
       <th *matHeaderCellDef mat-header-cell mat-sort-header>options</th>
       <td *matCellDef="let element" mat-cell>
         <!--TODO add edit and play buttons-->
-        <button mat-icon-button (click)="play(element)">
+        <button (click)="play(element)" mat-icon-button>
           <mat-icon>play_arrow</mat-icon>
         </button>
-        <button mat-icon-button (click)="edit(element)">
-          <mat-icon >edit</mat-icon>
+        <button (click)="edit(element)" mat-icon-button>
+          <mat-icon>edit</mat-icon>
         </button>
       </td>
     </ng-container>
     <tr *matHeaderRowDef="columns;sticky: true" mat-header-row></tr>
     <tr *matRowDef="let row; columns: columns;" mat-row></tr>
-  </mat-table>
+  </table>
   <mat-paginator [pageSizeOptions]="[10, 20,30]" showFirstLastButtons></mat-paginator>
 </div>
 
