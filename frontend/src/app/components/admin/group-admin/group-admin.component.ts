@@ -20,13 +20,15 @@ export class GroupAdminComponent implements OnInit {
   user = UserGroupRoleRole.USER;
   ga = UserGroupRoleRole.GROUP_ADMIN;
   private groupId = 1;
+  private baseUrl: string;
 
   constructor(private httpClient: HttpClient, private userGroupService: UserGroupService) {
     this.groupId = this.userGroupService.userGroupId;
   }
 
   ngOnInit() {
-    this.httpClient.get<Domain[]>(`${environment.url}domain`).subscribe(domains => {
+    this.baseUrl = `${environment.url}user_group/${this.groupId}/admin/`;
+    this.httpClient.get<Domain[]>(`${this.baseUrl}domain`).subscribe(domains => {
       this.domains = domains;
       this.selectedDomain = domains[0];
     });
@@ -39,7 +41,7 @@ export class GroupAdminComponent implements OnInit {
       formData.append('files', fileList[i], fileList[i].name);
     }
     formData.append('domainId', this.selectedDomain.id.toFixed(0));
-    this.httpClient.post(`${environment.url}user_group/${this.groupId}/admin/original_text`, formData).subscribe(() => {
+    this.httpClient.post(`${this.baseUrl}original_text`, formData).subscribe(() => {
     });
   }
 

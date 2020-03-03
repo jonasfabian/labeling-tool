@@ -5,7 +5,6 @@ import ch.fhnw.labeling_tool.jooq.tables.daos.UserDao;
 import ch.fhnw.labeling_tool.jooq.tables.daos.UserGroupRoleDao;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.User;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.UserGroupRole;
-import ch.fhnw.labeling_tool.model.ChangePassword;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;

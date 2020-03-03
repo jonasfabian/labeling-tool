@@ -21,47 +21,34 @@ export class UserGroupRoleComponent implements OnInit {
   userGroupRoles: UserGroupRoleDto[] = [];
   columns = ['avatar', 'username', 'email', 'remove'];
   userEmail: string;
+  private baseUrl: string;
 
   constructor(private httpClient: HttpClient, private userGroupService: UserGroupService, private snackBarService: SnackBarService) {
   }
 
   ngOnInit(): void {
+    this.baseUrl = `${environment.url}user_group/${this.userGroupService.userGroupId}/admin/user_group_role?mode=${this.mode}`;
     this.reload();
   }
 
   reload() {
-    if (this.mode === UserGroupRoleRole.ADMIN) {
-      this.loadUserGroupRoles(UserGroupRoleRole.ADMIN, 0);
-    } else if (this.mode === UserGroupRoleRole.GROUP_ADMIN) {
-      this.loadUserGroupRoles(UserGroupRoleRole.GROUP_ADMIN, this.userGroupService.userGroupId);
-    } else {
-      this.loadUserGroupRoles(UserGroupRoleRole.USER, this.userGroupService.userGroupId);
-    }
+    this.httpClient.get<UserGroupRoleDto[]>(this.baseUrl)
+      .subscribe(v => this.userGroupRoles = v);
   }
 
   remove(id: number) {
-    this.httpClient.delete<boolean>(`${environment.url}user_group_role?id=${id}`)
+    this.httpClient.delete<boolean>(`${this.baseUrl}&id=${id}`)
       .subscribe(() => {
         this.snackBarService.openMessage('successfully removed permission');
         this.reload();
       });
   }
 
-  loadUserGroupRoles(mode: UserGroupRoleRole, userGroup: number) {
-    this.httpClient.get<UserGroupRoleDto[]>(`${environment.url}user_group_role?mode=${mode}&userGroupId=${userGroup}`)
-      .subscribe(v => this.userGroupRoles = v);
-  }
-
-  newUserGroupRole() {
-    this.userEmail = 'email/username';
-  }
-
-  cancel() {
-    this.userEmail = undefined;
-  }
+  newUserGroupRole = () => this.userEmail = 'email/username';
+  cancel = () => this.userEmail = undefined;
 
   save() {
-    this.httpClient.post<boolean>(`${environment.url}user_group_role?mode=${this.mode}&userGroupId=${this.userGroupService.userGroupId}&email=${this.userEmail}`, null)
+    this.httpClient.post<boolean>(`${this.baseUrl}&email=${this.userEmail}`, null)
       .subscribe(v => {
         if (v) {
           this.snackBarService.openMessage('successfully updated permissions');

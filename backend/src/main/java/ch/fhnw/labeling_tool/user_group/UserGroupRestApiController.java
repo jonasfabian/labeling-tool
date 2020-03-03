@@ -44,16 +44,14 @@ public class UserGroupRestApiController {
         return userGroupService.getExcerpt(groupId);
     }
 
-    //    TODO maybe move into seperate service endpoint
-//    TODO not sure it makes sense for this endpoint
     @PostMapping("occurrence/check")
     public void postCheckedOccurrence(@PathVariable long groupId, @RequestBody CheckedOccurrence checkedOccurrence) {
         userGroupService.postCheckedOccurrence(groupId, checkedOccurrence);
     }
 
     @GetMapping("occurrence/next")
-    public List<Occurrence> getNextTextAudios(@PathVariable long groupId, @RequestParam OccurrenceMode mode) {
-        return userGroupService.getNextTextAudios(groupId, mode);
+    public List<Occurrence> getNextOccurrences(@PathVariable long groupId, @RequestParam OccurrenceMode mode) {
+        return userGroupService.getNextOccurrences(groupId, mode);
     }
 
     @GetMapping(value = "occurrence/audio/{audioId}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)

@@ -1,4 +1,4 @@
-package ch.fhnw.labeling_tool;
+package ch.fhnw.labeling_tool.admin;
 
 import ch.fhnw.labeling_tool.jooq.tables.daos.UserGroupDao;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.UserGroup;

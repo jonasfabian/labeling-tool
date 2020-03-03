@@ -4,7 +4,6 @@ import ch.fhnw.labeling_tool.config.LabelingToolConfig;
 import ch.fhnw.labeling_tool.jooq.enums.CheckedRecordingLabel;
 import ch.fhnw.labeling_tool.jooq.enums.CheckedTextAudioLabel;
 import ch.fhnw.labeling_tool.jooq.enums.RecordingLabel;
-import ch.fhnw.labeling_tool.jooq.tables.daos.CheckedTextAudioDao;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.Excerpt;
 import ch.fhnw.labeling_tool.jooq.tables.records.CheckedRecordingRecord;
 import ch.fhnw.labeling_tool.jooq.tables.records.CheckedTextAudioRecord;
@@ -30,14 +29,12 @@ import static ch.fhnw.labeling_tool.jooq.Tables.*;
 public class UserGroupService {
     private final CustomUserDetailsService customUserDetailsService;
     private final DSLContext dslContext;
-    private final CheckedTextAudioDao checkedTextAudioDao;
     private final LabelingToolConfig labelingToolConfig;
 
     @Autowired
-    public UserGroupService(CustomUserDetailsService customUserDetailsService, DSLContext dslContext, CheckedTextAudioDao checkedTextAudioDao, LabelingToolConfig labelingToolConfig) {
+    public UserGroupService(CustomUserDetailsService customUserDetailsService, DSLContext dslContext, LabelingToolConfig labelingToolConfig) {
         this.customUserDetailsService = customUserDetailsService;
         this.dslContext = dslContext;
-        this.checkedTextAudioDao = checkedTextAudioDao;
         this.labelingToolConfig = labelingToolConfig;
     }
 
@@ -49,7 +46,6 @@ public class UserGroupService {
 
     public Excerpt getExcerpt(Long groupId) {
         isAllowed(groupId);
-        // TODO maybe return 10 like check component
         return dslContext.select(EXCERPT.fields())
                 .from(EXCERPT.join(ORIGINAL_TEXT).onKey())
                 .where(ORIGINAL_TEXT.USER_GROUP_ID.eq(groupId)
@@ -60,16 +56,70 @@ public class UserGroupService {
                                 .from(RECORDING.join(USER).onKey())
                                 .where(USER.DIALECT_ID.eq(customUserDetailsService.getLoggedInUserDialectId())))))
                 .orderBy(DSL.rand())
+                // TODO maybe return 10 like check component
                 .limit(1).fetchOneInto(Excerpt.class);
     }
 
     public void postCheckedOccurrence(long groupId, CheckedOccurrence checkedOccurrence) {
         isAllowed(groupId);
-        //TODO refactor logic
-        //TODO change based on mode
         if (checkedOccurrence.mode == OccurrenceMode.TEXT_AUDIO)
             postCheckedOccurrenceTextAudio(checkedOccurrence);
         else postCheckedOccurrenceRecording(checkedOccurrence);
+    }
+
+    /**
+     * returns the next occurrences to check based on the OccurrenceMode and groupId.
+     * occurrences are labeled until it is clear that they clearly wrong|correct
+     */
+    public List<Occurrence> getNextOccurrences(long groupId, OccurrenceMode mode) {
+        isAllowed(groupId);
+        SelectConditionStep<Record2<Long, String>> res;
+        if (mode == OccurrenceMode.TEXT_AUDIO) {
+            res = dslContext.select(TEXT_AUDIO.ID, TEXT_AUDIO.TEXT)
+                    .from(TEXT_AUDIO)
+                    .where(DSL.abs(TEXT_AUDIO.WRONG.minus(TEXT_AUDIO.CORRECT)).le(3L)
+                            .and(TEXT_AUDIO.ID.notIn(dslContext.select(CHECKED_TEXT_AUDIO.TEXT_AUDIO_ID).from(CHECKED_TEXT_AUDIO)
+                                    .where(CHECKED_TEXT_AUDIO.USER_ID.eq(customUserDetailsService.getLoggedInUserId()))))
+                    );
+        } else {
+            res = dslContext.select(RECORDING.ID, EXCERPT.EXCERPT_)
+                    .from(RECORDING.join(EXCERPT).onKey().join(ORIGINAL_TEXT).onKey())
+                    .where(ORIGINAL_TEXT.USER_GROUP_ID.eq(groupId)
+                            .and(DSL.abs(RECORDING.WRONG.minus(RECORDING.CORRECT)).le(3L))
+                            .and(RECORDING.LABEL.eq(RecordingLabel.RECORDED))
+                            .and(RECORDING.ID.notIn(dslContext.select(CHECKED_RECORDING.RECORDING_ID).from(CHECKED_RECORDING)
+                                    .where(CHECKED_RECORDING.USER_ID.eq(customUserDetailsService.getLoggedInUserId()))))
+                    );
+        }
+        return res.orderBy(DSL.rand()).limit(10).fetchInto(Occurrence.class);
+
+    }
+
+    public byte[] getAudio(long groupId, long audioId, OccurrenceMode mode) throws IOException {
+        isAllowed(groupId);
+        if (mode == OccurrenceMode.RECORDING) checkAudio(groupId, audioId);
+        var s = (mode == OccurrenceMode.TEXT_AUDIO) ? "text_audio/" + audioId + ".flac" : "recording/" + audioId + ".webm";
+        return Files.readAllBytes(labelingToolConfig.getBasePath().resolve(s));
+
+    }
+
+    public void putExcerptSkipped(long groupId, long excerptId) {
+        checkExcerpt(groupId, excerptId);
+        dslContext.update(EXCERPT).set(EXCERPT.ISSKIPPED, EXCERPT.ISSKIPPED.plus(1)).where(EXCERPT.ID.eq(excerptId)).execute();
+        storeRecord(RecordingLabel.SKIPPED, excerptId);
+    }
+
+    public void putExcerptPrivate(long groupId, long excerptId) {
+        checkExcerpt(groupId, excerptId);
+        dslContext.update(EXCERPT).set(EXCERPT.ISPRIVATE, true).where(EXCERPT.ID.eq(excerptId)).execute();
+        storeRecord(RecordingLabel.PRIVATE, excerptId);
+    }
+
+    public void putExcerptSentenceError(long groupId, long excerptId) {
+        checkExcerpt(groupId, excerptId);
+        dslContext.update(EXCERPT).set(EXCERPT.IS_SENTENCE_ERROR, true).where(EXCERPT.ID.eq(excerptId)).execute();
+        storeRecord(RecordingLabel.SENTENCE_ERROR, excerptId);
+
     }
 
     private void postCheckedOccurrenceRecording(CheckedOccurrence checkedOccurrence) {
@@ -100,59 +150,6 @@ public class UserGroupService {
         }
     }
 
-    public List<Occurrence> getNextTextAudios(long groupId, OccurrenceMode mode) {
-        isAllowed(groupId);
-        //TODO check user_group mapping
-        /*NOTE for now we just return the normal public ones*/
-        //TODO not sure if the datastructure may be improved
-        SelectConditionStep<Record2<Long, String>> res;
-        if (mode == OccurrenceMode.TEXT_AUDIO) {
-            res = dslContext.select(TEXT_AUDIO.ID, TEXT_AUDIO.TEXT)
-                    .from(TEXT_AUDIO)
-                    .where(DSL.abs(TEXT_AUDIO.WRONG.minus(TEXT_AUDIO.CORRECT)).le(3L)
-                            .and(TEXT_AUDIO.ID.notIn(dslContext.select(CHECKED_TEXT_AUDIO.TEXT_AUDIO_ID).from(CHECKED_TEXT_AUDIO)
-                                    .where(CHECKED_TEXT_AUDIO.USER_ID.eq(customUserDetailsService.getLoggedInUserId()))))
-                    );
-        } else {
-            res = dslContext.select(RECORDING.ID, EXCERPT.EXCERPT_)
-                    .from(RECORDING.join(EXCERPT).onKey())
-                    .where(DSL.abs(RECORDING.WRONG.minus(RECORDING.CORRECT)).le(3L)
-                            .and(RECORDING.LABEL.eq(RecordingLabel.RECORDED))
-                            .and(RECORDING.ID.notIn(dslContext.select(CHECKED_RECORDING.RECORDING_ID).from(CHECKED_RECORDING)
-                                    .where(CHECKED_RECORDING.USER_ID.eq(customUserDetailsService.getLoggedInUserId()))))
-                    );
-        }
-        return res.orderBy(DSL.rand()).limit(10).fetchInto(Occurrence.class);
-
-    }
-
-    public byte[] getAudio(long groupId, long audioId, OccurrenceMode mode) throws IOException {
-        isAllowed(groupId);
-        //TODO check if audio is in the right group audioId
-        var s = (mode == OccurrenceMode.TEXT_AUDIO) ? "text_audio/" + audioId + ".flac" : "recording/" + audioId + ".webm";
-        return Files.readAllBytes(labelingToolConfig.getBasePath().resolve(s));
-
-    }
-
-    public void putExcerptSkipped(long groupId, long excerptId) {
-        checkExcerpt(groupId, excerptId);
-        dslContext.update(EXCERPT).set(EXCERPT.ISSKIPPED, EXCERPT.ISSKIPPED.plus(1)).where(EXCERPT.ID.eq(excerptId)).execute();
-        storeRecord(RecordingLabel.SKIPPED, excerptId);
-    }
-
-    public void putExcerptPrivate(long groupId, long excerptId) {
-        checkExcerpt(groupId, excerptId);
-        dslContext.update(EXCERPT).set(EXCERPT.ISPRIVATE, true).where(EXCERPT.ID.eq(excerptId)).execute();
-        storeRecord(RecordingLabel.PRIVATE, excerptId);
-    }
-
-    public void putExcerptSentenceError(long groupId, long excerptId) {
-        checkExcerpt(groupId, excerptId);
-        dslContext.update(EXCERPT).set(EXCERPT.IS_SENTENCE_ERROR, true).where(EXCERPT.ID.eq(excerptId)).execute();
-        storeRecord(RecordingLabel.SENTENCE_ERROR, excerptId);
-
-    }
-
     private RecordingRecord storeRecord(RecordingLabel recordingLabel, long excerptId) {
         RecordingRecord recordingRecord = dslContext.newRecord(RECORDING);
         recordingRecord.setUserId(customUserDetailsService.getLoggedInUserId());
@@ -167,6 +164,14 @@ public class UserGroupService {
         boolean equals = dslContext.select(ORIGINAL_TEXT.USER_GROUP_ID)
                 .from(EXCERPT.join(ORIGINAL_TEXT).onKey())
                 .where(EXCERPT.ID.eq(excerptId))
+                .fetchOne().component1().equals(groupId);
+        if (!equals) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+    }
+
+    private void checkAudio(long groupId, long audioId) {
+        boolean equals = dslContext.select(ORIGINAL_TEXT.USER_GROUP_ID)
+                .from(RECORDING.join(EXCERPT).onKey().join(ORIGINAL_TEXT).onKey())
+                .where(RECORDING.ID.eq(audioId))
                 .fetchOne().component1().equals(groupId);
         if (!equals) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }

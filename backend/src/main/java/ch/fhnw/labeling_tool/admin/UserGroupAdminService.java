@@ -1,12 +1,17 @@
-package ch.fhnw.labeling_tool.user_group;
+package ch.fhnw.labeling_tool.admin;
 
 import ch.fhnw.labeling_tool.config.LabelingToolConfig;
 import ch.fhnw.labeling_tool.jooq.enums.RecordingLabel;
-import ch.fhnw.labeling_tool.jooq.tables.daos.ExcerptDao;
+import ch.fhnw.labeling_tool.jooq.enums.UserGroupRoleRole;
+import ch.fhnw.labeling_tool.jooq.tables.daos.UserDao;
+import ch.fhnw.labeling_tool.jooq.tables.daos.UserGroupRoleDao;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.OriginalText;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio;
+import ch.fhnw.labeling_tool.jooq.tables.pojos.UserGroupRole;
 import ch.fhnw.labeling_tool.jooq.tables.records.OriginalTextRecord;
 import ch.fhnw.labeling_tool.user.CustomUserDetailsService;
+import ch.fhnw.labeling_tool.user_group.OccurrenceMode;
+import ch.fhnw.labeling_tool.user_group.OverviewOccurrence;
 import org.apache.tika.config.TikaConfig;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
@@ -35,19 +40,20 @@ import static ch.fhnw.labeling_tool.jooq.Tables.*;
 
 @Service
 public class UserGroupAdminService {
-
     private final CustomUserDetailsService customUserDetailsService;
-    private final ExcerptDao excerptDao;
     private final DSLContext dslContext;
     private final LabelingToolConfig labelingToolConfig;
     private final Logger logger = LoggerFactory.getLogger(getClass());
+    private final UserGroupRoleDao userGroupRoleDao;
+    private final UserDao userDao;
 
     @Autowired
-    public UserGroupAdminService(CustomUserDetailsService customUserDetailsService, ExcerptDao excerptDao, DSLContext dslContext, LabelingToolConfig labelingToolConfig) {
+    public UserGroupAdminService(CustomUserDetailsService customUserDetailsService, DSLContext dslContext, LabelingToolConfig labelingToolConfig, UserGroupRoleDao userGroupRoleDao, UserDao userDao) {
         this.customUserDetailsService = customUserDetailsService;
-        this.excerptDao = excerptDao;
         this.dslContext = dslContext;
         this.labelingToolConfig = labelingToolConfig;
+        this.userGroupRoleDao = userGroupRoleDao;
+        this.userDao = userDao;
     }
 
     public void postOriginalText(long groupId, long domainId, MultipartFile[] files) {
@@ -57,7 +63,7 @@ public class UserGroupAdminService {
         try {
             Files.createDirectories(path);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("unexpected Exception: ", e);
         }
         String collect = Arrays.stream(files).map(file -> {
             try {
@@ -82,17 +88,11 @@ public class UserGroupAdminService {
         }).flatMap(Optional::stream).map(Object::toString).collect(Collectors.joining(","));
         try {
             Process process = Runtime.getRuntime().exec(labelingToolConfig.getCondaExec() + " " + collect);
-
         } catch (Exception e) {
             logger.error("Exception Raised", e);
         }
     }
 
-    private void isAllowed(long userGroupId) {
-        //TODO for now the admin permission is not checked -> activate once group admin page etc. is ready
-        if (!customUserDetailsService.isAllowedOnProject(userGroupId, false))
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-    }
 
     public void putTextAudio(long groupId, TextAudio textAudio) {
         isAllowed(groupId);
@@ -119,5 +119,40 @@ public class UserGroupAdminService {
                     .where(RECORDING.LABEL.eq(RecordingLabel.RECORDED).and(ORIGINAL_TEXT.USER_GROUP_ID.eq(groupId).and(RECORDING.CORRECT.plus(RECORDING.WRONG).ge(0L))))
                     .fetchInto(OverviewOccurrence.class);
         }
+    }
+
+    public List<UserGroupRoleDto> getUserGroupRole(UserGroupRoleRole mode, long groupId) {
+        isAllowed(groupId);
+        var conditionStep = dslContext.select(USER_GROUP_ROLE.ID, USER.USERNAME, USER.EMAIL)
+                .from(USER_GROUP_ROLE.join(USER).onKey())
+                .where(USER_GROUP_ROLE.ROLE.eq(mode));
+        if (mode == UserGroupRoleRole.ADMIN) {
+            if (!customUserDetailsService.isAdmin()) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        } else {
+            conditionStep = conditionStep.and(USER_GROUP_ROLE.USER_GROUP_ID.eq(groupId));
+        }
+        return conditionStep.fetchInto(UserGroupRoleDto.class);
+    }
+
+    public boolean postUserGroupRole(String email, UserGroupRoleRole mode, long groupId) {
+        isAllowed(groupId);
+        if (mode == UserGroupRoleRole.ADMIN) {
+            if (!customUserDetailsService.isAdmin()) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
+        var opt = Optional.ofNullable(userDao.fetchOneByEmail(email))
+                .or(() -> Optional.ofNullable(userDao.fetchOneByUsername(email)));
+        opt.ifPresent(user -> userGroupRoleDao.insert(new UserGroupRole(null, mode, user.getId(), groupId)));
+        return opt.isPresent();
+    }
+
+    public void deleteUserGroupRole(long id) {
+        var userGroupRole = userGroupRoleDao.fetchOneById(id);
+        isAllowed(userGroupRole.getUserGroupId());
+        userGroupRoleDao.deleteById(id);
+    }
+
+    private void isAllowed(long groupId) {
+        if (!customUserDetailsService.isAllowedOnProject(groupId, true))
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
 }

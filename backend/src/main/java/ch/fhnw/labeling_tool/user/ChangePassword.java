@@ -1,4 +1,4 @@
-package ch.fhnw.labeling_tool.model;
+package ch.fhnw.labeling_tool.user;
 
 public class ChangePassword {
     private String password;
