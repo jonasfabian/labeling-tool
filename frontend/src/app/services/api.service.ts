@@ -114,7 +114,7 @@ export class ApiService {
   }
 
   updateRecording(id: number, text: string): Observable<any> {
-    return this.http.post(this.url + 'updateRecording', { id, text });
+    return this.http.post(this.url + 'updateRecording', {id, text});
   }
 
   updateUser(user: UserPublicInfo): Observable<any> {
@@ -131,6 +131,14 @@ export class ApiService {
 
   changePassword(changePassword: ChangePassword): Observable<any> {
     return this.http.post(this.url + 'changePassword', changePassword);
+  }
+
+  createScore(userId: number, score: number): Observable<any> {
+    return this.http.post(this.url + 'createScore', {userId, score});
+  }
+
+  getAllScores(): Observable<any> {
+    return this.http.get(this.url + 'getAllScores');
   }
 
   loadAudioBlob(file: TextAudio): void {
