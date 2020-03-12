@@ -25,7 +25,7 @@ export class OverviewComponent implements OnInit {
   showTextAudio = true;
   dataSource = new MatTableDataSource<OverviewOccurrence | { id: number, text: string, username: string, time: string }>();
   columns = ['text', 'correct', 'wrong', 'options'];
-  private selectedTextAudioDto: OverviewOccurrence;
+  selectedOverviewOccurrence: OverviewOccurrence;
   private audioPlayer = new Audio();
   private baseUrl: string;
 
@@ -51,9 +51,11 @@ export class OverviewComponent implements OnInit {
     });
   }
 
-  edit(element: any) {
+  edit(element: OverviewOccurrence) {
+    this.selectedOverviewOccurrence = element;
     // TODO implement logic
     // TODO not sure how we want to edit -> invalidate old data and copy/insert record
+    /*TODO this only really makes sense for the auto labeled ones and not the recordings*/
   }
 
   play(element: any) {

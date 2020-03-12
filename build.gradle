@@ -34,7 +34,7 @@ subprojects {
     dependencyManagement {
         dependencies {
             dependency 'org.apache.tika:tika-parsers:1.23'
-            dependency 'org.flywaydb:flyway-core:6.2.4'
+            dependency 'org.flywaydb:flyway-core:6.3.0'
             dependencySet(group: 'org.jooq', version: '3.13.1') {
                 entry 'jooq'
                 entry 'jooq-codegen'
