@@ -155,4 +155,15 @@ public class UserGroupAdminService {
         if (!customUserDetailsService.isAllowedOnProject(groupId, true))
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
+
+    public TextAudio getTextAudio(long groupId, Long textAudioId) {
+        isAllowed(groupId);
+        return dslContext.select(TEXT_AUDIO.fields()).from(TEXT_AUDIO).where(TEXT_AUDIO.ID.eq(textAudioId)).fetchOneInto(TextAudio.class);
+    }
+
+    public byte[] getTextAudioAudio(long groupId, Long textAudioId) throws IOException {
+        isAllowed(groupId);
+        var textAudio = dslContext.select(SOURCE.RAW_AUDIO_PATH).from(TEXT_AUDIO.join(SOURCE).onKey()).where(TEXT_AUDIO.ID.eq(textAudioId)).fetchOne(SOURCE.RAW_AUDIO_PATH);
+        return Files.readAllBytes(labelingToolConfig.getBasePath().resolve(textAudio));
+    }
 }

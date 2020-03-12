@@ -6,13 +6,7 @@ import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
 import {OccurrenceMode} from '../../check/check/check.component';
 import {UserGroupService} from '../../../services/user-group.service';
-
-export interface OverviewOccurrence {
-  text: string;
-  correct: number;
-  wrong: number;
-  id: number;
-}
+import {OverviewOccurrence} from './overview-occurrence';
 
 @Component({
   selector: 'app-overview',
@@ -52,10 +46,7 @@ export class OverviewComponent implements OnInit {
   }
 
   edit(element: OverviewOccurrence) {
-    this.selectedOverviewOccurrence = element;
-    // TODO implement logic
-    // TODO not sure how we want to edit -> invalidate old data and copy/insert record
-    /*TODO this only really makes sense for the auto labeled ones and not the recordings*/
+    this.selectedOverviewOccurrence = JSON.parse(JSON.stringify(element));
   }
 
   play(element: any) {

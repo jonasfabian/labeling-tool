@@ -1,10 +1,11 @@
-import {ChangeDetectorRef, Component, ElementRef, Input, OnChanges, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
 import WaveSurfer from 'wavesurfer.js';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
 import {TextAudioDto} from '../../../../models/text-audio-dto';
 import {environment} from '../../../../../environments/environment';
+import {OverviewOccurrence} from '../overview-occurrence';
+import {UserGroupService} from '../../../../services/user-group.service';
 
 @Component({
   selector: 'app-edit-text-audio',
@@ -12,32 +13,23 @@ import {environment} from '../../../../../environments/environment';
   styleUrls: ['./edit-text-audio.component.scss']
 })
 export class EditTextAudioComponent implements OnChanges {
-  //TODO simplify
-  @ViewChild('textAreaText') textAreaText: ElementRef<HTMLTextAreaElement>;
-  @Input() textAudioId: number;
-  showAll = true;
-  waveSurfer: WaveSurfer = null;
-  isEditText = false;
-  // TODO not sure this make sense -> would need deep copy
-  dummyTextAudio = new TextAudioDto(0, 0, 0, '');
-  dummy = new TextAudioDto(0, 0, 0, '');
-  dummyRecording: TextAudioDto;
-  text = '';
+  @Input() overviewOccurrence: OverviewOccurrence;
+  @Output() eventEmitter = new EventEmitter();
   isPlaying = false;
-  waveSurferIsReady = false;
   textAudio: TextAudioDto;
-  private currentFileId: number;
+  textAudioCopy: TextAudioDto;
+  private waveSurfer: WaveSurfer = null;
+  private baseUrl: string;
 
-  constructor(private det: ChangeDetectorRef, private httpClient: HttpClient) {
+  constructor(private det: ChangeDetectorRef, private httpClient: HttpClient, private userGroupService: UserGroupService) {
   }
 
   ngOnChanges(): void {
-    //TODO load the text audio blob etc.
-    this.loadAudioBlob(this.textAudioId);
-    const textAudio = this.textAudio;
-    // generateWaveform
-    Promise.resolve(null).then(() => {
-      if (this.waveSurfer === null) {
+    this.baseUrl = `${environment.url}user_group/${this.userGroupService.userGroupId}/`;
+    if (this.waveSurfer) {
+      this.load(this.overviewOccurrence);
+    } else {
+      Promise.resolve(null).then(() => {
         // createWaveform
         this.waveSurfer = WaveSurfer.create({
           container: '#waveform',
@@ -55,33 +47,8 @@ export class EditTextAudioComponent implements OnChanges {
             })
           ]
         });
-        this.load(textAudio);
-      } else {
-        this.isPlaying = false;
-        // TODO fix code
-        if (this.currentFileId !== 0) {// textAudio.fileid
-          this.load(textAudio);
-        } else {
-          this.addRegion(textAudio, false);
-          this.setViewToRegion(textAudio);
-          this.text = textAudio.text;
-        }
-      }
-    });
-  }
-
-  toggleEdit(): void {
-    if (this.isEditText) {
-      // cancelEdit
-      this.isEditText = false;
-      this.addRegion(this.dummy, false);
-    } else {
-      // edit
-      this.isEditText = true;
-      if (this.showAll) {
-        this.addRegion(this.dummyTextAudio, true);
-        this.dummy = this.dummyTextAudio;
-      }
+        this.load(this.overviewOccurrence);
+      });
     }
   }
 
@@ -103,18 +70,11 @@ export class EditTextAudioComponent implements OnChanges {
   }
 
   submitChange() {
-    if (this.showAll) {
-      this.dummyTextAudio.text = this.text = this.textAreaText.nativeElement.value;
-      this.updateTextAudio(this.dummyTextAudio).subscribe();
-      this.addRegion(this.dummyTextAudio, false);
-    } else {
-      this.dummyRecording.text = this.text = this.textAreaText.nativeElement.value;
-      this.updateRecording(this.dummyRecording.id, this.dummyRecording.text).subscribe();
-    }
-    this.isEditText = !this.isEditText;
+    this.httpClient.post(environment.url + 'updateTextAudio', this.textAudio).subscribe(value => () => this.cancelEdit());
   }
 
   setVolume = (volume: any) => this.waveSurfer.setVolume(volume.value / 100);
+  cancelEdit = () => this.eventEmitter.emit();
 
   private addRegion(textAudio: TextAudioDto, draw: boolean): void {
     this.waveSurfer.clearRegions();
@@ -126,41 +86,21 @@ export class EditTextAudioComponent implements OnChanges {
       color: 'hsla(200, 50%, 70%, 0.4)'
     });
     region.on('update-end', () => {
-      this.dummyTextAudio.audioStart = region.start;
-      this.dummyTextAudio.audioEnd = region.end;
+      this.textAudio.audioStart = region.start;
+      this.textAudio.audioEnd = region.end;
+      this.setViewToRegion(textAudio);
     });
   }
 
-  private loadAudioBlob(fileId: number): void {
-    if (this.showAll) {
-      this.getAudioFile(fileId).subscribe(resp => {
+  private load(overviewOccurrence: OverviewOccurrence) {
+    this.httpClient.get<TextAudioDto>(`${this.baseUrl}admin/text_audio/${overviewOccurrence.id}`).subscribe(ta => {
+      this.httpClient.get(`${this.baseUrl}admin/text_audio/audio/${ta.id}`, {responseType: 'blob'}).subscribe(resp => {
         this.waveSurfer.load(URL.createObjectURL(resp));
+        this.textAudio = ta;
+        this.addRegion(this.textAudio, false);
+        this.setViewToRegion(this.textAudio);
+
       });
-    } else {
-      this.getRecordingAudioById(fileId).subscribe(resp => {
-        this.waveSurfer.load(URL.createObjectURL(resp));
-      });
-    }
-  }
-
-  private getRecordingAudioById(id: number): Observable<any> {
-    // @ts-ignore
-    return this.httpClient.get<Blob>(environment.url + 'getRecordingAudioById?id=' + id, {responseType: 'blob'});
-  }
-
-  private updateTextAudio(textAudio: TextAudioDto): Observable<any> {
-    return this.httpClient.post(environment.url + 'updateTextAudio', textAudio);
-  }
-
-  private updateRecording(id: number, text: string): Observable<any> {
-    return this.httpClient.post(environment.url + 'updateRecording', {id, text});
-  }
-
-  private getAudioFile(fileId: number): Observable<any> {
-    return this.httpClient.get(environment.url + 'getAudio?id=' + fileId, {responseType: 'blob'});
-  }
-
-  private load(textAudio: any) {
-
+    });
   }
 }

@@ -7,9 +7,11 @@ import ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio;
 import ch.fhnw.labeling_tool.user_group.OccurrenceMode;
 import ch.fhnw.labeling_tool.user_group.OverviewOccurrence;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -27,6 +29,17 @@ public class UserGroupAdminRestApiController {
     @PutMapping("text_audio")
     public void putTextAudio(@PathVariable long groupId, @RequestBody TextAudio textAudio) {
         userGroupAdminService.putTextAudio(groupId, textAudio);
+    }
+
+    @GetMapping("text_audio/{textAudioId}")
+    public TextAudio getTextAudio(@PathVariable long groupId, @PathVariable Long textAudioId) {
+        return userGroupAdminService.getTextAudio(groupId, textAudioId);
+    }
+
+    @GetMapping(value = "text_audio/audio/{textAudioId}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @ResponseBody
+    public byte[] getTextAudioAudio(@PathVariable long groupId, @PathVariable Long textAudioId) throws IOException {
+        return userGroupAdminService.getTextAudioAudio(groupId, textAudioId);
     }
 
     @PostMapping("original_text")
