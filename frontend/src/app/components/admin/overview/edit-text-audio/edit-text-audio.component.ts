@@ -14,7 +14,8 @@ import {UserGroupService} from '../../../../services/user-group.service';
 })
 export class EditTextAudioComponent implements OnChanges {
   @Input() overviewOccurrence: OverviewOccurrence;
-  @Output() eventEmitter = new EventEmitter();
+  @Output() cancelEmit = new EventEmitter();
+  @Output() successEmit = new EventEmitter();
   isPlaying = false;
   textAudio: TextAudioDto;
   textAudioCopy: TextAudioDto;
@@ -61,34 +62,34 @@ export class EditTextAudioComponent implements OnChanges {
     this.isPlaying = !this.isPlaying;
   }
 
-  setViewToRegion(textAudio: TextAudioDto): void {
+  setViewToRegion(): void {
     this.waveSurfer.zoom(50);
-    const diff = textAudio.audioStart - textAudio.audioEnd;
-    const centre = textAudio.audioStart + (diff / 2);
+    const diff = this.textAudio.audioStart - this.textAudio.audioEnd;
+    const centre = this.textAudio.audioStart + (diff / 2);
     const fin = (centre / this.waveSurfer.getDuration());
     this.waveSurfer.seekAndCenter(fin);
   }
 
   submitChange() {
-    this.httpClient.post(environment.url + 'updateTextAudio', this.textAudio).subscribe(value => () => this.cancelEdit());
+    this.httpClient.put(`${this.baseUrl}admin/text_audio/`, this.textAudio).subscribe(value => () => this.successEmit.emit());
   }
 
   setVolume = (volume: any) => this.waveSurfer.setVolume(volume.value / 100);
-  cancelEdit = () => this.eventEmitter.emit();
+  cancelEdit = () => this.cancelEmit.emit();
 
-  private addRegion(textAudio: TextAudioDto, draw: boolean): void {
+  private addRegion(): void {
     this.waveSurfer.clearRegions();
     const region = this.waveSurfer.addRegion({
-      start: textAudio.audioStart,
-      end: textAudio.audioEnd,
-      resize: draw,
-      drag: draw,
+      start: this.textAudio.audioStart,
+      end: this.textAudio.audioEnd,
+      resize: true,
+      drag: true,
       color: 'hsla(200, 50%, 70%, 0.4)'
     });
     region.on('update-end', () => {
       this.textAudio.audioStart = region.start;
       this.textAudio.audioEnd = region.end;
-      this.setViewToRegion(textAudio);
+      this.setViewToRegion();
     });
   }
 
@@ -97,10 +98,21 @@ export class EditTextAudioComponent implements OnChanges {
       this.httpClient.get(`${this.baseUrl}admin/text_audio/audio/${ta.id}`, {responseType: 'blob'}).subscribe(resp => {
         this.waveSurfer.load(URL.createObjectURL(resp));
         this.textAudio = ta;
-        this.addRegion(this.textAudio, false);
-        this.setViewToRegion(this.textAudio);
-
+        this.textAudioCopy = JSON.parse(JSON.stringify(this.textAudio));
+        this.waveSurfer.on('ready', () => {
+          this.addRegion();
+          this.setViewToRegion();
+        });
+        this.waveSurfer.on('finish', () => {
+          this.isPlaying = false;
+        });
       });
     });
+  }
+
+  restore() {
+    this.textAudio = JSON.parse(JSON.stringify(this.textAudioCopy));
+    this.addRegion();
+    this.setViewToRegion();
   }
 }

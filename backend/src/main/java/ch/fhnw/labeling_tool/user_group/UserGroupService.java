@@ -56,7 +56,6 @@ public class UserGroupService {
                                 .from(RECORDING.join(USER).onKey())
                                 .where(USER.DIALECT_ID.eq(customUserDetailsService.getLoggedInUserDialectId())))))
                 .orderBy(DSL.rand())
-                // TODO maybe return 10 like check component
                 .limit(1).fetchOneInto(Excerpt.class);
     }
 

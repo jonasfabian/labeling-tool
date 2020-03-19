@@ -9,6 +9,7 @@ import ch.fhnw.labeling_tool.jooq.tables.pojos.OriginalText;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio;
 import ch.fhnw.labeling_tool.jooq.tables.pojos.UserGroupRole;
 import ch.fhnw.labeling_tool.jooq.tables.records.OriginalTextRecord;
+import ch.fhnw.labeling_tool.jooq.tables.records.TextAudioRecord;
 import ch.fhnw.labeling_tool.user.CustomUserDetailsService;
 import ch.fhnw.labeling_tool.user_group.OccurrenceMode;
 import ch.fhnw.labeling_tool.user_group.OverviewOccurrence;
@@ -87,7 +88,7 @@ public class UserGroupAdminService {
             }
         }).flatMap(Optional::stream).map(Object::toString).collect(Collectors.joining(","));
         try {
-            Process process = Runtime.getRuntime().exec(labelingToolConfig.getCondaExec() + " " + collect);
+            Process process = Runtime.getRuntime().exec(labelingToolConfig.getCondaExec() + " 1 " + collect);
         } catch (Exception e) {
             logger.error("Exception Raised", e);
         }
@@ -96,12 +97,15 @@ public class UserGroupAdminService {
 
     public void putTextAudio(long groupId, TextAudio textAudio) {
         isAllowed(groupId);
-        //TODO implement logic to update text audio etc.
-        //TODO we also need to update the audio segment on the file system.
-        //or
-        //    TODO instead insert a new record instead
+        TextAudioRecord textAudioRecord = dslContext.newRecord(TEXT_AUDIO, textAudio);
+        textAudioRecord.update();
+        dslContext.delete(CHECKED_TEXT_AUDIO).where(CHECKED_TEXT_AUDIO.TEXT_AUDIO_ID.eq(textAudio.getId())).execute();
+        try {
+            var process = Runtime.getRuntime().exec(labelingToolConfig.getCondaExec() + " 2 " + textAudio.getId());
+        } catch (IOException e) {
+            logger.error("Exception Raised", e);
+        }
 
-        //TODO maybe also add ability to delete not correct recordings -> based on record labels
     }
 
     public List<OverviewOccurrence> getOverviewOccurrence(long groupId, OccurrenceMode mode) {

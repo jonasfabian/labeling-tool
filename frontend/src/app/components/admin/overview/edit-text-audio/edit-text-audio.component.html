@@ -13,20 +13,18 @@
             <mat-button-toggle (click)="togglePlay()" *ngIf="isPlaying" title="Pause">
               <mat-icon>pause</mat-icon>
             </mat-button-toggle>
+            <mat-slider (input)="setVolume($event)" max="100" min="0" step="1" value="100"></mat-slider>
+            <mat-button-toggle (click)="setViewToRegion()" title="Seek selected audio passage">
+              <mat-icon>my_location</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle (click)="restore()" title="Restore Audio Region & Text">
+              <mat-icon>restore</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle (click)="cancelEdit()"
+                               title="Toggle Edit"><span>Cancel Edit</span></mat-button-toggle>
           </mat-button-toggle-group>
-          <mat-slider (input)="setVolume($event)" max="100" min="0" step="1"
-                      value="100"></mat-slider>
-          <mat-button-toggle (click)="setViewToRegion(textAudioCopy)"
-                             style="position: absolute; right: 120px; line-height: 49px;"
-                             title="Seek selected audio passage">
-            <mat-icon>my_location</mat-icon>
-          </mat-button-toggle>
-          <mat-button-toggle (click)="cancelEdit()" style="position: absolute; right: 15px; width: 100px;"
-                             title="Toggle Edit">
-            <span>Cancel Edit</span>
-          </mat-button-toggle>
         </div>
-        <div style="height: calc(100% - 200px);" *ngIf="textAudio">
+        <div *ngIf="textAudio" style="height: calc(100% - 200px);">
           <div style="width: 100%; border-radius: 4px; height: 100%; margin-top: 10px;">
             <textarea [(ngModel)]="textAudio.text"
                       style="padding: 15px; border-radius: 4px; border: 1px solid lightgray; height: calc(100% - 90px); resize: none; width: calc(100% - 30px); font-family: Roboto, 'Helvetica Neue', sans-serif; font-size: 16px;"></textarea>

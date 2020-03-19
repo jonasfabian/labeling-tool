@@ -7,8 +7,8 @@
     </mat-slide-toggle>
   </mat-card>
 </div>
-<app-edit-text-audio *ngIf="selectedOverviewOccurrence" [overviewOccurrence]="selectedOverviewOccurrence"
-                     (eventEmitter)="selectedOverviewOccurrence=undefined"></app-edit-text-audio>
+<app-edit-text-audio (cancelEmit)="selectedOverviewOccurrence=undefined" *ngIf="selectedOverviewOccurrence"
+                     [overviewOccurrence]="selectedOverviewOccurrence"></app-edit-text-audio>
 <div class="margin">
   <table [dataSource]="dataSource" mat-table matSort
          style="width: 100%; ">
@@ -31,8 +31,7 @@
         <button (click)="play(element)" mat-icon-button>
           <mat-icon>play_arrow</mat-icon>
         </button>
-        <!--TODO enable once ready-->
-        <button (click)="edit(element)" [disabled]="!this.showTextAudio" mat-icon-button>
+        <button (click)="edit(element)" *ngIf="this.showTextAudio" mat-icon-button>
           <mat-icon>edit</mat-icon>
         </button>
       </td>
