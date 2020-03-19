@@ -14,19 +14,19 @@ Note: Other versions might work, but have not been tested yet
    * use `conda env create -f environment.yml` to install the environment.
 * the datastructure should look like this.
 * `data` the base data directory (can be changed in the configuration)
-   * `data-source` directory containing the raw data used by the import & edit
+   * `source` directory containing the raw data used by the import & edit
       * `<id>` id of the transcript
-         * `audio.wav` the raw audio file
-         * `indexes.xml` the transcript
-   * `orginal_text` used to save the original text documents
+         * `audio.wav` the raw audio file (used for import and re-cutting audio)
+         * `indexes.xml` the transcript (only used for import)
+   * `original_text` used to save the original text documents
       * `<id>.bin`
-   * `recoding` used to save the recordings
+   * `recording` used to save the recordings
       * `<id>.ogg`
-   * `text-audio` used to save pre-cut audio
+   * `text_audio` used to save pre-cut audio
       * `<id>.flac`
 ## Development
-run `gradle generateSampleJooqSchemaSource --rerun-tasks` to update the jooq database classes
-run `gradle devBootRun` && `npm start` to run the development version
+* to update the generated database classes run `gradle generateSampleJooqSchemaSource --rerun-tasks`   
+* to run the development version run `gradle devBootRun` && `npm start` 
 
 ## Deployment
 some additional packages may be needed (Ubuntu 18.04.3 ):
@@ -40,8 +40,9 @@ some additional packages may be needed (Ubuntu 18.04.3 ):
 1. `ssh s1042`
 1. `systemctl restart labeling-tool`
 
-In case the data_import has changed run `rsync data_import/data_import.py s1042:~/labeling-tool/data_import/data_import.py` 
-and `rsync data_import/sentences.py s1042:~/labeling-tool/data_import/sentences.py`
+In case the data_import has changed run:
+* `rsync data_import/data_import.py s1042:~/labeling-tool/data_import/data_import.py` 
+* `rsync data_import/sentences.py s1042:~/labeling-tool/data_import/sentences.py`
 
 ### Automatic Deployment
 1. `nano /etc/nginx/nginx.conf` 
