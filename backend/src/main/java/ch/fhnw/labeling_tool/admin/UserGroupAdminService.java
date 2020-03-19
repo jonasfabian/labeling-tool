@@ -103,6 +103,8 @@ public class UserGroupAdminService {
     public void putTextAudio(long groupId, TextAudio textAudio) {
         isAllowed(groupId);
         TextAudioRecord textAudioRecord = dslContext.newRecord(TEXT_AUDIO, textAudio);
+        textAudioRecord.setCorrect(0L);
+        textAudioRecord.setWrong(0L);
         textAudioRecord.update();
         dslContext.delete(CHECKED_TEXT_AUDIO).where(CHECKED_TEXT_AUDIO.TEXT_AUDIO_ID.eq(textAudio.getId())).execute();
         try {
