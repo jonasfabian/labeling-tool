@@ -15,6 +15,7 @@ import ch.fhnw.labeling_tool.user_group.OccurrenceMode;
 import ch.fhnw.labeling_tool.user_group.OverviewOccurrence;
 import org.apache.tika.config.TikaConfig;
 import org.apache.tika.exception.TikaException;
+import org.apache.tika.io.IOUtils;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.sax.BodyContentHandler;
@@ -89,6 +90,10 @@ public class UserGroupAdminService {
         }).flatMap(Optional::stream).map(Object::toString).collect(Collectors.joining(","));
         try {
             Process process = Runtime.getRuntime().exec(labelingToolConfig.getCondaExec() + " 1 " + collect);
+            List<String> list = IOUtils.readLines(process.getErrorStream());
+            if (!list.isEmpty()) {
+                logger.error(String.join("\n", list));
+            }
         } catch (Exception e) {
             logger.error("Exception Raised", e);
         }
@@ -102,6 +107,10 @@ public class UserGroupAdminService {
         dslContext.delete(CHECKED_TEXT_AUDIO).where(CHECKED_TEXT_AUDIO.TEXT_AUDIO_ID.eq(textAudio.getId())).execute();
         try {
             var process = Runtime.getRuntime().exec(labelingToolConfig.getCondaExec() + " 2 " + textAudio.getId());
+            List<String> list = IOUtils.readLines(process.getErrorStream());
+            if (!list.isEmpty()) {
+                logger.error(String.join("\n", list));
+            }
         } catch (IOException e) {
             logger.error("Exception Raised", e);
         }
