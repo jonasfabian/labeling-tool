@@ -3,6 +3,7 @@
 * Java 11 
 * MariaDB 10.4
 * Node.js 12.10.0
+* Miniconda/Anaconda
 
 Note: Other versions might work, but have not been tested yet
 
