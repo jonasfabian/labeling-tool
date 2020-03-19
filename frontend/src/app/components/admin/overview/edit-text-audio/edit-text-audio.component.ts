@@ -71,7 +71,7 @@ export class EditTextAudioComponent implements OnChanges {
   }
 
   submitChange() {
-    this.httpClient.put(`${this.baseUrl}admin/text_audio/`, this.textAudio).subscribe(value => () => this.successEmit.emit());
+    this.httpClient.put(`${this.baseUrl}admin/text_audio/`, this.textAudio).subscribe(value => this.successEmit.emit());
   }
 
   setVolume = (volume: any) => this.waveSurfer.setVolume(volume.value / 100);

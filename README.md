@@ -40,6 +40,8 @@ some additional packages may be needed (Ubuntu 18.04.3 ):
 1. `ssh s1042`
 1. `systemctl restart labeling-tool`
 
+In case the data_import has changed run `rsync data_import/* s1042:~/labeling-tool/data_import/`
+
 ### Automatic Deployment
 1. `nano /etc/nginx/nginx.conf` 
     ```nginx

@@ -7,7 +7,7 @@
     </mat-slide-toggle>
   </mat-card>
 </div>
-<app-edit-text-audio (cancelEmit)="selectedOverviewOccurrence=undefined" *ngIf="selectedOverviewOccurrence"
+<app-edit-text-audio (cancelEmit)="selectedOverviewOccurrence=undefined" (successEmit)="reload()" *ngIf="selectedOverviewOccurrence"
                      [overviewOccurrence]="selectedOverviewOccurrence"></app-edit-text-audio>
 <div class="margin">
   <table [dataSource]="dataSource" mat-table matSort

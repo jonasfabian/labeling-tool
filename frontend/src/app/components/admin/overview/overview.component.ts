@@ -42,6 +42,7 @@ export class OverviewComponent implements OnInit {
   reload() {
     this.getTextAudios().subscribe(textAudio => {
       this.dataSource.data = textAudio;
+      this.selectedOverviewOccurrence = undefined;
     });
   }
 
