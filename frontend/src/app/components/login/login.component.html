@@ -1,0 +1,41 @@
+<div style="display: flex; align-items: center; justify-content: center; height: calc(100% - 70px);">
+  <mat-card *ngIf="isLogin" style="margin: 15px; width: 500px; height: 300px;">
+    <mat-card-header>
+      <mat-toolbar color="primary" style="position: absolute; left: 0; top: 0;">
+        Login
+      </mat-toolbar>
+    </mat-card-header>
+    <mat-card-content style="position: absolute; top: 100px; width: calc(100% - 30px); height: 200px;">
+      <form (ngSubmit)="login()" [formGroup]="loginForm">
+        <div>
+          <mat-form-field style="width: 100%;">
+            <input autocomplete="username" formControlName="email" matInput placeholder="Username" type="text">
+            <mat-error *ngIf="loginForm.invalid">{{getEmailErrorMessage()}}</mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field style="width: 100%;">
+            <input autocomplete="password" formControlName="password" matInput placeholder="Password" type="password">
+            <mat-error *ngIf="loginForm.invalid">{{getPasswordErrorMessage()}}</mat-error>
+          </mat-form-field>
+        </div>
+        <div style="margin-top: 5px;">
+          <button mat-button style="width: 100%; border: 1px solid lightgray; height: 50px;" type="submit">Login
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+    <mat-divider
+      style="width: 500px; position: absolute; bottom: 50px; margin-left: 15px; margin-right: 15px;"></mat-divider>
+    <mat-card-footer style="position: absolute; bottom: 35px; left: 30px;">
+      <div>
+        <span>Not registered yet? Register </span>
+        <a (click)="toggleIsLogin()" href="#">here</a>
+        <span>!</span>
+      </div>
+    </mat-card-footer>
+  </mat-card>
+  <app-profile-editor (output)="toggleIsLogin()" *ngIf="!isLogin" [isNewUser]="true"
+                      [user]="newUser()"></app-profile-editor>
+</div>
+

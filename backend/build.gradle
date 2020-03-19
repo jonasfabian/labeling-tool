@@ -1,0 +1,69 @@
+import org.springframework.boot.gradle.tasks.run.BootRun
+
+apply plugin: 'nu.studer.jooq'
+apply plugin: 'org.springframework.boot'
+
+description 'module containing the whole spring framework logic'
+
+dependencies {
+    compile 'org.apache.tika:tika-parsers'
+    compile 'org.flywaydb:flyway-core'
+    compile 'org.mariadb.jdbc:mariadb-java-client'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-jooq'
+    compile 'org.springframework.boot:spring-boot-starter-security'
+
+    jooqRuntime 'org.mariadb.jdbc:mariadb-java-client'
+}
+task devBootRun(type: BootRun) {
+    main = 'ch.fhnw.labeling_tool.DevTestApplication'
+    classpath += test.classpath
+}
+
+jooq {
+    generateSchemaSourceOnCompilation = false
+    sample(sourceSets.main) {
+        jdbc {
+            driver = 'org.mariadb.jdbc.Driver'
+            url = 'jdbc:mysql://localhost/labeling-tool'
+            user = 'labeling-tool'
+            password = 'labeling-tool'
+        }
+        generator {
+            name = 'org.jooq.codegen.DefaultGenerator'
+            database {
+                inputSchema = 'labeling-tool'
+                forcedTypes {
+                    forcedType {
+                        name = 'BOOLEAN'
+                        expression = '.*'
+                        types = '(?i:(TINY|SMALL|MEDIUM|BIG)?INT(UNSIGNED)?\\(1\\))'
+                    }
+                }
+            }
+            generate {
+                comments = false
+                daos = true
+                immutablePojos = false
+                javadoc = false
+                generatedAnnotation = false
+                validationAnnotations = true
+                springAnnotations = true
+                records = true
+            }
+            target {
+                packageName = 'ch.fhnw.labeling_tool.jooq'
+                directory = 'src/main/java'
+            }
+        }
+    }
+}
+task buildProd {
+    dependsOn ':frontend:npmBuild'
+    finalizedBy 'build'
+}
+
+//angular resources
+processResources {
+    from('../frontend/dist/labeling-tool') { into 'public' }
+}

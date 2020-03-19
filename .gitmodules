@@ -1,3 +1,0 @@
-[submodule "flask"]
-	path = flask
-	url = git@github.com:jonasfabian/flask.git

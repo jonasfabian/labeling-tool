@@ -1,0 +1,11 @@
+apply plugin: 'com.moowork.node'
+
+node {
+  version = '12.13.0'
+}
+
+task npmBuild(type: NpmTask) {
+  dependsOn npmInstall
+  args = ['run', 'buildProd']
+}
+

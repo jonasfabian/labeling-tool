@@ -1,0 +1,43 @@
+<div *ngIf="excerpt">
+  <mat-card class="margin">
+    <h1>Record</h1>
+    <mat-icon *ngIf="excerpt.isPrivate">lock</mat-icon>
+    <mat-icon *ngIf="!excerpt.isPrivate">lock_open</mat-icon>
+    <b>Excerpt: </b><span>{{excerpt?.excerpt}}</span>
+  </mat-card>
+  <div class="margin">
+    <audio [src]="blobUrl" controls></audio>
+    <br>
+    <br>
+    <button (click)="private()" [disabled]="excerpt.isPrivate" mat-raised-button title="Mark as private">
+      <mat-icon>lock</mat-icon>
+      <span>&nbsp;Sensitive data</span>
+    </button>
+    <button (click)="sentenceError()" mat-raised-button title="Mark as not a sentence">
+      <mat-icon>delete</mat-icon>
+      <span>&nbsp;Not a sentence</span>
+    </button>
+    <button (click)="skip()" mat-raised-button title="Skip">
+      <mat-icon>skip_next</mat-icon>
+      <span>&nbsp;Skip</span>
+    </button>
+    <button (click)="startRecord()" *ngIf="!this.isRecording" mat-raised-button title="Start recording">
+      <mat-icon>fiber_manual_record</mat-icon>
+      <span>&nbsp;Start</span>
+    </button>
+    <button (click)="stopRecord()" *ngIf="this.isRecording" mat-raised-button title="Stop recording">
+      <mat-icon>stop</mat-icon>
+      <span>&nbsp;Stop</span>
+    </button>
+    <button (click)="submit()" *ngIf="isReady()" color="primary" mat-raised-button
+            title="Submit your recording">Submit
+    </button>
+  </div>
+</div>
+<div *ngIf="!excerpt" style="height: calc(100% - 100px);">
+  <div style="height: calc(100% - 90px);">
+    <mat-card style="margin: 15px; height: 100%; display: flex; align-items: center; justify-content: center;">
+      <div style="font-weight: bold; font-size: 36px;">No more Data available</div>
+    </mat-card>
+  </div>
+</div>

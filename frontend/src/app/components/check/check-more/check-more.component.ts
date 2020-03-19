@@ -1,33 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {MatDialogRef} from '@angular/material';
-import {Router} from '@angular/router';
-import {ApiService} from '../../../services/api.service';
+import {Component} from '@angular/core';
+import {MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-check-more',
   templateUrl: './check-more.component.html',
   styleUrls: ['./check-more.component.scss']
 })
-export class CheckMoreComponent implements OnInit {
-
-  constructor(
-    public dialogRef: MatDialogRef<CheckMoreComponent>,
-    private router: Router,
-    private apiService: ApiService
-  ) {
+export class CheckMoreComponent {
+  constructor(public dialogRef: MatDialogRef<CheckMoreComponent>) {
   }
 
-  ngOnInit() {
-  }
-
-  close(): void {
-    this.apiService.showTenMoreQuest = false;
-    this.dialogRef.close();
-    this.router.navigate(['/speech-to-text-labeling-tool/app/overview']);
-  }
-
-  yes(): void {
-    this.dialogRef.close();
-    this.apiService.showTenMoreQuest = false;
-  }
+  no = () => this.dialogRef.close(false);
+  yes = () => this.dialogRef.close(true);
 }

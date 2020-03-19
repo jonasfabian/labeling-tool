@@ -1,0 +1,75 @@
+<mat-card style=" width: 500px; height: 650px;">
+  <mat-card-header>
+    <mat-toolbar *ngIf="isNewUser" class="minus-margin" color="primary">Register</mat-toolbar>
+    <mat-toolbar *ngIf="!isNewUser" class="minus-margin" color="primary">Edit Profile</mat-toolbar>
+  </mat-card-header>
+  <mat-card-content style="position: absolute; top: 80px; width: calc(100% - 30px); height: 200px;">
+    <form (ngSubmit)="register()" [formGroup]="registerForm">
+      <mat-form-field class="max-width">
+        <input autocomplete="given-name" formControlName="firstName" matInput placeholder="First Name" type="text">
+        <mat-error *ngIf="isFNError('required')">Please enter your first name</mat-error>
+      </mat-form-field>
+      <mat-form-field class="max-width">
+        <input autocomplete="family-name" formControlName="lastName" matInput placeholder="Last Name" type="text">
+        <mat-error *ngIf="isLNError('required')">Please enter your last name</mat-error>
+      </mat-form-field>
+      <mat-form-field class="max-width">
+        <input autocomplete="username" formControlName="username" matInput placeholder="Username" type="text">
+        <mat-error *ngIf="isUNError('required')">Please enter your username</mat-error>
+        <mat-error *ngIf="isUNError('pattern')">Username may not contain any special characters</mat-error>
+      </mat-form-field>
+      <mat-form-field class="max-width">
+        <input autocomplete="email" formControlName="email" matInput placeholder="Email" type="email">
+        <mat-error *ngIf="isEmailError('required')">Please enter your email or username</mat-error>
+        <mat-error *ngIf="isEmailError('pattern')">Please enter a valid email adress</mat-error>
+      </mat-form-field>
+      <mat-form-field *ngIf="isNewUser" class="max-width">
+        <input autocomplete="password" formControlName="password" matInput placeholder="Password" type="password">
+        <mat-error *ngIf="isPwError('required')">Please enter your password</mat-error>
+        <mat-error *ngIf="isPwError('minlength')">At least 8 characters</mat-error>
+        <mat-error *ngIf="isPwError('maxlength')">Maximum 50 characters</mat-error>
+      </mat-form-field>
+      <mat-form-field class="max-width">
+        <mat-label>Canton</mat-label>
+        <mat-select formControlName="canton">
+          <mat-option *ngFor="let canton of dialects"
+                      [value]="canton.id">{{canton.countyName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="max-width">
+        <mat-label>Sex</mat-label>
+        <mat-select formControlName="sex">
+          <mat-option value="NONE">None</mat-option>
+          <mat-option value="M">m</mat-option>
+          <mat-option value="F">f</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="max-width">
+        <mat-label>Age</mat-label>
+        <mat-select formControlName="age">
+          <mat-option value="NONE">None</mat-option>
+          <mat-option value="U20">0-19</mat-option>
+          <mat-option value="U30">20-29</mat-option>
+          <mat-option value="U40">30-39</mat-option>
+          <mat-option value="U50">40-49</mat-option>
+          <mat-option value="U60">50-59</mat-option>
+          <mat-option value="U70">60-69</mat-option>
+          <mat-option value="U80">70-79</mat-option>
+          <mat-option value="O80">80+</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="max-width">
+        <!--TODO add a link/disclaimer here what the difference is-->
+        <mat-label>Licence</mat-label>
+        <mat-select formControlName="licence">
+          <mat-option value="ACADEMIC">Academic</mat-option>
+          <mat-option value="PUBLIC">Public</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div>
+        <button class="custom-button" mat-button type="submit">Save</button>
+        <button (click)="cancel()" class="custom-button" mat-button type="button">Cancel</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

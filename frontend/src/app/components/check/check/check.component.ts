@@ -1,302 +1,134 @@
-import {ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
-import {CarouselComponent} from 'ngx-carousel-lib';
-import {ApiService} from '../../../services/api.service';
-import {CheckIndex} from '../../../models/CheckIndex';
-import {MatDialog} from '@angular/material';
-import {ShortcutComponent} from '../../multi-use/shortcut/shortcut.component';
+import {Component, HostListener, Input, OnInit, ViewChild} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
 import {AuthService} from '../../../services/auth.service';
 import {CheckMoreComponent} from '../check-more/check-more.component';
-import WaveSurfer from 'wavesurfer.js';
-import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions';
-import {UserAndTextAudio} from '../../../models/UserAndTextAudio';
-import {AudioSnippet} from '../../../models/AudioSnippet';
+import {ShortcutComponent} from '../shortcut/shortcut.component';
+import {HttpClient} from '@angular/common/http';
+import {TextAudioDto} from '../../../models/text-audio-dto';
+import {environment} from '../../../../environments/environment';
+import {CarouselComponent} from 'ngx-carousel-lib';
+import {CheckedOccurrence, CheckedOccurrenceLabel, Occurrence} from './checked-occurrence';
+import {Router} from '@angular/router';
+import {UserGroupService} from '../../../services/user-group.service';
+
+export enum OccurrenceMode {
+  RECORDING = 'RECORDING', TEXT_AUDIO = 'TEXT_AUDIO'
+}
 
 @Component({
   selector: 'app-check',
   templateUrl: './check.component.html',
   styleUrls: ['./check.component.scss']
 })
+// TODO add message in case someone is labeling textaudio but has not selected the public group?
 export class CheckComponent implements OnInit {
-
-  @ViewChild('carousel', {static: false}) carousel: CarouselComponent;
-  @ViewChild('audioPlayer', {static: false}) audioPlayer: ElementRef;
-  checkIndexArray: Array<CheckIndex> = [];
-  available = false;
+  @Input() checkMode: OccurrenceMode;
   isPlaying = false;
-  carouselIndex = 0;
-  skip = 3;
-  correct = 1;
-  wrong = 2;
-  numberCorrect = 0;
-  numberWrong = 0;
-  numberSkipped = 0;
-  progress = 0;
-  panelOpenState = false;
-  audioFileId = 0;
-  snippet: any;
-  isReady = false;
-  waveSurfer: WaveSurfer = null;
-  testVar = [];
-  noDataYet = true;
+  occurrences: Array<Occurrence> = [];
+  audioProgress = 0;
+  checkedOccurrenceLabel = CheckedOccurrenceLabel;
+  @ViewChild('carousel') private carousel: CarouselComponent;
+  private audioPlayer = new Audio();
+  private isReady = false;
+  private userId: number;
+  private groupId = 1;
 
   constructor(
-    public apiService: ApiService,
-    private dialog: MatDialog,
-    private authService: AuthService,
-    private detector: ChangeDetectorRef
+    private httpClient: HttpClient, private dialog: MatDialog, private authService: AuthService, private router: Router,
+    private userGroupService: UserGroupService
   ) {
+    this.groupId = this.userGroupService.userGroupId;
   }
 
   ngOnInit() {
-    let fileId = 0;
-    this.apiService.getTenNonLabeledTextAudios().subscribe(r => {
-      this.testVar = r;
-      if (r.length !== 0) {
-        fileId = r[0].fileId;
-        this.noDataYet = false;
-      }
-    }, () => {
-    }, () => {
-      if (this.testVar.length !== 0) {
-        this.initCarousel();
-        this.initSessionCheckData();
-        if (!this.waveSurfer) {
-          this.generateWaveform(fileId);
-        }
-      } else {
-        this.noDataYet = true;
-      }
-    });
-  }
-
-  generateWaveform(fileId: number): void {
-    Promise.resolve(null).then(() => {
-      this.waveSurfer = WaveSurfer.create({
-        container: '#waveform',
-        backend: 'MediaElement',
-        partialRender: false,
-        normalize: false,
-        responsive: true,
-        plugins: [
-          RegionsPlugin.create({
-            regions: []
-          })
-        ]
-      });
-      this.loadAudioBlob(fileId);
-      this.waveSurfer.on('ready', () => {
-        this.isReady = true;
-      });
-      this.waveSurfer.on('finish', () => {
-        this.isPlaying = false;
-        this.detector.detectChanges();
-      });
-    });
-  }
-
-  loadAudioBlob(fileId: number): void {
-    this.apiService.getAudioFile(fileId).subscribe(resp => {
-      this.waveSurfer.load(URL.createObjectURL(resp));
-    });
+    this.authService.getUser().subscribe(user => this.userId = user.principal.user.id);
+    this.getTenNonLabeledTextAudios();
   }
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
     if (event.key === 'p') {
-      this.playRegion();
+      this.togglePlay();
     } else if (event.key === 'c') {
-      this.setCheckedType(1);
+      this.setCheckedType(CheckedOccurrenceLabel.CORRECT);
     } else if (event.key === 'w') {
-      this.setCheckedType(2);
+      this.setCheckedType(CheckedOccurrenceLabel.WRONG);
     } else if (event.key === 's') {
-      this.setCheckedType(3);
+      this.setCheckedType(CheckedOccurrenceLabel.SKIPPED);
     }
   }
 
-  setCheckedType(checkType: number): void {
-    this.checkIndexArray[this.carousel.carousel.activeIndex].checkedType = checkType;
-    this.addNumberOfCheckType(checkType);
-    this.prepareNextSlide(checkType);
-    this.carousel.slideNext();
-    if (this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.fileId !== this.audioFileId) {
-      this.loadNextAudioFile();
-    }
-  }
+  /**
+   * set the checked type and prepare the next carousel
+   */
+  setCheckedType(checkType: CheckedOccurrenceLabel): void {
+    // only trigger this method if the user has played the audio at least once to prevent accidental button presses
+    if (this.isReady) {
+      this.stop();
 
-  addNumberOfCheckType(checkType: number): void {
-    if (checkType === this.correct) {
-      this.numberCorrect++;
-    } else if (checkType === this.wrong) {
-      this.numberWrong++;
-    } else {
-      this.numberSkipped++;
-    }
-  }
+      const textAudio = this.occurrences[this.carousel.carousel.activeIndex];
+      const cta = new CheckedOccurrence(textAudio.id, this.userId, checkType, this.checkMode);
+      this.httpClient.post(`${environment.url}user_group/${this.groupId}/occurrence/check`, cta).subscribe();
 
-  loadNextAudioFile(): void {
-    this.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.fileId);
-  }
-
-  initSessionCheckData(): void {
-    if (!sessionStorage.getItem('checkData')) {
-      sessionStorage.setItem('checkData', JSON.stringify([{correct: 0, wrong: 0, skipped: 0}]));
-    }
-    this.numberCorrect = JSON.parse(sessionStorage.getItem('checkData'))[0].correct;
-    this.numberWrong = JSON.parse(sessionStorage.getItem('checkData'))[0].wrong;
-    this.numberSkipped = JSON.parse(sessionStorage.getItem('checkData'))[0].skipped;
-  }
-
-  updateSessionCheckData(): void {
-    sessionStorage.setItem('checkData', JSON.stringify([{
-      correct: this.numberCorrect,
-      wrong: this.numberWrong,
-      skipped: this.numberSkipped
-    }]));
-  }
-
-  resetAudioProgress(): void {
-    this.progress = 0;
-  }
-
-  calculateAudioPlayerStatus(): void {
-    const start = this.snippet.start;
-    const end = this.snippet.end;
-    const length = end - start;
-    this.waveSurfer.on('audioprocess', () => {
-      const diff = end - this.waveSurfer.getCurrentTime();
-      if (diff > 0) {
-        this.progress = 100 - Math.round(diff / length * 100);
-      }
-    });
-  }
-
-  prepareNextSlide(labeledType: number): void {
-    this.isPlaying = false;
-    this.waveSurfer.stop();
-    this.resetAudioProgress();
-    this.updateSessionCheckData();
-    this.checkIfFinishedChunk();
-    const currentCheckIndex = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio;
-    if (labeledType === this.correct) {
-      currentCheckIndex.labeled = 1;
-      currentCheckIndex.correct++;
-    } else if (labeledType === this.wrong) {
-      currentCheckIndex.labeled = 1;
-      currentCheckIndex.wrong++;
-    }
-    this.apiService.updateTextAudio(currentCheckIndex).subscribe(_ => {
-      this.apiService.createUserAndTextAudioIndex(
-        new UserAndTextAudio(-1, this.authService.loggedInUser.getValue().id, currentCheckIndex.id)
-      ).subscribe(() => {
-      }, () => {
-      }, () => {
-        if (this.audioFileId !== currentCheckIndex.fileId) {
-          this.loadNextAudioFile();
-        }
-        this.audioFileId = currentCheckIndex.fileId;
-      });
-    });
-  }
-
-  checkIfFinishedChunk(): void {
-    if (this.carousel.carousel.activeIndex === this.checkIndexArray.length - 1) {
-      this.apiService.showTenMoreQuest = true;
-      this.openCheckMoreDialog();
-    }
-  }
-
-  lastSlide(): void {
-    if (this.carousel.carousel.activeIndex === this.checkIndexArray.length) {
-      this.apiService.getTenNonLabeledTextAudios().subscribe(r => r.forEach(labeledTextAudioIndex => {
-        this.checkIndexArray.push(new CheckIndex(this.carouselIndex, labeledTextAudioIndex, 0));
-        this.carouselIndex++;
-      }), () => {
-      }, () => {
-        this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio);
-      });
-    }
-  }
-
-  initCarousel(): void {
-    this.apiService.getTenNonLabeledTextAudios().subscribe(r => r.forEach(l => {
-      if (r.length !== 0) {
-        this.available = true;
-        this.checkIndexArray.push(new CheckIndex(this.carouselIndex, l, 0));
-        this.carouselIndex++;
+      // checkIfFinishedChunk
+      if (this.carousel.carousel.activeIndex === this.occurrences.length - 1) {
+        this.dialog.open(CheckMoreComponent, {width: '500px', disableClose: true}).afterClosed().subscribe(result => {
+          if (result) {
+            // reset carousel and load new data
+            this.carousel.carousel.activeIndex = 0;
+            this.occurrences = [];
+            this.getTenNonLabeledTextAudios();
+          } else {
+            this.router.navigate(['/home']);
+          }
+        });
       } else {
-        this.available = false;
+        this.isReady = false;
+        this.loadAudioBlob(this.occurrences[this.carousel.carousel.activeIndex + 1]);
+        this.carousel.slideNext();
       }
-    }), () => {
-    }, () => {
-      if (this.checkIndexArray.length !== 0) {
-        this.progress = 0;
-        this.audioFileId = this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.fileId;
-        this.apiService.loadAudioBlob(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio);
-        this.addRegion(
-          this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.audioStart,
-          this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.audioEnd
-        );
-      }
-    });
+    }
   }
 
-  playRegion(): void {
-    this.waveSurfer.clearRegions();
-    const region = new AudioSnippet(this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.audioStart, this.checkIndexArray[this.carousel.carousel.activeIndex].textAudio.audioEnd);
-    this.addRegion(region.startTime, region.endTime);
-    this.waveSurfer.on('audioprocess', () => {
-      if (this.waveSurfer.getCurrentTime() === region.endTime) {
-        this.isPlaying = false;
-      }
-    });
+  togglePlay() {
+    this.isReady = true;
     if (this.isPlaying) {
-      this.resetAudioProgress();
-      this.calculateAudioPlayerStatus();
-      this.isPlaying = false;
-      this.waveSurfer.pause();
+      this.stop();
     } else {
-      this.waveSurfer.stop();
-      this.resetAudioProgress();
-      this.calculateAudioPlayerStatus();
-      this.isPlaying = true;
-      this.snippet.play();
+      this.play();
     }
   }
 
-  setColor(checkedType: number): string {
-    if (checkedType === 1) {
-      return 'green';
-    } else if (checkedType === 2) {
-      return 'red';
-    } else {
-      return 'lightgray';
-    }
+  openShortcutDialog = () => this.dialog.open(ShortcutComponent, {width: '500px', disableClose: false});
+
+  private play() {
+    this.audioPlayer.play();
+    this.isPlaying = true;
   }
 
-  addRegion(startPos: number, endPos: number): void {
-    this.waveSurfer.clearRegions();
-    this.snippet = this.waveSurfer.addRegion({
-      start: startPos,
-      end: endPos,
-      resize: false
-    });
+  private stop() {
+    this.audioPlayer.pause();
+    this.audioPlayer.currentTime = 0;
+    this.audioProgress = 0;
+    this.isPlaying = false;
   }
 
-  resetCarousel(): void {
-    this.progress = 0;
-    this.carouselIndex = 0;
-    this.checkIndexArray = [];
-    this.initCarousel();
-    this.carousel.carousel.activeIndex = 0;
+  private getTenNonLabeledTextAudios() {
+    this.httpClient.get<Array<TextAudioDto>>(`${environment.url}user_group/${this.groupId}/occurrence/next?mode=${this.checkMode}`)
+      .subscribe(textAudios => {
+        this.occurrences = textAudios;
+        if (textAudios.length > 0) {
+          this.loadAudioBlob(textAudios[0]);
+        }
+      });
   }
 
-  openShortcutDialog(): void {
-    this.dialog.open(ShortcutComponent, {width: '500px', disableClose: false});
-  }
-
-  openCheckMoreDialog(): void {
-    this.dialog.open(CheckMoreComponent, {width: '500px', disableClose: true}).afterClosed().subscribe(() => {
-      this.resetCarousel();
-    });
+  private loadAudioBlob(dto: Occurrence): void {
+    this.httpClient.get(`${environment.url}user_group/${this.groupId}/occurrence/audio/${dto.id}?mode=${this.checkMode}`, {responseType: 'blob'})
+      .subscribe(resp => {
+        this.audioPlayer = new Audio(URL.createObjectURL(resp));
+        this.audioPlayer.onended = () => this.isPlaying = false;
+        this.audioPlayer.ontimeupdate = () => this.audioProgress = (this.audioPlayer.currentTime / this.audioPlayer.duration) * 100;
+      });
   }
 }

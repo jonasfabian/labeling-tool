@@ -1,0 +1,16 @@
+.minus-margin {
+  left: 0;
+  top: 0;
+  position: absolute;
+}
+
+.max-width {
+  width: 100%;
+}
+
+.custom-button {
+  width: calc(50% - 5px);
+  margin: 2.5px;
+  border: 1px solid lightgray;
+  height: 50px;
+}

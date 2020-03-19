@@ -1,0 +1,81 @@
+<div *ngIf="user"
+     style="height: 40%; margin-top: -12px; background-color: #303f9f; display: flex; justify-content: center;">
+  <mat-card *ngIf="user" [style.height]="'calc(100% - 130px)'" id="header-card"
+            style="margin: 15px; width: 50%; position: absolute;">
+    <div style="height: 10%; display: flex; align-items: center; margin-top: -15px;">
+      <h1 style="margin: 0;">Account Settings</h1>
+    </div>
+    <mat-divider></mat-divider>
+    <div style="width: 70%; float: left; height: 90%;">
+      <ng-container *ngIf="!isProfileEdit&&!isPasswordEdit">
+        <mat-list>
+          <mat-list-item>
+            <span>First name:</span>&nbsp;
+            <span class="info-input">{{user.firstName}}</span>
+          </mat-list-item>
+          <mat-list-item>
+            <span>Last name:</span>&nbsp;
+            <span class="info-input">{{user.lastName}}</span>
+          </mat-list-item>
+          <mat-list-item>
+            <span>Email:</span>&nbsp;
+            <span class="info-input">{{user.email}}</span>
+          </mat-list-item>
+          <mat-list-item>
+            <span>Canton:</span>&nbsp;
+            <span class="info-input">{{getCanton()}}</span>
+          </mat-list-item>
+          <mat-list-item>
+            <span>Licence:</span>&nbsp;
+            <span class="info-input">{{user.licence}}</span>
+          </mat-list-item>
+          <mat-list-item>
+            <span>Sex:</span>&nbsp;
+            <span class="info-input">{{user.sex}}</span>
+          </mat-list-item>
+          <mat-list-item>
+            <span>Age:</span>&nbsp;
+            <span class="info-input">{{user.age}}</span>
+          </mat-list-item>
+        </mat-list>
+        <mat-button-toggle (click)="toggleProfileEdit()" class="edit-button">Edit Profile</mat-button-toggle>
+        <mat-button-toggle (click)="togglePasswordEdit()" class="edit-button">Edit Password</mat-button-toggle>
+      </ng-container>
+      <ng-container *ngIf="isPasswordEdit">
+        <form (ngSubmit)="changePassword()" [formGroup]="changePasswordForm">
+          <div>
+            <div>
+              <mat-form-field style="width: 100%;">
+                <input autocomplete="current-password" formControlName="password" matInput placeholder="Old Password"
+                       type="password">
+                <mat-error *ngIf="isOldPwError('required')">Please enter your old password</mat-error>
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field style="width: 100%;">
+                <input autocomplete="new-password" formControlName="newPassword" matInput placeholder="New Password"
+                       type="password">
+                <mat-error *ngIf="isNewPwError('required')">Please enter your new password</mat-error>
+                <mat-error *ngIf="isNewPwError('minlength')">At least 8 characters</mat-error>
+                <mat-error *ngIf="isNewPwError('maxlength')">Maximum 50 characters</mat-error>
+              </mat-form-field>
+            </div>
+            <div>
+              <button mat-button
+                      style="border: lightgray 1px solid; padding: 0 12px; line-height: 48px; bottom: 0;"
+                      type="submit">Submit
+              </button>
+              <button (click)="togglePasswordEdit()" mat-button
+                      style="border: lightgray 1px solid; padding: 0 12px; line-height: 48px; bottom: 0;"
+                      type="button">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </form>
+      </ng-container>
+      <app-profile-editor (output)="toggleProfileEdit()" *ngIf="isProfileEdit" [isNewUser]="false"
+                          [user]="copyUser()"></app-profile-editor>
+    </div>
+  </mat-card>
+</div>

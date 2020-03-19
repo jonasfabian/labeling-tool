@@ -1,0 +1,68 @@
+<mat-toolbar color="primary" id="navigation-toolbar">
+  <mat-button-toggle (click)="toggleSidenav()"
+    style="position: absolute; height: 32px; border-radius: 50%; width: 32px; top: 8px; background: none; border: none;"
+    title="Navigation menu">
+    <mat-icon style="position: absolute; top: -19px; left: 0; color: white;">
+      menu
+    </mat-icon>
+  </mat-button-toggle>
+  <div style="margin-left: 45px;">
+    <h1 style="float: left;">Labeling Tool</h1>
+  </div>
+  <span *ngIf="!authService.checkAuthenticated() && !router.url.includes('login')"
+    [routerLink]="['/login']" style="position: absolute; right: 30px; cursor: pointer;">
+    Login
+  </span>
+  <ng-container *ngIf="authService.checkAuthenticated()">
+    <app-avatar [hover]="'pointer'" [matMenuTriggerFor]="menu"  [username]="this.user.username"
+      style="float: right;"></app-avatar>
+    <mat-menu #menu>
+      <mat-list style="padding: 0;">
+        <mat-list-item [routerLink]="['/profile']">Profile</mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item (click)="authService.logout(true)">Log Out</mat-list-item>
+      </mat-list>
+    </mat-menu>
+  </ng-container>
+</mat-toolbar>
+<mat-sidenav-container id="sidenav-container">
+  <mat-sidenav #sidenav fixedInViewport mode="side">
+    <div>
+      <mat-list>
+        <ng-container *ngIf="authService.checkAuthenticated()">
+          <mat-list-item (click)="redirectToPage('/home')">
+            <mat-icon>home</mat-icon>
+            <span>Home</span>
+          </mat-list-item>
+          <mat-list-item (click)="redirectToPage('/check/text_audio')">
+            <mat-icon>check</mat-icon>
+            <span>Check text audio</span>
+          </mat-list-item>
+          <mat-list-item (click)="redirectToPage('/check/recording')">
+            <mat-icon>check</mat-icon>
+            <span>Check recording</span>
+          </mat-list-item>
+          <mat-list-item (click)="redirectToPage('/record')">
+            <mat-icon>record_voice_over</mat-icon>
+            <span>Record</span>
+          </mat-list-item>
+          <mat-list-item (click)="redirectToPage('/admin/overview')" *ngIf="isGroupAdmin()">
+            <mat-icon>view_list</mat-icon>
+            <span>Overview</span>
+          </mat-list-item>
+          <mat-list-item (click)="redirectToPage('/admin/user_group')" *ngIf="isGroupAdmin()">
+            <mat-icon>people</mat-icon>
+            <span>User Group</span>
+          </mat-list-item>
+          <mat-list-item (click)="redirectToPage('/admin/admin')" *ngIf="isAdmin()" >
+            <mat-icon>supervised_user_circle</mat-icon>
+            <span>Admin</span>
+          </mat-list-item>
+        </ng-container>
+      </mat-list>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content style="overflow-y: hidden; margin-top: 45px;">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

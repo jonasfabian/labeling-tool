@@ -1,95 +1,46 @@
-<div>
-  <mat-card id="header-card">
-    <h1>Check</h1>
-  </mat-card>
-</div>
-<div hidden id="wave">
-  <div id="waveform"></div>
-</div>
-<div [hidden]="available"
-     style="height: calc(100% - 100px);">
-  <mat-spinner style="margin-left: auto; margin-right: auto; top: calc(50% - 150px);" *ngIf="!noDataYet"></mat-spinner>
-  <div *ngIf="noDataYet" style="height: calc(100% - 90px);">
+<mat-card id="header-card"><h1>Check</h1></mat-card>
+<div *ngIf="occurrences.length===0" style="height: calc(100% - 100px);">
+  <div style="height: calc(100% - 90px);">
     <mat-card style="margin: 15px; height: 100%; display: flex; align-items: center; justify-content: center;">
-      <div style="font-weight: bold; font-size: 36px;">No Data to display</div>
+      <div style="font-weight: bold; font-size: 36px;">No more Data available</div>
     </mat-card>
   </div>
 </div>
-<div style="position: absolute; right: 15px; height: calc(100% - 280px); z-index: 1;">
-  <mat-expansion-panel hideToggle="true" style="width: 50px;">
-    <mat-expansion-panel-header title="Labeling chunk overview" style="width: 50px; padding: 0;">
-        <mat-icon style="width: 100%; display: flex; justify-content: center;">info</mat-icon>
-    </mat-expansion-panel-header>
-    <mat-list style="padding: 0;">
-      <ng-container *ngFor="let entry of checkIndexArray; let i = index;">
-        <mat-divider *ngIf="i > 0"></mat-divider>
-        <mat-list-item style="display: flex; justify-content: center;">
-          <div [style.background-color]="setColor(entry.checkedType)"
-               style="padding: 5px; border: 1px solid black; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;">
-            <span style="float: left;">{{entry.textAudio.id}}</span>
-          </div>
-        </mat-list-item>
-      </ng-container>
-    </mat-list>
-  </mat-expansion-panel>
-  <mat-expansion-panel (closed)="panelOpenState = false" (opened)="panelOpenState = true;">
-  </mat-expansion-panel>
-</div>
-<div [hidden]="!available">
-  <div [hidden]="apiService.showTenMoreQuest">
-    <div>
-      <carousel-component #carousel (onSlideChange)="lastSlide()" [lockSlides]="true" [morePairSlides]="1"
-                          [perspective]="4000" id="carousel">
-        <div *ngFor="let te of checkIndexArray" class="item-carousel">
-          <mat-card *ngIf="te.id !== carousel.carousel.activeIndex"
-                    style="border-bottom-left-radius: 0; border-bottom-right-radius: 0;">
-            <div style="width: 100%;">{{te.textAudio.text}}</div>
-          </mat-card>
-          <mat-card *ngIf="te.id === carousel.carousel.activeIndex"
-                    style="border-bottom-left-radius: 0; border-bottom-right-radius: 0;">
-            <div style="width: 100%;">{{te.textAudio.text}}</div>
-          </mat-card>
-          <mat-progress-bar *ngIf="te.id === carousel.carousel.activeIndex"
-                            [value]="progress"
-                            mode="determinate"
-                            style="margin-left: auto; margin-right: auto; transition: none; height: 8px; border-radius: 0 0 10px 10px;"></mat-progress-bar>
-        </div>
-      </carousel-component>
-      <div *ngIf="apiService.blobUrl != ''">
-        <audio #audioPlayer>
-          <source [src]="apiService.blobUrl">
-        </audio>
-      </div>
-      <div id="navigation-button-container">
-        <mat-button-toggle (click)="setCheckedType(this.correct)" [disabled]="!isReady">
-          <mat-icon>thumb_up</mat-icon>
-          <span>&nbsp;Correct</span>
-        </mat-button-toggle>
-        <mat-button-toggle *ngIf="!isReady" [disabled]="!isReady" class="check-navigation-button"
-                           style="line-height: 48px;">
-          <mat-spinner [diameter]="20" style="top: 5px;"></mat-spinner>
-        </mat-button-toggle>
-        <mat-button-toggle (click)="playRegion();" *ngIf="isReady && !isPlaying" [disabled]="!isReady"
-                           class="check-navigation-button">
-          <mat-icon>play_arrow</mat-icon>
-        </mat-button-toggle>
-        <mat-button-toggle (click)="playRegion();" *ngIf="isReady && isPlaying" [disabled]="!isReady"
-                           class="check-navigation-button">
-          <mat-icon>pause</mat-icon>
-        </mat-button-toggle>
-        <mat-button-toggle (click)="setCheckedType(this.wrong)" [disabled]="!isReady" class="check-navigation-button">
-          <mat-icon>thumb_down</mat-icon>
-          <span>&nbsp;Wrong</span>
-        </mat-button-toggle>
-        <mat-button-toggle (click)="setCheckedType(this.skip)" [disabled]="!isReady" class="check-navigation-button">
-          <span>Skip</span>
-        </mat-button-toggle>
-      </div>
-      <div id="shortcut-button">
-        <mat-button-toggle (click)="openShortcutDialog()">
-          <mat-icon>keyboard</mat-icon>
-        </mat-button-toggle>
-      </div>
+<div *ngIf="occurrences.length>0">
+  <carousel-component #carousel [lockSlides]="true" [morePairSlides]="1" [perspective]="4000" id="carousel">
+    <div *ngFor="let textAudio of occurrences;let i=index" class="item-carousel">
+      <mat-card style="border-bottom-left-radius: 0; border-bottom-right-radius: 0;">
+        <div style="width: 100%;">{{textAudio.text}}</div>
+      </mat-card>
+      <mat-progress-bar *ngIf="i === carousel.carousel.activeIndex" [value]="audioProgress" mode="determinate"
+                        style="margin-left: auto; margin-right: auto; transition: none; height: 8px; border-radius: 0 0 10px 10px;"></mat-progress-bar>
     </div>
+  </carousel-component>
+  <div id="navigation-button-container">
+    <button (click)="setCheckedType(checkedOccurrenceLabel.CORRECT)" [disabled]="!this.isReady" mat-raised-button>
+      <mat-icon>thumb_up</mat-icon>
+      <span>&nbsp;Correct</span>
+    </button>
+    <button (click)="togglePlay();" *ngIf=" !isPlaying" class="check-navigation-button" mat-raised-button>
+      <mat-icon>play_arrow</mat-icon>
+    </button>
+    <button (click)="togglePlay();" *ngIf="isPlaying" class="check-navigation-button" mat-raised-button>
+      <mat-icon>pause</mat-icon>
+    </button>
+    <button (click)="setCheckedType(checkedOccurrenceLabel.WRONG)" [disabled]="!this.isReady"
+            class="check-navigation-button" mat-raised-button>
+      <mat-icon>thumb_down</mat-icon>
+      <span>&nbsp;Wrong</span>
+    </button>
+    <button (click)="setCheckedType(checkedOccurrenceLabel.SKIPPED)" [disabled]="!this.isReady"
+            class="check-navigation-button" mat-raised-button>
+      <mat-icon>skip_next</mat-icon>
+      <span>&nbsp;Skip</span>
+    </button>
+  </div>
+  <div id="shortcut-button">
+    <button (click)="openShortcutDialog()" mat-raised-button>
+      <mat-icon>keyboard</mat-icon>
+    </button>
   </div>
 </div>

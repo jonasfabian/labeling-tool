@@ -1,11 +1,7 @@
-<mat-icon (click)="close()" id="shortcut-icon">close</mat-icon>
-<div id="shortcuts-title">
-  <h2>Do you want to check 10 more?</h2>
-</div>
+<mat-icon (click)="no()" id="shortcut-icon">close</mat-icon>
+<div id="shortcuts-title"><h2>Do you want to check 10 more?</h2></div>
 <hr id="break">
-<div>
-  <mat-button-toggle (click)="yes()" style="width: calc(50% - 10px); float: left;">Yes</mat-button-toggle>
-  <mat-button-toggle (click)="close()" style="width: calc(50% - 10px); float: right;">No</mat-button-toggle>
-</div>
+<mat-button-toggle (click)="yes()" style="width: calc(50% - 10px); float: left;">Yes</mat-button-toggle>
+<mat-button-toggle (click)="no()" style="width: calc(50% - 10px); float: right;">No</mat-button-toggle>
 
 

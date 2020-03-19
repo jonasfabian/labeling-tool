@@ -1,0 +1,43 @@
+<div class="margin">
+  <mat-card id="header-card">
+    <h1 style="margin: 0;">Overview</h1>
+    <mat-slide-toggle (toggleChange)="toggleChangeView()" color="primary" labelPosition="before"
+                      style="position: absolute; right: 15px; top: 16px;">
+      <span>See only recordings</span>
+    </mat-slide-toggle>
+  </mat-card>
+</div>
+<app-edit-text-audio (cancelEmit)="selectedOverviewOccurrence=undefined" (successEmit)="reload()" *ngIf="selectedOverviewOccurrence"
+                     [overviewOccurrence]="selectedOverviewOccurrence"></app-edit-text-audio>
+<div class="margin">
+  <table [dataSource]="dataSource" mat-table matSort
+         style="width: 100%; ">
+    <ng-container matColumnDef="text">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>Text</th>
+      <td *matCellDef="let element" [title]="element.text" mat-cell><span
+        style="overflow: hidden">{{element.text}}</span></td>
+    </ng-container>
+    <ng-container matColumnDef="correct">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>Correct</th>
+      <td *matCellDef="let element" mat-cell>{{element.correct}}</td>
+    </ng-container>
+    <ng-container matColumnDef="wrong">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>Wrong</th>
+      <td *matCellDef="let element" mat-cell>{{element.wrong}}</td>
+    </ng-container>
+    <ng-container matColumnDef="options">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header></th>
+      <td *matCellDef="let element" mat-cell>
+        <button (click)="play(element)" mat-icon-button>
+          <mat-icon>play_arrow</mat-icon>
+        </button>
+        <button (click)="edit(element)" *ngIf="this.showTextAudio" mat-icon-button>
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <tr *matHeaderRowDef="columns;sticky: true" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: columns;" mat-row></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[10, 20,30]" showFirstLastButtons></mat-paginator>
+</div>

@@ -1,47 +1,47 @@
-# Requirements
+## Requirements
 **Required**
-* Python 3
-* MariaDB: 10.1.43-MariaDB to 10.4.11-MariaDB
+* Java 11 
+* MariaDB 10.4
 * Node.js 12.10.0
 
 Note: Other versions might work, but have not been tested yet
 
 **Optional**
 * npm: @angular/cli
-* IntelliJ Idea (Webstorm / PyCharm)
-
-# Setup
+* IntelliJ Idea
+## Data Structure
+* the data can be loaded using `data_import/data-import.py`
+   * use `conda env create -f environment.yml` to install the environment.
+* the datastructure should look like this.
+* `data` the base data directory (can be changed in the configuration)
+   * `data-source` directory containing the raw data used by the import & edit
+      * `<id>` id of the transcript
+         * `audio.wav` the raw audio file
+         * `indexes.xml` the transcript
+   * `orginal_text` used to save the original text documents
+      * `<id>.bin`
+   * `recoding` used to save the recordings
+      * `<id>.ogg`
+   * `text-audio` used to save pre-cut audio
+      * `<id>.flac`
 ## Development
-### Backend
-1. clone the submodule using `git submodule init` & `git submodule update` 
-1. change the configuration in `flask/config.py` to match your setup.
-1. Start setup.py
-1. Start migration.py
-1. Start rest.py
+run `gradle generateSampleJooqSchemaSource --rerun-tasks` to update the jooq database classes
+run `gradle devBootRun` && `npm start` to run the development version
 
-### Frontend
-1. run `ng serve` or `npm start` in the frontend directory
-1. Go to http://localhost:4200
+## Deployment
+some additional packages may be needed (Ubuntu 18.04.3 ):
+* `sudo apt install default-libmysqlclient-dev python3 mariadb-client libssl-dev nginx ffmpeg`
+* mariadb 10.4 see https://downloads.mariadb.org/mariadb/repositories/#distro=Ubuntu&distro_release=bionic--ubuntu_bionic&mirror=cnrs&version=10.4
 
-## Production
-some additional packages needed (Ubuntu 18.04.3 ):
-* `sudo apt install default-libmysqlclient-dev python3 mariadb-client libssl-dev nginx`
-### Frontend
-1. change the the url in `environment.prod.ts`
-1. install locked dependencies using `npm ci`
-1. build `ng build --prod`
-1. copy new files `rm -rf flask/static/public/ && mkdir -p flask/static/public/ && rsync -av frontend/dist/labeling-tool/ flask/static/public/`
+**NOTE:** for deployments the default admin password should be changed.
 
-### Backend
+1. run `gradle buildProd` to build the production jar
+1. `rsync backend/build/libs/backend-1.0.0-SNAPSHOT.jar s1042:~/labeling-tool/backend-1.0.0-SNAPSHOT.jar`
+1. `ssh s1042`
+1. `systemctl restart labeling-tool`
 
-1. change the configuration in `flask/config.py` to match your setup.
-1. install dependencies 
-   1. `python3 -m venv venv`
-   1. `source venv/bin/activate` (assumes bash is used)
-   1. `pip install -r requirements.txt`
-1. Start setup.py
-1. Start migration.py
-1. Start rest.py
+In case the data_import has changed run `rsync data_import/data_import.py s1042:~/labeling-tool/data_import/data_import.py` 
+and `rsync data_import/sentences.py s1042:~/labeling-tool/data_import/sentences.py`
 
 ### Automatic Deployment
 1. `nano /etc/nginx/nginx.conf` 
@@ -52,29 +52,27 @@ some additional packages needed (Ubuntu 18.04.3 ):
             listen	80;
             server_name localhost;
             location / {
-                proxy_pass http://127.0.0.1:8080/;
+                proxy_pass http://localhost:8084/;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_set_header X-Forwarded-Port $server_port;
             }
         }
     }
     
     ```
-1. `nano /lib/systemd/system/labelin-tool.service`
+1. `nano /lib/systemd/system/labeling-tool.service`
     ```
     [Unit]
-    Description=Flask for labeling tool
+    Description=Labeling Tool
     After=network.target
     [Service]
     Type=simple
     Restart=always
     RestartSec=1
-    ExecStart=/bin/bash ~/flask-master/start_flask_labeling-tool.sh
+    User=stt
+    ExecStart=/usr/bin/java -jar /home/stt/labeling-tool/backend-1.0.0-SNAPSHOT.jar
     [Install]
     WantedBy=multi-user.target
     ```
-
-
-# Create an Account
-To start labeling, you first have to register yourself. Click on `Login` in the top right corner. You should be redirected to the login-page, in which you have to click on register at the bottom of the login-form. You should now register yourself.
-
-# Start Labeling
-After you have registered yourself succesfully, you can start the labeling process. Click the menu-icon in the top left corner to expand the sidenav. There you will see different tools for labeling. You can begin with checking already matched snippets, or edit unprecise snippets.
+1. `systemctl enable labeling-tool.service`
