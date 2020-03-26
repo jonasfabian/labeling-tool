@@ -6,20 +6,22 @@ package ch.fhnw.labeling_tool.jooq.tables.records;
 
 import ch.fhnw.labeling_tool.jooq.tables.TextAudio;
 
+import java.sql.Timestamp;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.jooq.Field;
 import org.jooq.Record1;
-import org.jooq.Record9;
-import org.jooq.Row9;
+import org.jooq.Record10;
+import org.jooq.Row10;
 import org.jooq.impl.UpdatableRecordImpl;
 
 
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class TextAudioRecord extends UpdatableRecordImpl<TextAudioRecord> implements Record9<Long, Double, Double, String, String, Long, Long, Long, Long> {
+public class TextAudioRecord extends UpdatableRecordImpl<TextAudioRecord> implements Record10<Long, Double, Double, String, String, Long, Long, Long, Long, Timestamp> {
 
-    private static final long serialVersionUID = 582740534;
+    private static final long serialVersionUID = -2070308744;
 
     public void setId(Long value) {
         set(0, value);
@@ -100,6 +102,14 @@ public class TextAudioRecord extends UpdatableRecordImpl<TextAudioRecord> implem
         return (Long) get(8);
     }
 
+    public void setDeleted(Timestamp value) {
+        set(9, value);
+    }
+
+    public Timestamp getDeleted() {
+        return (Timestamp) get(9);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -110,17 +120,17 @@ public class TextAudioRecord extends UpdatableRecordImpl<TextAudioRecord> implem
     }
 
     // -------------------------------------------------------------------------
-    // Record9 type implementation
+    // Record10 type implementation
     // -------------------------------------------------------------------------
 
     @Override
-    public Row9<Long, Double, Double, String, String, Long, Long, Long, Long> fieldsRow() {
-        return (Row9) super.fieldsRow();
+    public Row10<Long, Double, Double, String, String, Long, Long, Long, Long, Timestamp> fieldsRow() {
+        return (Row10) super.fieldsRow();
     }
 
     @Override
-    public Row9<Long, Double, Double, String, String, Long, Long, Long, Long> valuesRow() {
-        return (Row9) super.valuesRow();
+    public Row10<Long, Double, Double, String, String, Long, Long, Long, Long, Timestamp> valuesRow() {
+        return (Row10) super.valuesRow();
     }
 
     @Override
@@ -169,6 +179,11 @@ public class TextAudioRecord extends UpdatableRecordImpl<TextAudioRecord> implem
     }
 
     @Override
+    public Field<Timestamp> field10() {
+        return TextAudio.TEXT_AUDIO.DELETED;
+    }
+
+    @Override
     public Long component1() {
         return getId();
     }
@@ -214,6 +229,11 @@ public class TextAudioRecord extends UpdatableRecordImpl<TextAudioRecord> implem
     }
 
     @Override
+    public Timestamp component10() {
+        return getDeleted();
+    }
+
+    @Override
     public Long value1() {
         return getId();
     }
@@ -256,6 +276,11 @@ public class TextAudioRecord extends UpdatableRecordImpl<TextAudioRecord> implem
     @Override
     public Long value9() {
         return getCorrect();
+    }
+
+    @Override
+    public Timestamp value10() {
+        return getDeleted();
     }
 
     @Override
@@ -313,7 +338,13 @@ public class TextAudioRecord extends UpdatableRecordImpl<TextAudioRecord> implem
     }
 
     @Override
-    public TextAudioRecord values(Long value1, Double value2, Double value3, String value4, String value5, Long value6, Long value7, Long value8, Long value9) {
+    public TextAudioRecord value10(Timestamp value) {
+        setDeleted(value);
+        return this;
+    }
+
+    @Override
+    public TextAudioRecord values(Long value1, Double value2, Double value3, String value4, String value5, Long value6, Long value7, Long value8, Long value9, Timestamp value10) {
         value1(value1);
         value2(value2);
         value3(value3);
@@ -323,6 +354,7 @@ public class TextAudioRecord extends UpdatableRecordImpl<TextAudioRecord> implem
         value7(value7);
         value8(value8);
         value9(value9);
+        value10(value10);
         return this;
     }
 
@@ -334,7 +366,7 @@ public class TextAudioRecord extends UpdatableRecordImpl<TextAudioRecord> implem
         super(TextAudio.TEXT_AUDIO);
     }
 
-    public TextAudioRecord(Long id, Double audioStart, Double audioEnd, String text, String pathToFile, Long speakerId, Long sourceId, Long wrong, Long correct) {
+    public TextAudioRecord(Long id, Double audioStart, Double audioEnd, String text, String pathToFile, Long speakerId, Long sourceId, Long wrong, Long correct, Timestamp deleted) {
         super(TextAudio.TEXT_AUDIO);
 
         set(0, id);
@@ -346,5 +378,6 @@ public class TextAudioRecord extends UpdatableRecordImpl<TextAudioRecord> implem
         set(6, sourceId);
         set(7, wrong);
         set(8, correct);
+        set(9, deleted);
     }
 }

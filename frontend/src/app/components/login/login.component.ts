@@ -51,5 +51,5 @@ export class LoginComponent implements OnInit {
   }
 
   toggleIsLogin = () => this.isLogin = !this.isLogin;
-  newUser = () => new User(undefined, '', '', '', '', '', 1, Sex.NONE, Licence.ACADEMIC, UserAge.NONE);
+  newUser = () => User.default();
 }

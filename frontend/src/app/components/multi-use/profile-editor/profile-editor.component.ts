@@ -30,14 +30,16 @@ export class ProfileEditorComponent implements OnInit {
   ngOnInit() {
     this.dialectService.getDialects().subscribe(v => this.dialects = v);
     const cc = {
-      firstName: [this.user.firstName, [Validators.required]],
-      lastName: [this.user.lastName, [Validators.required]],
+      firstName: [this.user.firstName, []],
+      lastName: [this.user.lastName, []],
       email: [this.user.email, Validators.compose([
         Validators.required,
         Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
       ])],
       username: [this.user.username, [Validators.required, Validators.pattern('^[a-zA-Z0-9-.]+$')]],
       canton: [this.user.dialectId, [Validators.required]],
+      //TODO maybe exclude for now
+      zipCode: [this.user.zipCode, [Validators.required]],
       password: undefined,
       sex: [this.user.sex, [Validators.required]],
       age: [this.user.age, [Validators.required]],
@@ -71,6 +73,8 @@ export class ProfileEditorComponent implements OnInit {
         });
       } else {
         this.httpClient.put(environment.url + 'user', user).subscribe(() => {
+          //TODO add check in case the username,email has changed and also show a snackbar for information
+          // -> maybe also add confirmation dialog
           // NOTE we need to re-login in case the email,username changed
           this.authService.logout(true);
         }, error => {

@@ -9,6 +9,7 @@ import ch.fhnw.labeling_tool.jooq.Keys;
 import ch.fhnw.labeling_tool.jooq.LabelingTool;
 import ch.fhnw.labeling_tool.jooq.tables.records.TextAudioRecord;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row9;
+import org.jooq.Row10;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -30,7 +31,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TextAudio extends TableImpl<TextAudioRecord> {
 
-    private static final long serialVersionUID = -754379407;
+    private static final long serialVersionUID = -7591636;
 
     public static final TextAudio TEXT_AUDIO = new TextAudio();
 
@@ -56,6 +57,8 @@ public class TextAudio extends TableImpl<TextAudioRecord> {
     public final TableField<TextAudioRecord, Long> WRONG = createField(DSL.name("wrong"), org.jooq.impl.SQLDataType.BIGINT.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.BIGINT)), this, "");
 
     public final TableField<TextAudioRecord, Long> CORRECT = createField(DSL.name("correct"), org.jooq.impl.SQLDataType.BIGINT.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.BIGINT)), this, "");
+
+    public final TableField<TextAudioRecord, Timestamp> DELETED = createField(DSL.name("deleted"), org.jooq.impl.SQLDataType.TIMESTAMP.defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
 
     public TextAudio() {
         this(DSL.name("text_audio"), null);
@@ -140,11 +143,11 @@ public class TextAudio extends TableImpl<TextAudioRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row9 type methods
+    // Row10 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row9<Long, Double, Double, String, String, Long, Long, Long, Long> fieldsRow() {
-        return (Row9) super.fieldsRow();
+    public Row10<Long, Double, Double, String, String, Long, Long, Long, Long, Timestamp> fieldsRow() {
+        return (Row10) super.fieldsRow();
     }
 }

@@ -17,7 +17,7 @@ import javax.validation.constraints.Size;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User implements Serializable {
 
-    private static final long serialVersionUID = -92133801;
+    private static final long serialVersionUID = -194681479;
 
     private Long        id;
     private String      firstName;
@@ -30,6 +30,7 @@ public class User implements Serializable {
     private UserAge     age;
     private Boolean     enabled;
     private Long        dialectId;
+    private String      zipCode;
 
     public User() {}
 
@@ -45,6 +46,7 @@ public class User implements Serializable {
         this.age = value.age;
         this.enabled = value.enabled;
         this.dialectId = value.dialectId;
+        this.zipCode = value.zipCode;
     }
 
     public User(
@@ -58,7 +60,8 @@ public class User implements Serializable {
         UserLicence licence,
         UserAge     age,
         Boolean     enabled,
-        Long        dialectId
+        Long        dialectId,
+        String      zipCode
     ) {
         this.id = id;
         this.firstName = firstName;
@@ -71,6 +74,7 @@ public class User implements Serializable {
         this.age = age;
         this.enabled = enabled;
         this.dialectId = dialectId;
+        this.zipCode = zipCode;
     }
 
     public Long getId() {
@@ -81,7 +85,6 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    @NotNull
     @Size(max = 100)
     public String getFirstName() {
         return this.firstName;
@@ -91,7 +94,6 @@ public class User implements Serializable {
         this.firstName = firstName;
     }
 
-    @NotNull
     @Size(max = 100)
     public String getLastName() {
         return this.lastName;
@@ -172,6 +174,16 @@ public class User implements Serializable {
         this.dialectId = dialectId;
     }
 
+    @NotNull
+    @Size(max = 45)
+    public String getZipCode() {
+        return this.zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("User (");
@@ -187,6 +199,7 @@ public class User implements Serializable {
         sb.append(", ").append(age);
         sb.append(", ").append(enabled);
         sb.append(", ").append(dialectId);
+        sb.append(", ").append(zipCode);
 
         sb.append(")");
         return sb.toString();

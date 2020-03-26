@@ -20,7 +20,7 @@ import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row7;
+import org.jooq.Row8;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -32,7 +32,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Recording extends TableImpl<RecordingRecord> {
 
-    private static final long serialVersionUID = -564650421;
+    private static final long serialVersionUID = -393432406;
 
     public static final Recording RECORDING = new Recording();
 
@@ -54,6 +54,8 @@ public class Recording extends TableImpl<RecordingRecord> {
     public final TableField<RecordingRecord, Long> WRONG = createField(DSL.name("wrong"), org.jooq.impl.SQLDataType.BIGINT.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.BIGINT)), this, "");
 
     public final TableField<RecordingRecord, Long> CORRECT = createField(DSL.name("correct"), org.jooq.impl.SQLDataType.BIGINT.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.BIGINT)), this, "");
+
+    public final TableField<RecordingRecord, Timestamp> DELETED = createField(DSL.name("deleted"), org.jooq.impl.SQLDataType.TIMESTAMP.defaultValue(org.jooq.impl.DSL.inline("NULL", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
 
     public Recording() {
         this(DSL.name("recording"), null);
@@ -138,11 +140,11 @@ public class Recording extends TableImpl<RecordingRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row7 type methods
+    // Row8 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row7<Long, Long, Long, Timestamp, RecordingLabel, Long, Long> fieldsRow() {
-        return (Row7) super.fieldsRow();
+    public Row8<Long, Long, Long, Timestamp, RecordingLabel, Long, Long, Timestamp> fieldsRow() {
+        return (Row8) super.fieldsRow();
     }
 }

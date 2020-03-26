@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Recording implements Serializable {
 
-    private static final long serialVersionUID = -1423879176;
+    private static final long serialVersionUID = 880869867;
 
     private Long           id;
     private Long           excerptId;
@@ -24,6 +24,7 @@ public class Recording implements Serializable {
     private RecordingLabel label;
     private Long           wrong;
     private Long           correct;
+    private Timestamp      deleted;
 
     public Recording() {}
 
@@ -35,6 +36,7 @@ public class Recording implements Serializable {
         this.label = value.label;
         this.wrong = value.wrong;
         this.correct = value.correct;
+        this.deleted = value.deleted;
     }
 
     public Recording(
@@ -44,7 +46,8 @@ public class Recording implements Serializable {
         Timestamp      time,
         RecordingLabel label,
         Long           wrong,
-        Long           correct
+        Long           correct,
+        Timestamp      deleted
     ) {
         this.id = id;
         this.excerptId = excerptId;
@@ -53,6 +56,7 @@ public class Recording implements Serializable {
         this.label = label;
         this.wrong = wrong;
         this.correct = correct;
+        this.deleted = deleted;
     }
 
     public Long getId() {
@@ -113,6 +117,14 @@ public class Recording implements Serializable {
         this.correct = correct;
     }
 
+    public Timestamp getDeleted() {
+        return this.deleted;
+    }
+
+    public void setDeleted(Timestamp deleted) {
+        this.deleted = deleted;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Recording (");
@@ -124,6 +136,7 @@ public class Recording implements Serializable {
         sb.append(", ").append(label);
         sb.append(", ").append(wrong);
         sb.append(", ").append(correct);
+        sb.append(", ").append(deleted);
 
         sb.append(")");
         return sb.toString();

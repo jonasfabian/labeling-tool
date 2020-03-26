@@ -4,6 +4,7 @@
 package ch.fhnw.labeling_tool.jooq.tables.daos;
 
 
+import ch.fhnw.labeling_tool.jooq.enums.SourceLicence;
 import ch.fhnw.labeling_tool.jooq.tables.Source;
 import ch.fhnw.labeling_tool.jooq.tables.records.SourceRecord;
 
@@ -75,5 +76,13 @@ public class SourceDao extends DAOImpl<SourceRecord, ch.fhnw.labeling_tool.jooq.
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Source> fetchByRawFilePath(String... values) {
         return fetch(Source.SOURCE.RAW_FILE_PATH, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Source> fetchRangeOfLicence(SourceLicence lowerInclusive, SourceLicence upperInclusive) {
+        return fetchRange(Source.SOURCE.LICENCE, lowerInclusive, upperInclusive);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Source> fetchByLicence(SourceLicence... values) {
+        return fetch(Source.SOURCE.LICENCE, values);
     }
 }

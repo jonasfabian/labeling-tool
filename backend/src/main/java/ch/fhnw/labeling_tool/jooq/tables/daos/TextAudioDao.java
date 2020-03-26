@@ -7,6 +7,7 @@ package ch.fhnw.labeling_tool.jooq.tables.daos;
 import ch.fhnw.labeling_tool.jooq.tables.TextAudio;
 import ch.fhnw.labeling_tool.jooq.tables.records.TextAudioRecord;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.jooq.Configuration;
@@ -107,5 +108,13 @@ public class TextAudioDao extends DAOImpl<TextAudioRecord, ch.fhnw.labeling_tool
 
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchByCorrect(Long... values) {
         return fetch(TextAudio.TEXT_AUDIO.CORRECT, values);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchRangeOfDeleted(Timestamp lowerInclusive, Timestamp upperInclusive) {
+        return fetchRange(TextAudio.TEXT_AUDIO.DELETED, lowerInclusive, upperInclusive);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.TextAudio> fetchByDeleted(Timestamp... values) {
+        return fetch(TextAudio.TEXT_AUDIO.DELETED, values);
     }
 }

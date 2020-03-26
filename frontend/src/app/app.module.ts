@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {NgModule, SecurityContext} from '@angular/core';
 import {AppComponent} from './app.component';
 import {NavigationMenuComponent} from './components/navigation-menu/navigation-menu.component';
 import {ShortcutComponent} from './components/check/shortcut/shortcut.component';
@@ -52,6 +52,9 @@ import {CheckTextAudioComponent} from './components/check/check-text-audio.compo
 import {EditTextAudioComponent} from './components/admin/overview/edit-text-audio/edit-text-audio.component';
 import {AdminGuardService} from './guards/admin-guard.service';
 import {GroupAdminGuardService} from './guards/group-admin-guard.service';
+import {MarkdownModule, MarkdownService} from 'ngx-markdown';
+import { DocumentOverviewComponent } from './document-overview/document-overview.component';
+
 
 @NgModule({
   declarations: [
@@ -72,7 +75,8 @@ import {GroupAdminGuardService} from './guards/group-admin-guard.service';
     UserGroupRoleComponent,
     CheckRecordingComponent,
     CheckTextAudioComponent,
-    EditTextAudioComponent
+    EditTextAudioComponent,
+    DocumentOverviewComponent
   ],
   imports: [
     BrowserModule,
@@ -105,12 +109,16 @@ import {GroupAdminGuardService} from './guards/group-admin-guard.service';
     MatSnackBarModule,
     MatDialogModule,
     MatSortModule,
+    MarkdownModule.forRoot({
+      sanitize: SecurityContext.HTML
+    }),
   ],
   providers: [
     HttpClient,
     AuthGuardService,
     AdminGuardService,
     GroupAdminGuardService,
+    MarkdownService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptorService,

@@ -21,18 +21,21 @@ export class User {
   sex: Sex;
   licence: Licence;
   age: UserAge;
+  zipCode: string;
 
-
-  constructor(id: number, firstName: string, lastName: string, email: string, username: string, password: string, dialect: number, sex: Sex, licence: Licence, age: UserAge) {
+  constructor(id: number, firstName: string, lastName: string, email: string, username: string, password: string, dialectId: number, sex: Sex, licence: Licence, age: UserAge, zipCode: string) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
     this.username = username;
     this.password = password;
-    this.dialectId = dialect;
+    this.dialectId = dialectId;
     this.sex = sex;
     this.licence = licence;
     this.age = age;
+    this.zipCode = zipCode;
   }
+
+  static default = () => new User(undefined, '', '', '', '', '', 1, Sex.NONE, Licence.PUBLIC, UserAge.NONE, undefined);
 }

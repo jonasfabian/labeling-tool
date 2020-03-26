@@ -13,15 +13,15 @@ import javax.validation.constraints.NotNull;
 
 import org.jooq.Field;
 import org.jooq.Record1;
-import org.jooq.Record7;
-import org.jooq.Row7;
+import org.jooq.Record8;
+import org.jooq.Row8;
 import org.jooq.impl.UpdatableRecordImpl;
 
 
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implements Record7<Long, Long, Long, Timestamp, RecordingLabel, Long, Long> {
+public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implements Record8<Long, Long, Long, Timestamp, RecordingLabel, Long, Long, Timestamp> {
 
-    private static final long serialVersionUID = -364689568;
+    private static final long serialVersionUID = 1257347394;
 
     public void setId(Long value) {
         set(0, value);
@@ -81,6 +81,14 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
         return (Long) get(6);
     }
 
+    public void setDeleted(Timestamp value) {
+        set(7, value);
+    }
+
+    public Timestamp getDeleted() {
+        return (Timestamp) get(7);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -91,17 +99,17 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
     }
 
     // -------------------------------------------------------------------------
-    // Record7 type implementation
+    // Record8 type implementation
     // -------------------------------------------------------------------------
 
     @Override
-    public Row7<Long, Long, Long, Timestamp, RecordingLabel, Long, Long> fieldsRow() {
-        return (Row7) super.fieldsRow();
+    public Row8<Long, Long, Long, Timestamp, RecordingLabel, Long, Long, Timestamp> fieldsRow() {
+        return (Row8) super.fieldsRow();
     }
 
     @Override
-    public Row7<Long, Long, Long, Timestamp, RecordingLabel, Long, Long> valuesRow() {
-        return (Row7) super.valuesRow();
+    public Row8<Long, Long, Long, Timestamp, RecordingLabel, Long, Long, Timestamp> valuesRow() {
+        return (Row8) super.valuesRow();
     }
 
     @Override
@@ -140,6 +148,11 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
     }
 
     @Override
+    public Field<Timestamp> field8() {
+        return Recording.RECORDING.DELETED;
+    }
+
+    @Override
     public Long component1() {
         return getId();
     }
@@ -175,6 +188,11 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
     }
 
     @Override
+    public Timestamp component8() {
+        return getDeleted();
+    }
+
+    @Override
     public Long value1() {
         return getId();
     }
@@ -207,6 +225,11 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
     @Override
     public Long value7() {
         return getCorrect();
+    }
+
+    @Override
+    public Timestamp value8() {
+        return getDeleted();
     }
 
     @Override
@@ -252,7 +275,13 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
     }
 
     @Override
-    public RecordingRecord values(Long value1, Long value2, Long value3, Timestamp value4, RecordingLabel value5, Long value6, Long value7) {
+    public RecordingRecord value8(Timestamp value) {
+        setDeleted(value);
+        return this;
+    }
+
+    @Override
+    public RecordingRecord values(Long value1, Long value2, Long value3, Timestamp value4, RecordingLabel value5, Long value6, Long value7, Timestamp value8) {
         value1(value1);
         value2(value2);
         value3(value3);
@@ -260,6 +289,7 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
         value5(value5);
         value6(value6);
         value7(value7);
+        value8(value8);
         return this;
     }
 
@@ -271,7 +301,7 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
         super(Recording.RECORDING);
     }
 
-    public RecordingRecord(Long id, Long excerptId, Long userId, Timestamp time, RecordingLabel label, Long wrong, Long correct) {
+    public RecordingRecord(Long id, Long excerptId, Long userId, Timestamp time, RecordingLabel label, Long wrong, Long correct, Timestamp deleted) {
         super(Recording.RECORDING);
 
         set(0, id);
@@ -281,5 +311,6 @@ public class RecordingRecord extends UpdatableRecordImpl<RecordingRecord> implem
         set(4, label);
         set(5, wrong);
         set(6, correct);
+        set(7, deleted);
     }
 }

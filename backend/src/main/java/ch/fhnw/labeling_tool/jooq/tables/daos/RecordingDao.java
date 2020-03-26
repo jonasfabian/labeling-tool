@@ -94,4 +94,12 @@ public class RecordingDao extends DAOImpl<RecordingRecord, ch.fhnw.labeling_tool
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Recording> fetchByCorrect(Long... values) {
         return fetch(Recording.RECORDING.CORRECT, values);
     }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Recording> fetchRangeOfDeleted(Timestamp lowerInclusive, Timestamp upperInclusive) {
+        return fetchRange(Recording.RECORDING.DELETED, lowerInclusive, upperInclusive);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.Recording> fetchByDeleted(Timestamp... values) {
+        return fetch(Recording.RECORDING.DELETED, values);
+    }
 }

@@ -35,7 +35,7 @@ export class AdminComponent implements OnInit {
     this.router.navigate(['/admin/user_group']);
   }
 
-  newUserGroup = () => this.userGroup = new UserGroup(undefined, '');
+  newUserGroup = () => this.userGroup = new UserGroup(undefined, '', '');
   cancel = () => this.userGroup = undefined;
   private reload = () => this.httpClient.get <UserGroup[]>(`${environment.url}admin/user_group`).subscribe(v => this.userGroups = v);
 }

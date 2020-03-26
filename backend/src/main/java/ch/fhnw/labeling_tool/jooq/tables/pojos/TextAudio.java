@@ -5,6 +5,7 @@ package ch.fhnw.labeling_tool.jooq.tables.pojos;
 
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -13,17 +14,18 @@ import javax.validation.constraints.Size;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TextAudio implements Serializable {
 
-    private static final long serialVersionUID = -1441273082;
+    private static final long serialVersionUID = 865083015;
 
-    private Long   id;
-    private Double audioStart;
-    private Double audioEnd;
-    private String text;
-    private String pathToFile;
-    private Long   speakerId;
-    private Long   sourceId;
-    private Long   wrong;
-    private Long   correct;
+    private Long      id;
+    private Double    audioStart;
+    private Double    audioEnd;
+    private String    text;
+    private String    pathToFile;
+    private Long      speakerId;
+    private Long      sourceId;
+    private Long      wrong;
+    private Long      correct;
+    private Timestamp deleted;
 
     public TextAudio() {}
 
@@ -37,18 +39,20 @@ public class TextAudio implements Serializable {
         this.sourceId = value.sourceId;
         this.wrong = value.wrong;
         this.correct = value.correct;
+        this.deleted = value.deleted;
     }
 
     public TextAudio(
-        Long   id,
-        Double audioStart,
-        Double audioEnd,
-        String text,
-        String pathToFile,
-        Long   speakerId,
-        Long   sourceId,
-        Long   wrong,
-        Long   correct
+        Long      id,
+        Double    audioStart,
+        Double    audioEnd,
+        String    text,
+        String    pathToFile,
+        Long      speakerId,
+        Long      sourceId,
+        Long      wrong,
+        Long      correct,
+        Timestamp deleted
     ) {
         this.id = id;
         this.audioStart = audioStart;
@@ -59,6 +63,7 @@ public class TextAudio implements Serializable {
         this.sourceId = sourceId;
         this.wrong = wrong;
         this.correct = correct;
+        this.deleted = deleted;
     }
 
     public Long getId() {
@@ -140,6 +145,14 @@ public class TextAudio implements Serializable {
         this.correct = correct;
     }
 
+    public Timestamp getDeleted() {
+        return this.deleted;
+    }
+
+    public void setDeleted(Timestamp deleted) {
+        this.deleted = deleted;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("TextAudio (");
@@ -153,6 +166,7 @@ public class TextAudio implements Serializable {
         sb.append(", ").append(sourceId);
         sb.append(", ").append(wrong);
         sb.append(", ").append(correct);
+        sb.append(", ").append(deleted);
 
         sb.append(")");
         return sb.toString();

@@ -52,4 +52,12 @@ public class UserGroupDao extends DAOImpl<UserGroupRecord, ch.fhnw.labeling_tool
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.UserGroup> fetchByName(String... values) {
         return fetch(UserGroup.USER_GROUP.NAME, values);
     }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.UserGroup> fetchRangeOfDescription(String lowerInclusive, String upperInclusive) {
+        return fetchRange(UserGroup.USER_GROUP.DESCRIPTION, lowerInclusive, upperInclusive);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.UserGroup> fetchByDescription(String... values) {
+        return fetch(UserGroup.USER_GROUP.DESCRIPTION, values);
+    }
 }

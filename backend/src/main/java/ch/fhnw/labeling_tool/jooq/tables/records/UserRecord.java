@@ -14,15 +14,15 @@ import javax.validation.constraints.Size;
 
 import org.jooq.Field;
 import org.jooq.Record1;
-import org.jooq.Record11;
-import org.jooq.Row11;
+import org.jooq.Record12;
+import org.jooq.Row12;
 import org.jooq.impl.UpdatableRecordImpl;
 
 
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Record11<Long, String, String, String, String, String, UserSex, UserLicence, UserAge, Boolean, Long> {
+public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Record12<Long, String, String, String, String, String, UserSex, UserLicence, UserAge, Boolean, Long, String> {
 
-    private static final long serialVersionUID = 976956156;
+    private static final long serialVersionUID = -2072332609;
 
     public void setId(Long value) {
         set(0, value);
@@ -36,7 +36,6 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
         set(1, value);
     }
 
-    @NotNull
     @Size(max = 100)
     public String getFirstName() {
         return (String) get(1);
@@ -46,7 +45,6 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
         set(2, value);
     }
 
-    @NotNull
     @Size(max = 100)
     public String getLastName() {
         return (String) get(2);
@@ -123,6 +121,16 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
         return (Long) get(10);
     }
 
+    public void setZipCode(String value) {
+        set(11, value);
+    }
+
+    @NotNull
+    @Size(max = 45)
+    public String getZipCode() {
+        return (String) get(11);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -133,17 +141,17 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
     }
 
     // -------------------------------------------------------------------------
-    // Record11 type implementation
+    // Record12 type implementation
     // -------------------------------------------------------------------------
 
     @Override
-    public Row11<Long, String, String, String, String, String, UserSex, UserLicence, UserAge, Boolean, Long> fieldsRow() {
-        return (Row11) super.fieldsRow();
+    public Row12<Long, String, String, String, String, String, UserSex, UserLicence, UserAge, Boolean, Long, String> fieldsRow() {
+        return (Row12) super.fieldsRow();
     }
 
     @Override
-    public Row11<Long, String, String, String, String, String, UserSex, UserLicence, UserAge, Boolean, Long> valuesRow() {
-        return (Row11) super.valuesRow();
+    public Row12<Long, String, String, String, String, String, UserSex, UserLicence, UserAge, Boolean, Long, String> valuesRow() {
+        return (Row12) super.valuesRow();
     }
 
     @Override
@@ -202,6 +210,11 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
     }
 
     @Override
+    public Field<String> field12() {
+        return User.USER.ZIP_CODE;
+    }
+
+    @Override
     public Long component1() {
         return getId();
     }
@@ -257,6 +270,11 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
     }
 
     @Override
+    public String component12() {
+        return getZipCode();
+    }
+
+    @Override
     public Long value1() {
         return getId();
     }
@@ -309,6 +327,11 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
     @Override
     public Long value11() {
         return getDialectId();
+    }
+
+    @Override
+    public String value12() {
+        return getZipCode();
     }
 
     @Override
@@ -378,7 +401,13 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
     }
 
     @Override
-    public UserRecord values(Long value1, String value2, String value3, String value4, String value5, String value6, UserSex value7, UserLicence value8, UserAge value9, Boolean value10, Long value11) {
+    public UserRecord value12(String value) {
+        setZipCode(value);
+        return this;
+    }
+
+    @Override
+    public UserRecord values(Long value1, String value2, String value3, String value4, String value5, String value6, UserSex value7, UserLicence value8, UserAge value9, Boolean value10, Long value11, String value12) {
         value1(value1);
         value2(value2);
         value3(value3);
@@ -390,6 +419,7 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
         value9(value9);
         value10(value10);
         value11(value11);
+        value12(value12);
         return this;
     }
 
@@ -401,7 +431,7 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
         super(User.USER);
     }
 
-    public UserRecord(Long id, String firstName, String lastName, String email, String username, String password, UserSex sex, UserLicence licence, UserAge age, Boolean enabled, Long dialectId) {
+    public UserRecord(Long id, String firstName, String lastName, String email, String username, String password, UserSex sex, UserLicence licence, UserAge age, Boolean enabled, Long dialectId, String zipCode) {
         super(User.USER);
 
         set(0, id);
@@ -415,5 +445,6 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
         set(8, age);
         set(9, enabled);
         set(10, dialectId);
+        set(11, zipCode);
     }
 }

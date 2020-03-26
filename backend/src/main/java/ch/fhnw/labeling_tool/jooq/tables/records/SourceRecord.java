@@ -4,6 +4,7 @@
 package ch.fhnw.labeling_tool.jooq.tables.records;
 
 
+import ch.fhnw.labeling_tool.jooq.enums.SourceLicence;
 import ch.fhnw.labeling_tool.jooq.tables.Source;
 
 import javax.validation.constraints.NotNull;
@@ -11,15 +12,15 @@ import javax.validation.constraints.Size;
 
 import org.jooq.Field;
 import org.jooq.Record1;
-import org.jooq.Record5;
-import org.jooq.Row5;
+import org.jooq.Record6;
+import org.jooq.Row6;
 import org.jooq.impl.UpdatableRecordImpl;
 
 
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class SourceRecord extends UpdatableRecordImpl<SourceRecord> implements Record5<Long, String, String, String, String> {
+public class SourceRecord extends UpdatableRecordImpl<SourceRecord> implements Record6<Long, String, String, String, String, SourceLicence> {
 
-    private static final long serialVersionUID = -1247968684;
+    private static final long serialVersionUID = 1412343438;
 
     public void setId(Long value) {
         set(0, value);
@@ -69,6 +70,14 @@ public class SourceRecord extends UpdatableRecordImpl<SourceRecord> implements R
         return (String) get(4);
     }
 
+    public void setLicence(SourceLicence value) {
+        set(5, value);
+    }
+
+    public SourceLicence getLicence() {
+        return (SourceLicence) get(5);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -79,17 +88,17 @@ public class SourceRecord extends UpdatableRecordImpl<SourceRecord> implements R
     }
 
     // -------------------------------------------------------------------------
-    // Record5 type implementation
+    // Record6 type implementation
     // -------------------------------------------------------------------------
 
     @Override
-    public Row5<Long, String, String, String, String> fieldsRow() {
-        return (Row5) super.fieldsRow();
+    public Row6<Long, String, String, String, String, SourceLicence> fieldsRow() {
+        return (Row6) super.fieldsRow();
     }
 
     @Override
-    public Row5<Long, String, String, String, String> valuesRow() {
-        return (Row5) super.valuesRow();
+    public Row6<Long, String, String, String, String, SourceLicence> valuesRow() {
+        return (Row6) super.valuesRow();
     }
 
     @Override
@@ -118,6 +127,11 @@ public class SourceRecord extends UpdatableRecordImpl<SourceRecord> implements R
     }
 
     @Override
+    public Field<SourceLicence> field6() {
+        return Source.SOURCE.LICENCE;
+    }
+
+    @Override
     public Long component1() {
         return getId();
     }
@@ -143,6 +157,11 @@ public class SourceRecord extends UpdatableRecordImpl<SourceRecord> implements R
     }
 
     @Override
+    public SourceLicence component6() {
+        return getLicence();
+    }
+
+    @Override
     public Long value1() {
         return getId();
     }
@@ -165,6 +184,11 @@ public class SourceRecord extends UpdatableRecordImpl<SourceRecord> implements R
     @Override
     public String value5() {
         return getRawFilePath();
+    }
+
+    @Override
+    public SourceLicence value6() {
+        return getLicence();
     }
 
     @Override
@@ -198,12 +222,19 @@ public class SourceRecord extends UpdatableRecordImpl<SourceRecord> implements R
     }
 
     @Override
-    public SourceRecord values(Long value1, String value2, String value3, String value4, String value5) {
+    public SourceRecord value6(SourceLicence value) {
+        setLicence(value);
+        return this;
+    }
+
+    @Override
+    public SourceRecord values(Long value1, String value2, String value3, String value4, String value5, SourceLicence value6) {
         value1(value1);
         value2(value2);
         value3(value3);
         value4(value4);
         value5(value5);
+        value6(value6);
         return this;
     }
 
@@ -215,7 +246,7 @@ public class SourceRecord extends UpdatableRecordImpl<SourceRecord> implements R
         super(Source.SOURCE);
     }
 
-    public SourceRecord(Long id, String description, String name, String rawAudioPath, String rawFilePath) {
+    public SourceRecord(Long id, String description, String name, String rawAudioPath, String rawFilePath, SourceLicence licence) {
         super(Source.SOURCE);
 
         set(0, id);
@@ -223,5 +254,6 @@ public class SourceRecord extends UpdatableRecordImpl<SourceRecord> implements R
         set(2, name);
         set(3, rawAudioPath);
         set(4, rawFilePath);
+        set(5, licence);
     }
 }

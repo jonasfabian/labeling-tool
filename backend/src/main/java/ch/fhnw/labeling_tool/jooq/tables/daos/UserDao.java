@@ -135,4 +135,12 @@ public class UserDao extends DAOImpl<UserRecord, ch.fhnw.labeling_tool.jooq.tabl
     public List<ch.fhnw.labeling_tool.jooq.tables.pojos.User> fetchByDialectId(Long... values) {
         return fetch(User.USER.DIALECT_ID, values);
     }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.User> fetchRangeOfZipCode(String lowerInclusive, String upperInclusive) {
+        return fetchRange(User.USER.ZIP_CODE, lowerInclusive, upperInclusive);
+    }
+
+    public List<ch.fhnw.labeling_tool.jooq.tables.pojos.User> fetchByZipCode(String... values) {
+        return fetch(User.USER.ZIP_CODE, values);
+    }
 }
