@@ -1,3 +1,5 @@
+the repository was moved to https://github.com/cintoros/speech-collection-app   
+
 ## Requirements
 **Required**
 * Java 11 
